@@ -1,13 +1,13 @@
 ---
 version: 1
-slug: "index-html"
-primary_target: "index.html"
+slug: "public-index-html"
+primary_target: "public/index.html"
 related_targets: []
 ---
 
 # Surface brief: Streetlight startsida
 
-Scope: index.html, one-page Swedish site. Mode: Persuade.
+Scope: public/index.html, one-page Swedish site. Mode: Persuade.
 
 Audience and job: new potential sponsors/donors in Sweden. Understand the work in under a minute, trust a small association, become a sponsor (fadder) or donor.
 Proof and content: 20 sponsored children, what is paid for (school fees, uniform, materials, medical costs), support for parents' own income-generating business, local authorities in Addis Ababa select the children, two organisations with two independent boards. No photos, quotes, figures or payment details supplied: placeholders only, labelled.

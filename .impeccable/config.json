@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "open sans",
+        "createdAt": "2026-10-30T19:21:14.728Z",
+        "reason": "Open Sans is the body and heading face specified by the Streetlight brand style guide the user supplied; not a free choice"
+      }
+    ]
+  }
+}

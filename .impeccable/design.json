@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-30T00:00:00Z",
+  "title": "Design System: Streetlight",
+  "extensions": {
+    "colorMeta": {
+      "asphalt": { "role": "neutral", "displayName": "Asphalt", "canonical": "#424242", "tonalRamp": ["#141414", "#202020", "#2f2f2f", "#424242", "#5e5e5e", "#7a7a7a", "#a8a8a8", "#e0e0e0"] },
+      "asphalt-deep": { "role": "neutral", "displayName": "Deep Asphalt", "canonical": "#2f2f2f", "tonalRamp": ["#101010", "#1a1a1a", "#242424", "#2f2f2f", "#424242", "#5e5e5e", "#9a9a9a", "#d8d8d8"] },
+      "asphalt-line": { "role": "neutral", "displayName": "Asphalt Line", "canonical": "#5e5e5e", "tonalRamp": ["#1c1c1c", "#2f2f2f", "#424242", "#5e5e5e", "#7a7a7a", "#9a9a9a", "#c4c4c4", "#e8e8e8"] },
+      "road": { "role": "neutral", "displayName": "Road", "canonical": "#383838", "tonalRamp": ["#101010", "#1a1a1a", "#2a2a2a", "#383838", "#4a4a4a", "#666666", "#999999", "#d0d0d0"] },
+      "pole-grey": { "role": "neutral", "displayName": "Pole Grey", "canonical": "#7a7a7a", "tonalRamp": ["#222222", "#383838", "#505050", "#7a7a7a", "#8d8d8d", "#a8a8a8", "#cccccc", "#eeeeee"] },
+      "lamp-yellow": { "role": "primary", "displayName": "Lamp Yellow", "canonical": "#FFD200", "tonalRamp": ["#3d3200", "#5c4a00", "#806800", "#a88a00", "#d1ac00", "#FFD200", "#ffe04a", "#fff1a8"] },
+      "lamp-yellow-hover": { "role": "primary", "displayName": "Lamp Yellow Hover", "canonical": "#ffe04a", "tonalRamp": ["#3d3200", "#5c4a00", "#806800", "#d1ac00", "#FFD200", "#ffe04a", "#ffeb85", "#fff6c9"] },
+      "ethiopia-green": { "role": "secondary", "displayName": "Ethiopia Green", "canonical": "#B8E986", "tonalRamp": ["#1d2b0e", "#304a14", "#4d7421", "#76a63f", "#98c964", "#B8E986", "#d2f2b0", "#eefadb"] },
+      "white": { "role": "neutral", "displayName": "White", "canonical": "#FFFFFF", "tonalRamp": ["#2f2f2f", "#5e5e5e", "#8a8a8a", "#b0b0b0", "#cfcfcf", "#e6e6e6", "#f4f4f4", "#FFFFFF"] },
+      "white-dim": { "role": "neutral", "displayName": "Dim White", "canonical": "rgba(255, 255, 255, 0.88)", "tonalRamp": ["#2f2f2f", "#5e5e5e", "#8a8a8a", "#b0b0b0", "#cfcfcf", "#e6e6e6", "#f4f4f4", "#FFFFFF"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The single H1 vision line, Open Sans Light." },
+      "headline": { "displayName": "Headline", "purpose": "Section H2s, semibold; statement band uses Light." },
+      "title": { "displayName": "Title", "purpose": "H3 organisation names, bold uppercase." },
+      "body": { "displayName": "Body", "purpose": "Paragraphs, 62ch max, dim white on asphalt." },
+      "label": { "displayName": "Label", "purpose": "Definition terms in the payment list." },
+      "wordmark": { "displayName": "Wordmark (stand-in)", "purpose": "Nunito Black Italic with SVG flame over a dotless i, a stand-in until the real Panton ExtraBold Italic logo file is supplied." }
+    },
+    "shadows": [
+      { "name": "flame-glow", "value": "drop-shadow(0 0 14px rgba(255,210,0,.75)) drop-shadow(0 0 4px rgba(255,210,0,.6))", "purpose": "Lamp head on the spine." },
+      { "name": "flame-glow-row", "value": "drop-shadow(0 0 10px rgba(255,210,0,.5))", "purpose": "The 20 flames." },
+      { "name": "dot-glow", "value": "0 0 16px rgba(255,210,0,.6)", "purpose": "Chain nodes and travelling dot." },
+      { "name": "button-bloom", "value": "0 10px 30px -8px rgba(255,210,0,.55)", "purpose": "Primary button hover." },
+      { "name": "pill-ring", "value": "0 0 0 2px #424242, 0 8px 24px -8px rgba(0,0,0,.5)", "purpose": "Separates the fixed pill from bands." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(.16, 1, .3, 1)", "purpose": "All meaningful transitions: lamp travel (1s), band light (1.2s), lamps lighting (.6s, 70ms stagger), button lift (.3s)." },
+      { "name": "flicker", "value": "3.4s ease-in-out infinite", "purpose": "Flame scale and tiny rotation on the lamp head and hero lamp." },
+      { "name": "travel", "value": "3.6s cubic-bezier(.16, 1, .3, 1) infinite", "purpose": "Dot moving from yellow to green between the organisations." }
+    ],
+    "breakpoints": [
+      { "name": "tablet", "value": "960px" },
+      { "name": "mobile", "value": "520px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one main action, yellow with asphalt text.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Bli fadder</a>",
+      "css": ".ds-btn-primary { display: inline-block; text-decoration: none; font-family: 'Open Sans', system-ui, sans-serif; font-weight: 700; font-size: 1.0625rem; padding: 1rem 1.9rem; border-radius: 10px; background: #FFD200; color: #424242; transition: background .2s, translate .3s cubic-bezier(.16,1,.3,1), box-shadow .3s; } .ds-btn-primary:hover { background: #ffe04a; translate: 0 -2px; box-shadow: 0 10px 30px -8px rgba(255,210,0,.55); } .ds-btn-primary:focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: 4px; }"
+    },
+    {
+      "name": "Text Link Button",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Secondary action: white text with a thick yellow underline.",
+      "html": "<a class=\"ds-btn-text\" href=\"#\">Så arbetar vi</a>",
+      "css": ".ds-btn-text { display: inline-block; font-family: 'Open Sans', system-ui, sans-serif; font-weight: 700; font-size: 1.0625rem; padding: 1rem .25rem; color: #fff; text-decoration: underline; text-decoration-color: #FFD200; text-decoration-thickness: 3px; text-underline-offset: 6px; } .ds-btn-text:hover { text-decoration-color: #fff; } .ds-btn-text:focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: 4px; }"
+    },
+    {
+      "name": "Bli fadder Pill",
+      "kind": "button",
+      "refersTo": "pill-fadder",
+      "description": "Fixed, always-reachable sponsor action.",
+      "html": "<a class=\"ds-pill\" href=\"#\">Bli fadder</a>",
+      "css": ".ds-pill { display: inline-block; padding: .65rem 1.4rem; border-radius: 999px; background: #FFD200; color: #424242; font-family: 'Open Sans', system-ui, sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; box-shadow: 0 0 0 2px #424242, 0 8px 24px -8px rgba(0,0,0,.5); transition: background .2s; } .ds-pill:hover { background: #ffe04a; } .ds-pill:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }"
+    },
+    {
+      "name": "Spine Nodes",
+      "kind": "nav",
+      "refersTo": "spine",
+      "description": "Lamp-post navigation: grey pole, dot per section, yellow when lit, tooltip label on hover.",
+      "html": "<div class=\"ds-spine\"><span class=\"ds-pole\"></span><a class=\"ds-node\" href=\"#\" data-label=\"Hem\"><span class=\"is-lit\"></span></a><a class=\"ds-node\" href=\"#\" data-label=\"Barnen\"><span></span></a><a class=\"ds-node\" href=\"#\" data-label=\"Skolan\"><span></span></a></div>",
+      "css": ".ds-spine { position: relative; width: 88px; height: 200px; background: #2f2f2f; display: grid; justify-items: center; align-content: space-around; } .ds-pole { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; translate: -50% 0; border-radius: 2px; background: #7a7a7a; } .ds-node { position: relative; display: grid; place-items: center; width: 44px; height: 44px; text-decoration: none; } .ds-node span { width: 10px; height: 10px; border-radius: 50%; background: #8d8d8d; transition: background .5s cubic-bezier(.16,1,.3,1), scale .5s cubic-bezier(.16,1,.3,1); } .ds-node span.is-lit { background: #FFD200; } .ds-node:hover span, .ds-node:focus-visible span { scale: 1.5; } .ds-node::after { content: attr(data-label); position: absolute; left: calc(100% + 10px); top: 50%; translate: -6px -50%; padding: .3rem .7rem; border-radius: 6px; white-space: nowrap; background: #fff; color: #424242; font: 600 .875rem 'Open Sans', sans-serif; opacity: 0; pointer-events: none; transition: opacity .25s, translate .25s; } .ds-node:hover::after, .ds-node:focus-visible::after { opacity: 1; translate: 0 -50%; } .ds-node:focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: 4px; }"
+    },
+    {
+      "name": "Flame List",
+      "kind": "custom",
+      "refersTo": "colors.lamp-yellow",
+      "description": "Light-weight list items with the shared flame as bullet and hairline dividers.",
+      "html": "<ul class=\"ds-needs\"><li><svg viewBox=\"0 0 164 223\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M75 0C48 38 0 88 0 153c0 37 22 60 50 70-6-18-12-33-4-51 12-20 34-42 47-59 22 15 30 37 30 47v48c27-18 45-50 41-85C160 80 110 28 75 0z\"/></svg>Skolavgifter</li><li><svg viewBox=\"0 0 164 223\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M75 0C48 38 0 88 0 153c0 37 22 60 50 70-6-18-12-33-4-51 12-20 34-42 47-59 22 15 30 37 30 47v48c27-18 45-50 41-85C160 80 110 28 75 0z\"/></svg>Skoluniform</li></ul>",
+      "css": ".ds-needs { list-style: none; margin: 0; padding: 0; background: #424242; color: #fff; font-family: 'Open Sans', sans-serif; } .ds-needs li { display: flex; align-items: center; gap: 1.25rem; padding-block: 1.35rem; border-bottom: 1px solid #5e5e5e; font-size: 1.6rem; font-weight: 300; line-height: 1.25; } .ds-needs li:first-child { border-top: 1px solid #5e5e5e; } .ds-needs svg { flex: none; width: 22px; aspect-ratio: 164 / 223; color: #FFD200; }"
+    },
+    {
+      "name": "Organisation Column",
+      "kind": "custom",
+      "refersTo": "colors.ethiopia-green",
+      "description": "Open column with a 4px top rule; yellow for Sverige, green for Etiopien.",
+      "html": "<div class=\"ds-org\"><h3>Sverige</h3><p>Svenska föreningen stöttar arbetet i Etiopien ekonomiskt. Egen styrelse.</p></div>",
+      "css": ".ds-org { padding-block: 1.25rem; border-top: 4px solid #FFD200; background: #424242; font-family: 'Open Sans', sans-serif; } .ds-org h3 { margin: 0 0 .75rem; font-weight: 700; font-size: 1.25rem; text-transform: uppercase; letter-spacing: .06em; color: #FFD200; } .ds-org p { margin: 0; color: rgba(255,255,255,.88); max-width: 34ch; line-height: 1.65; }"
+    },
+    {
+      "name": "Placeholder Tag",
+      "kind": "chip",
+      "refersTo": "placeholder-todo",
+      "description": "Dashed marker for every fact not yet supplied.",
+      "html": "<span class=\"ds-todo\">läggs till</span>",
+      "css": ".ds-todo { display: inline-block; padding: .1rem .7rem; border: 2px dashed #424242; border-radius: 6px; font: 600 .9375rem 'Open Sans', sans-serif; color: #424242; background: #FFD200; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lamp Post at Night",
+    "overview": "The page is a street after dark. A darker lamp-post gutter runs down the left edge as the spine; a flame-headed lamp travels it as the visitor scrolls, and each section is lit in turn by a soft pool of yellow on asphalt. Dark asphalt stands for the hardship the work answers; yellow is the light of hope, spent deliberately. Two sections are fully drenched in yellow, so the page alternates between night and lit street.\n\nDensity is calm and editorial: one wide column family, generous vertical bands, Light-weight headlines, no cards. Structure is drawn with hairlines, dashed rules and dots, not boxes. Depth comes from light, never from elevation.",
+    "keyCharacteristics": [
+      "Asphalt ground, one fixed darker spine, white text, yellow as light.",
+      "Open Sans Light for headlines, Semibold and Bold for emphasis.",
+      "Flame symbol (SVG, one shared symbol) is the only icon and the only bullet.",
+      "Glow and radial pools instead of shadows or cards.",
+      "Dashed asphalt-line rules for connection and unfinished things.",
+      "Motion is light: slow lamp travel, a gentle flicker, lamps lighting in sequence."
+    ],
+    "rules": [
+      { "name": "The Light Is Rare Rule", "body": "Yellow means light or the next action. On asphalt it appears as small glows, flames, one button and a pill; large yellow fields are limited to the two light bands.", "section": "colors" },
+      { "name": "The One Green Rule", "body": "Green belongs to the Ethiopian side of the organisation story and to nothing else.", "section": "colors" },
+      { "name": "The Asphalt-On-Yellow Rule", "body": "Text on yellow is always Asphalt, never white; the focus ring flips from white to Asphalt there.", "section": "colors" },
+      { "name": "The Light-Weight Voice Rule", "body": "Big type is Light (300). Weight rises as size falls.", "section": "typography" },
+      { "name": "The Caps Are Headings Only Rule", "body": "Uppercase with tracking appears on H3 titles and definition terms, which are real headings or terms, not decorative labels.", "section": "typography" },
+      { "name": "The Glow, Not Shadow Rule", "body": "Yellow things emit light outward in yellow; nothing casts a hard or offset shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do let light be the only emphasis: yellow glows, flames and a single primary action per view.",
+      "Do keep Light (300) for large type and step to 600 or 700 as size falls.",
+      "Do draw structure with 1px solid or 2px to 3px dashed lines in Asphalt Line (#5e5e5e); on yellow bands use Asphalt.",
+      "Do use the one shared flame symbol for every icon and bullet.",
+      "Do mark every missing fact with the dashed placeholder tag.",
+      "Do keep text on yellow in Asphalt (#424242) and flip the focus ring to Asphalt there.",
+      "Do disable motion under prefers-reduced-motion (all animation and transitions are already switched off)."
+    ],
+    "donts": [
+      "Don't use cards, boxed tiles or hard offset shadows; the world is open bands and light.",
+      "Don't use green anywhere except the Etiopien organisation.",
+      "Don't use photography of children as decoration or invented numbers, quotes or payment details.",
+      "Don't treat the Nunito wordmark as a brand face or reuse it in headings.",
+      "Don't use the red accent from the brand guide until a surface calls for it; the build uses none."
+    ]
+  }
+}

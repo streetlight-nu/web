@@ -196,6 +196,12 @@ main, .top, .fot { position: relative; z-index: 1; }
   padding: clamp(1.75rem, 3.6vw, 3.4rem) clamp(1.75rem, 4vw, 3.8rem) clamp(2rem, 4vw, 3.6rem);
   border-radius: 22px;
 }
+/* gatlyktans ljuspöl ligger alltid på skyltens övre högra del */
+.skylt--stor::after {
+  background:
+    radial-gradient(ellipse 58% 75% at 100% 0%, rgba(255, 250, 212, .5), rgba(255, 240, 160, .2) 45%, transparent 72%),
+    radial-gradient(circle 340px at var(--sx, -999px) var(--sy, -999px), rgba(255, 253, 232, .55), rgba(255, 246, 200, .16) 30%, rgba(50, 40, 0, 0) 52%, rgba(50, 40, 0, .17) 82%);
+}
 .skylt__flamma { width: clamp(2.4rem, 3.6vw, 3.4rem); height: auto; aspect-ratio: 118 / 162; color: var(--asfalt); margin-bottom: clamp(1rem, 2vw, 1.6rem); }
 .hero h1 {
   font-weight: 700;
@@ -267,6 +273,7 @@ main, .top, .fot { position: relative; z-index: 1; }
 /* Vägbanan med mittlinje */
 .vag {
   position: relative;
+  z-index: 3;
   height: clamp(56px, 8vh, 76px);
   background: var(--vagbana);
   border-top: 3px solid #4d4d4d;

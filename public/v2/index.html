@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Streetlight – sprid hopp om en ljus framtid</title>
+<meta name="description" content="Streetlight är en ideell förening som stöttar 20 fadderbarn och deras familjer i Addis Abeba, Etiopien, genom skolgång och hjälp att starta egen verksamhet.">
+<meta name="theme-color" content="#424242">
+<link rel="icon" type="image/svg+xml" href="assets/flamma.svg">
+<link rel="preload" href="../fonts/OpenSans-700.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@600&amp;text=%E1%8A%A0%E1%8B%B2%E1%88%B5%20%E1%8A%A0%E1%89%A0%E1%89%A3&amp;display=swap">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');</script>
+<script src="script.js" defer></script>
+</head>
+<body>
+
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="flamma" viewBox="379.8 159.4 118.4 162.1">
+    <path fill="currentColor" fill-rule="evenodd" d="M434.925 159.554C511.789 216.718 513.007 278.75 467.867 310.375 470.304 277.535 470.304 249.558 447.125 239.828 442.246 272.667 400.761 278.75 416.625 321.32 328.781 260.507 425.164 219.152 434.925 159.554Z"/>
+  </symbol>
+  <symbol id="pil-upp" viewBox="0 0 64 120">
+    <path fill="currentColor" d="M32 0 64 40H43v80H21V40H0z"/>
+  </symbol>
+  <symbol id="pil-hoger" viewBox="0 0 40 32">
+    <path fill="currentColor" d="M40 16 22 32V22H0V10h22V0z"/>
+  </symbol>
+  <symbol id="pil-ned" viewBox="0 0 32 40">
+    <path fill="currentColor" d="M16 40 0 22h10V0h12v22h10z"/>
+  </symbol>
+  <symbol id="pikt-skola" viewBox="0 0 48 48">
+    <path fill="currentColor" d="M24 4 44 16v4H4v-4zM8 23h6v17H8zm13 0h6v17h-6zm13 0h6v17h-6zM3 42h42v4H3z"/>
+  </symbol>
+  <symbol id="pikt-uniform" viewBox="0 0 48 48">
+    <path fill="currentColor" d="M17 4h14c0 4 3 7 7 7l9 9-6 7-4-4v21H11V23l-4 4-6-7 9-9c4 0 7-3 7-7z"/>
+  </symbol>
+  <symbol id="pikt-material" viewBox="0 0 48 48">
+    <path fill="currentColor" d="M4 8c7-2 14-1 18 3v31c-4-3-11-4-18-2zm40 0c-7-2-14-1-18 3v31c4-3 11-4 18-2z"/>
+  </symbol>
+  <symbol id="pikt-vard" viewBox="0 0 48 48">
+    <path fill="currentColor" fill-rule="evenodd" d="M24 2a22 22 0 1 1 0 44 22 22 0 0 1 0-44zm-5 10v7h-7v10h7v7h10v-7h7V19h-7v-7z"/>
+  </symbol>
+</svg>
+
+<a class="skip" href="#innehall">Hoppa till innehållet</a>
+
+<header class="top">
+  <a class="logo" href="#hem"><img src="assets/logo-vit.svg" alt="Streetlight" width="390" height="90"></a>
+  <nav class="nav" aria-label="Avsnitt på sidan">
+    <ul>
+      <li><a href="#barnen">Barnen</a></li>
+      <li><a href="#skolan">Skolan</a></li>
+      <li><a href="#familjen">Familjen</a></li>
+      <li><a href="#addis">Addis Abeba</a></li>
+      <li><a href="#foreningarna">Föreningarna</a></li>
+    </ul>
+    <a class="nav__fadder" href="#fadder"><span>Bli fadder</span></a>
+  </nav>
+</header>
+
+<main id="innehall">
+
+  <!-- Hem -->
+  <section id="hem" class="hero">
+    <svg class="hero__lykta" viewBox="0 0 600 900" preserveAspectRatio="xMaxYMin meet" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="kagla" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(230 150) rotate(115) scale(620 560)">
+          <stop offset="0" stop-color="#FFE45C" stop-opacity=".5"/>
+          <stop offset=".5" stop-color="#FFD200" stop-opacity=".14"/>
+          <stop offset="1" stop-color="#FFD200" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <path class="hero__ljuskagla" d="M165 146h130L420 900H-640z" fill="url(#kagla)"/>
+      <path d="M470 900V170c0-38-26-58-76-58H300" fill="none" stroke="#8d8d8d" stroke-width="14" stroke-linecap="round"/>
+      <path d="M150 104h160c10 0 18 7 18 16v4c0 14-18 24-42 24H174c-24 0-42-10-42-24v-4c0-9 8-16 18-16z" fill="#262626"/>
+      <ellipse class="hero__lampa" cx="230" cy="146" rx="72" ry="7" fill="#FFF3B0"/>
+    </svg>
+
+    <div class="hero__gata">
+      <div class="hero__skylt">
+        <div class="skylt skylt--stor">
+          <svg class="skylt__flamma" aria-hidden="true"><use href="#flamma"/></svg>
+          <h1>En värld där människor sprider hopp om en ljus framtid</h1>
+        </div>
+        <div class="hero__stolpar" aria-hidden="true"><span class="stolpe"></span><span class="stolpe"></span></div>
+        <div class="tillagg">
+          <p>Streetlight är en ideell förening som stöttar 20 fadderbarn och deras familjer i Addis Abeba, Etiopien. Vi tror på utbildning som väg ut ur fattigdom.</p>
+        </div>
+      </div>
+
+      <div class="hero__handling">
+        <a class="pilskylt" href="#fadder"><span class="pilskylt__plat">Bli fadder</span></a>
+        <a class="textlank" href="#barnen">Så arbetar vi <svg aria-hidden="true"><use href="#pil-ned"/></svg></a>
+      </div>
+    </div>
+
+    <div class="vag" aria-hidden="true"></div>
+  </section>
+
+  <!-- Barnen -->
+  <section id="barnen" class="band">
+    <div class="wrap">
+      <div class="delat">
+        <h2><span class="vagnummer">20</span> barn längs vägen</h2>
+        <p class="brod">Streetlight stöttar 20 fadderbarn från mycket fattiga familjer. Varje barn får hjälp att gå i skolan, och barnets familj får stöd på vägen.</p>
+      </div>
+
+      <div class="kantstolpar" role="img" aria-label="Tjugo kantstolpar med reflexer, en för varje fadderbarn">
+        <ol aria-hidden="true">
+          <li style="--i:0"></li><li style="--i:1"></li><li style="--i:2"></li><li style="--i:3"></li><li style="--i:4"></li>
+          <li style="--i:5"></li><li style="--i:6"></li><li style="--i:7"></li><li style="--i:8"></li><li style="--i:9"></li>
+          <li style="--i:10"></li><li style="--i:11"></li><li style="--i:12"></li><li style="--i:13"></li><li style="--i:14"></li>
+          <li style="--i:15"></li><li style="--i:16"></li><li style="--i:17"></li><li style="--i:18"></li><li style="--i:19"></li>
+        </ol>
+      </div>
+
+      <ul class="overtackta">
+        <li class="mark">
+          <div class="skylt tackt"><span class="tackt__tejp" aria-hidden="true"></span><span class="tackt__text">Bilder från Addis Abeba<em>läggs till</em></span></div>
+          <div class="stolpar" aria-hidden="true"><span class="stolpe"></span><span class="stolpe"></span></div>
+        </li>
+        <li class="mark">
+          <div class="skylt tackt"><span class="tackt__tejp" aria-hidden="true"></span><span class="tackt__text">Berättelser<em>läggs till</em></span></div>
+          <div class="stolpar" aria-hidden="true"><span class="stolpe"></span><span class="stolpe"></span></div>
+        </li>
+        <li class="mark">
+          <div class="skylt tackt"><span class="tackt__tejp" aria-hidden="true"></span><span class="tackt__text">Årsrapport<em>läggs till</em></span></div>
+          <div class="stolpar" aria-hidden="true"><span class="stolpe"></span><span class="stolpe"></span></div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Skolan -->
+  <section id="skolan" class="band">
+    <div class="wrap delat delat--skylt">
+      <div>
+        <h2>Skolan är vägen ut ur fattigdomen</h2>
+        <p class="brod">Vi tror på utbildning, och därför stöttar vi barnens skolgång. Det som behövs för att ett barn ska kunna gå i skolan betalar vi för.</p>
+      </div>
+      <div class="monterad mark">
+        <div class="skylt vagvisare">
+          <svg class="vagvisare__pil" aria-hidden="true"><use href="#pil-upp"/></svg>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#pikt-skola"/></svg>Skolavgifter</li>
+            <li><svg aria-hidden="true"><use href="#pikt-uniform"/></svg>Skoluniform</li>
+            <li><svg aria-hidden="true"><use href="#pikt-material"/></svg>Skolmaterial</li>
+            <li><svg aria-hidden="true"><use href="#pikt-vard"/></svg><span>Sjukvård <small>om barnet blir sjukt</small></span></li>
+          </ul>
+        </div>
+        <div class="stolpar" aria-hidden="true"><span class="stolpe"></span><span class="stolpe"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Familjen -->
+  <section id="familjen" class="band band--familj">
+    <div class="wrap">
+      <div class="delat">
+        <h2>Vi stöttar hela familjen</h2>
+        <p class="brod">Förutom barnens skolgång hjälper vi också familjerna. Föräldrarna kan få stöd och ekonomisk hjälp att starta upp en egen inkomstbringande verksamhet.</p>
+      </div>
+    </div>
+    <ol class="stracka">
+      <li><div class="skylt skylt--liten">Stöd till föräldrarna</div><span class="stolpe" aria-hidden="true"></span></li>
+      <li><div class="skylt skylt--liten">Ekonomisk hjälp</div><span class="stolpe" aria-hidden="true"></span></li>
+      <li><div class="skylt skylt--liten skylt--mal">En egen inkomstbringande verksamhet</div><span class="stolpe" aria-hidden="true"></span></li>
+    </ol>
+    <div class="vag vag--stracka" aria-hidden="true"></div>
+  </section>
+
+  <!-- Addis Abeba -->
+  <section id="addis" class="band">
+    <div class="wrap delat delat--skylt delat--omvant">
+      <div class="monterad monterad--ort mark">
+        <div class="skylt ortnamn">
+          <span class="ortnamn__namn">Addis Abeba</span>
+          <span class="ortnamn__am" lang="am">አዲስ አበባ</span>
+        </div>
+        <div class="stolpar" aria-hidden="true"><span class="stolpe"></span><span class="stolpe"></span></div>
+      </div>
+      <div>
+        <h2>Barnen väljs ut tillsammans med myndigheterna</h2>
+        <p class="brod">Vi samarbetar med de lokala myndigheterna i Addis Abeba. De hjälper oss att välja ut barn från utsatta familjer som behöver extra stöd. På så sätt är Streetlight en del av det sociala skyddsnätet i Etiopien.</p>
+        <ol class="kedja">
+          <li>Lokala myndigheter i Addis Abeba</li>
+          <li>Barn från utsatta familjer väljs ut</li>
+          <li>Streetlight stöttar barnet och familjen</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Föreningarna -->
+  <section id="foreningarna" class="band">
+    <div class="wrap">
+      <div class="delat">
+        <h2>Två organisationer, ett gemensamt arbete</h2>
+        <p class="brod">Streetlight består av två organisationer, en i Sverige och en i Etiopien, med två fristående styrelser. Svenska föreningen stöttar arbetet i Etiopien ekonomiskt.</p>
+      </div>
+      <div class="korsning">
+        <div class="arm arm--se">
+          <h3 class="arm__skylt"><span>Sverige</span></h3>
+          <p>Svenska föreningen. Egen styrelse. Stöttar arbetet i Etiopien ekonomiskt.</p>
+        </div>
+        <div class="arm arm--et">
+          <h3 class="arm__skylt"><span>Etiopien</span></h3>
+          <p>Organisationen i Addis Abeba. Egen styrelse. Arbetar nära barnen och familjerna.</p>
+        </div>
+        <span class="korsning__stolpe" aria-hidden="true"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bli fadder -->
+  <section id="fadder" class="band band--fadder">
+    <div class="wrap delat">
+      <div>
+        <h2>Bli fadder och tänd ett ljus</h2>
+        <p class="brod">Som fadder hjälper du ett barn att gå i skolan och ger barnets familj en chans att starta egen verksamhet. Vi är en liten förening, och varje fadder gör skillnad.</p>
+      </div>
+      <div class="betala">
+        <dl aria-label="Betalningsuppgifter">
+          <div><dt>Månadsbelopp</dt><dd><span class="tejp">läggs till</span></dd></div>
+          <div><dt>Swish</dt><dd><span class="tejp">läggs till</span></dd></div>
+          <div><dt>Bankgiro</dt><dd><span class="tejp">läggs till</span></dd></div>
+          <div><dt>Organisationsnummer</dt><dd><span class="tejp">läggs till</span></dd></div>
+          <div><dt>Kontakt</dt><dd><span class="tejp">e-postadress läggs till</span></dd></div>
+        </dl>
+        <button class="knapp" type="button" disabled>Kontaktuppgifter läggs till</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="fot">
+  <div class="vag vag--slut" aria-hidden="true"></div>
+  <div class="wrap fot__rad">
+    <img src="assets/logo-vit.svg" alt="Streetlight" width="390" height="90">
+    <p>Ideell förening registrerad i Sverige och Etiopien.</p>
+    <a href="../">Version 1 av sidan</a>
+  </div>
+</footer>
+
+</body>
+</html>

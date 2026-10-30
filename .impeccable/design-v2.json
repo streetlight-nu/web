@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-30T00:00:00Z",
+  "title": "Design System: Streetlight V2",
+  "scope": "public/v2/index.html (V1 at public/index.html is documented in DESIGN.md / design.json)",
+  "extensions": {
+    "colorMeta": {
+      "asfalt": { "role": "neutral", "displayName": "Asphalt", "canonical": "#424242", "tonalRamp": ["#141414", "#202020", "#2f2f2f", "#424242", "#5c5c5c", "#7a7a7a", "#a8a8a8", "#e0e0e0"] },
+      "asfalt-djup": { "role": "neutral", "displayName": "Deep Asphalt", "canonical": "#353535", "tonalRamp": ["#111111", "#1c1c1c", "#262626", "#353535", "#4a4a4a", "#666666", "#9a9a9a", "#d8d8d8"] },
+      "vagbana": { "role": "neutral", "displayName": "Road", "canonical": "#2f2f2f", "tonalRamp": ["#0e0e0e", "#181818", "#222222", "#2f2f2f", "#424242", "#5c5c5c", "#959595", "#d0d0d0"] },
+      "linje": { "role": "neutral", "displayName": "Verge Line", "canonical": "#5c5c5c", "tonalRamp": ["#1c1c1c", "#2f2f2f", "#424242", "#5c5c5c", "#7a7a7a", "#9a9a9a", "#c4c4c4", "#e8e8e8"] },
+      "stal": { "role": "neutral", "displayName": "Steel", "canonical": "#8d8d8d", "tonalRamp": ["#262626", "#3d3d3d", "#5c5c5c", "#757575", "#8d8d8d", "#a8a8a8", "#cccccc", "#eeeeee"] },
+      "gul": { "role": "primary", "displayName": "Sign Yellow", "canonical": "#FFD200", "tonalRamp": ["#3d3200", "#5c4a00", "#806800", "#a88a00", "#d1ac00", "#FFD200", "#ffe04a", "#fff1a8"] },
+      "gul-ljus": { "role": "primary", "displayName": "Hot Yellow", "canonical": "#ffe04a", "tonalRamp": ["#3d3200", "#5c4a00", "#806800", "#d1ac00", "#FFD200", "#ffe04a", "#fff1a8", "#fffae0"] },
+      "gron": { "role": "secondary", "displayName": "Ethiopia Green", "canonical": "#B8E986", "tonalRamp": ["#1f3310", "#33521c", "#4f7a2c", "#73a548", "#96c96a", "#B8E986", "#d3f3b4", "#eefbe2"] },
+      "tejp-rod": { "role": "tertiary", "displayName": "Tape Red", "canonical": "#c4001f", "tonalRamp": ["#3a0009", "#5c000f", "#82000f", "#a8001a", "#c4001f", "#e8364f", "#f58a98", "#fde0e4"] },
+      "tejp-rod-djup": { "role": "tertiary", "displayName": "Tape Red Deep", "canonical": "#a8001a", "tonalRamp": ["#300007", "#4f000c", "#740011", "#a8001a", "#c4001f", "#e8364f", "#f58a98", "#fde0e4"] },
+      "tejp-vit": { "role": "tertiary", "displayName": "Tape White", "canonical": "#f2f2f2", "tonalRamp": ["#3a3a3a", "#5c5c5c", "#7a7a7a", "#9a9a9a", "#bcbcbc", "#dadada", "#f2f2f2", "#ffffff"] },
+      "reflex-slackt": { "role": "neutral", "displayName": "Unlit Reflector", "canonical": "#8a7a2a", "tonalRamp": ["#221e0a", "#3a3312", "#574d1c", "#71642a", "#8a7a2a", "#a89846", "#cbbf7e", "#ece5c2"] },
+      "vit": { "role": "neutral", "displayName": "White", "canonical": "#FFFFFF", "tonalRamp": ["#5c5c5c", "#7a7a7a", "#9a9a9a", "#bcbcbc", "#d6d6d6", "#e8e8e8", "#f5f5f5", "#FFFFFF"] },
+      "vit-dov": { "role": "neutral", "displayName": "Dim White", "canonical": "rgba(255, 255, 255, .86)", "tonalRamp": ["rgba(255,255,255,.2)", "rgba(255,255,255,.3)", "rgba(255,255,255,.4)", "rgba(255,255,255,.5)", "rgba(255,255,255,.6)", "rgba(255,255,255,.72)", "rgba(255,255,255,.86)", "rgba(255,255,255,1)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display (sign lettering)", "purpose": "The vision H1 on the hero sign plate." },
+      "headline": { "displayName": "Headline on asphalt", "purpose": "Section headlines in white on asphalt, light weight." },
+      "headline-plate": { "displayName": "Headline on plate", "purpose": "A section headline set on a yellow surface (Bli fadder band)." },
+      "place-name": { "displayName": "Place Name", "purpose": "Place-name sign plates." },
+      "place-name-amharic": { "displayName": "Place Name (Amharic)", "purpose": "Amharic place name under the Latin name; Noto Sans Ethiopic subset from Google Fonts with system Ethiopic fallbacks." },
+      "title": { "displayName": "Title", "purpose": "Rows on route-direction signs." },
+      "title-small": { "displayName": "Title Small", "purpose": "Small roadside plates." },
+      "lead": { "displayName": "Lead", "purpose": "One-sentence lead on the white supplementary plate." },
+      "body": { "displayName": "Body", "purpose": "Prose on asphalt in dim white, max 58ch." },
+      "label": { "displayName": "Label", "purpose": "Nav plates, text links, footer." }
+    },
+    "shadows": [
+      { "name": "plate-border-line", "value": "inset 0 0 0 7px #FFD200, inset 0 0 0 10px #424242", "purpose": "Draws the inset asphalt border line of a yellow plate. Not elevation." },
+      { "name": "plate-border-line-lg", "value": "inset 0 0 0 10px #FFD200, inset 0 0 0 13px #424242", "purpose": "Hero sign border line." },
+      { "name": "supplementary-border-line", "value": "inset 0 0 0 5px #FFFFFF, inset 0 0 0 7px #424242", "purpose": "White supplementary plate border line." },
+      { "name": "nav-plate-border-line", "value": "inset 0 0 0 3px #353535, inset 0 0 0 5px rgba(255, 255, 255, .78)", "purpose": "Nav plate border line; the white ring turns yellow on hover." },
+      { "name": "destination-glow", "value": "0 0 60px -10px rgba(255, 210, 0, .55)", "purpose": "Added to the last sign of a route only." },
+      { "name": "reflector-glow", "value": "0 0 12px 3px rgba(255, 210, 0, .7), 0 0 34px 6px rgba(255, 210, 0, .28)", "purpose": "Lit delineator reflectors." },
+      { "name": "lamp-glow", "value": "drop-shadow(0 0 18px rgba(255, 228, 92, .9))", "purpose": "Streetlight lens in the hero." }
+    ],
+    "light": [
+      { "name": "ground-pool", "value": "radial-gradient(circle 34vmax at var(--lx) var(--ly), rgba(255, 210, 0, .07), transparent 70%)", "purpose": "Faint pool on the asphalt at the light source (fixed body::before)." },
+      { "name": "plate-core", "value": "radial-gradient(circle 340px at var(--sx) var(--sy), rgba(255, 253, 232, .55), rgba(255, 246, 200, .16) 30%, rgba(50, 40, 0, 0) 52%, rgba(50, 40, 0, .17) 82%)", "purpose": "Bright core where light hits a plate, darker rim away from it (night-dimmed at rest)." },
+      { "name": "prism-sheen", "value": "repeating-linear-gradient(60deg, rgba(255,255,255,.75) 0 1px, transparent 1px 9px), repeating-linear-gradient(-60deg, ...) masked by radial-gradient(circle 260px at var(--sx) var(--sy), #000, transparent 75%)", "purpose": "Retroreflective sheeting visible only near the light." },
+      { "name": "source", "value": "--lx/--ly follow the pointer on (hover: hover) and (pointer: fine); otherwise fixed at 50vw / 32vh and signs scroll past. Per-plate --sx/--sy set in rAF.", "purpose": "One light source drives all plates." }
+    ],
+    "motion": [
+      { "name": "ease-sign", "value": "cubic-bezier(.16, 1, .3, 1)", "purpose": "Arrow sign slide (6px, .35s) on hover." },
+      { "name": "hover-color", "value": "background .2s; box-shadow .25s", "purpose": "Plate and nav hover color changes." },
+      { "name": "reflector-stagger", "value": "background .5s ease-out, box-shadow .8s ease-out; delay calc(var(--i) * 90ms)", "purpose": "Twenty reflectors light one by one when the row enters the viewport (IntersectionObserver, rootMargin bottom -25%)." },
+      { "name": "reduced-motion", "value": "transitions off, pointer light off, reflectors lit outright", "purpose": "prefers-reduced-motion: reduce." }
+    ],
+    "breakpoints": [
+      { "name": "nav-collapse", "value": "1080px" },
+      { "name": "stack", "value": "860px" },
+      { "name": "small", "value": "520px" }
+    ],
+    "assets": [
+      { "name": "logo-vit.svg / logo-asfalt.svg", "purpose": "Real logotype, extracted as vectors from the supplied brand style guide PDF." },
+      { "name": "flamma.svg / flamma-asfalt.svg", "purpose": "Real flame symbol, extracted as vectors from the brand style guide PDF; also inlined as the #flamma sprite symbol and used as favicon." }
+    ],
+    "intentionalDeviations": [
+      "The one-sentence hero lead sits on a white supplementary plate (tilläggstavla) under the main sign instead of plain text on asphalt.",
+      "The arrow-shaped Bli fadder sign stands to the right of the supplementary plate, in the lamp light, instead of below it.",
+      "Covered-sign tape uses #c4001f / #a8001a rather than brand red #FF1736 so white label text stays legible."
+    ]
+  },
+  "components": [
+    {
+      "name": "Sign Plate",
+      "kind": "card",
+      "refersTo": "sign-plate",
+      "description": "Yellow road-sign plate with inset asphalt border line; every fact is mounted on one.",
+      "html": "<div class=\"ds-plate\">Stöd till föräldrarna</div><div class=\"ds-posts\"><span></span><span></span></div>",
+      "css": ".ds-plate { background: #FFD200; color: #424242; border-radius: 14px; padding: 1.4rem 1.5rem; font: 700 1.25rem/1.2 'Open Sans', system-ui, sans-serif; text-align: center; box-shadow: inset 0 0 0 6px #FFD200, inset 0 0 0 9px #424242; background-image: radial-gradient(circle 220px at 70% 20%, rgba(255,253,232,.55), rgba(255,246,200,.16) 30%, rgba(50,40,0,0) 52%, rgba(50,40,0,.17) 82%); transition: background .2s; } .ds-plate:hover { background-image: radial-gradient(circle 260px at 50% 40%, rgba(255,253,232,.7), rgba(255,246,200,.2) 35%, rgba(50,40,0,0) 60%); } .ds-posts { display: flex; justify-content: space-between; padding-inline: 16%; } .ds-posts span { width: 14px; height: 3rem; background: #8d8d8d; border-radius: 4px; }"
+    },
+    {
+      "name": "Supplementary Plate",
+      "kind": "card",
+      "refersTo": "supplementary-plate",
+      "description": "White tilläggstavla hung under a main sign; carries the one-sentence lead.",
+      "html": "<div class=\"ds-tillagg\"><p>Streetlight är en ideell förening som stöttar 20 fadderbarn och deras familjer i Addis Abeba, Etiopien.</p></div>",
+      "css": ".ds-tillagg { background: #FFFFFF; color: #424242; border-radius: 14px; padding: 1.15rem 1.5rem 1.25rem; box-shadow: inset 0 0 0 5px #FFFFFF, inset 0 0 0 7px #424242; } .ds-tillagg p { margin: 0; font: 400 1.125rem/1.5 'Open Sans', system-ui, sans-serif; max-width: 52ch; }"
+    },
+    {
+      "name": "Arrow Sign",
+      "kind": "button",
+      "refersTo": "arrow-sign",
+      "description": "Primary action: yellow arrow-shaped direction sign with an inner border line following the arrow.",
+      "html": "<a class=\"ds-arrow\" href=\"#\"><span>Bli fadder</span></a>",
+      "css": ".ds-arrow { text-decoration: none; display: inline-block; border-radius: 10px; } .ds-arrow span { position: relative; isolation: isolate; display: block; padding: 1.15rem 3.6rem 1.15rem 1.6rem; background: #FFD200; color: #424242; font: 700 1.3rem 'Open Sans', system-ui, sans-serif; clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 50%, calc(100% - 30px) 100%, 0 100%); border-radius: 8px 0 0 8px; transition: background .2s, transform .35s cubic-bezier(.16,1,.3,1); } .ds-arrow span::before, .ds-arrow span::after { content: ''; position: absolute; z-index: -1; border-radius: 6px 0 0 6px; } .ds-arrow span::before { inset: 6px; background: #424242; clip-path: polygon(0 0, calc(100% - 27px) 0, 100% 50%, calc(100% - 27px) 100%, 0 100%); } .ds-arrow span::after { inset: 9px; background: inherit; clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 50%, calc(100% - 25px) 100%, 0 100%); } .ds-arrow:hover span { background: #ffe04a; transform: translateX(6px); } .ds-arrow:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 4px; }"
+    },
+    {
+      "name": "Text Link",
+      "kind": "button",
+      "refersTo": "text-link",
+      "description": "Secondary action on asphalt: dashed white underline, yellow arrow glyph.",
+      "html": "<a class=\"ds-textlink\" href=\"#\">Så arbetar vi <svg viewBox=\"0 0 32 40\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M16 40 0 22h10V0h12v22h10z\"/></svg></a>",
+      "css": ".ds-textlink { display: inline-flex; align-items: center; gap: .55rem; font: 600 1.125rem 'Open Sans', system-ui, sans-serif; color: #FFFFFF; text-decoration: none; padding-block: .35rem; border-bottom: 3px dashed #FFFFFF; } .ds-textlink svg { width: .8rem; height: 1rem; color: #FFD200; } .ds-textlink:hover { border-bottom-style: solid; } .ds-textlink:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 4px; border-radius: 4px; }"
+    },
+    {
+      "name": "Nav Plates",
+      "kind": "nav",
+      "refersTo": "nav-plate",
+      "description": "Small route-style plates plus a yellow arrow for the primary action.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\">Barnen</a><a href=\"#\">Skolan</a><a class=\"ds-nav-arrow\" href=\"#\"><span>Bli fadder</span></a></nav>",
+      "css": ".ds-nav { display: flex; gap: .35rem; align-items: center; background: #424242; padding: 1rem; } .ds-nav > a:not(.ds-nav-arrow) { padding: .5rem .9rem; border-radius: 8px; background: #353535; box-shadow: inset 0 0 0 3px #353535, inset 0 0 0 5px rgba(255,255,255,.78); font: 600 .9375rem 'Open Sans', system-ui, sans-serif; color: #FFFFFF; text-decoration: none; transition: box-shadow .25s; } .ds-nav > a:not(.ds-nav-arrow):hover { box-shadow: inset 0 0 0 3px #353535, inset 0 0 0 5px #FFD200; } .ds-nav-arrow { margin-left: 1rem; text-decoration: none; } .ds-nav-arrow span { display: block; padding: .55rem 1.6rem .55rem 1rem; background: #FFD200; color: #424242; font: 700 .9375rem 'Open Sans', system-ui, sans-serif; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%); border-radius: 8px 0 0 8px; transition: background .2s; } .ds-nav-arrow:hover span { background: #ffe04a; } .ds-nav a:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 4px; }"
+    },
+    {
+      "name": "Place-name Plate",
+      "kind": "custom",
+      "refersTo": "place-name-plate",
+      "description": "Green place-name sign for Ethiopian places, Latin name with Amharic below.",
+      "html": "<div class=\"ds-ort\"><span class=\"ds-ort-namn\">Addis Abeba</span><span class=\"ds-ort-am\" lang=\"am\">አዲስ አበባ</span></div>",
+      "css": ".ds-ort { background: #B8E986; color: #424242; border-radius: 14px; box-shadow: inset 0 0 0 8px #B8E986, inset 0 0 0 11px #424242; padding: 2.4rem 2.4rem; text-align: center; } .ds-ort-namn { display: block; font: 700 3rem/1 'Open Sans', system-ui, sans-serif; letter-spacing: -.005em; } .ds-ort-am { display: block; margin-top: .8rem; font: 600 1.4rem 'Noto Sans Ethiopic', 'Nyala', 'Kefa', 'Abyssinica SIL', sans-serif; }"
+    },
+    {
+      "name": "Covered Sign",
+      "kind": "custom",
+      "refersTo": "sign-plate",
+      "description": "Placeholder convention: a plate crossed with red/white tape for content not yet supplied.",
+      "html": "<div class=\"ds-covered\"><span class=\"ds-covered-tape\"></span><span class=\"ds-covered-text\">Årsrapport<em>läggs till</em></span></div>",
+      "css": ".ds-covered { position: relative; display: grid; place-items: center; min-height: 8.5rem; padding: 1.5rem; overflow: hidden; text-align: center; background: #FFD200; color: #424242; border-radius: 14px; box-shadow: inset 0 0 0 6px #FFD200, inset 0 0 0 9px #424242; } .ds-covered-tape { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; } .ds-covered-tape::before, .ds-covered-tape::after { content: ''; position: absolute; left: -20%; right: -20%; top: 50%; height: 22px; margin-top: -11px; background: repeating-linear-gradient(90deg, #c4001f 0 26px, #f2f2f2 26px 52px); transform: rotate(21deg); } .ds-covered-tape::after { transform: rotate(-21deg); } .ds-covered-text { position: relative; background: #FFD200; padding: .5rem .9rem; border-radius: 6px; font: 700 1.0625rem/1.3 'Open Sans', system-ui, sans-serif; } .ds-covered-text em { display: block; font-style: normal; font-weight: 600; font-size: .875rem; }"
+    },
+    {
+      "name": "Tape Label",
+      "kind": "chip",
+      "refersTo": "tape-label",
+      "description": "Inline placeholder for a missing value in a list.",
+      "html": "<span class=\"ds-tejp\">läggs till</span>",
+      "css": ".ds-tejp { display: inline-block; padding: .2rem .8rem; font: 600 .875rem 'Open Sans', system-ui, sans-serif; color: #FFFFFF; background: repeating-linear-gradient(-45deg, #c4001f 0 10px, #a8001a 10px 20px); border-radius: 4px; transform: rotate(-1.5deg); }"
+    },
+    {
+      "name": "Delineators",
+      "kind": "custom",
+      "refersTo": "sign-post",
+      "description": "Row of delineator posts whose reflectors light in sequence when the light reaches them.",
+      "html": "<ol class=\"ds-delin\"><li style=\"--i:0\"></li><li style=\"--i:1\"></li><li style=\"--i:2\"></li><li style=\"--i:3\"></li><li style=\"--i:4\"></li></ol>",
+      "css": ".ds-delin { display: grid; grid-template-columns: repeat(5, 34px); gap: 1rem; align-items: end; list-style: none; margin: 0; padding: 1rem; background: #424242; border-bottom: 3px solid #5c5c5c; } .ds-delin li { position: relative; height: 6rem; border-radius: 6px 6px 0 0; background: linear-gradient(#353535, #353535) 0 18% / 100% 22% no-repeat, #f2f2f2; } .ds-delin li::after { content: ''; position: absolute; left: 22%; right: 22%; top: 21%; height: 16%; border-radius: 4px; background: #8a7a2a; transition: background .5s ease-out, box-shadow .8s ease-out; transition-delay: calc(var(--i) * 90ms); } .ds-delin:hover li::after { background: #FFD200; box-shadow: 0 0 12px 3px rgba(255,210,0,.7), 0 0 34px 6px rgba(255,210,0,.28); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Vägmärken i natten (road signs at night)",
+    "overview": "The page is a road at night. The ground is asphalt, a darker road strip with a dashed white center line closes the hero and opens the footer, and every fact is mounted as a Swedish road-sign plate on steel posts: flat brand yellow with an inset asphalt border line and rounded corners, lettered in bold Open Sans. Directional facts become arrow-shaped signs, a table of school costs becomes a route-direction sign with pictograms, Addis Abeba is a green place-name sign, the two organisations are opposite arms on one post, and twenty delineator posts stand for twenty children.\n\nLight is the only depth. Plates are night-dimmed at rest and brighten where light reaches them: a retroreflective prism pattern and a pale hot core follow the pointer on fine-pointer devices; on touch (and with reduced motion) the light is fixed at 50% / 32% of the viewport and the signs scroll past it. A streetlight arm enters the hero from the top-right and its pool always rests on the vision sign's upper-right corner. The twenty reflectors light up one by one when their row reaches the light.\n\nFacts not yet supplied are never invented. They are covered signs: a plate crossed with red and white tape and a small \"läggs till\" label, the road-works convention for a sign not yet valid.",
+    "keyCharacteristics": [
+      "Asphalt ground, yellow sign plates with an inset asphalt border line, steel posts.",
+      "Bold (700) lettering on plates, light (300) display on asphalt.",
+      "Arrows, route numbers, delineators, posts and arms instead of cards, icons-in-circles or counters.",
+      "Depth only as light: radial pools, plate sheen, reflector glow. No cast shadows.",
+      "Missing facts shown as taped-over signs, never fabricated.",
+      "Real logotype and flame symbol, extracted as vectors from the supplied brand style guide PDF."
+    ],
+    "rules": [
+      { "name": "The Plate Material Rule", "body": "Yellow is a material, not an accent: it appears as whole sign plates and arrow signs with asphalt lettering, never as yellow text on asphalt (the only exceptions are small arrow glyphs and lit reflectors, which are light sources).", "section": "colors" },
+      { "name": "The Green Means Ethiopia Rule", "body": "Green is used only for things that are in Ethiopia.", "section": "colors" },
+      { "name": "The Red Means Not Yet Rule", "body": "Red appears only as tape over facts that have not been supplied.", "section": "colors" },
+      { "name": "The Weight Follows Surface Rule", "body": "Type on a plate is 700; display type on asphalt is 300. A headline that moves onto a yellow surface becomes 700.", "section": "typography" },
+      { "name": "The No Caps Rule", "body": "Sign lettering is sentence case with no tracking added; no uppercase labels.", "section": "typography" },
+      { "name": "The Retroreflection Rule", "body": "Plates are night-dimmed at rest and brighten only where light reaches them. Any new sign takes the plate class so it joins the light.", "section": "elevation" },
+      { "name": "The Light Not Lift Rule", "body": "Glows are light sources; nothing ever casts a shadow onto the asphalt.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do mount every fact on a plate with posts, or on an arrow, shield, delineator or arm; plates carry the 7px/3px inset border line and rounded 14px corners.",
+      "Do let plates join the light: dimmed at rest, sheen and bright core where the pointer (or the fixed touch light) reaches them.",
+      "Do set lettering on plates at 700 in asphalt and headlines on asphalt at 300 in white.",
+      "Do show missing facts as covered signs or red tape labels reading \"läggs till\".",
+      "Do use the real vector logotype and flame symbol from public/v2/assets/.",
+      "Do keep the pointer light off for reduced-motion users and light reflectors outright."
+    ],
+    "donts": [
+      "Don't cast shadows or lift plates; glow belongs only to light sources and the destination sign.",
+      "Don't use green outside Ethiopia or red outside tape.",
+      "Don't set yellow text on asphalt for content; yellow is plate material.",
+      "Don't invent payment details, photos, quotes or figures to fill a covered sign.",
+      "Don't use outline or circle-badge icons; pictograms are solid sign silhouettes."
+    ]
+  }
+}

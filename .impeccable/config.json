@@ -8,6 +8,33 @@
         "value": "open sans",
         "createdAt": "2026-10-30T19:21:14.728Z",
         "reason": "Open Sans is the body and heading face specified by the Streetlight brand style guide the user supplied; not a free choice"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "public/v2/index.html"
+        ],
+        "createdAt": "2026-10-30T20:13:42.636Z",
+        "reason": "Literal light in the approved road-at-night direction: lit reflectors and the goal sign glow"
+      },
+      {
+        "rule": "repeating-stripes-gradient",
+        "value": "*",
+        "files": [
+          "public/v2/styles.css"
+        ],
+        "createdAt": "2026-10-30T20:13:42.654Z",
+        "reason": "Red/white covering tape on not-yet-supplied values, part of the approved covered-sign placeholder"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "public/v2/index.html"
+        ],
+        "createdAt": "2026-10-30T20:13:42.673Z",
+        "reason": "Static check without layout; sign plates have 1.4-3.8rem padding, verified in 1440 and 390 renders"
       }
     ]
   }

@@ -1,0 +1,576 @@
+/* Streetlight V2: Vägmärken i natten */
+
+@font-face { font-family: "Open Sans"; src: url("../fonts/OpenSans-300.ttf") format("truetype"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Open Sans"; src: url("../fonts/OpenSans-400.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Open Sans"; src: url("../fonts/OpenSans-600.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Open Sans"; src: url("../fonts/OpenSans-700.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+
+:root {
+  --asfalt: #424242;
+  --asfalt-djup: #353535;
+  --vagbana: #2f2f2f;
+  --linje: #5c5c5c;
+  --gul: #FFD200;
+  --gul-ljus: #ffe04a;
+  --gron: #B8E986;
+  --rod: #FF1736;
+  --vit: #FFFFFF;
+  --vit-dov: rgba(255, 255, 255, .86);
+  --stal: linear-gradient(90deg, #585858, #a3a3a3 45%, #5a5a5a);
+
+  --font: "Open Sans", system-ui, sans-serif;
+  --pad: clamp(1.25rem, 5vw, 4.5rem);
+  --band: clamp(5rem, 10vw, 8.5rem);
+  --rundning: 14px;
+
+  /* ljuskällan; JS flyttar den efter pekaren eller låter skyltarna scrolla förbi */
+  --lx: 50vw;
+  --ly: 32vh;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; scrollbar-color: #6a6a6a var(--vagbana); }
+body {
+  margin: 0;
+  background: var(--asfalt);
+  color: var(--vit);
+  font: 400 1.125rem/1.65 var(--font);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+::selection { background: var(--gul); color: var(--asfalt); }
+img, svg { display: block; }
+h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--vit); outline-offset: 4px; border-radius: 4px; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Ljuset på asfalten: en mjuk pöl där ljuskällan är */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle 34vmax at var(--lx) var(--ly), rgba(255, 210, 0, .07), transparent 70%);
+}
+main, .top, .fot { position: relative; z-index: 1; }
+
+.skip {
+  position: absolute; left: 1rem; top: -4rem; z-index: 50;
+  background: var(--gul); color: var(--asfalt);
+  padding: .7rem 1.1rem; border-radius: 8px; font-weight: 700; text-decoration: none;
+}
+.skip:focus { top: 1rem; }
+
+.wrap { width: min(1240px, 100%); margin-inline: auto; padding-inline: var(--pad); }
+
+/* ---------- Skylten: plåt med insatt kantlinje och reflexfolie ---------- */
+
+.skylt {
+  --kant: 7px;
+  position: relative;
+  isolation: isolate;
+  background: var(--gul);
+  color: var(--asfalt);
+  border-radius: var(--rundning);
+  box-shadow:
+    inset 0 0 0 var(--kant) var(--gul),
+    inset 0 0 0 calc(var(--kant) + 3px) var(--asfalt);
+}
+/* Reflexfolien: ett prismamönster som bara syns där ljuset träffar */
+.skylt::before,
+.skylt::after {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+}
+.skylt::before {
+  background:
+    repeating-linear-gradient(60deg, rgba(255, 255, 255, .55) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(-60deg, rgba(255, 255, 255, .55) 0 1px, transparent 1px 9px);
+  -webkit-mask-image: radial-gradient(circle 260px at var(--sx, -999px) var(--sy, -999px), #000, transparent 75%);
+          mask-image: radial-gradient(circle 260px at var(--sx, -999px) var(--sy, -999px), #000, transparent 75%);
+  opacity: .5;
+}
+.skylt::after {
+  background: radial-gradient(circle 320px at var(--sx, -999px) var(--sy, -999px), rgba(255, 252, 225, .62), rgba(255, 245, 190, .18) 45%, transparent 72%);
+  mix-blend-mode: soft-light;
+}
+
+.stolpe {
+  display: block;
+  width: 14px;
+  background: var(--stal);
+  border-radius: 4px;
+}
+.stolpar {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 16%;
+}
+.stolpar .stolpe { height: clamp(2.5rem, 6vw, 4.5rem); }
+
+/* ---------- Toppen ---------- */
+
+.top {
+  position: absolute; inset: 0 0 auto 0;
+  z-index: 5;
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  padding: clamp(1rem, 2.4vw, 1.75rem) var(--pad);
+}
+.logo img { width: clamp(150px, 13vw, 196px); height: auto; }
+.nav { display: flex; align-items: center; gap: clamp(.75rem, 2vw, 1.75rem); }
+.nav ul { display: flex; gap: .35rem; }
+.nav ul a {
+  display: block;
+  padding: .45rem .8rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: .9375rem; font-weight: 600;
+  text-decoration: none;
+  color: var(--vit-dov);
+  transition: border-color .25s, color .25s;
+}
+.nav ul a:hover { border-color: var(--vit); color: var(--vit); }
+.nav__fadder { text-decoration: none; border-radius: 6px; }
+.nav__fadder span {
+  display: block;
+  padding: .55rem 1.6rem .55rem 1rem;
+  background: var(--gul); color: var(--asfalt);
+  font-weight: 700; font-size: .9375rem;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+  border-radius: 8px 0 0 8px;
+  transition: background .2s;
+}
+.nav__fadder:hover span { background: var(--gul-ljus); }
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.hero__lykta {
+  position: absolute;
+  top: 0; right: 0;
+  width: min(66vw, 1000px);
+  height: 100%;
+  pointer-events: none;
+}
+.hero__lampa { filter: drop-shadow(0 0 18px rgba(255, 228, 92, .9)); }
+
+.hero__gata {
+  position: relative;
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 7.2fr) minmax(0, 2.8fr);
+  align-items: end;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  width: min(1400px, 100%);
+  margin-inline: auto;
+  padding: clamp(6.5rem, 14vh, 9rem) var(--pad) 0;
+}
+
+.skylt--stor {
+  --kant: 10px;
+  padding: clamp(1.75rem, 3.6vw, 3.4rem) clamp(1.75rem, 4vw, 3.8rem) clamp(2rem, 4vw, 3.6rem);
+  border-radius: 22px;
+}
+.skylt__flamma { width: clamp(2.4rem, 3.6vw, 3.4rem); height: auto; aspect-ratio: 118 / 162; color: var(--asfalt); margin-bottom: clamp(1rem, 2vw, 1.6rem); }
+.hero h1 {
+  font-weight: 700;
+  font-size: clamp(2.3rem, 5.3vw, 5.1rem);
+  line-height: 1.02;
+  letter-spacing: -.022em;
+  max-width: 14ch;
+  text-wrap: balance;
+}
+.hero__stolpar { display: flex; justify-content: space-between; padding-inline: 14%; }
+.hero__stolpar .stolpe { height: clamp(.9rem, 2vh, 1.4rem); width: 16px; }
+
+/* Tilläggstavlan under skylten */
+.tillagg {
+  position: relative;
+  margin-inline: 8%;
+  background: var(--vit);
+  color: var(--asfalt);
+  border-radius: var(--rundning);
+  padding: 1.15rem 1.5rem 1.25rem;
+  box-shadow: inset 0 0 0 5px var(--vit), inset 0 0 0 7px var(--asfalt);
+}
+.tillagg p { font-size: clamp(1rem, 1.25vw, 1.1875rem); line-height: 1.5; max-width: 52ch; }
+.hero__skylt::after {
+  /* stolparna fortsätter ner till vägen */
+  content: "";
+  display: block;
+  height: clamp(2rem, 7vh, 4.5rem);
+  margin-inline: calc(8% + 14%) ;
+  background:
+    linear-gradient(90deg, #585858, #a3a3a3 45%, #5a5a5a) left / 16px 100% no-repeat,
+    linear-gradient(90deg, #585858, #a3a3a3 45%, #5a5a5a) right / 16px 100% no-repeat;
+}
+
+.hero__handling {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 1.4rem;
+  padding-bottom: clamp(2.5rem, 9vh, 5.5rem);
+}
+.pilskylt { text-decoration: none; border-radius: 10px; }
+.pilskylt__plat {
+  display: block;
+  padding: 1.15rem 3.6rem 1.15rem 1.6rem;
+  background: var(--gul); color: var(--asfalt);
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem); font-weight: 700; letter-spacing: -.005em;
+  clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 50%, calc(100% - 30px) 100%, 0 100%);
+  border-radius: 8px 0 0 8px;
+  transition: background .2s, transform .35s cubic-bezier(.16, 1, .3, 1);
+}
+.pilskylt:hover .pilskylt__plat { background: var(--gul-ljus); transform: translateX(6px); }
+.textlank {
+  display: inline-flex; align-items: center; gap: .55rem;
+  font-weight: 600; text-decoration: none;
+  padding-block: .35rem;
+  border-bottom: 3px dashed var(--vit);
+}
+.textlank svg { width: .8rem; height: 1rem; color: var(--gul); }
+.textlank:hover { border-bottom-style: solid; }
+
+/* Vägbanan med mittlinje */
+.vag {
+  position: relative;
+  height: clamp(56px, 8vh, 76px);
+  background: var(--vagbana);
+  border-top: 3px solid #4d4d4d;
+}
+.vag::after {
+  content: "";
+  position: absolute; left: 0; right: 0; top: 50%;
+  height: 5px; transform: translateY(-50%);
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .78) 0 72px, transparent 72px 132px);
+}
+
+/* ---------- Avsnitt ---------- */
+
+.band { position: relative; padding-block: var(--band); }
+h2 {
+  font-weight: 300;
+  font-size: clamp(2.1rem, 4.4vw, 3.6rem);
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  max-width: 17ch;
+  text-wrap: balance;
+}
+.brod { color: var(--vit-dov); max-width: 58ch; margin-top: 1.5rem; }
+
+.delat {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+}
+.delat .brod { margin-top: 0; }
+.delat > div .brod { margin-top: 1.5rem; }
+.delat--skylt { align-items: center; }
+
+/* 20 barn: vägnummerskylt och kantstolpar */
+.vagnummer {
+  display: inline-block;
+  margin-right: .12em;
+  padding: .02em .28em .06em;
+  vertical-align: .04em;
+  font-size: .92em; font-weight: 700; letter-spacing: -.03em;
+  background: var(--gul); color: var(--asfalt);
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 4px var(--gul), inset 0 0 0 6px var(--asfalt);
+}
+
+.kantstolpar {
+  margin-top: clamp(3rem, 6vw, 5rem);
+  border-bottom: 3px solid var(--linje);
+  padding-bottom: 0;
+}
+.kantstolpar ol {
+  display: grid;
+  grid-template-columns: repeat(20, minmax(0, 1fr));
+  align-items: end;
+  gap: clamp(.3rem, 1.2vw, 1.1rem);
+}
+.kantstolpar li {
+  position: relative;
+  height: clamp(5.5rem, 11vw, 9rem);
+  border-radius: 6px 6px 0 0;
+  background:
+    linear-gradient(var(--asfalt-djup), var(--asfalt-djup)) 0 18% / 100% 22% no-repeat,
+    linear-gradient(90deg, #e9e9e9, #ffffff 40%, #cfcfcf);
+  max-width: 34px;
+  margin-inline: auto;
+  width: 100%;
+}
+/* reflexen */
+.kantstolpar li::after {
+  content: "";
+  position: absolute;
+  left: 22%; right: 22%;
+  top: 21%; height: 16%;
+  border-radius: 4px;
+  background: #8a7a2a;
+  transition: background .5s ease-out, box-shadow .8s ease-out;
+  transition-delay: calc(var(--i) * 90ms);
+}
+.kantstolpar.tand li::after,
+html:not(.js) .kantstolpar li::after {
+  background: var(--gul);
+  box-shadow: 0 0 12px 3px rgba(255, 210, 0, .7), 0 0 34px 6px rgba(255, 210, 0, .28);
+}
+
+/* Övertäckta skyltar: uppgifter som inte gäller än */
+.overtackta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 3vw, 2.5rem);
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+}
+.overtackta li { position: relative; display: grid; }
+.tackt, .tackt__text { grid-area: 1 / 1; }
+.tackt {
+  min-height: 9rem;
+  border-radius: var(--rundning);
+  background:
+    linear-gradient(35deg, transparent calc(50% - 13px), var(--rod) calc(50% - 13px) calc(50% + 13px), transparent calc(50% + 13px)),
+    linear-gradient(-35deg, transparent calc(50% - 13px), var(--rod) calc(50% - 13px) calc(50% + 13px), transparent calc(50% + 13px)),
+    linear-gradient(160deg, #565656, #3a3a3a);
+  box-shadow: inset 0 0 0 2px #626262;
+}
+.tackt__text {
+  place-self: center;
+  background: var(--asfalt-djup);
+  color: var(--vit);
+  padding: .55rem 1rem;
+  border-radius: 6px;
+  text-align: center;
+  font-size: .9375rem; font-weight: 600; line-height: 1.35;
+}
+.tackt__text em { font-style: normal; font-weight: 400; color: var(--vit-dov); }
+
+/* Skolan: tabellvägvisare */
+.monterad { width: min(100%, 560px); justify-self: end; }
+.vagvisare {
+  --kant: 8px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(1.25rem, 3vw, 2.25rem);
+  padding: clamp(1.5rem, 3vw, 2.4rem) clamp(1.5rem, 3vw, 2.6rem);
+  border-radius: var(--rundning);
+}
+.vagvisare__pil { width: clamp(2.6rem, 4.5vw, 3.6rem); height: auto; aspect-ratio: 64 / 120; color: var(--asfalt); align-self: center; }
+.vagvisare ul li {
+  display: flex; align-items: center; gap: 1rem;
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem); font-weight: 700; line-height: 1.2; letter-spacing: -.01em;
+  padding-block: .8rem;
+}
+.vagvisare ul li + li { border-top: 3px solid var(--asfalt); }
+.vagvisare ul svg { flex: none; width: clamp(1.9rem, 3vw, 2.4rem); height: auto; aspect-ratio: 1; }
+.vagvisare small { display: block; font-size: .62em; font-weight: 600; letter-spacing: 0; }
+
+/* Familjen: tre skyltar längs en sträcka */
+.band--familj { padding-bottom: 0; }
+.stracka {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: clamp(1rem, 4vw, 4rem);
+  width: min(1240px, 100%);
+  margin: clamp(3.5rem, 7vw, 6rem) auto 0;
+  padding-inline: var(--pad);
+}
+.stracka li { display: flex; flex-direction: column; align-items: center; }
+.skylt--liten {
+  --kant: 6px;
+  width: 100%;
+  padding: 1.4rem 1.5rem;
+  font-size: clamp(1.1rem, 1.9vw, 1.5rem); font-weight: 700; line-height: 1.2;
+  text-align: center;
+}
+.skylt--mal { box-shadow: inset 0 0 0 6px var(--gul), inset 0 0 0 9px var(--asfalt), 0 0 60px -10px rgba(255, 210, 0, .55); }
+.stracka .stolpe { height: clamp(3rem, 7vw, 5.5rem); }
+.stracka li:nth-child(1) .stolpe { height: clamp(2rem, 4vw, 3rem); }
+.stracka li:nth-child(2) .stolpe { height: clamp(2.5rem, 5.5vw, 4.25rem); }
+
+/* Addis Abeba: ortnamnsskylt i grönt */
+.delat--omvant { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+.monterad--ort { justify-self: start; }
+.ortnamn {
+  --kant: 8px;
+  background: var(--gron);
+  box-shadow: inset 0 0 0 8px var(--gron), inset 0 0 0 11px var(--asfalt);
+  padding: clamp(1.8rem, 4vw, 3rem) clamp(1.6rem, 4vw, 3.2rem);
+  text-align: center;
+}
+.ortnamn__namn { display: block; font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 700; line-height: 1; letter-spacing: -.025em; }
+.ortnamn__am {
+  display: block; margin-top: .8rem;
+  font-family: "Noto Sans Ethiopic", "Nyala", "Kefa", "Abyssinica SIL", sans-serif;
+  font-size: clamp(1.15rem, 2.2vw, 1.6rem); font-weight: 600;
+}
+.kedja { margin-top: 2.25rem; display: grid; gap: .6rem; counter-reset: k; }
+.kedja li {
+  counter-increment: k;
+  display: flex; align-items: center; gap: .9rem;
+  font-weight: 600;
+}
+.kedja li::before {
+  content: "";
+  flex: none;
+  width: 1.1rem; height: .9rem;
+  background: var(--gron);
+  clip-path: polygon(0 0, 60% 0, 100% 50%, 60% 100%, 0 100%);
+}
+.kedja li:last-child::before { background: var(--gul); }
+
+/* Föreningarna: en stolpe med två armar */
+.korsning {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: clamp(3rem, 6vw, 5rem);
+  padding-bottom: 2rem;
+}
+.korsning__stolpe {
+  position: absolute; left: 50%; top: -1.5rem; bottom: 0;
+  width: 16px; transform: translateX(-50%);
+  background: var(--stal);
+  border-radius: 4px 4px 0 0;
+}
+.arm { position: relative; z-index: 1; }
+.arm--se { padding-right: clamp(1.5rem, 4vw, 3.5rem); text-align: right; }
+.arm--et { padding-left: clamp(1.5rem, 4vw, 3.5rem); }
+.arm__skylt { font-size: clamp(1.5rem, 3vw, 2.4rem); font-weight: 700; letter-spacing: -.01em; line-height: 1; }
+.arm__skylt span {
+  display: inline-block;
+  color: var(--asfalt);
+  padding: 1rem 1.6rem;
+}
+.arm--se .arm__skylt span {
+  background: var(--gul);
+  padding-left: 3rem;
+  clip-path: polygon(26px 0, 100% 0, 100% 100%, 26px 100%, 0 50%);
+  border-radius: 0 10px 10px 0;
+  margin-right: calc(-1 * clamp(1.5rem, 4vw, 3.5rem) - 8px);
+}
+.arm--et .arm__skylt span {
+  background: var(--gron);
+  padding-right: 3rem;
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 50%, calc(100% - 26px) 100%, 0 100%);
+  border-radius: 10px 0 0 10px;
+  margin-left: calc(-1 * clamp(1.5rem, 4vw, 3.5rem) - 8px);
+}
+.arm p { margin-top: 1.4rem; color: var(--vit-dov); max-width: 30ch; }
+.arm--se p { margin-left: auto; }
+
+/* Bli fadder: avsnittet blir själva skylten */
+.band--fadder {
+  background: var(--gul);
+  color: var(--asfalt);
+  box-shadow: inset 0 0 0 clamp(10px, 1.6vw, 22px) var(--gul), inset 0 0 0 calc(clamp(10px, 1.6vw, 22px) + 4px) var(--asfalt);
+}
+.band--fadder :focus-visible { outline-color: var(--asfalt); }
+.band--fadder ::selection { background: var(--asfalt); color: var(--gul); }
+.band--fadder h2 { font-weight: 700; letter-spacing: -.025em; }
+.band--fadder .brod { color: var(--asfalt); }
+.band--fadder .delat { align-items: start; }
+.betala dl > div {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding-block: .9rem;
+  border-top: 3px solid var(--asfalt);
+}
+.betala dl > div:last-child { border-bottom: 3px solid var(--asfalt); }
+.betala dt { font-weight: 700; }
+.tejp {
+  display: inline-block;
+  padding: .2rem .8rem;
+  font-size: .875rem; font-weight: 600;
+  color: var(--vit);
+  background:
+    repeating-linear-gradient(-45deg, var(--rod) 0 10px, #e0102c 10px 20px);
+  border-radius: 4px;
+  transform: rotate(-1.5deg);
+}
+.knapp {
+  margin-top: 2rem;
+  font: 700 1.0625rem var(--font);
+  padding: 1rem 1.8rem;
+  border-radius: 10px;
+  border: 3px dashed var(--asfalt);
+  background: transparent;
+  color: var(--asfalt);
+  cursor: not-allowed;
+}
+
+/* ---------- Foten ---------- */
+
+.fot { background: var(--asfalt-djup); }
+.vag--slut { border-top: 0; }
+.fot__rad {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem;
+  padding-block: 2.75rem 3.25rem;
+  color: var(--vit-dov); font-size: .9375rem;
+}
+.fot__rad img { width: 150px; height: auto; }
+.fot__rad p { margin-right: auto; }
+.fot__rad a { text-underline-offset: 5px; text-decoration-color: var(--gul); text-decoration-thickness: 2px; }
+
+/* ---------- Mindre skärmar ---------- */
+
+@media (max-width: 1080px) {
+  .nav ul { display: none; }
+}
+
+@media (max-width: 860px) {
+  .hero__gata { grid-template-columns: 1fr; padding-top: 6.5rem; align-content: end; }
+  .hero__handling { flex-direction: row; flex-wrap: wrap; align-items: center; padding-bottom: 2.5rem; }
+  .hero__lykta { width: 125vw; opacity: .9; }
+  .hero__skylt::after { height: 1.25rem; }
+  .delat, .delat--omvant { grid-template-columns: 1fr; }
+  .monterad { justify-self: stretch; }
+  .monterad--ort { order: 2; }
+  .kantstolpar ol { grid-template-columns: repeat(10, minmax(0, 1fr)); row-gap: 1.5rem; }
+  .overtackta { grid-template-columns: 1fr; }
+  .tackt { min-height: 6rem; }
+  .stracka { grid-template-columns: 1fr; gap: 0; }
+  .stracka li { flex-direction: row-reverse; align-items: stretch; gap: 0; }
+  .stracka li .stolpe { width: 14px; height: auto !important; margin-right: 1.25rem; }
+  .stracka li + li { margin-top: 1rem; }
+  .skylt--liten { text-align: left; }
+  .korsning { grid-template-columns: 1fr; gap: 2.5rem; padding-left: 0; }
+  .korsning__stolpe { left: 8px; transform: none; }
+  .arm--se, .arm--et { text-align: left; padding: 0 0 0 2.5rem; }
+  .arm--se .arm__skylt span, .arm--et .arm__skylt span {
+    margin: 0 0 0 -2.5rem;
+    background: var(--gul);
+    padding: 1rem 3rem 1rem 2.5rem;
+    clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 50%, calc(100% - 26px) 100%, 0 100%);
+    border-radius: 0;
+  }
+  .arm--et .arm__skylt span { background: var(--gron); }
+  .arm--se p { margin-left: 0; }
+}
+
+@media (max-width: 520px) {
+  body { font-size: 1.0625rem; }
+  .logo img { width: 140px; }
+  .nav__fadder span { font-size: .875rem; padding: .5rem 1.4rem .5rem .85rem; }
+  .skylt--stor { --kant: 7px; border-radius: var(--rundning); }
+  .tillagg { margin-inline: 4%; }
+  .kantstolpar ol { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: .45rem; }
+  .kantstolpar li { height: 4.5rem; }
+  .betala dl > div { flex-direction: column; align-items: flex-start; gap: .35rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

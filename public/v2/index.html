@@ -62,21 +62,18 @@
 
   <!-- Hem -->
   <section id="hem" class="hero">
-    <svg class="hero__lykta" viewBox="0 0 900 900" preserveAspectRatio="xMaxYMin meet" aria-hidden="true" focusable="false">
+    <svg class="hero__lykta" viewBox="0 0 600 900" preserveAspectRatio="xMaxYMin meet" aria-hidden="true" focusable="false">
       <defs>
-        <radialGradient id="kagla" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(250 120) rotate(90) scale(760 520)">
-          <stop offset="0" stop-color="#FFE45C" stop-opacity=".42"/>
-          <stop offset=".45" stop-color="#FFD200" stop-opacity=".12"/>
+        <radialGradient id="kagla" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(230 150) rotate(115) scale(620 560)">
+          <stop offset="0" stop-color="#FFE45C" stop-opacity=".5"/>
+          <stop offset=".5" stop-color="#FFD200" stop-opacity=".14"/>
           <stop offset="1" stop-color="#FFD200" stop-opacity="0"/>
         </radialGradient>
-        <linearGradient id="stal" x1="0" x2="1">
-          <stop offset="0" stop-color="#5f5f5f"/><stop offset=".45" stop-color="#9a9a9a"/><stop offset="1" stop-color="#565656"/>
-        </linearGradient>
       </defs>
-      <path class="hero__ljuskagla" d="M196 118h108L640 900H-160z" fill="url(#kagla)"/>
-      <path d="M760 900V150c0-46-34-70-96-70H330" fill="none" stroke="url(#stal)" stroke-width="16" stroke-linecap="round"/>
-      <path d="M160 64h196c12 0 20 8 20 18v8c0 18-22 30-50 30H190c-28 0-50-12-50-30v-8c0-10 8-18 20-18z" fill="#2b2b2b"/>
-      <ellipse class="hero__lampa" cx="258" cy="118" rx="92" ry="9" fill="#FFF3B0"/>
+      <path class="hero__ljuskagla" d="M165 146h130L420 900H-640z" fill="url(#kagla)"/>
+      <path d="M470 900V170c0-38-26-58-76-58H300" fill="none" stroke="#8d8d8d" stroke-width="14" stroke-linecap="round"/>
+      <path d="M150 104h160c10 0 18 7 18 16v4c0 14-18 24-42 24H174c-24 0-42-10-42-24v-4c0-9 8-16 18-16z" fill="#262626"/>
+      <ellipse class="hero__lampa" cx="230" cy="146" rx="72" ry="7" fill="#FFF3B0"/>
     </svg>
 
     <div class="hero__gata">
@@ -118,9 +115,18 @@
       </div>
 
       <ul class="overtackta">
-        <li><span class="tackt" aria-hidden="true"></span><span class="tackt__text">Bilder från Addis Abeba<br><em>läggs till</em></span></li>
-        <li><span class="tackt" aria-hidden="true"></span><span class="tackt__text">Berättelser<br><em>läggs till</em></span></li>
-        <li><span class="tackt" aria-hidden="true"></span><span class="tackt__text">Årsrapport<br><em>läggs till</em></span></li>
+        <li class="mark">
+          <div class="skylt tackt"><span class="tackt__tejp" aria-hidden="true"></span><span class="tackt__text">Bilder från Addis Abeba<em>läggs till</em></span></div>
+          <div class="stolpar" aria-hidden="true"><span class="stolpe"></span><span class="stolpe"></span></div>
+        </li>
+        <li class="mark">
+          <div class="skylt tackt"><span class="tackt__tejp" aria-hidden="true"></span><span class="tackt__text">Berättelser<em>läggs till</em></span></div>
+          <div class="stolpar" aria-hidden="true"><span class="stolpe"></span><span class="stolpe"></span></div>
+        </li>
+        <li class="mark">
+          <div class="skylt tackt"><span class="tackt__tejp" aria-hidden="true"></span><span class="tackt__text">Årsrapport<em>läggs till</em></span></div>
+          <div class="stolpar" aria-hidden="true"><span class="stolpe"></span><span class="stolpe"></span></div>
+        </li>
       </ul>
     </div>
   </section>
@@ -132,7 +138,7 @@
         <h2>Skolan är vägen ut ur fattigdomen</h2>
         <p class="brod">Vi tror på utbildning, och därför stöttar vi barnens skolgång. Det som behövs för att ett barn ska kunna gå i skolan betalar vi för.</p>
       </div>
-      <div class="monterad">
+      <div class="monterad mark">
         <div class="skylt vagvisare">
           <svg class="vagvisare__pil" aria-hidden="true"><use href="#pil-upp"/></svg>
           <ul>
@@ -166,7 +172,7 @@
   <!-- Addis Abeba -->
   <section id="addis" class="band">
     <div class="wrap delat delat--skylt delat--omvant">
-      <div class="monterad monterad--ort">
+      <div class="monterad monterad--ort mark">
         <div class="skylt ortnamn">
           <span class="ortnamn__namn">Addis Abeba</span>
           <span class="ortnamn__am" lang="am">አዲስ አበባ</span>

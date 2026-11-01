@@ -1,0 +1,57 @@
+---
+import "@/styles/global.css";
+import SiteHeader from "@/components/SiteHeader.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import { href } from "@/lib/utils";
+
+interface Props {
+  title: string;
+  description: string;
+  current?: "nyheter";
+}
+const { title, description, current } = Astro.props;
+const pageTitle = title === "Streetlight" ? title : `${title} | Streetlight`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={href("/favicon.svg")} />
+    <meta name="theme-color" content="#0E4A38" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="sv_SE" />
+    <meta property="og:site_name" content="Streetlight" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="absolute -top-16 left-3 z-30 rounded-pill bg-gold px-[18px] py-3 font-semibold text-ink no-underline focus:top-3"
+      >Hoppa till innehållet</a
+    >
+    <SiteHeader current={current}>
+      <slot name="header" />
+      <slot name="header-after" slot="after" />
+    </SiteHeader>
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style is:global>
+  /* Let the menu island take part in the header's flex layout. */
+  astro-island {
+    display: contents;
+  }
+</style>

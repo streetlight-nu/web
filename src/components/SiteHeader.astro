@@ -1,0 +1,28 @@
+---
+import Logo from "@/components/Logo.astro";
+import MainNav, { type NavLink } from "@/components/MainNav";
+import { href } from "@/lib/utils";
+
+interface Props {
+  current?: "nyheter";
+}
+const { current } = Astro.props;
+
+const links: NavLink[] = [
+  { label: "Vårt stöd", href: href("/#stod") },
+  { label: "Familjerna", href: href("/#familjer") },
+  { label: "Så arbetar vi", href: href("/#sa-arbetar-vi") },
+  { label: "Nyheter", href: href("/nyheter"), current: current === "nyheter" },
+];
+---
+
+<header class="on-green bg-green text-cotton">
+  <div class="band-inner">
+    <nav aria-label="Huvudmeny" class="flex flex-wrap items-center justify-between gap-3 py-[22px] min-[901px]:flex-nowrap min-[901px]:gap-6 max-[520px]:gap-2">
+      <Logo on="green" href={href("/")} />
+      <MainNav client:load links={links} sponsorHref={href("/#bli-fadder")} />
+    </nav>
+    <slot />
+  </div>
+  <slot name="after" />
+</header>

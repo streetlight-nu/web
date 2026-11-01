@@ -53,4 +53,10 @@ describe("schemat för inlägg", () => {
     expect(resultat.data?.example).toBe(true);
     expect(inlaggSchema().parse(giltigt).example).toBe(false);
   });
+
+  test("godtar ett exempelinlägg utan samtycke, eftersom det inte handlar om någon verklig familj", () => {
+    expect(godtas({ ...giltigt, topic: "familj", example: true })).toBe(true);
+    const barnfoto = { ...giltigt, image: "./klassrummet.jpg", imageAlt: "Barn i klassrummet", showsChildren: true };
+    expect(godtas({ ...barnfoto, example: true })).toBe(true);
+  });
 });

@@ -40,14 +40,16 @@ export function inlaggSchema<Bild extends z.ZodType = z.ZodString>(image?: Bild)
       if (inlagg.image !== undefined && !inlagg.imageAlt) {
         ctx.addIssue({ code: "custom", path: ["imageAlt"], message: "En bild måste ha en alt-text (imageAlt)." });
       }
-      if (inlagg.topic === "familj" && !inlagg.consent) {
+      // An example post (Exempelinlägg) is made up and shows no real family, so it needs no consent.
+      const kraverSamtycke = !inlagg.example && !inlagg.consent;
+      if (inlagg.topic === "familj" && kraverSamtycke) {
         ctx.addIssue({
           code: "custom",
           path: ["consent"],
           message: "En Berättelse från en familj kräver familjens samtycke (consent).",
         });
       }
-      if (inlagg.showsChildren && !inlagg.consent) {
+      if (inlagg.showsChildren && kraverSamtycke) {
         ctx.addIssue({
           code: "custom",
           path: ["consent"],

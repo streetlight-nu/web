@@ -5,6 +5,7 @@ import { getImage, Image } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ExampleChip from "@/components/ExampleChip.astro";
 import Knot from "@/components/Knot.astro";
+import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { amnesNamn, formateraDatum, isoDatum, nyastForst } from "@/lib/nyheter";
 import { href } from "@/lib/utils";
@@ -70,7 +71,7 @@ const ogImage = image
     </h1>
     <p class="mt-5 max-w-[52ch] text-lede text-mint">{lede}</p>
   </div>
-  <div slot="header-after" class="seam" role="presentation"></div>
+  <TibebBand slot="header-after" variant="thin" />
 
   <article
     class="bg-cotton pt-[clamp(40px,6vw,72px)] pb-[clamp(48px,7vw,88px)] text-ink"
@@ -138,16 +139,6 @@ const ogImage = image
 </BaseLayout>
 
 <style>
-  /* The thin tibeb seam between the green header and the post (prototype `.seam`). */
-  .seam {
-    height: 22px;
-    background:
-      linear-gradient(var(--color-gold), var(--color-gold)) top / 100% 3px no-repeat,
-      linear-gradient(var(--color-gold), var(--color-gold)) bottom / 100% 3px no-repeat,
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='16' viewBox='0 0 20 16'%3E%3Crect width='20' height='16' fill='%230E4A38'/%3E%3Cpath d='M10 2 16 8 10 14 4 8Z' fill='%23D64527'/%3E%3Cpath d='M10 6 12 8 10 10 8 8Z' fill='%23FBFBF8'/%3E%3C/svg%3E")
-        0 3px / 20px 16px repeat-x;
-  }
-
   /* The body text: a narrow reading column, with figures as wide as the page. */
   .inlagg-text :global(> *) {
     max-width: 40rem;

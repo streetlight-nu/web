@@ -1,0 +1,40 @@
+# Pages CMS (https://pagescms.org): the editing forms the association uses.
+# Editors sign in with a GitHub account that has write access; a save is committed straight to master,
+# and the site is published by GitHub Actions.
+content:
+  - name: foreningsuppgifter
+    label: Föreningsuppgifter
+    type: file
+    path: src/data/foreningsuppgifter.json
+    format: json
+    fields:
+      - name: organisationsnummer
+        label: Organisationsnummer
+        type: string
+        description: Visas under Insyn på startsidan. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: nittiokonto
+        label: 90-konto
+        type: string
+        description: Visas under Insyn på startsidan. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: swish
+        label: Swish-nummer
+        type: string
+        description: För engångsgåvor. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: kontaktperson
+        label: Kontaktperson
+        type: string
+        description: Den som blivande faddrar kan kontakta med frågor.
+      - name: epost
+        label: Kontakt-e-post
+        type: string
+        description: Dit blivande faddrar mejlar.
+        pattern:
+          regex: "^$|^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+          message: Skriv en e-postadress, till exempel namn@exempel.se.
+      - name: arsredovisning
+        label: Länk till senaste årsredovisningen
+        type: string
+        description: En hel webbadress som börjar med https://. Visas under Insyn på startsidan.
+        pattern:
+          regex: "^$|^https?://\\S+$"
+          message: Skriv en hel webbadress som börjar med https://.

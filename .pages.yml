@@ -1,0 +1,75 @@
+# Pages CMS (https://pagescms.org/docs/configuration/). Redaktörernas instruktion: docs/redaktorer.md.
+# Fälten i Nyheter måste motsvara schemat i src/lib/nyheter-schema.ts; tests/unit/pages-cms.test.ts kontrollerar det.
+
+# Bilder laddas upp under src/assets, där Astro hittar och optimerar dem vid bygget.
+# `output` är sökvägen som skrivs i inlägget, relativt till inläggets mapp (src/content/nyheter).
+media:
+  input: src/assets/nyheter
+  output: ../../assets/nyheter
+
+content:
+  - name: nyheter
+    label: Nyheter
+    type: collection
+    path: src/content/nyheter
+    # Filnamnet blir inläggets adress: /nyheter/<titeln som slug>.
+    filename: "{title}.md"
+    view:
+      fields: [title, topic, date]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Titel
+        type: string
+        required: true
+      - name: date
+        label: Datum
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: topic
+        label: Ämne
+        type: select
+        required: true
+        options:
+          values:
+            - name: rapport
+              label: Rapport från Addis Abeba
+            - name: forening
+              label: Nyhet från föreningen
+            - name: familj
+              label: Berättelse från en familj
+            - name: tack
+              label: Tack till faddrarna
+      - name: place
+        label: Plats
+        type: string
+      - name: lede
+        label: Ingress
+        type: text
+        required: true
+      - name: image
+        label: Bild
+        type: image
+      - name: imageAlt
+        label: Alt-text (beskriv vad bilden visar)
+        type: string
+      - name: showsChildren
+        label: Bilden visar barn
+        type: boolean
+      - name: consent
+        label: Familjen har gett sitt samtycke
+        type: boolean
+      - name: example
+        label: Exempelinlägg (visas med chipet "Exempel")
+        type: boolean
+      - name: body
+        label: Brödtext
+        type: rich-text
+        options:
+          format: markdown

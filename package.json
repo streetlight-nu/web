@@ -7,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run",
     "test:e2e": "playwright test"
   },
   "dependencies": {

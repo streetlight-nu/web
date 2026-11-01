@@ -1,0 +1,273 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getImage, Image } from "astro:assets";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ExampleChip from "@/components/ExampleChip.astro";
+import Knot from "@/components/Knot.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { amnesNamn, formateraDatum, isoDatum, nyastForst } from "@/lib/nyheter";
+import { href } from "@/lib/utils";
+
+export async function getStaticPaths() {
+  const inlagg = nyastForst(await getCollection("nyheter"));
+  return inlagg.map((post, i) => ({
+    params: { slug: post.id },
+    // The thread runs newest first: the newer post is "Nyare", the older one "Äldre".
+    props: { post, nyare: inlagg[i - 1], aldre: inlagg[i + 1] },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<"nyheter">;
+  nyare?: CollectionEntry<"nyheter">;
+  aldre?: CollectionEntry<"nyheter">;
+}
+const { post, nyare, aldre } = Astro.props;
+const { title, date, topic, place, lede, image, imageAlt, example } = post.data;
+const { Content } = await render(post);
+
+// Open Graph wants an absolute URL to an image of a sensible size, in a format every service reads.
+const ogImage = image
+  ? new URL((await getImage({ src: image, width: 1200, format: "jpg" })).src, Astro.site)
+  : undefined;
+---
+
+<BaseLayout title={title} description={lede} current="nyheter">
+  <Fragment slot="head">
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:alt" content={imageAlt} />}
+    <meta property="article:published_time" content={isoDatum(date)} />
+  </Fragment>
+
+  <div slot="header" class="pt-[clamp(16px,3vw,32px)] pb-[clamp(36px,5vw,56px)]">
+    <a
+      class="inline-flex min-h-11 items-center gap-2.5 font-semibold text-mint no-underline hover:text-cotton hover:underline hover:decoration-gold"
+      href={href("/nyheter")}
+    >
+      <svg class="size-[18px]" viewBox="0 0 18 18" aria-hidden="true"
+        ><path
+          d="M15 9H4M8 4.5 3.5 9 8 13.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path></svg
+      >Alla nyheter
+    </a>
+    <div class="mt-[22px] flex flex-wrap items-center gap-x-[22px] gap-y-2.5 text-label font-medium text-mint">
+      <span class="inline-flex items-center gap-3 font-semibold text-cotton">
+        <Knot topic={topic} />{amnesNamn[topic]}
+      </span>
+      <time class="tabular-nums" datetime={isoDatum(date)}>{formateraDatum(date)}</time>
+      {place && <span>{place}</span>}
+    </div>
+    <h1
+      id="inlagg-rubrik"
+      class="mt-[18px] max-w-[18ch] text-[clamp(2.2rem,5.4vw,4.6rem)] leading-none tracking-[-0.035em]"
+    >
+      {title}
+    </h1>
+    <p class="mt-5 max-w-[52ch] text-lede text-mint">{lede}</p>
+  </div>
+  <div slot="header-after" class="seam" role="presentation"></div>
+
+  <article
+    class="bg-cotton pt-[clamp(40px,6vw,72px)] pb-[clamp(48px,7vw,88px)] text-ink"
+    aria-labelledby="inlagg-rubrik"
+  >
+    <div class="band-inner">
+      {
+        example && (
+          <p class="mx-auto mb-8 flex max-w-[40rem] items-baseline gap-3 text-label text-ink-soft">
+            <ExampleChip /> Det här är ett exempelinlägg som visar mallen.
+          </p>
+        )
+      }
+      <div class="inlagg-text">
+        {
+          image && (
+            <figure>
+              <Image src={image} alt={imageAlt!} widths={[640, 960, 1280, 1920]} sizes="(min-width: 1180px) 1148px, 100vw" />
+            </figure>
+          )
+        }
+        <Content />
+      </div>
+
+      <nav class="along" aria-label="Fler nyheter">
+        {
+          nyare ? (
+            <a href={href(`/nyheter/${nyare.id}`)}>
+              <small>
+                Nyare <Knot topic={nyare.data.topic} />
+              </small>
+              <strong>{nyare.data.title}</strong>
+            </a>
+          ) : (
+            <span class="empty">Det här är den senaste nyheten</span>
+          )
+        }
+        {
+          aldre ? (
+            <a class="next" href={href(`/nyheter/${aldre.id}`)}>
+              <small>
+                Äldre <Knot topic={aldre.data.topic} />
+              </small>
+              <strong>{aldre.data.title}</strong>
+            </a>
+          ) : (
+            <span class="empty next">Det här är den äldsta nyheten</span>
+          )
+        }
+      </nav>
+    </div>
+  </article>
+
+  <section class="bg-gold text-ink" aria-labelledby="bli-fadder-rubrik">
+    <div
+      class="band-inner flex flex-wrap items-center justify-between gap-x-10 gap-y-5 py-[clamp(40px,6vw,64px)]"
+    >
+      <div>
+        <h2 id="bli-fadder-rubrik" class="text-headline">Hjälp oss hålla ljusen tända.</h2>
+        <p class="mt-2 max-w-[48ch]">Som fadder stöttar du barnens skolgång i Addis Abeba.</p>
+      </div>
+      <a class={buttonVariants({ variant: "ink" })} href={href("/#bli-fadder")}>Bli fadder</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* The thin tibeb seam between the green header and the post (prototype `.seam`). */
+  .seam {
+    height: 22px;
+    background:
+      linear-gradient(var(--color-gold), var(--color-gold)) top / 100% 3px no-repeat,
+      linear-gradient(var(--color-gold), var(--color-gold)) bottom / 100% 3px no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='16' viewBox='0 0 20 16'%3E%3Crect width='20' height='16' fill='%230E4A38'/%3E%3Cpath d='M10 2 16 8 10 14 4 8Z' fill='%23D64527'/%3E%3Cpath d='M10 6 12 8 10 10 8 8Z' fill='%23FBFBF8'/%3E%3C/svg%3E")
+        0 3px / 20px 16px repeat-x;
+  }
+
+  /* The body text: a narrow reading column, with figures as wide as the page. */
+  .inlagg-text :global(> *) {
+    max-width: 40rem;
+    margin-inline: auto;
+  }
+  .inlagg-text :global(> * + *) {
+    margin-top: 1.1em;
+  }
+  .inlagg-text :global(p) {
+    font-size: var(--text-body);
+    line-height: 1.7;
+  }
+  .inlagg-text :global(h2) {
+    margin-top: 1.8em;
+    font-size: var(--text-title);
+    line-height: var(--text-title--line-height);
+  }
+  .inlagg-text :global(h2 + p) {
+    margin-top: 0.6em;
+  }
+  .inlagg-text :global(a) {
+    font-weight: 600;
+  }
+  .inlagg-text :global(figure) {
+    max-width: none;
+    margin-block: clamp(36px, 5vw, 56px);
+  }
+  .inlagg-text :global(figure img) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+  .inlagg-text :global(figure.sl-pair) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .inlagg-text :global(figure.sl-pair .sl-photo) {
+    aspect-ratio: 4 / 3;
+  }
+  .inlagg-text :global(figcaption) {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    max-width: 40rem;
+    margin: 12px auto 0;
+    color: var(--color-ink-soft);
+    font-size: var(--text-label);
+  }
+  .inlagg-text :global(figcaption::before) {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg) translateY(-1px);
+    background: var(--color-gold);
+  }
+
+  /* Along the thread: the newer and the older post. */
+  .along {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 40rem;
+    margin: clamp(40px, 6vw, 64px) auto 0;
+    padding-top: 30px;
+    background: repeating-linear-gradient(90deg, var(--color-gold) 0 14px, transparent 14px 22px) top / 100% 3px
+      no-repeat;
+  }
+  .along a {
+    display: grid;
+    gap: 4px;
+    padding-block: 6px;
+    text-decoration: none;
+  }
+  .along small {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-ink-soft);
+    font-size: var(--text-label);
+    font-weight: 600;
+  }
+  .along strong {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+  .along a:hover strong {
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 3px;
+  }
+  .along .next {
+    text-align: right;
+  }
+  .along .next small {
+    justify-content: flex-end;
+  }
+  .along .empty {
+    padding-block: 6px;
+    color: var(--color-ink-soft);
+    font-size: var(--text-label);
+  }
+
+  @media (max-width: 600px) {
+    .inlagg-text :global(figure.sl-pair) {
+      grid-template-columns: 1fr;
+    }
+    .along {
+      grid-template-columns: 1fr;
+    }
+    .along .next {
+      text-align: left;
+    }
+    .along .next small {
+      justify-content: flex-start;
+    }
+  }
+</style>

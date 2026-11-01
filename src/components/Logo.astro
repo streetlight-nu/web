@@ -1,0 +1,39 @@
+---
+import markOnGreen from "@/assets/logo/streetlight-mark-pa-gront.svg?raw";
+import markOnLight from "@/assets/logo/streetlight-mark-pa-ljust.svg?raw";
+import { cn } from "@/lib/utils";
+
+/**
+ * The Streetlight logo: the street lamp mark and the wordmark "streetlight"
+ * set as text, with a small gold light as the dot over the i.
+ * The mark SVGs come unchanged from the design system (Tillgångar › Logotyp).
+ */
+interface Props {
+  on?: "green" | "light";
+  href: string;
+  class?: string;
+}
+const { on = "green", href, class: className } = Astro.props;
+const mark = (on === "green" ? markOnGreen : markOnLight)
+  .replace(/ width="\d+" height="\d+"/, "")
+  .replace("<svg ", '<svg aria-hidden="true" focusable="false" ');
+---
+
+<a
+  href={href}
+  aria-label="Streetlight, till startsidan"
+  class={cn(
+    "inline-flex min-h-11 items-center gap-3 font-display text-title font-extrabold tracking-[-0.02em] no-underline [&_svg]:size-10 [&_svg]:flex-none max-[400px]:gap-2 max-[400px]:text-[1.35rem] max-[400px]:[&_svg]:size-[34px]",
+    on === "green" ? "text-cotton" : "text-ink",
+    className,
+  )}
+>
+  <Fragment set:html={mark} />
+  <span class="leading-none tracking-[-0.045em]" aria-hidden="true">
+    streetl<span class="inline-block text-center leading-none"
+      ><svg viewBox="0 0 10 10" class="mx-auto -mb-[0.26em] block !h-[0.2em] !w-[0.22em]" aria-hidden="true"
+        ><path d="M2.5 0H7.5L10 10H0Z" fill="#F4B400"></path></svg
+      >ı</span
+    >ght
+  </span>
+</a>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { href } from "@/lib/utils";
+---
+
+<BaseLayout
+  title="Streetlight"
+  description="Streetlight är en ideell förening i Sverige och Etiopien som stöttar 20 fadderbarns skolgång och deras familjer i Addis Abeba."
+>
+  <div slot="header" class="pt-[clamp(28px,5vw,64px)] pb-[clamp(40px,6vw,76px)]">
+    <h1 class="max-w-[14ch] text-display tracking-[-0.035em]">
+      Ett ljus på vägen <span class="text-gold">till skolan.</span>
+    </h1>
+    <p class="mt-[26px] max-w-[58ch] text-lede text-mint">
+      Streetlight stöttar 20 fadderbarn från mycket fattiga familjer i Addis Abeba. Vi betalar skolgången och hjälper
+      deras föräldrar att bygga en egen inkomst.
+    </p>
+    <div class="mt-[34px] flex flex-wrap gap-3.5">
+      <a class={buttonVariants()} href={href("/#bli-fadder")}>
+        Bli fadder
+        <svg viewBox="0 0 18 18" aria-hidden="true"
+            ><path
+              d="M3 9h11M10 4.5 14.5 9 10 13.5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path></svg
+          >
+      </a>
+      <a class={buttonVariants({ variant: "line" })} href={href("/#stod")}>Vad stödet går till</a>
+    </div>
+  </div>
+</BaseLayout>

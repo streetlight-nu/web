@@ -1,0 +1,37 @@
+---
+import Logo from "@/components/Logo.astro";
+import { href } from "@/lib/utils";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="on-green bg-green-deep text-base text-mint">
+  <div class="band-inner grid grid-cols-1 gap-10 pt-14 pb-10 min-[521px]:grid-cols-2 min-[901px]:grid-cols-[minmax(0,1.3fr)_repeat(2,minmax(0,1fr))]">
+    <div class="min-w-0 min-[521px]:col-span-2 min-[901px]:col-span-1">
+      <Logo on="green" href={href("/")} class="mb-3.5" />
+      <p>Ideell förening i Sverige och Etiopien som stöttar 20 fadderbarns skolgång och deras familjer i Addis Abeba.</p>
+      <p class="mt-3 text-label">
+        <span class="block text-[2.2rem] leading-tight text-gold" lang="am">ብርሃን</span>
+        ”ljus” på amhariska, uttalas birhan
+      </p>
+    </div>
+    <div class="min-w-0">
+      <h2 class="mb-3 text-[1.1rem] tracking-[-0.01em] text-cotton">Webbplatsen</h2>
+      <ul class="m-0 list-none p-0">
+        <li><a class="inline-block py-2" href={href("/#stod")}>Vårt stöd</a></li>
+        <li><a class="inline-block py-2" href={href("/#sa-arbetar-vi")}>Så arbetar vi</a></li>
+        <li><a class="inline-block py-2" href={href("/nyheter")}>Nyheter</a></li>
+      </ul>
+    </div>
+    <div class="min-w-0">
+      <h2 class="mb-3 text-[1.1rem] tracking-[-0.01em] text-cotton">Bli fadder</h2>
+      <p>Som fadder stöttar du alla 20 fadderbarnen tillsammans.</p>
+      <p class="mt-2"><a class="inline-block py-2 font-semibold text-cotton" href={href("/#bli-fadder")}>Anmäl intresse</a></p>
+    </div>
+  </div>
+  <div class="band-inner">
+    <div class="flex flex-wrap justify-between gap-4 border-t border-mint/20 pt-[22px] pb-[30px] text-label">
+      <p>© {year} Streetlight Sverige</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,60 @@
+---
+/**
+ * LightBand: the woven band with exactly 20 lights, one per fadderbarn, under the front page's top,
+ * followed by the line "20 barn, 20 ljus." on green-deep. The number is the message:
+ * change it only if the number of children changes. Shown fully lit; lighting them one by one is added as motion later.
+ */
+const CHILDREN = 20;
+---
+
+<div class="bg-green-deep text-cotton">
+  <div class="weave">
+    <div class="band-inner py-3.5">
+      <ul class="lights" data-testid="ljusbandet" aria-hidden="true">
+        {Array.from({ length: CHILDREN }, () => <li data-testid="ljus" />)}
+      </ul>
+    </div>
+  </div>
+  <div class="band-inner py-[18px]">
+    <p class="max-w-[75ch] text-mint">
+      <strong class="font-semibold text-cotton">20 barn, 20 ljus.</strong> Vi är små med flit, så att stödet når fram och
+      vi känner varje familj.
+    </p>
+  </div>
+</div>
+
+<style>
+  .weave {
+    background: var(--color-green);
+    border-block: 5px solid var(--color-thread-red);
+    box-shadow:
+      inset 0 3px 0 var(--color-cotton),
+      inset 0 -3px 0 var(--color-cotton);
+  }
+  .lights {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0 4px;
+  }
+  li {
+    position: relative;
+    flex: 0 0 auto;
+    width: clamp(11px, 2.3vw, 26px);
+    aspect-ratio: 1;
+    transform: rotate(45deg);
+    background: var(--color-gold);
+  }
+  li::after {
+    content: "";
+    position: absolute;
+    inset: 28%;
+    background: var(--color-thread-red);
+  }
+  li:nth-child(3n)::after {
+    background: var(--color-thread-cobalt);
+  }
+</style>

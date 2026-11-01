@@ -1,0 +1,52 @@
+---
+/**
+ * Thread: the gold thread, a dashed gold line that binds a sequence together with a gold rhombus at each step.
+ * Used on a green field. Shown complete; filling the thread while reading is added as motion later.
+ */
+interface Props {
+  steps: string[];
+}
+const { steps } = Astro.props;
+---
+
+<div class="thread">
+  {steps.map((step) => <p class="step">{step}</p>)}
+</div>
+
+<style>
+  .thread {
+    position: relative;
+    padding: 34px 0 34px 34px;
+  }
+  .thread::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: repeating-linear-gradient(180deg, var(--color-gold) 0 14px, transparent 14px 22px);
+  }
+  .step {
+    position: relative;
+    color: var(--color-cotton);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .step + .step {
+    margin-top: 20px;
+  }
+  .step::before {
+    content: "";
+    position: absolute;
+    left: -33px;
+    top: 0.32em;
+    width: 13px;
+    height: 13px;
+    transform: rotate(45deg);
+    background: var(--color-gold);
+  }
+</style>

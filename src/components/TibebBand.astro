@@ -1,0 +1,33 @@
+---
+/**
+ * TibebBand: the woven border that joins two fields, always full width.
+ * "full" (46 px) marks a large shift and sits above the footer; "thin" (22 px, gold edge) a smaller one.
+ */
+interface Props {
+  variant?: "full" | "thin";
+}
+const { variant = "full" } = Astro.props;
+---
+
+<div class:list={["tibeb", { "tibeb--thin": variant === "thin" }]} role="presentation"></div>
+
+<style>
+  .tibeb {
+    height: 46px;
+    background:
+      linear-gradient(var(--color-thread-red), var(--color-thread-red)) top / 100% 5px no-repeat,
+      linear-gradient(var(--color-thread-red), var(--color-thread-red)) bottom / 100% 5px no-repeat,
+      linear-gradient(var(--color-cotton), var(--color-cotton)) 0 5px / 100% 3px no-repeat,
+      linear-gradient(var(--color-cotton), var(--color-cotton)) 0 calc(100% - 5px) / 100% 3px no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='38' height='30' viewBox='0 0 38 30'%3E%3Crect width='38' height='30' fill='%230E4A38'/%3E%3Cpath d='M19 3 31 15 19 27 7 15Z' fill='%23F4B400'/%3E%3Cpath d='M19 9 25 15 19 21 13 15Z' fill='%23D64527'/%3E%3Crect x='17' y='13' width='4' height='4' fill='%23FBFBF8'/%3E%3Cpath d='M0 13h3v4H0zM35 13h3v4h-3z' fill='%231F4FA8'/%3E%3C/svg%3E")
+        0 8px / 38px 30px repeat-x;
+  }
+  .tibeb--thin {
+    height: 22px;
+    background:
+      linear-gradient(var(--color-gold), var(--color-gold)) top / 100% 3px no-repeat,
+      linear-gradient(var(--color-gold), var(--color-gold)) bottom / 100% 3px no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='16' viewBox='0 0 20 16'%3E%3Crect width='20' height='16' fill='%230E4A38'/%3E%3Cpath d='M10 2 16 8 10 14 4 8Z' fill='%23D64527'/%3E%3Cpath d='M10 6 12 8 10 10 8 8Z' fill='%23FBFBF8'/%3E%3C/svg%3E")
+        0 3px / 20px 16px repeat-x;
+  }
+</style>

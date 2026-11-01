@@ -33,6 +33,10 @@ _Undvik_: personlig fadder, barnfadder
 Det första steget mot att bli fadder: en person anmäler intresse och föreningen hör av sig.
 _Undvik_: ansökan, registrering
 
+**Föreningsuppgifter**:
+De offentliga uppgifter som visar vem föreningen är och hur man ger: organisationsnummer, 90-konto, Swish-nummer, kontaktperson och årsredovisning.
+_Undvik_: kontaktinfo, betalinfo
+
 ## Nyheter
 
 **Nyheter**:
@@ -46,3 +50,11 @@ _Undvik_: blogginlägg, artikel, post
 **Ämne**:
 Det slag av nyhet som ett inlägg är. Det finns exakt fyra: Rapport från Addis Abeba, Nyhet från föreningen, Berättelse från en familj och Tack till faddrarna.
 _Undvik_: kategori, tagg
+
+**Exempelinlägg**:
+Ett påhittat inlägg som visar hur ett inlägg ser ut och som är tydligt märkt "Exempel". Det tas bort när föreningens egna inlägg finns.
+_Undvik_: testinlägg, dummy
+
+**Samtycke**:
+Familjens tillåtelse att ett foto eller en berättelse om dem publiceras. Utan samtycke publiceras ingenting som visar ett fadderbarn eller en familj.
+_Undvik_: godkännande, tillstånd

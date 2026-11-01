@@ -1,0 +1,8 @@
+{
+  "organisationsnummer": "TEST-ORGNR",
+  "nittiokonto": "TEST-90-KONTO",
+  "swish": "TEST-SWISH",
+  "kontaktperson": "Testperson",
+  "epost": "test@example.org",
+  "arsredovisning": "https://example.org/test-arsredovisning.pdf"
+}

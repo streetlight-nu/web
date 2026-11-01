@@ -1,0 +1,104 @@
+import { expect, test, type Page } from "@playwright/test";
+
+import { expectNoA11yViolations } from "./helpers";
+
+/** The Insyn row in Så arbetar vi: a heading followed by a list of föreningsuppgifter. */
+function insyn(page: Page) {
+  return page.locator("#sa-arbetar-vi").getByRole("region", { name: "Insyn" });
+}
+
+/** The value shown for one föreningsuppgift in the Insyn row, found by its label. */
+function uppgift(page: Page, label: string) {
+  return insyn(page).getByRole("definition").filter({
+    has: page.locator(`xpath=preceding-sibling::dt[normalize-space()="${label}"]`),
+  });
+}
+
+test.describe("föreningsuppgifter med tom datafil", () => {
+  test("Insyn visar ”fylls i” för organisationsnummer, årsredovisning och 90-konto", async ({ page }) => {
+    await page.goto("./");
+    await expect(insyn(page).getByRole("heading", { name: "Insyn" })).toBeVisible();
+    for (const [label, chip] of [
+      ["Organisationsnummer", "fylls i"],
+      ["Senaste årsredovisning", "länk fylls i"],
+      ["90-konto", "fylls i"],
+    ]) {
+      await expect(uppgift(page, label)).toHaveText(chip);
+      await expect(uppgift(page, label).getByText(chip, { exact: true })).toBeVisible();
+    }
+    await expect(insyn(page).getByRole("link")).toHaveCount(0);
+  });
+
+  test("chipet ”fylls i” syns både på green och på cotton", async ({ page }) => {
+    await page.goto("./");
+    const chip = uppgift(page, "Organisationsnummer").getByText("fylls i", { exact: true });
+    // Insyn sits on green. Place the same chip on the cotton section Vårt stöd as well.
+    await chip.evaluate((el) => {
+      const copy = el.cloneNode(true) as HTMLElement;
+      copy.dataset.testid = "chip-pa-cotton";
+      document.querySelector("#stod h2")!.after(copy);
+    });
+    const onCotton = page.getByTestId("chip-pa-cotton");
+    for (const [surface, locator] of [
+      ["green", chip],
+      ["cotton", onCotton],
+    ] as const) {
+      await expect(locator, surface).toBeVisible();
+      const { text, border } = await locator.evaluate(contrastAgainstBackground);
+      expect(text, `texten på ${surface}`).toBeGreaterThanOrEqual(4.5);
+      expect(border, `kanten på ${surface}`).toBeGreaterThanOrEqual(3);
+    }
+  });
+});
+
+test.describe("föreningsuppgifter med ifylld testfil", () => {
+  // A second build of the site, made from tests/fixtures/foreningsuppgifter-ifylld.json (see playwright.config.ts).
+  test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
+  test("Insyn visar värdena från datafilen i stället för ”fylls i”", async ({ page }) => {
+    await page.goto("./");
+    await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");
+    await expect(uppgift(page, "90-konto")).toHaveText("TEST-90-KONTO");
+    await expect(uppgift(page, "Senaste årsredovisning").getByRole("link", { name: "Läs årsredovisningen" })).toHaveAttribute(
+      "href",
+      "https://example.org/test-arsredovisning.pdf",
+    );
+    await expect(insyn(page).getByText(/fylls i/)).toHaveCount(0);
+    await expectNoA11yViolations(page);
+  });
+});
+
+/** Runs in the page: contrast of an element's text and border against the surface behind it. */
+function contrastAgainstBackground(el: Element) {
+  const rgba = (c: string) => c.match(/[\d.]+/g)!.map(Number);
+  const luminance = ([r, g, b]: number[]) => {
+    const [R, G, B] = [r, g, b].map((v) => {
+      const s = v / 255;
+      return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+  };
+  const ratio = (a: number[], b: number[]) => {
+    const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+    return (hi + 0.05) / (lo + 0.05);
+  };
+  // The first opaque background among the ancestors is the surface the chip sits on.
+  let node = el.parentElement;
+  let surface = [255, 255, 255];
+  while (node) {
+    const bg = rgba(getComputedStyle(node).backgroundColor);
+    if (bg.length < 4 || bg[3] === 1) {
+      surface = bg.slice(0, 3);
+      break;
+    }
+    node = node.parentElement;
+  }
+  // The chip's own background is translucent at most; blend it over the surface.
+  const [r, g, b, a = 1] = rgba(getComputedStyle(el).backgroundColor);
+  const behind = [r, g, b].map((v, i) => v * a + surface[i] * (1 - a));
+  const style = getComputedStyle(el);
+  return {
+    text: ratio(rgba(style.color).slice(0, 3), behind),
+    border: ratio(rgba(style.borderTopColor).slice(0, 3), surface),
+  };
+}

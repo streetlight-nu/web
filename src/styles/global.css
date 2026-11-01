@@ -199,6 +199,11 @@
     background: rgba(251, 251, 248, 0.45);
     font-weight: 600;
   }
+  .on-green .sl-todo {
+    border-color: var(--color-mint);
+    background: transparent;
+    color: var(--color-cotton);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

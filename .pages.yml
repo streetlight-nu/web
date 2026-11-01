@@ -1,18 +1,57 @@
-# Pages CMS (https://pagescms.org/docs/configuration/). Redaktörernas instruktion: docs/redaktorer.md.
-# Fälten i Nyheter måste motsvara schemat i src/lib/nyheter-schema.ts; tests/unit/pages-cms.test.ts kontrollerar det.
+# Pages CMS (https://pagescms.org): the editing forms the association uses.
+# Editors sign in with a GitHub account that has write access; a save is committed straight to master,
+# and the site is published by GitHub Actions. Instructions for editors (in Swedish): docs/redaktorer.md.
+# The fields of Nyheter must match the schema in src/lib/nyheter-schema.ts; tests/unit/pages-cms.test.ts checks it.
 
-# Bilder laddas upp under src/assets, där Astro hittar och optimerar dem vid bygget.
-# `output` är sökvägen som skrivs i inlägget, relativt till inläggets mapp (src/content/nyheter).
+# Images are uploaded under src/assets, where Astro finds and optimises them at build time.
+# `output` is the path written into a post, relative to the post's folder (src/content/nyheter).
 media:
   input: src/assets/nyheter
   output: ../../assets/nyheter
 
 content:
+  - name: foreningsuppgifter
+    label: Föreningsuppgifter
+    type: file
+    path: src/data/foreningsuppgifter.json
+    format: json
+    fields:
+      - name: organisationsnummer
+        label: Organisationsnummer
+        type: string
+        description: Visas under Insyn på startsidan. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: nittiokonto
+        label: 90-konto
+        type: string
+        description: Visas under Insyn på startsidan. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: swish
+        label: Swish-nummer
+        type: string
+        description: För engångsgåvor. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: kontaktperson
+        label: Kontaktperson
+        type: string
+        description: Den som blivande faddrar kan kontakta med frågor.
+      - name: epost
+        label: Kontakt-e-post
+        type: string
+        description: Dit blivande faddrar mejlar.
+        pattern:
+          regex: "^$|^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+          message: Skriv en e-postadress, till exempel namn@exempel.se.
+      - name: arsredovisning
+        label: Länk till senaste årsredovisningen
+        type: string
+        description: En hel webbadress som börjar med https://. Visas under Insyn på startsidan.
+        pattern:
+          regex: "^$|^https?://\\S+$"
+          message: Skriv en hel webbadress som börjar med https://.
+
   - name: nyheter
     label: Nyheter
     type: collection
     path: src/content/nyheter
-    # Filnamnet blir inläggets adress: /nyheter/<titeln som slug>.
+    # The file name becomes the post's address: /nyheter/<title as a slug>.
     filename: "{title}.md"
     view:
       fields: [title, topic, date]
@@ -26,6 +65,7 @@ content:
         label: Titel
         type: string
         required: true
+        description: Blir också inläggets adress. Adressen ändras inte om du byter titel senare.
       - name: date
         label: Datum
         type: date
@@ -49,25 +89,32 @@ content:
       - name: place
         label: Plats
         type: string
+        description: Var det hände, till exempel Addis Abeba. Får lämnas tomt.
       - name: lede
         label: Ingress
         type: text
         required: true
+        description: Ett par meningar. Visas i nyhetslistan och när någon delar länken.
       - name: image
         label: Bild
         type: image
+        description: Ladda upp bilden i full storlek. Webbplatsen gör själv mindre versioner.
       - name: imageAlt
-        label: Alt-text (beskriv vad bilden visar)
+        label: Alt-text
         type: string
+        description: Krävs när det finns en bild. Beskriv kort vad bilden visar.
       - name: showsChildren
         label: Bilden visar barn
         type: boolean
+        description: Kryssa i om något barn syns på bilden. Då krävs samtycke.
       - name: consent
         label: Familjen har gett sitt samtycke
         type: boolean
+        description: Krävs för en Berättelse från en familj och för en bild där barn syns.
       - name: example
-        label: Exempelinlägg (visas med chipet "Exempel")
+        label: Exempelinlägg
         type: boolean
+        description: Bara för de påhittade exempelinläggen. Lämna tomt.
       - name: body
         label: Brödtext
         type: rich-text

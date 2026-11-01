@@ -143,7 +143,7 @@ test.describe("startsidans berättelse", () => {
     const utanNyheter = await page.locator("main").evaluate((main) => {
       const senaste = main.querySelector<HTMLElement>("#senaste")!;
       senaste.style.display = "none";
-      const synligText = main.innerText;
+      const synligText = (main as HTMLElement).innerText;
       senaste.style.display = "";
       return synligText;
     });

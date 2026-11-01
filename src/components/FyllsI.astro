@@ -1,26 +1,10 @@
 ---
 /**
- * The chip "fylls i": marks a fact the association has not given yet, instead of making one up.
- * Say what is missing in the slot, e.g. "nummer fylls i". Works on cotton and, inside `.on-green`, on green.
- * Follows `sl-todo` in the design system's Placeholder component.
+ * The chip "fylls i" (design system Placeholder, `sl-todo`): marks a fact the association has
+ * not given yet, instead of making one up. Say what is missing in the slot, e.g. "nummer fylls i".
+ * Works on cotton and, inside `.on-green`, on green. The styles live in global.css, so that
+ * a post's Markdown can use the same markup: <span class="sl-todo">fylls i</span>.
  */
 ---
 
-<span class="fylls-i"><slot>fylls i</slot></span>
-
-<style>
-  .fylls-i {
-    display: inline-block;
-    border: 2px dashed var(--color-ink);
-    padding: 2px 10px;
-    border-radius: var(--radius-sm);
-    font-weight: 600;
-    color: var(--color-ink);
-    background: rgba(251, 251, 248, 0.45);
-  }
-  :global(.on-green) .fylls-i {
-    background: transparent;
-    color: var(--color-cotton);
-    border-color: var(--color-mint);
-  }
-</style>
+<span class="sl-todo"><slot>fylls i</slot></span>

@@ -72,3 +72,86 @@ test.describe("mobilmenyn", () => {
     await expect(firstLink).toBeHidden();
   });
 });
+
+test.describe("startsidans berättelse", () => {
+  test("avsnitten Vårt stöd, Familjerna och Så arbetar vi nås från menyn", async ({ page, isMobile }) => {
+    await page.goto("./");
+    const nav = page.getByRole("navigation", { name: "Huvudmeny" });
+    for (const [name, anchor, heading] of [
+      ["Vårt stöd", "stod", "Utbildning är vägen ut ur fattigdom."],
+      ["Familjerna", "familjer", "Ljuset ska nå hela familjen."],
+      ["Så arbetar vi", "sa-arbetar-vi", "Två föreningar. Två styrelser. Ett arbete."],
+    ]) {
+      if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
+      await nav.getByRole("link", { name, exact: true }).click();
+      await expect(page).toHaveURL(new RegExp(`#${anchor}$`));
+      await expect(page.locator(`#${anchor}`).getByRole("heading", { level: 2, name: heading })).toBeInViewport();
+    }
+  });
+
+  test("bandet under toppen har exakt 20 ljus, ett per fadderbarn", async ({ page }) => {
+    await page.goto("./");
+    const band = page.getByTestId("ljusbandet");
+    await expect(band).toBeVisible();
+    await expect(band.getByTestId("ljus")).toHaveCount(20);
+    for (const light of await band.getByTestId("ljus").all()) await expect(light).toBeVisible();
+    await expect(page.getByText("20 barn, 20 ljus.")).toBeVisible();
+  });
+
+  test("ብርሃን i toppen är amhariska, i guld och med uttalet under", async ({ page }) => {
+    await page.goto("./");
+    const word = page.getByRole("banner").getByText("ብርሃን", { exact: true });
+    await expect(word).toBeVisible();
+    await expect(word).toHaveAttribute("lang", "am");
+    await expect(word).toHaveCSS("color", "rgb(244, 180, 0)");
+    const pronunciation = page.getByRole("banner").getByText("”ljus” på amhariska, uttalas birhan");
+    await expect(pronunciation).toBeVisible();
+    const [w, p] = [(await word.boundingBox())!, (await pronunciation.boundingBox())!];
+    expect(p.y).toBeGreaterThanOrEqual(w.y + w.height - 1);
+  });
+
+  test("berättar vad stödet går till, hur familjerna får stöd och hur föreningarna arbetar", async ({ page }) => {
+    await page.goto("./");
+    const stod = page.locator("#stod");
+    for (const name of ["Skolavgifter", "Skoluniform", "Skolmaterial", "Vård när barnet blir sjukt"]) {
+      await expect(stod.getByRole("heading", { level: 3, name })).toBeVisible();
+    }
+    const familjer = page.locator("#familjer");
+    for (const step of [
+      "Föräldern får stöd att starta en egen verksamhet som ger inkomst.",
+      "Familjen får en egen inkomst att bygga vidare på.",
+      "Barnet kan fortsätta gå i skolan, med en ljusare framtid framför sig.",
+    ]) {
+      await expect(familjer.getByText(step)).toBeVisible();
+    }
+    await expect(
+      page.getByText("Vi vill sprida hopp om en ljus framtid till våra barn och deras familjer."),
+    ).toBeVisible();
+    await expect(page.getByText("Streetlights vision")).toBeVisible();
+    const arbete = page.locator("#sa-arbetar-vi");
+    await expect(arbete.getByRole("heading", { level: 3, name: "Streetlight Sverige" })).toBeVisible();
+    await expect(arbete.getByRole("heading", { level: 3, name: "Streetlight Etiopien" })).toBeVisible();
+    await expect(
+      arbete.getByText("Barnen väljs ut tillsammans med de lokala myndigheterna i Addis Abeba."),
+    ).toBeVisible();
+  });
+
+  test("texterna följer ordlistan och hittar inte på några siffror", async ({ page }) => {
+    await page.goto("./");
+    const text = (await page.getByRole("banner").innerText()) + (await page.locator("main").innerText());
+    expect(new Set(text.match(/\d+/g))).toEqual(new Set(["20"]));
+    expect(text).toContain("fadderbarn");
+    expect(text).not.toMatch(/blogg|sponsor|donator|mottagare/i);
+  });
+
+  test("brödtexten är minst 18 px", async ({ page }) => {
+    await page.goto("./");
+    const sizes = await page
+      .locator("main p, main li, main blockquote, main figcaption")
+      .evaluateAll((els) =>
+        els.map((el) => ({ text: el.textContent!.trim().slice(0, 40), px: parseFloat(getComputedStyle(el).fontSize) })),
+      );
+    expect(sizes.length).toBeGreaterThan(10);
+    expect(sizes.filter((s) => s.px < 18)).toEqual([]);
+  });
+});

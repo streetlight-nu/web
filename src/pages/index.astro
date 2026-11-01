@@ -1,35 +1,281 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import LightBand from "@/components/LightBand.astro";
+import Ledger,{ type LedgerItem } from "@/components/Ledger.astro";
+import Thread from "@/components/Thread.astro";
+import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { href } from "@/lib/utils";
+
+const support: LedgerItem[] = [
+  {
+    title: "Skolavgifter",
+    text: "Barnet får en plats i skolan och kan stanna kvar där, utan att familjen behöver välja mellan mat och avgift.",
+  },
+  { title: "Skoluniform", text: "En egen uniform gör att barnet kan gå till skolan som alla andra." },
+  {
+    title: "Skolmaterial",
+    text: "Böcker, skrivhäften och pennor, så att barnet kan följa undervisningen och göra läxorna.",
+  },
+  {
+    title: "Vård när barnet blir sjukt",
+    text: "Vi betalar eventuella medicinska kostnader, så att en sjukdom inte blir slutet på skolgången.",
+  },
+];
+
+const familySteps = [
+  "Föräldern får stöd att starta en egen verksamhet som ger inkomst.",
+  "Familjen får en egen inkomst att bygga vidare på.",
+  "Barnet kan fortsätta gå i skolan, med en ljusare framtid framför sig.",
+];
+
+const section = "py-[clamp(64px,9vw,120px)]";
+const field = `on-green bg-green text-cotton ${section}`;
+const split = "grid grid-cols-1 items-start gap-[clamp(32px,6vw,96px)] min-[901px]:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]";
+const h2 = "text-headline";
+const lede = "max-w-[58ch] text-lede";
 ---
 
 <BaseLayout
   title="Streetlight"
   description="Streetlight är en ideell förening i Sverige och Etiopien som stöttar 20 fadderbarns skolgång och deras familjer i Addis Abeba."
 >
-  <div slot="header" class="pt-[clamp(28px,5vw,64px)] pb-[clamp(40px,6vw,76px)]">
-    <h1 class="max-w-[14ch] text-display tracking-[-0.035em]">
-      Ett ljus på vägen <span class="text-gold">till skolan.</span>
-    </h1>
-    <p class="mt-[26px] max-w-[58ch] text-lede text-mint">
-      Streetlight stöttar 20 fadderbarn från mycket fattiga familjer i Addis Abeba. Vi betalar skolgången och hjälper
-      deras föräldrar att bygga en egen inkomst.
-    </p>
-    <div class="mt-[34px] flex flex-wrap gap-3.5">
-      <a class={buttonVariants()} href={href("/#bli-fadder")}>
-        Bli fadder
-        <svg viewBox="0 0 18 18" aria-hidden="true"
-            ><path
-              d="M3 9h11M10 4.5 14.5 9 10 13.5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path></svg
-          >
-      </a>
-      <a class={buttonVariants({ variant: "line" })} href={href("/#stod")}>Vad stödet går till</a>
+  <div
+    slot="header"
+    class="grid grid-cols-1 items-end gap-8 pt-[clamp(28px,5vw,64px)] min-[901px]:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)]"
+  >
+    <div class="min-w-0">
+      <h1 class="max-w-[14ch] text-display tracking-[-0.035em]">
+        Ett ljus på vägen <span class="text-gold">till skolan.</span>
+      </h1>
+      <p class="mt-[26px] max-w-[58ch] text-lede text-mint">
+        Streetlight stöttar 20 fadderbarn från mycket fattiga familjer i Addis Abeba. Vi betalar skolgången och hjälper
+        deras föräldrar att bygga en egen inkomst.
+      </p>
+      <div class="mt-[34px] flex flex-wrap gap-3.5 pb-3 max-[520px]:mt-[26px] min-[901px]:pb-[clamp(40px,6vw,76px)]">
+        <a class={buttonVariants()} href={href("/#bli-fadder")}>
+          Bli fadder
+          <svg viewBox="0 0 18 18" aria-hidden="true"
+              ><path
+                d="M3 9h11M10 4.5 14.5 9 10 13.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path></svg
+            >
+        </a>
+        <a class={buttonVariants({ variant: "line" })} href={href("/#stod")}>Vad stödet går till</a>
+      </div>
+    </div>
+    <div class="lamp-wrap">
+      <div class="lamp" aria-hidden="true">
+        <svg viewBox="0 0 180 560" preserveAspectRatio="xMaxYMax meet"
+          ><g class="cone"
+            ><path d="M40 36H56L100 560H-130Z" fill="#F4B400"></path><path
+              d="M40 36H56L85.33 385H-73.33Z"
+              fill="#FFCF45"></path><path d="M40 36H56L70.67 210H-16.67Z" fill="#FFDB73"></path></g
+          ><path d="M150 560V100a70 70 0 0 0 -70 -70H40" fill="none" stroke="#FBFBF8" stroke-width="12"></path></svg
+        >
+      </div>
+      <p class="amharic">
+        <span lang="am" class="block text-[clamp(2.2rem,4vw,3.2rem)] leading-none text-gold">ብርሃን</span>
+        <span class="mt-2 block max-w-[15ch] text-label font-medium tracking-[0.01em] text-mint"
+          >”ljus” på amhariska, uttalas birhan</span
+        >
+      </p>
     </div>
   </div>
+
+  <LightBand slot="header-after" />
+
+  <section id="stod"class={`bg-cotton text-ink ${section}`}>
+    <div class={`band-inner ${split}`}>
+      <div class="min-w-0">
+        <h2 class={h2}>Utbildning är vägen ut ur fattigdom.</h2>
+        <p class={`mt-[22px] ${lede}`}>
+          Därför står vi för det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
+        </p>
+      </div>
+      <div class="min-w-0"><Ledger items={support} /></div>
+    </div>
+  </section>
+
+  <TibebBand variant="thin" />
+
+  <section id="familjer" class={field}>
+    <div class="band-inner grid grid-cols-1 items-center gap-[clamp(32px,6vw,96px)] min-[901px]:grid-cols-2">
+      <div class="min-w-0">
+        <h2 class={h2}>Ljuset ska nå hela <span class="text-gold">familjen.</span></h2>
+        <p class={`mt-[22px] text-mint ${lede}`}>
+          Ett barn som går i skolan behöver ett hem som klarar sig. Föräldrarna kan få stöd och ekonomisk hjälp att
+          starta en egen verksamhet som ger inkomst.
+        </p>
+      </div>
+      <div class="min-w-0"><Thread steps={familySteps} /></div>
+    </div>
+  </section>
+
+  <section class="vision bg-cotton py-[clamp(72px,10vw,140px)] text-ink">
+    <figure class="band-inner">
+      <blockquote
+        class="max-w-[17ch] font-display text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[1.02] font-extrabold tracking-[-0.03em] text-balance"
+      >
+        Vi vill sprida hopp om en <span class="highlight">ljus framtid</span> till våra barn och deras familjer.
+      </blockquote>
+      <figcaption class="mt-7 font-medium text-ink-soft">Streetlights vision</figcaption>
+    </figure>
+  </section>
+
+  <TibebBand />
+
+  <section id="sa-arbetar-vi" class={field}>
+    <div class="band-inner">
+      <div class="max-w-[760px]">
+        <h2 class={h2}>Två föreningar. Två styrelser. Ett arbete.</h2>
+        <p class={`mt-[22px] text-mint ${lede}`}>
+          Streetlight är registrerad som ideell förening både i Sverige och i Etiopien. Föreningarna är fristående från
+          varandra, med var sin styrelse.
+        </p>
+      </div>
+      <div class="orgs mt-14 grid grid-cols-1 items-stretch min-[901px]:grid-cols-[minmax(0,1fr)_120px_minmax(0,1fr)]">
+        <article class="org">
+          <h3 class="text-title tracking-[-0.015em]">Streetlight Sverige</h3>
+          <p>Den svenska föreningen samlar in pengar och stöttar arbetet i Etiopien ekonomiskt.</p>
+          <ul><li>Fadderskap och gåvor</li><li>Egen styrelse i Sverige</li></ul>
+        </article>
+        <div class="link" aria-hidden="true">
+          <svg viewBox="0 0 120 40" preserveAspectRatio="none"
+            ><path d="M0 20h120" stroke="#F4B400" stroke-width="3" stroke-dasharray="12 7"></path><path
+              class="runner"
+              d="M60 8 72 20 60 32 48 20Z"
+              fill="#F4B400"></path></svg
+          >
+          <span>Ekonomiskt stöd</span>
+        </div>
+        <article class="org">
+          <h3 class="text-title tracking-[-0.015em]">Streetlight Etiopien</h3>
+          <p>Den etiopiska föreningen bär arbetet med barnen och familjerna på plats i Addis Abeba.</p>
+          <ul><li>Fadderbarnen och deras familjer</li><li>Egen styrelse i Etiopien</li></ul>
+        </article>
+      </div>
+      <div class="mt-14 grid grid-cols-[auto_minmax(0,1fr)] items-start gap-6 border-t-[1.5px] border-mint/30 pt-9">
+        <svg viewBox="0 0 52 52" aria-hidden="true" class="size-[52px]"
+          ><path d="M26 3 49 26 26 49 3 26Z" fill="none" stroke="#F4B400" stroke-width="3"></path><path
+            d="M26 15 37 26 26 37 15 26Z"
+            fill="#F4B400"></path></svg
+        >
+        <p class="max-w-[58ch] text-[clamp(1.15rem,1.6vw,1.35rem)] leading-normal text-mint">
+          <strong class="font-semibold text-cotton">Barnen väljs ut tillsammans med de lokala myndigheterna i Addis Abeba.</strong
+          >{" "}De hjälper oss att hitta barn från utsatta familjer som behöver extra stöd. På så sätt är Streetlight en del av
+          det sociala skyddsnätet i Etiopien.
+        </p>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  /* The street lamp in the hero; its light falls to the woven band below. */
+  .lamp-wrap {
+    position: relative;
+    align-self: stretch;
+    min-height: 440px;
+  }
+  .lamp {
+    position: absolute;
+    right: 12%;
+    bottom: 0;
+    width: 180px;
+    height: 100%;
+    max-height: 560px;
+  }
+  .lamp svg {
+    position: absolute;
+    inset: auto 0 0 auto;
+    height: 100%;
+    width: auto;
+    overflow: visible;
+  }
+  .amharic {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    line-height: 1;
+  }
+  @media (max-width: 900px) {
+    .lamp-wrap {
+      min-height: 300px;
+    }
+    .lamp {
+      right: 6%;
+    }
+  }
+  @media (max-width: 520px) {
+    .lamp-wrap {
+      min-height: 190px;
+    }
+    .lamp svg {
+      height: 190px;
+    }
+  }
+  .highlight {
+    background-image: linear-gradient(
+      transparent 62%,
+      var(--color-gold-soft) 62%,
+      var(--color-gold-soft) 92%,
+      transparent 92%
+    );
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+  .org {
+    min-width: 0;
+    background: var(--color-cotton);
+    color: var(--color-ink);
+    padding: clamp(24px, 3vw, 40px);
+    border-radius: var(--radius-md);
+  }
+  .org p {
+    margin-top: 12px;
+    color: var(--color-ink-soft);
+  }
+  .org ul {
+    margin: 16px 0 0;
+    padding-left: 1.1em;
+    list-style: disc;
+    color: var(--color-ink-soft);
+  }
+  .org li + li {
+    margin-top: 6px;
+  }
+  .link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding-inline: 10px;
+    color: var(--color-gold);
+    font-weight: 600;
+    font-size: var(--text-label);
+    line-height: 1.3;
+    text-align: center;
+  }
+  .link svg {
+    width: 100%;
+    height: 40px;
+    overflow: visible;
+  }
+  @media (max-width: 900px) {
+    .link {
+      flex-direction: row;
+      padding-block: 14px;
+    }
+    .link svg {
+      width: 40px;
+      height: 56px;
+      transform: rotate(90deg);
+    }
+  }
+</style>

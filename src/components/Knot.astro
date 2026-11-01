@@ -1,0 +1,44 @@
+---
+import type { Amne } from "@/lib/nyheter-schema";
+import { cn } from "@/lib/utils";
+
+/**
+ * The topic knot on the gold thread (design system NewsItem): a gold diamond whose core
+ * shows the topic. Red for a report, cobalt for association news, green for a family
+ * story and ink for a thank-you. Decorative: the topic is always written out as well.
+ */
+interface Props {
+  topic: Amne;
+  class?: string;
+}
+const { topic, class: className } = Astro.props;
+---
+
+<span class={cn("knot", className)} data-amne={topic} aria-hidden="true"></span>
+
+<style>
+  .knot {
+    position: relative;
+    display: inline-block;
+    flex: none;
+    width: 16px;
+    height: 16px;
+    transform: rotate(45deg);
+    background: var(--color-gold);
+  }
+  .knot::after {
+    content: "";
+    position: absolute;
+    inset: 28%;
+    background: var(--color-thread-red);
+  }
+  .knot[data-amne="forening"]::after {
+    background: var(--color-thread-cobalt);
+  }
+  .knot[data-amne="familj"]::after {
+    background: var(--color-green);
+  }
+  .knot[data-amne="tack"]::after {
+    background: var(--color-ink);
+  }
+</style>

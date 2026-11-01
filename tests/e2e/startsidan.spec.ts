@@ -139,7 +139,8 @@ test.describe("startsidans berättelse", () => {
   test("texterna följer ordlistan och hittar inte på några siffror", async ({ page }) => {
     await page.goto("./");
     const text = (await page.getByRole("banner").innerText()) + (await page.locator("main").innerText());
-    expect(new Set(text.match(/\d+/g))).toEqual(new Set(["20"]));
+    // "90-konto" is the name of a kind of account, not a figure.
+    expect(new Set(text.replaceAll("90-konto", "").match(/\d+/g))).toEqual(new Set(["20"]));
     expect(text).toContain("fadderbarn");
     expect(text).not.toMatch(/blogg|sponsor|donator|mottagare/i);
   });

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import BliFadder from "@/components/BliFadder.astro";
 import Insyn from "@/components/Insyn.astro";
 import LightBand from "@/components/LightBand.astro";
 import SenasteNytt from "@/components/SenasteNytt.astro";
@@ -61,7 +62,7 @@ const lede = "max-w-[58ch] text-lede";
         deras föräldrar att bygga en egen inkomst.
       </p>
       <div class="mt-[34px] flex flex-wrap gap-3.5 pb-3 max-[520px]:mt-[26px] min-[901px]:pb-[clamp(40px,6vw,76px)]">
-        <a class={buttonVariants()} href={href("/#bli-fadder")}>
+        <a class={buttonVariants()} href={href("/#bli-fadder")} data-huvudknapp>
           Bli fadder
           <svg viewBox="0 0 18 18" aria-hidden="true"
               ><path
@@ -184,6 +185,8 @@ const lede = "max-w-[58ch] text-lede";
   </section>
 
   <SenasteNytt />
+
+  <BliFadder />
 </BaseLayout>
 
 <script>

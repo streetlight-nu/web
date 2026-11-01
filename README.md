@@ -38,6 +38,10 @@ Komponenterna läser uppgifterna med `getForeningsuppgifter()` från `src/lib/fo
 
 Webbläsartesterna bygger sajten en gång till med `tests/fixtures/foreningsuppgifter-ifylld.json` (via `FORENINGSUPPGIFTER_FIL`) och visar den på porten efter `E2E_PORT`.
 
+## Intresseanmälan
+
+Formuläret i "Bli fadder" (`src/components/Intresseanmalan.tsx`) är inte kopplat till någon formulärtjänst än, och det säger det till besökaren. Ingen data lämnar sidan. Formuläret skickar bara via `skickaIntresseanmalan()` i `src/lib/intresseanmalan.ts`, som i v1 svarar `inte-kopplat`. När föreningen har valt tjänst och mottagare kopplas den in där, och tackläget i formuläret ändras så att det säger vad det nya svaret betyder.
+
 ## Publicering
 
 GitHub Actions kör typkontroll, enhetstester, bygge och webbläsartester på varje push. När allt går igenom på `master` publiceras sajten på GitHub Pages på https://streetlight-nu.github.io/web/.

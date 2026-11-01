@@ -1,0 +1,73 @@
+---
+/**
+ * The home page section "Bli fadder" (#bli-fadder), on gold: what a fadder does, the three steps,
+ * the trust row, who to contact and Swish for a one-off gift, and the intresseanmälan.
+ * Contact and Swish come from the föreningsuppgifter; a missing one shows the chip "fylls i".
+ */
+import BliFadderDocka from "@/components/BliFadderDocka.astro";
+import FyllsI from "@/components/FyllsI.astro";
+import Intresseanmalan from "@/components/Intresseanmalan";
+import Steps from "@/components/Steps.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import { getForeningsuppgifter } from "@/lib/foreningsuppgifter";
+
+const { kontaktperson, epost, swish } = getForeningsuppgifter();
+---
+
+<TibebBand variant="thin" />
+
+<section id="bli-fadder" class="bg-gold py-[clamp(64px,9vw,120px)] text-ink">
+  <div
+    class="band-inner grid grid-cols-1 items-start gap-[clamp(32px,6vw,96px)] min-[901px]:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
+  >
+    <div class="min-w-0">
+      <h2 class="text-headline">Bli fadder och håll ljusen tända.</h2>
+      <p class="mt-[22px] max-w-[58ch] text-lede">
+        Som fadder stöttar du alla 20 fadderbarnen tillsammans. Ditt bidrag går till skolavgifter, uniform, skolmaterial
+        och vård i Addis Abeba.
+      </p>
+      <p class="mt-[18px] max-w-[52ch] border-t-[3px] border-ink pt-4">
+        Vill du hellre följa ett av barnen? Det går också. Välj <strong>fadder för ett barn</strong> i formuläret.
+      </p>
+
+      <h3 id="sa-gar-det-till" class="mt-9 text-title tracking-[-0.015em]">Så går det till</h3>
+      <Steps class="mt-4" aria-labelledby="sa-gar-det-till">
+        <li>Du skickar en intresseanmälan i formuläret.</li>
+        <li>Någon i föreningen hör av sig och berättar mer om barnen och om hur du betalar.</li>
+        <li>Du börjar ge. Belopp och betalsätt: <FyllsI>fylls i av föreningen</FyllsI></li>
+      </Steps>
+
+      <p
+        class="mt-[30px] grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3.5 border-t-[1.5px] border-ink/25 pt-5 font-semibold"
+      >
+        <svg viewBox="0 0 26 26" aria-hidden="true" class="mt-0.5 size-[26px]"
+          ><path d="M13 1 25 13 13 25 1 13Z" fill="#0B2E24"></path><path d="M13 7 19 13 13 19 7 13Z" fill="#FBFBF8"
+          ></path></svg
+        >
+        <span
+          >Barnen väljs ut tillsammans med de lokala myndigheterna i Addis Abeba. Pengarna går via den svenska föreningen
+          till arbetet i Etiopien.</span
+        >
+      </p>
+      <p class="mt-3.5">
+        Frågor? Kontakta {kontaktperson ?? <FyllsI>namn fylls i</FyllsI>} på{" "}
+        {
+          epost ? (
+            <a class="font-semibold text-ink underline" href={`mailto:${epost}`}>
+              {epost}
+            </a>
+          ) : (
+            <FyllsI>e-post fylls i</FyllsI>
+          )
+        }.
+      </p>
+      <p class="mt-3.5">Hellre en engångsgåva? Swish: {swish ?? <FyllsI>nummer fylls i</FyllsI>}</p>
+    </div>
+
+    <div class="min-w-0 self-stretch">
+      <Intresseanmalan client:load epost={epost} />
+    </div>
+  </div>
+</section>
+
+<BliFadderDocka />

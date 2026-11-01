@@ -1,0 +1,137 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+
+import Knot from "@/components/Knot.astro";
+import Placeholder from "@/components/Placeholder.astro";
+import { amnesNamn, formateraDatum, isoDatum } from "@/lib/nyheter";
+import { href } from "@/lib/utils";
+
+/**
+ * A post on the gold thread (design system NewsItem): knot, date, topic, title, lede and a
+ * photo or a Placeholder. The whole row is clickable through the title's link, which is the
+ * row's only link, so a keyboard stops once per post.
+ */
+interface Props {
+  post: CollectionEntry<"nyheter">;
+}
+const { post } = Astro.props;
+const { title, date, topic, lede, image } = post.data;
+---
+
+<li class="news-item">
+  <Knot topic={topic} class="news-knot" />
+  <time datetime={isoDatum(date)}>{formateraDatum(date)}</time>
+  <div>
+    <span class="topic">{amnesNamn[topic]}</span>
+    <h3><a href={href(`/nyheter/${post.id}`)}>{title}</a></h3>
+    <p>{lede}</p>
+  </div>
+  {
+    image ? (
+      <Image class="news-photo" src={image} alt="" widths={[220, 440]} sizes="220px" />
+    ) : (
+      <Placeholder class="news-photo" text="Foto till inlägget" />
+    )
+  }
+</li>
+
+<style>
+  .news-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr) 220px;
+    gap: 28px;
+    align-items: start;
+    padding-block: 30px;
+    border-top: 1.5px solid var(--color-rule);
+  }
+  .news-item:last-child {
+    border-bottom: 1.5px solid var(--color-rule);
+  }
+  .news-item > :global(*) {
+    min-width: 0;
+  }
+  .news-item :global(.news-knot) {
+    position: absolute;
+    left: -51px;
+    top: 38px;
+    width: 20px;
+    height: 20px;
+  }
+  time {
+    padding-top: 6px;
+    color: var(--color-ink-soft);
+    font-size: var(--text-label);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .topic {
+    color: var(--color-ink-soft);
+    font-size: var(--text-label);
+    font-weight: 600;
+  }
+  h3 {
+    margin-block: 10px;
+    font-size: var(--text-title);
+    line-height: var(--text-title--line-height);
+  }
+  h3 a {
+    text-decoration: none;
+    background-image: linear-gradient(var(--color-gold-soft), var(--color-gold-soft));
+    background-repeat: no-repeat;
+    background-size: 0% 30%;
+    background-position: 0 88%;
+    transition: background-size 0.5s var(--ease-light);
+  }
+  /* The title's link covers the whole row. */
+  h3 a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  h3 a:hover,
+  h3 a:focus-visible,
+  .news-item:hover h3 a {
+    background-size: 100% 30%;
+  }
+  p {
+    max-width: 56ch;
+    color: var(--color-ink-soft);
+  }
+  .news-item :global(.news-photo) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    h3 a {
+      transition: none;
+    }
+  }
+  @media (max-width: 900px) {
+    .news-item {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+    }
+    .news-item :global(.news-photo) {
+      max-width: 420px;
+      margin-top: 14px;
+    }
+    time {
+      padding-top: 0;
+    }
+    .news-item :global(.news-knot) {
+      top: 36px;
+    }
+  }
+  @media (max-width: 600px) {
+    .news-item :global(.news-knot) {
+      left: -42px;
+      width: 17px;
+      height: 17px;
+    }
+  }
+</style>

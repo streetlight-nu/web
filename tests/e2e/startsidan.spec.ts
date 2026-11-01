@@ -139,7 +139,14 @@ test.describe("startsidans berättelse", () => {
   test("texterna följer ordlistan och hittar inte på några siffror", async ({ page }) => {
     await page.goto("./");
     const text = (await page.getByRole("banner").innerText()) + (await page.locator("main").innerText());
-    expect(new Set(text.match(/\d+/g))).toEqual(new Set(["20"]));
+    // "Senaste nytt" shows the newest post's date, which comes from the post, not from the page.
+    const utanNyheter = await page.locator("main").evaluate((main) => {
+      const kopia = main.cloneNode(true) as HTMLElement;
+      kopia.querySelector("#senaste")?.remove();
+      return kopia.textContent!;
+    });
+    const siffror = (await page.getByRole("banner").innerText()) + utanNyheter;
+    expect(new Set(siffror.match(/\d+/g))).toEqual(new Set(["20"]));
     expect(text).toContain("fadderbarn");
     expect(text).not.toMatch(/blogg|sponsor|donator|mottagare/i);
   });

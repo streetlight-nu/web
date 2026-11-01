@@ -141,12 +141,15 @@ test.describe("startsidans berättelse", () => {
     const text = (await page.getByRole("banner").innerText()) + (await page.locator("main").innerText());
     // "Senaste nytt" shows the newest post's date, which comes from the post, not from the page.
     const utanNyheter = await page.locator("main").evaluate((main) => {
-      const kopia = main.cloneNode(true) as HTMLElement;
-      kopia.querySelector("#senaste")?.remove();
-      return kopia.textContent!;
+      const senaste = main.querySelector<HTMLElement>("#senaste")!;
+      senaste.style.display = "none";
+      const synligText = main.innerText;
+      senaste.style.display = "";
+      return synligText;
     });
     const siffror = (await page.getByRole("banner").innerText()) + utanNyheter;
-    expect(new Set(siffror.match(/\d+/g))).toEqual(new Set(["20"]));
+    // "90-konto" is the name of a kind of account, not a figure.
+    expect(new Set(siffror.replaceAll("90-konto", "").match(/\d+/g))).toEqual(new Set(["20"]));
     expect(text).toContain("fadderbarn");
     expect(text).not.toMatch(/blogg|sponsor|donator|mottagare/i);
   });

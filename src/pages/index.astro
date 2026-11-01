@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Insyn from "@/components/Insyn.astro";
 import LightBand from "@/components/LightBand.astro";
 import SenasteNytt from "@/components/SenasteNytt.astro";
 import Ledger,{ type LedgerItem } from "@/components/Ledger.astro";
@@ -41,6 +42,12 @@ const lede = "max-w-[58ch] text-lede";
   title="Streetlight"
   description="Streetlight är en ideell förening i Sverige och Etiopien som stöttar 20 fadderbarns skolgång och deras familjer i Addis Abeba."
 >
+  <!-- Motion is an addition: without JS or with reduced motion the lamp is simply lit. -->
+  <script is:inline slot="head">
+    try {
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("dusk");
+    } catch (e) {}
+  </script>
   <div
     slot="header"
     class="grid grid-cols-1 items-end gap-8 pt-[clamp(28px,5vw,64px)] min-[901px]:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)]"
@@ -172,11 +179,34 @@ const lede = "max-w-[58ch] text-lede";
           det sociala skyddsnätet i Etiopien.
         </p>
       </div>
+      <Insyn />
     </div>
   </section>
 
   <SenasteNytt />
 </BaseLayout>
+
+<script>
+  // Vision: the gold light sweeps across "ljus framtid" the first time it is read.
+  const highlight = document.querySelector<HTMLElement>(".vision .highlight");
+  if (
+    highlight &&
+    !matchMedia("(prefers-reduced-motion: reduce)").matches &&
+    "IntersectionObserver" in window &&
+    highlight.getBoundingClientRect().top > window.innerHeight
+  ) {
+    highlight.classList.add("unlit");
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        setTimeout(() => highlight.classList.remove("unlit"), 200);
+      },
+      { threshold: 0.7 },
+    );
+    io.observe(highlight.closest("blockquote") ?? highlight);
+  }
+</script>
 
 <style>
   /* The street lamp in the hero; its light falls to the woven band below. */
@@ -199,6 +229,34 @@ const lede = "max-w-[58ch] text-lede";
     height: 100%;
     width: auto;
     overflow: visible;
+  }
+  /* Dusk: the lamp flickers on, then its light falls onto the woven band. */
+  @keyframes cone-on {
+    0% {
+      opacity: 0;
+      transform: scaleY(0.02);
+    }
+    12% {
+      opacity: 0.9;
+      transform: scaleY(0.02);
+    }
+    20% {
+      opacity: 0.15;
+    }
+    30% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+  }
+  .cone {
+    transform-box: fill-box;
+    transform-origin: 50% 0;
+  }
+  :global(.dusk) .cone {
+    animation: cone-on 1.5s var(--ease-light) 0.4s both;
   }
   .amharic {
     position: absolute;
@@ -231,6 +289,12 @@ const lede = "max-w-[58ch] text-lede";
     );
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    transition: background-size 0.9s var(--ease-light);
+  }
+  /* Set only by the script, so the highlight is lit without JS or with reduced motion. */
+  .highlight.unlit {
+    background-size: 0% 100%;
+    transition: none;
   }
   .org {
     min-width: 0;

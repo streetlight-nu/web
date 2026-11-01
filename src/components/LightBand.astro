@@ -2,7 +2,9 @@
 /**
  * LightBand: the woven band with exactly 20 lights, one per fadderbarn, under the front page's top,
  * followed by the line "20 barn, 20 ljus." on green-deep. The number is the message:
- * change it only if the number of children changes. Shown fully lit; lighting them one by one is added as motion later.
+ * change it only if the number of children changes.
+ * Motion: once the band is in view the lights come on one by one, 90 ms apart, after the lamp has lit.
+ * It is an addition: the markup is fully lit, and only the script dims it first (never with reduced motion or without JS).
  */
 const CHILDREN = 20;
 ---
@@ -10,7 +12,7 @@ const CHILDREN = 20;
 <div class="bg-green-deep text-cotton">
   <div class="weave">
     <div class="band-inner py-3.5">
-      <ul class="lights" data-testid="ljusbandet" aria-hidden="true">
+      <ul class="lights" data-lightband data-testid="ljusbandet" aria-hidden="true">
         {Array.from({ length: CHILDREN }, () => <li data-testid="ljus" />)}
       </ul>
     </div>
@@ -47,14 +49,58 @@ const CHILDREN = 20;
     aspect-ratio: 1;
     transform: rotate(45deg);
     background: var(--color-gold);
+    transition: background-color 0.7s var(--ease-light);
   }
   li::after {
     content: "";
     position: absolute;
     inset: 28%;
     background: var(--color-thread-red);
+    transition: background-color 0.7s var(--ease-light);
   }
   li:nth-child(3n)::after {
     background: var(--color-thread-cobalt);
   }
+  /* Dimming is instant (never a visible fade-out); only lighting up is animated. */
+  .dim li {
+    background: var(--color-green-deep);
+  }
+  .dim li::after {
+    background: rgba(244, 180, 0, 0.3);
+  }
+  .dim li:not(.on),
+  .dim li:not(.on)::after {
+    transition: none;
+  }
+  .dim li.on {
+    background: var(--color-gold);
+  }
+  .dim li.on::after {
+    background: var(--color-thread-red);
+  }
+  .dim li.on:nth-child(3n)::after {
+    background: var(--color-thread-cobalt);
+  }
 </style>
+
+<script>
+  // The 20 lights come on one by one once the band is in view, after the lamp's cone (0.4 s + 1.5 s) has lit.
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+    for (const band of document.querySelectorAll<HTMLElement>("[data-lightband]")) {
+      const lights = band.querySelectorAll("li");
+      band.classList.add("dim");
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((e) => e.isIntersecting)) return;
+          io.disconnect();
+          const wait = Math.max(250, 2050 - performance.now());
+          lights.forEach((li, i) => setTimeout(() => li.classList.add("on"), wait + i * 90));
+        },
+        { threshold: 0.6 },
+      );
+      io.observe(band);
+      // Never leave the band dark, even if it is never scrolled into view.
+      setTimeout(() => lights.forEach((li) => li.classList.add("on")), 6000);
+    }
+  }
+</script>

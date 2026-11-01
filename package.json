@@ -36,6 +36,7 @@
     "@types/react-dom": "^19.3.0",
     "playwright-core": "1.63.0",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.4"
+    "vitest": "^5.0.4",
+    "yaml": "^2.9.1"
   }
 }

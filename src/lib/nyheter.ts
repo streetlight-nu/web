@@ -29,3 +29,24 @@ interface MedDatum {
 export function nyastForst<T extends MedDatum>(inlagg: T[]): T[] {
   return [...inlagg].sort((a, b) => b.data.date.getTime() - a.data.date.getTime() || a.id.localeCompare(b.id));
 }
+
+/** The newest post, which "Senaste nytt" on the start page always shows. */
+export function senaste<T extends MedDatum>(inlagg: T[]): T | undefined {
+  return nyastForst(inlagg)[0];
+}
+
+/** The posts grouped per year, newest year and newest post first, as along the thread on /nyheter. */
+export function perAr<T extends MedDatum>(inlagg: T[]): { ar: number; inlagg: T[] }[] {
+  const ar: { ar: number; inlagg: T[] }[] = [];
+  for (const post of nyastForst(inlagg)) {
+    const year = post.data.date.getUTCFullYear();
+    if (ar.at(-1)?.ar !== year) ar.push({ ar: year, inlagg: [] });
+    ar.at(-1)!.inlagg.push(post);
+  }
+  return ar;
+}
+
+/** True while at least one example post (Exempelinlägg) is left, so the list shows its notice. */
+export function harExempel(inlagg: { data: { example: boolean } }[]): boolean {
+  return inlagg.some((post) => post.data.example);
+}

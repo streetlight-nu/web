@@ -1,0 +1,116 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ExampleChip from "@/components/ExampleChip.astro";
+import NewsItem from "@/components/NewsItem.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import { harExempel, perAr } from "@/lib/nyheter";
+import { allaNyheter } from "@/lib/nyheter-samling";
+import { href } from "@/lib/utils";
+
+const inlagg = await allaNyheter();
+const ingress =
+  "Rapporter från besöken, nyheter från föreningen, berättelser från familjerna och tack till er som är faddrar.";
+---
+
+<BaseLayout title="Nyheter" description={ingress} current="nyheter">
+  <div slot="header" class="pt-[clamp(28px,5vw,56px)] pb-[clamp(36px,5vw,60px)]">
+    <nav aria-label="Du är här" class="mb-[18px] flex flex-wrap items-center gap-2.5 text-label font-semibold text-mint">
+      <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page" class="text-cotton">Nyheter</span>
+    </nav>
+    <h1 class="text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[0.98] tracking-[-0.035em]">
+      Från Addis Abeba <span class="text-gold">och föreningen.</span>
+    </h1>
+    <p class="mt-[18px] max-w-[56ch] text-lede text-mint">{ingress}</p>
+  </div>
+  <TibebBand slot="header-after" variant="thin" />
+
+  <section class="bg-cotton pt-[clamp(48px,7vw,88px)] pb-[clamp(56px,8vw,104px)] text-ink" aria-label="Alla nyheter">
+    <div class="band-inner">
+      {
+        harExempel(inlagg) && (
+          <p class="mb-9 flex items-baseline gap-3 text-label text-ink-soft">
+            <ExampleChip /> Inläggen nedan är exempel som visar mallen. De ersätts av föreningens egna inlägg och foton.
+          </p>
+        )
+      }
+      <div class="thread">
+        {
+          perAr(inlagg).map(({ ar, inlagg }) => (
+            <Fragment>
+              <h2 class="year">{ar}</h2>
+              <ol class="m-0 list-none p-0" reversed>
+                {inlagg.map((post) => (
+                  <NewsItem post={post} />
+                ))}
+              </ol>
+            </Fragment>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* The gold thread down the left side, with an ink diamond for each year and a gold one at the end. */
+  .thread {
+    position: relative;
+    padding-left: 64px;
+  }
+  .thread::before {
+    content: "";
+    position: absolute;
+    left: 21px;
+    top: 6px;
+    bottom: 0;
+    width: 3px;
+    background: repeating-linear-gradient(180deg, var(--color-gold) 0 14px, transparent 14px 22px);
+  }
+  .thread::after {
+    content: "";
+    position: absolute;
+    left: 16px;
+    bottom: -6px;
+    width: 13px;
+    height: 13px;
+    transform: rotate(45deg);
+    background: var(--color-gold);
+  }
+  .year {
+    position: relative;
+    margin-bottom: 28px;
+    font-size: var(--text-title);
+    letter-spacing: -0.02em;
+  }
+  ol + .year {
+    margin-top: clamp(40px, 6vw, 64px);
+  }
+  .year::before {
+    content: "";
+    position: absolute;
+    left: -52px;
+    top: 0.35em;
+    width: 22px;
+    height: 22px;
+    transform: rotate(45deg);
+    background: var(--color-ink);
+  }
+  @media (max-width: 600px) {
+    .thread {
+      padding-left: 44px;
+    }
+    .thread::before {
+      left: 11px;
+    }
+    .thread::after {
+      left: 6px;
+    }
+    .year::before {
+      left: -42px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+</style>

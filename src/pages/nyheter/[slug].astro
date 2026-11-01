@@ -1,5 +1,5 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { render, type CollectionEntry } from "astro:content";
 import { getImage, Image } from "astro:assets";
 
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -7,11 +7,12 @@ import ExampleChip from "@/components/ExampleChip.astro";
 import Knot from "@/components/Knot.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
-import { amnesNamn, formateraDatum, isoDatum, nyastForst } from "@/lib/nyheter";
+import { amnesNamn, formateraDatum, isoDatum } from "@/lib/nyheter";
+import { allaNyheter } from "@/lib/nyheter-samling";
 import { href } from "@/lib/utils";
 
 export async function getStaticPaths() {
-  const inlagg = nyastForst(await getCollection("nyheter"));
+  const inlagg = await allaNyheter();
   return inlagg.map((post, i) => ({
     params: { slug: post.id },
     // The thread runs newest first: the newer post is "Nyare", the older one "Äldre".

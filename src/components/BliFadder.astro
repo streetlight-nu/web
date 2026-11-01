@@ -8,10 +8,13 @@ import BliFadderDocka from "@/components/BliFadderDocka.astro";
 import FyllsI from "@/components/FyllsI.astro";
 import Intresseanmalan from "@/components/Intresseanmalan";
 import Steps from "@/components/Steps.astro";
+import TibebBand from "@/components/TibebBand.astro";
 import { getForeningsuppgifter } from "@/lib/foreningsuppgifter";
 
 const { kontaktperson, epost, swish } = getForeningsuppgifter();
 ---
+
+<TibebBand variant="thin" />
 
 <section id="bli-fadder" class="bg-gold py-[clamp(64px,9vw,120px)] text-ink">
   <div

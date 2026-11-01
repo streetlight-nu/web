@@ -1,0 +1,48 @@
+# Streetlight
+
+Streetlight är en ideell förening i Sverige och Etiopien som stöttar 20 fadderbarns skolgång och deras familjer i Addis Abeba. Webbplatsen ska få nya faddrar och berätta om arbetet.
+
+## Föreningen
+
+**Streetlight Sverige**:
+Den svenska ideella föreningen som samlar in pengar och stöttar arbetet i Etiopien ekonomiskt.
+_Undvik_: Streetlight AB, organisationen
+
+**Streetlight Etiopien**:
+Den etiopiska ideella föreningen som bär arbetet med barnen och familjerna på plats i Addis Abeba. Fristående från Streetlight Sverige, med egen styrelse.
+_Undvik_: partnern, systerorganisationen
+
+**Föreningen**:
+Det vardagliga ordet för Streetlight Sverige i texter riktade till svenska läsare.
+
+## Fadderskap
+
+**Fadderbarn**:
+Ett av de 20 barn vars skolgång Streetlight betalar. Väljs ut tillsammans med de lokala myndigheterna i Addis Abeba.
+_Undvik_: sponsorbarn, mottagare, elev
+
+**Fadder**:
+En person som ger regelbundet och därmed stöttar alla 20 fadderbarnen tillsammans. Det är den vanliga formen av fadderskap.
+_Undvik_: sponsor, givare, donator
+
+**Fadder för ett barn**:
+En variant av fadderskap där faddern följer ett av fadderbarnen. En fadder för ett barn är fortfarande en fadder.
+_Undvik_: personlig fadder, barnfadder
+
+**Intresseanmälan**:
+Det första steget mot att bli fadder: en person anmäler intresse och föreningen hör av sig.
+_Undvik_: ansökan, registrering
+
+## Nyheter
+
+**Nyheter**:
+Föreningens samlade inlägg om arbetet.
+_Undvik_: blogg, artiklar, nyhetsbrev
+
+**Inlägg**:
+En enskild nyhet med ett ämne, ett datum och en text.
+_Undvik_: blogginlägg, artikel, post
+
+**Ämne**:
+Det slag av nyhet som ett inlägg är. Det finns exakt fyra: Rapport från Addis Abeba, Nyhet från föreningen, Berättelse från en familj och Tack till faddrarna.
+_Undvik_: kategori, tagg

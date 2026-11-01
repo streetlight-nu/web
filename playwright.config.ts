@@ -1,7 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const base = (process.env.BASE_PATH ?? "/").replace(/\/?$/, "/");
-const port = 4321;
+// E2E_PORT lets several checkouts run their browser tests at the same time.
+const port = Number(process.env.E2E_PORT ?? 4321);
 
 export default defineConfig({
   testDir: "tests/e2e",

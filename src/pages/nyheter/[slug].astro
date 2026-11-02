@@ -29,16 +29,20 @@ const { post, nyare, aldre } = Astro.props;
 const { title, date, topic, place, lede, image, imageAlt, example } = post.data;
 const { Content } = await render(post);
 
-// Open Graph wants an absolute URL to an image of a sensible size, in a format every service reads.
-const ogImage = image
-  ? new URL((await getImage({ src: image, width: 1200, format: "jpg" })).src, Astro.site)
+// A shared link shows the post's own image, at a sensible size in a format every service reads,
+// and otherwise the site's standard image.
+const delningsbild = image
+  ? await getImage({ src: image, width: 1200, format: "jpg" }).then(({ src, attributes }) => ({
+      src,
+      alt: imageAlt!,
+      width: Number(attributes.width),
+      height: Number(attributes.height),
+    }))
   : undefined;
 ---
 
-<BaseLayout title={title} description={lede} current="nyheter">
+<BaseLayout title={title} description={lede} current="nyheter" ogType="article" delningsbild={delningsbild}>
   <Fragment slot="head">
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    {ogImage && <meta property="og:image:alt" content={imageAlt} />}
     <meta property="article:published_time" content={isoDatum(date)} />
   </Fragment>
 

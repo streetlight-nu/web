@@ -4,14 +4,32 @@ import SiteHeader from "@/components/SiteHeader.astro";
 import SiteFooter from "@/components/SiteFooter.astro";
 import { href } from "@/lib/utils";
 
+/** The image a shared link shows (og:image). Without one, the site's standard image is used. */
+export interface Delningsbild {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 interface Props {
   title: string;
   description: string;
   current?: "nyheter";
+  /** Open Graph's type: a post (Inlägg) is an "article", every other page a "website". */
+  ogType?: "website" | "article";
+  delningsbild?: Delningsbild;
 }
-const { title, description, current } = Astro.props;
+const { title, description, current, ogType = "website", delningsbild } = Astro.props;
 const pageTitle = title === "Streetlight" ? title : `${title} | Streetlight`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// The standard image, drawn by scripts/rita-delningsbild.mjs from the logo on green.
+const bild: Delningsbild = delningsbild ?? {
+  src: href("/delningsbild.png"),
+  alt: "Streetlight: Ett ljus på vägen till skolan.",
+  width: 1200,
+  height: 630,
+};
 ---
 
 <!doctype html>
@@ -24,12 +42,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={href("/favicon.svg")} />
     <meta name="theme-color" content="#0E4A38" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="sv_SE" />
     <meta property="og:site_name" content="Streetlight" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(bild.src, Astro.site)} />
+    <meta property="og:image:width" content={String(bild.width)} />
+    <meta property="og:image:height" content={String(bild.height)} />
+    <meta property="og:image:alt" content={bild.alt} />
     <slot name="head" />
   </head>
   <body>

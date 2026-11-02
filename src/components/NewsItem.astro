@@ -7,23 +7,23 @@ import Placeholder from "@/components/Placeholder.astro";
 import { href } from "@/lib/utils";
 
 /**
- * A post on the gold thread (design system NewsItem): knot, date, topic, title, lede and a
+ * An inlägg on the gold thread (design system NewsItem): knot, date, topic, title, lede and a
  * photo or a Placeholder. The whole row is clickable through the title's link, which is the
- * row's only link, so a keyboard stops once per post.
+ * row's only link, so a keyboard stops once per inlägg.
  *
  * The meta row (Metarad) is `contents` here: its date takes the first column, its topic sits
  * above the title, and its knot hangs on the thread to the left of the row.
  */
 interface Props {
-  post: CollectionEntry<"nyheter">;
+  inlagg: CollectionEntry<"nyheter">;
 }
-const { post } = Astro.props;
-const { title, date, topic, lede, image } = post.data;
+const { inlagg } = Astro.props;
+const { title, date, topic, lede, image } = inlagg.data;
 ---
 
 <li class="news-item">
   <Metarad amne={topic} datum={date} class="contents" amneClass="topic" knotClass="news-knot" />
-  <h3><a href={href(`/nyheter/${post.id}`)}>{title}</a></h3>
+  <h3><a href={href(`/nyheter/${inlagg.id}`)}>{title}</a></h3>
   <p>{lede}</p>
   {
     image ? (

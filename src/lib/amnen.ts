@@ -1,5 +1,5 @@
 /**
- * The four topics (Ämne) a post (Inlägg) can have, in the order the design system lists them. The one
+ * The four topics (Ämne) an inlägg can have, in the order the design system lists them. The one
  * place they are defined: the schema, the topic names on the pages, the knot's colour and the drop-down
  * in `.pages.yml` (checked by tests/unit/pages-cms.test.ts) all read from here.
  *

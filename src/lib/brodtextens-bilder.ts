@@ -18,8 +18,8 @@ export function harBilderIBrodtexten(brodtext: string): boolean {
 }
 
 /**
- * Stops the build when a post that is not an example post (Exempelinlägg) has images in its body
- * text without the family's consent. One error names every such post.
+ * Stops the build when an inlägg that is not an Exempelinlägg has images in its body
+ * text without the family's consent. One error names every such inlägg.
  */
 export function kontrolleraBrodtextensBilder(inlagg: InlaggMedBrodtext[]): void {
   const utanSamtycke = inlagg.filter(

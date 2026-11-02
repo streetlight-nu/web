@@ -139,7 +139,7 @@ test.describe("startsidans berättelse", () => {
   test("texterna följer ordlistan och hittar inte på några siffror", async ({ page }) => {
     await page.goto("./");
     const text = (await page.getByRole("banner").innerText()) + (await page.locator("main").innerText());
-    // "Senaste nytt" shows the newest post's date, which comes from the post, not from the page.
+    // "Senaste nytt" shows the newest inlägg's date, which comes from the inlägg, not from the page.
     const utanNyheter = await page.locator("main").evaluate((main) => {
       const senaste = main.querySelector<HTMLElement>("#senaste")!;
       senaste.style.display = "none";

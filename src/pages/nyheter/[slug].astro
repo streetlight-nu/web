@@ -13,24 +13,24 @@ import { allaNyheter } from "@/lib/nyheter-samling";
 import { href } from "@/lib/utils";
 
 export async function getStaticPaths() {
-  const inlagg = await allaNyheter();
-  return inlagg.map((post, i) => ({
-    params: { slug: post.id },
-    // The thread runs newest first: the newer post is "Nyare", the older one "Äldre".
-    props: { post, nyare: inlagg[i - 1], aldre: inlagg[i + 1] },
+  const allaInlagg = await allaNyheter();
+  return allaInlagg.map((inlagg, i) => ({
+    params: { slug: inlagg.id },
+    // The thread runs newest first: the newer inlägg is "Nyare", the older one "Äldre".
+    props: { inlagg, nyare: allaInlagg[i - 1], aldre: allaInlagg[i + 1] },
   }));
 }
 
 interface Props {
-  post: CollectionEntry<"nyheter">;
+  inlagg: CollectionEntry<"nyheter">;
   nyare?: CollectionEntry<"nyheter">;
   aldre?: CollectionEntry<"nyheter">;
 }
-const { post, nyare, aldre } = Astro.props;
-const { title, date, topic, place, lede, image, imageAlt, example } = post.data;
-const { Content } = await render(post);
+const { inlagg, nyare, aldre } = Astro.props;
+const { title, date, topic, place, lede, image, imageAlt, example } = inlagg.data;
+const { Content } = await render(inlagg);
 
-// A shared link shows the post's own image, at a sensible size in a format every service reads,
+// A shared link shows the inlägg's own image, at a sensible size in a format every service reads,
 // and otherwise the site's standard image.
 const delningsbild = image
   ? await getImage({ src: image, width: 1200, format: "jpg" }).then(({ src, attributes }) => ({
@@ -205,7 +205,7 @@ const delningsbild = image
     background: var(--color-gold);
   }
 
-  /* Along the thread: the newer and the older post. */
+  /* Along the thread: the newer and the older inlägg. */
   .along {
     display: grid;
     grid-template-columns: 1fr 1fr;

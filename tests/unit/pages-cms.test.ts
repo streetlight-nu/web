@@ -25,7 +25,7 @@ interface Falt {
   options?: { values?: { name: string; label: string }[]; format?: string };
 }
 
-interface Post {
+interface Samling {
   name: string;
   label: string;
   type: string;
@@ -37,9 +37,9 @@ interface Post {
 
 const konfiguration = parse(readFileSync(path.join(rot, ".pages.yml"), "utf8")) as {
   media: { input: string; output: string };
-  content: Post[];
+  content: Samling[];
 };
-const nyheter = konfiguration.content.find((post) => post.name === "nyheter")!;
+const nyheter = konfiguration.content.find((samling) => samling.name === "nyheter")!;
 
 describe("ett inlägg sparat i Pages CMS", () => {
   test("klarar schemat när alla fält är ifyllda, med bild, barn och samtycke", () => {

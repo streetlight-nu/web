@@ -4,7 +4,7 @@
 # The fields of Nyheter must match the schema in src/lib/nyheter-schema.ts; tests/unit/pages-cms.test.ts checks it.
 
 # Images are uploaded under src/assets, where Astro finds and optimises them at build time.
-# `output` is the path written into a post, relative to the post's folder (src/content/nyheter).
+# `output` is the path written into an inlägg, relative to the inlägg's folder (src/content/nyheter).
 media:
   input: src/assets/nyheter
   output: ../../assets/nyheter
@@ -51,8 +51,8 @@ content:
     label: Nyheter
     type: collection
     path: src/content/nyheter
-    # The file name becomes the post's address: /nyheter/<title as a slug>. {primary} is the primary
-    # field (view.primary, the title), which Pages CMS slugifies when the post is created.
+    # The file name becomes the inlägg's address: /nyheter/<title as a slug>. {primary} is the primary
+    # field (view.primary, the title), which Pages CMS slugifies when the inlägg is created.
     filename: "{primary}.md"
     view:
       fields: [title, topic, date]

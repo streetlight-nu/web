@@ -8,7 +8,7 @@ import { valfri } from "./falt";
 const ifylldText = z.string().trim().min(1);
 
 /**
- * The schema for a post (Inlägg) in the Nyheter collection. It knows nothing about Astro,
+ * The schema for an inlägg in the Nyheter collection. It knows nothing about Astro,
  * so it can be tested on its own. Astro passes its `image()` helper, which turns the path
  * into an image that is optimised at build time; without it the path stays a string.
  */
@@ -26,14 +26,14 @@ export function inlaggSchema<Bild extends z.ZodType = z.ZodString>(image?: Bild)
       imageAlt: valfri(ifylldText),
       showsChildren: z.boolean().default(false),
       consent: z.boolean().default(false),
-      /** An example post (Exempelinlägg): made up to show the template, marked "Exempel". */
+      /** An Exempelinlägg: made up to show the template, marked "Exempel". */
       example: z.boolean().default(false),
     })
     .superRefine((inlagg, ctx) => {
       if (inlagg.image !== undefined && !inlagg.imageAlt) {
         ctx.addIssue({ code: "custom", path: ["imageAlt"], message: "En bild måste ha en alt-text (imageAlt)." });
       }
-      // An example post (Exempelinlägg) is made up and shows no real family, so it needs no consent.
+      // An Exempelinlägg is made up and shows no real family, so it needs no consent.
       const kraverSamtycke = !inlagg.example && !inlagg.consent;
       if (inlagg.topic === "familj" && kraverSamtycke) {
         ctx.addIssue({

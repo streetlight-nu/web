@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 import { expectNoA11yViolations } from "./helpers";
 
-// The four example posts from the prototype, newest first.
+// The four Exempelinlägg from the prototype, newest first.
 const nyastForst = [
   "Skolstart i Addis Abeba",
   "En verksamhet som bär familjen",
@@ -29,7 +29,7 @@ test("hela inlägget i listan går att klicka, men har bara en länk", async ({ 
   await expect(inlagget.getByText("20 mar 2026")).toBeVisible();
   await expect(inlagget.getByText(/^Foto/)).toBeVisible();
 
-  // A click near the row's bottom left corner, away from the title, still opens the post.
+  // A click near the row's bottom left corner, away from the title, still opens the inlägg.
   await inlagget.scrollIntoViewIfNeeded();
   const ruta = (await inlagget.boundingBox())!;
   await page.mouse.click(ruta.x + 8, ruta.y + ruta.height - 8);

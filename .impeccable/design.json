@@ -1,0 +1,442 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-02T12:00:00Z",
+  "title": "Design System: Streetlight",
+  "extensions": {
+    "colorMeta": {
+      "cotton": {
+        "role": "neutral",
+        "displayName": "Bomull",
+        "canonical": "#FBFBF8",
+        "tonalRamp": [
+          "#2C2C20",
+          "#4C4C34",
+          "#6D6D45",
+          "#9B9B5A",
+          "#B1B181",
+          "#C6C6A9",
+          "#DDDDD0",
+          "#F4F4F1"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "Vitt",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#7A7A7A",
+          "#999999",
+          "#B8B8B8",
+          "#D6D6D6",
+          "#F2F2F2"
+        ]
+      },
+      "green": {
+        "role": "secondary",
+        "displayName": "Tibeb-grön",
+        "canonical": "#0E4A38",
+        "tonalRamp": [
+          "#17352C",
+          "#215E4C",
+          "#278B6D",
+          "#29CC9B",
+          "#5CD6B1",
+          "#94DBC6",
+          "#C6E7DD",
+          "#EEF6F4"
+        ]
+      },
+      "green-deep": {
+        "role": "secondary",
+        "displayName": "Djup tibeb-grön",
+        "canonical": "#093428",
+        "tonalRamp": [
+          "#17362D",
+          "#205F4E",
+          "#268D70",
+          "#26CFA0",
+          "#5AD8B5",
+          "#93DDC8",
+          "#C5E7DE",
+          "#EEF6F4"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Bläck",
+        "canonical": "#0B2E24",
+        "tonalRamp": [
+          "#19342C",
+          "#245B4B",
+          "#2C866D",
+          "#31C49A",
+          "#62D0B1",
+          "#97D8C5",
+          "#C7E5DD",
+          "#EFF6F4"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Mjukt bläck",
+        "canonical": "#3D5E53",
+        "tonalRamp": [
+          "#222B28",
+          "#364943",
+          "#4A695E",
+          "#619483",
+          "#86AC9F",
+          "#ACC3BB",
+          "#D1DBD8",
+          "#F1F3F3"
+        ]
+      },
+      "mint": {
+        "role": "neutral",
+        "displayName": "Mint",
+        "canonical": "#CFE3D8",
+        "tonalRamp": [
+          "#202C26",
+          "#344B3F",
+          "#466D57",
+          "#5B9A77",
+          "#81B197",
+          "#AAC5B6",
+          "#D0DDD6",
+          "#F1F4F2"
+        ]
+      },
+      "gold": {
+        "role": "primary",
+        "displayName": "Lyktans guld",
+        "canonical": "#F4B400",
+        "tonalRamp": [
+          "#3C3110",
+          "#6C5513",
+          "#A27C10",
+          "#F2B303",
+          "#F3C43F",
+          "#ECD183",
+          "#EEE2BE",
+          "#F8F5EC"
+        ]
+      },
+      "light-high": {
+        "role": "primary",
+        "displayName": "Ljusets översta steg",
+        "canonical": "#FFDB73",
+        "tonalRamp": [
+          "#3C3110",
+          "#6C5513",
+          "#A27D10",
+          "#F2B403",
+          "#F3C53F",
+          "#ECD183",
+          "#EEE2BE",
+          "#F8F5EC"
+        ]
+      },
+      "light-mid": {
+        "role": "primary",
+        "displayName": "Ljusets mellersta steg",
+        "canonical": "#FFCF45",
+        "tonalRamp": [
+          "#3C3110",
+          "#6C5513",
+          "#A27D10",
+          "#F2B403",
+          "#F3C43F",
+          "#ECD183",
+          "#EEE2BE",
+          "#F8F5EC"
+        ]
+      },
+      "gold-soft": {
+        "role": "primary",
+        "displayName": "Mjukt guld",
+        "canonical": "#FFD45C",
+        "tonalRamp": [
+          "#3C3110",
+          "#6C5513",
+          "#A27C10",
+          "#F2B303",
+          "#F3C33F",
+          "#ECD083",
+          "#EEE2BE",
+          "#F8F5EC"
+        ]
+      },
+      "thread-red": {
+        "role": "tertiary",
+        "displayName": "Röd tråd",
+        "canonical": "#D64527",
+        "tonalRamp": [
+          "#361C17",
+          "#5F2B21",
+          "#8C3827",
+          "#CD4428",
+          "#D7705B",
+          "#DCA093",
+          "#E7CBC5",
+          "#F6F0EE"
+        ]
+      },
+      "thread-cobalt": {
+        "role": "tertiary",
+        "displayName": "Koboltblå tråd",
+        "canonical": "#1F4FA8",
+        "tonalRamp": [
+          "#172236",
+          "#21375E",
+          "#274A8C",
+          "#2862CD",
+          "#5B87D7",
+          "#93ADDC",
+          "#C6D1E7",
+          "#EEF1F6"
+        ]
+      },
+      "error": {
+        "role": "neutral",
+        "displayName": "Fel",
+        "canonical": "#A52E15",
+        "tonalRamp": [
+          "#371B15",
+          "#62291D",
+          "#923421",
+          "#D73E1E",
+          "#DE6C54",
+          "#E09D8F",
+          "#E9CAC4",
+          "#F7EFEE"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Linje",
+        "canonical": "rgba(11, 46, 36, 0.16)"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Endast startsidans huvudrubrik."
+      },
+      "quote": {
+        "displayName": "Citat",
+        "purpose": "Visionscitatet, högst 17 tecken breda rader."
+      },
+      "headline": {
+        "displayName": "Rubrik",
+        "purpose": "Avsnittsrubriker (h2) och undersidornas h1."
+      },
+      "title": {
+        "displayName": "Titel",
+        "purpose": "Kort- och listrubriker, formulärrubrik, ordmärket i menyn."
+      },
+      "step": {
+        "displayName": "Steg",
+        "purpose": "Steg längs guldtråden."
+      },
+      "lede": {
+        "displayName": "Ingress",
+        "purpose": "Under avsnittsrubrik, högst 58 tecken per rad."
+      },
+      "body": {
+        "displayName": "Brödtext",
+        "purpose": "All löptext, aldrig under 18 px."
+      },
+      "label": {
+        "displayName": "Etikett",
+        "purpose": "Etiketter, datum, ämnen, menyknappar. Minsta storleken."
+      },
+      "ethiopic": {
+        "displayName": "Amhariska",
+        "purpose": "Endast ብርሃን, i guld med uttal under."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-button",
+        "value": "0 6px 18px -8px rgba(4, 24, 18, 0.55)",
+        "purpose": "Guldknappen i vila. Neutral skugga, aldrig färgad glöd."
+      },
+      {
+        "name": "shadow-panel",
+        "value": "0 24px 60px -30px rgba(11, 46, 36, 0.55)",
+        "purpose": "Formulärpanelen på gult fält."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-light",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Ljuset som tänds: knapplyft (300 ms), guldtråden och ljusbandet."
+      },
+      {
+        "name": "light-stagger",
+        "value": "90ms",
+        "purpose": "Mellanrum när de 20 ljusen tänds ett i taget."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "small",
+        "value": "400px"
+      },
+      {
+        "name": "phone",
+        "value": "520px"
+      },
+      {
+        "name": "wide",
+        "value": "901px"
+      },
+      {
+        "name": "wrap",
+        "value": "1180px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Guldknapp",
+      "kind": "button",
+      "refersTo": "button-gold",
+      "description": "Primärknappen: en per vy och område, för Bli fadder och det viktigaste steget.",
+      "html": "<a class=\"ds-btn-gold\" href=\"#\">Bli fadder</a>",
+      "css": ".ds-btn-gold{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:17px 26px;border:2px solid transparent;border-radius:999px;background:var(--color-gold,#F4B400);color:var(--color-ink,#0B2E24);font-family:'Familjen Grotesk',system-ui,sans-serif;font-size:18px;font-weight:600;line-height:1;text-decoration:none;box-shadow:0 6px 18px -8px rgba(4,24,18,0.55);transition:transform .3s cubic-bezier(0.16,1,0.3,1)}.ds-btn-gold:hover{transform:translateY(-2px)}.ds-btn-gold:active{transform:translateY(0)}.ds-btn-gold:focus-visible{outline:3px solid #0B2E24;outline-offset:3px}"
+    },
+    {
+      "name": "Bläckknapp",
+      "kind": "button",
+      "refersTo": "button-ink",
+      "description": "Skickar formulär.",
+      "html": "<button class=\"ds-btn-ink\" type=\"button\">Skicka anmälan</button>",
+      "css": ".ds-btn-ink{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:17px 26px;border:2px solid transparent;border-radius:999px;background:#0B2E24;color:#FBFBF8;font-family:'Familjen Grotesk',system-ui,sans-serif;font-size:18px;font-weight:600;line-height:1;cursor:pointer;transition:transform .3s cubic-bezier(0.16,1,0.3,1)}.ds-btn-ink:hover{transform:translateY(-2px)}.ds-btn-ink:focus-visible{outline:3px solid #0B2E24;outline-offset:3px}"
+    },
+    {
+      "name": "Linjeknapp på grönt",
+      "kind": "button",
+      "refersTo": "button-line",
+      "description": "Sekundära val på gröna fält.",
+      "html": "<div class=\"ds-on-green\"><a class=\"ds-btn-line\" href=\"#\">Läs om arbetet</a></div>",
+      "css": ".ds-on-green{background:#0E4A38;padding:24px}.ds-btn-line{display:inline-flex;align-items:center;min-height:44px;padding:17px 26px;border:2px solid rgba(251,251,248,0.55);border-radius:999px;color:#FBFBF8;font-family:'Familjen Grotesk',system-ui,sans-serif;font-size:18px;font-weight:600;line-height:1;text-decoration:none;transition:background-color .3s,border-color .3s}.ds-btn-line:hover{border-color:#FBFBF8;background:rgba(251,251,248,0.1)}.ds-btn-line:focus-visible{outline:3px solid #F4B400;outline-offset:3px}"
+    },
+    {
+      "name": "Textfält",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Vitt fält med bläckkant, grön ring vid fokus, röd kant när det är ogiltigt.",
+      "html": "<label class=\"ds-field\"><span>E-post</span><input class=\"ds-input\" type=\"email\" placeholder=\"namn@exempel.se\"></label>",
+      "css": ".ds-field{display:grid;gap:8px;font-family:'Familjen Grotesk',system-ui,sans-serif;color:#0B2E24}.ds-field span{font-size:15.68px;font-weight:600}.ds-input{width:100%;padding:13px 14px;border:2px solid rgba(11,46,36,0.28);border-radius:6px;background:#fff;color:#0B2E24;font:inherit;font-size:18px;caret-color:#D64527;transition:border-color .2s}.ds-input:hover{border-color:rgba(11,46,36,0.5)}.ds-input:focus{border-color:#0E4A38;outline:3px solid #0E4A38;outline-offset:2px}.ds-input[aria-invalid=true]{border-color:#D64527}"
+    },
+    {
+      "name": "Fylls i-chip",
+      "kind": "chip",
+      "refersTo": "chip-todo",
+      "description": "Markerar ett faktum föreningen inte har gett än.",
+      "html": "<p class=\"ds-p\">Swish: <span class=\"ds-todo\">nummer fylls i</span></p>",
+      "css": ".ds-p{font-family:'Familjen Grotesk',system-ui,sans-serif;font-size:18px;color:#0B2E24}.ds-todo{display:inline-block;padding:2px 10px;border:2px dashed #0B2E24;border-radius:3px;background:rgba(251,251,248,0.45);font-weight:600}"
+    },
+    {
+      "name": "Huvudmeny",
+      "kind": "nav",
+      "description": "Grönt sidhuvud med logotyp, länkar och en liten guldknapp.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Huvudmeny\"><a class=\"ds-logo\" href=\"#\"><svg viewBox=\"0 0 80 80\" width=\"40\" height=\"40\" aria-hidden=\"true\"><path d=\"M46 20H60L76 76H32Z\" fill=\"#F4B400\"/><path d=\"M46 20H60L70.67 57.33H36.67Z\" fill=\"#FFCF45\"/><path d=\"M46 20H60L65.33 38.67H41.33Z\" fill=\"#FFDB73\"/><path d=\"M20 76V30a14 14 0 0 1 14-14H60\" fill=\"none\" stroke=\"#FBFBF8\" stroke-width=\"8\"/></svg>streetlight</a><div class=\"ds-links\"><a href=\"#\">Vårt stöd</a><a href=\"#\">Så arbetar vi</a><a href=\"#\" aria-current=\"page\">Nyheter</a><a class=\"ds-nav-cta\" href=\"#\">Bli fadder</a></div></nav>",
+      "css": ".ds-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:22px 24px;background:#0E4A38;font-family:'Familjen Grotesk',system-ui,sans-serif;}.ds-logo{display:inline-flex;align-items:center;gap:12px;min-height:44px;color:#FBFBF8;text-decoration:none;font-family:'Bricolage Grotesque','Familjen Grotesk',system-ui,sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.045em}.ds-links{display:flex;flex-wrap:wrap;align-items:center;gap:4px}.ds-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;color:#FBFBF8;font-size:15.68px;font-weight:600;text-decoration:none;text-underline-offset:.22em}.ds-links a:hover,.ds-links a[aria-current=page]{text-decoration:underline;text-decoration-color:#F4B400}.ds-links a:focus-visible{outline:3px solid #F4B400;outline-offset:3px}.ds-links .ds-nav-cta{margin-left:8px;padding:0 20px;border-radius:999px;background:#F4B400;color:#0B2E24}"
+    },
+    {
+      "name": "Ledger",
+      "kind": "custom",
+      "description": "Lista mellan tjocka bläcklinjer med vävd rombmarkör, i stället för kort.",
+      "html": "<ul class=\"ds-ledger\"><li><span class=\"ds-mark\"></span><div><h3>Skolavgifter</h3><p>Barnet får en plats i skolan och kan stanna kvar där.</p></div></li><li><span class=\"ds-mark ds-c\"></span><div><h3>Uniform och material</h3><p>Det barnet behöver för att kunna gå till skolan.</p></div></li></ul>",
+      "css": ".ds-ledger{list-style:none;margin:0;padding:0;border-top:3px solid #0B2E24;font-family:'Familjen Grotesk',system-ui,sans-serif;color:#0B2E24}.ds-ledger li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding-block:26px;border-bottom:1.5px solid rgba(11,46,36,0.18)}.ds-ledger li:last-child{border-bottom:3px solid #0B2E24}.ds-ledger h3{margin:0 0 6px;font-family:'Bricolage Grotesque','Familjen Grotesk',system-ui,sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.015em}.ds-ledger p{margin:0;font-size:18px;color:#3D5E53}.ds-mark{width:28px;height:28px;margin:6px 0 0 6px;transform:rotate(45deg);background:#F4B400;box-shadow:inset 0 0 0 7px #F4B400,inset 0 0 0 14px #D64527}.ds-mark.ds-c{box-shadow:inset 0 0 0 7px #F4B400,inset 0 0 0 14px #1F4FA8}"
+    },
+    {
+      "name": "Fotoplatshållare",
+      "kind": "card",
+      "refersTo": "photo-placeholder",
+      "description": "Visas där ett foto med samtycke ännu saknas.",
+      "html": "<div class=\"ds-photo\"><svg viewBox=\"0 0 80 80\" width=\"40\" height=\"40\" aria-hidden=\"true\"><path d=\"M46 20H60L76 76H32Z\" fill=\"#F4B400\"/><path d=\"M20 76V30a14 14 0 0 1 14-14H60\" fill=\"none\" stroke=\"#CFE3D8\" stroke-width=\"9\"/></svg><span>Foto: skolstart i Addis Abeba</span></div>",
+      "css": ".ds-photo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;aspect-ratio:16/9;max-width:420px;padding:16px;border-radius:4px;outline:2px dashed rgba(244,180,0,0.55);outline-offset:-10px;background:#093428;color:#CFE3D8;text-align:center;font-family:'Familjen Grotesk',system-ui,sans-serif;font-size:15.68px;font-weight:500}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Duken och lyktan",
+    "overview": "Sidan är en handvävd shemma-duk. Rena vita bomullsfält och djupgröna fält växlar med hårda kanter och fogas ihop av vävda tibeb-band, som sömmarna i ett tyg. Mitt i duken står en gatlykta, och guldet är dess ljus. Ljuset är det enda som lyser på sidan. Det visar vägen till det viktigaste: att bli fadder, ljuset i lyktan och några få betoningsord på grönt.\n\nKänslan är varm och stadig, aldrig flashig. Typografin är tung och nära i rubrikerna och lugn och läsbar i brödtexten. Tryckytorna är stora och sidan är skriven så att äldre läsare också hänger med. Det lilla formatet syns i detaljerna. Bandet med 20 ljus har exakt ett ljus per barn, och guldtråden binder ihop steg och tidslinjer som en tråd genom tyget.\n\nDesignen ersätter varumärkesguiden med Open Sans, #FFD200, #FF1736 och asfalt, och de tidigare varianterna ”Vägmärken i natten” (ADR 0002). Den ska inte återuppstå.",
+    "keyCharacteristics": [
+      "Fält i `cotton` och `green` som växlar med hårda kanter eller ett tibeb-band, aldrig toningar.",
+      "Guld är ljuset och används sparsamt, bara för det viktigaste.",
+      "Ljussken ritas i tre hårda steg, aldrig som toning.",
+      "Bricolage Grotesque ExtraBold i rubriker och Familjen Grotesk i all löptext.",
+      "Romben finns bara i vävningen: i band, markörer och knutar på guldtråden.",
+      "Platt, med skugga bara på guldknappen och formulärpanelen."
+    ],
+    "rules": [
+      {
+        "name": "The Ett ljus Rule",
+        "body": "Guld lyser bara på det viktigaste: Bli fadder, ljuset och betoningsord på grönt. Om två saker i samma vy är guld måste den ena bli något annat.",
+        "section": "colors"
+      },
+      {
+        "name": "The Hårda kanter Rule",
+        "body": "Fälten växlar med en hård kant eller ett tibeb-band. Inga toningar mellan ytor och inga färgade glödskenor.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tråden är ingen text Rule",
+        "body": "`thread-red` och `thread-cobalt` finns bara i vävningen och i ämnesmarkörer, aldrig i text, knappar eller ikoner.",
+        "section": "colors"
+      },
+      {
+        "name": "The Aldrig under 18 Rule",
+        "body": "Brödtext är 18 px och aldrig mindre, även på mobil. Etiketten är den enda mindre storleken.",
+        "section": "typography"
+      },
+      {
+        "name": "The Färg, inte kursiv Rule",
+        "body": "Betoning görs med färg (guld på grönt) eller överstrykning i `gold-soft`, aldrig med kursiv.",
+        "section": "typography"
+      },
+      {
+        "name": "The Balanserade rubriker Rule",
+        "body": "Rubriker har negativ spärrning och `text-wrap: balance`. Stycken har `text-wrap: pretty`.",
+        "section": "typography"
+      },
+      {
+        "name": "The Listor, inte kort Rule",
+        "body": "Det som något består av visas som en lista mellan tjocka bläcklinjer (Ledger), inte som ett rutnät av likadana kort.",
+        "section": "layout"
+      },
+      {
+        "name": "The Platt duk Rule",
+        "body": "Inga andra ytor får skugga. Behövs avgränsning används ett fält, ett band eller en linje.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** låt fälten växla mellan `cotton` och `green` med en hård kant eller ett tibeb-band.",
+      "**Do** spara guldet till ett ljus per vy: Bli fadder, lyktan eller ett betoningsord på grönt.",
+      "**Do** rita ljussken i tre hårda steg: `light-high`, `light-mid`, `gold`.",
+      "**Do** håll brödtexten på minst 18 px, kontrasten på minst 4,5:1 och tryckytorna på minst 44 px.",
+      "**Do** använd fokusringen bläck på bomull och guld, och guld på grönt.",
+      "**Do** markera det som saknas med chipet ”fylls i” eller fotoplatshållaren.",
+      "**Do** visa allt i färdigt läge med reducerad rörelse. Rörelse förklarar och dekorerar inte."
+    ],
+    "donts": [
+      "**Don't** använd toningar mellan ytor, gräddvit bakgrund eller färgade glödskenor.",
+      "**Don't** sätt guld på guld, varken som text eller som fokusring.",
+      "**Don't** använd `thread-red` eller `thread-cobalt` till text, knappar eller ikoner.",
+      "**Don't** använd romben som logotyp eller fristående ikon. Den finns bara i vävningen.",
+      "**Don't** betona med kursiv.",
+      "**Don't** bygg sidor av rutnät med likadana kort. Använd Ledger, Steps eller guldtråden.",
+      "**Don't** använd emoji eller en ikonuppsättning. De få ikonerna ritas som SVG med samma linjetjocklek.",
+      "**Don't** ladda typsnitt eller annat från tredje part.",
+      "**Don't** återinför varumärkesguidens Open Sans, #FFD200, #FF1736 eller asfaltslooken."
+    ]
+  }
+}

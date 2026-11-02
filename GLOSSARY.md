@@ -51,6 +51,10 @@ _Undvik_: blogginlägg, artikel, post
 Det slag av nyhet som ett inlägg är. Det finns exakt fyra: Rapport från Addis Abeba, Nyhet från föreningen, Berättelse från en familj och Tack till faddrarna.
 _Undvik_: kategori, tagg
 
+**Nyheter med e-post**:
+Att få föreningens nyheter skickade till sin e-post. Besökaren anmäler sig i formuläret ”Få nyheterna med e-post” och trycker på Prenumerera.
+_Undvik_: nyhetsbrev, utskick
+
 **Exempelinlägg**:
 Ett påhittat inlägg som visar hur ett inlägg ser ut och som är tydligt märkt "Exempel". Det tas bort när föreningens egna inlägg finns.
 _Undvik_: testinlägg, dummy

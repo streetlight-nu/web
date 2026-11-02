@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 import { expectNoA11yViolations } from "./helpers";
 
-// The four example posts from the prototype, newest first.
+// The four Exempelinlägg from the prototype, newest first.
 const nyast = "nyheter/skolstart-i-addis-abeba";
 const familj = "nyheter/en-verksamhet-som-bar-familjen";
 const arsmote = "nyheter/valkommen-till-arsmotet";

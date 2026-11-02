@@ -3,8 +3,8 @@ import { glob } from "astro/loaders";
 
 import { inlaggSchema } from "@/lib/nyheter-schema";
 
-// Nyheter: one Markdown file per post. The slug in /nyheter/<slug> is the file name.
-// A post that breaks the schema stops the build.
+// Nyheter: one Markdown file per inlägg. The slug in /nyheter/<slug> is the file name.
+// An inlägg that breaks the schema stops the build.
 const nyheter = defineCollection({
   loader: glob({
     pattern: "**/*.md",

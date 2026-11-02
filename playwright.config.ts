@@ -4,9 +4,10 @@ const base = (process.env.BASE_PATH ?? "/").replace(/\/?$/, "/");
 // E2E_PORT lets several checkouts run their browser tests at the same time.
 const port = Number(process.env.E2E_PORT ?? 4321);
 
-// A second build of the site with filled-in föreningsuppgifter from a test file, served on the next port,
-// so the tests can see both the "fylls i" chips (the real, empty data file) and real values.
-const filledPort = port + 1;
+// A second build of the site with filled-in föreningsuppgifter from a test file, served on its own port
+// (E2E_PORT_IFYLLD, by default the one after E2E_PORT), so the tests can see both the "fylls i" chips
+// (the real, empty data file) and real values.
+const filledPort = Number(process.env.E2E_PORT_IFYLLD ?? port + 1);
 process.env.E2E_IFYLLD_URL = `http://localhost:${filledPort}${base}`;
 const filledOutDir = "dist-ifylld";
 

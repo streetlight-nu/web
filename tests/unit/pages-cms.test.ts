@@ -4,8 +4,8 @@ import path from "node:path";
 import { describe, expect, test } from "vitest";
 import { parse } from "yaml";
 
-import { amnesNamn } from "@/lib/nyheter";
-import { amnen, inlaggSchema } from "@/lib/nyheter-schema";
+import { AMNEN } from "@/lib/amnen";
+import { inlaggSchema } from "@/lib/nyheter-schema";
 
 const rot = path.resolve(import.meta.dirname, "../..");
 const fixturer = path.join(import.meta.dirname, "fixtures/pages-cms");
@@ -25,19 +25,21 @@ interface Falt {
   options?: { values?: { name: string; label: string }[]; format?: string };
 }
 
-interface Post {
+interface Samling {
   name: string;
   label: string;
   type: string;
   path: string;
+  filename: string;
+  view: { primary: string };
   fields: Falt[];
 }
 
 const konfiguration = parse(readFileSync(path.join(rot, ".pages.yml"), "utf8")) as {
   media: { input: string; output: string };
-  content: Post[];
+  content: Samling[];
 };
-const nyheter = konfiguration.content.find((post) => post.name === "nyheter")!;
+const nyheter = konfiguration.content.find((samling) => samling.name === "nyheter")!;
 
 describe("ett inlägg sparat i Pages CMS", () => {
   test("klarar schemat när alla fält är ifyllda, med bild, barn och samtycke", () => {
@@ -68,6 +70,19 @@ describe("samlingen Nyheter i .pages.yml", () => {
     expect(nyheter).toMatchObject({ label: "Nyheter", type: "collection", path: "src/content/nyheter" });
   });
 
+  test("namnger nya inlägg med Pages CMS dokumenterade platshållare, så att titeln blir adressen", () => {
+    // Pages CMS (lib/schema.ts, generateFilename): datumdelarna, {primary} för huvudfältet och {fields.<namn>}.
+    const kanda = ["year", "month", "day", "hour", "minute", "second", "primary"];
+    const platshallare = [...nyheter.filename.matchAll(/\{([^}]+)\}/g)].map(([, namn]) => namn);
+    expect(platshallare.length).toBeGreaterThan(0);
+    for (const namn of platshallare) {
+      const falt = namn.startsWith("fields.") && nyheter.fields.some((f) => `fields.${f.name}` === namn);
+      expect(kanda.includes(namn) || falt, `{${namn}}`).toBe(true);
+    }
+    expect(nyheter.filename).toMatch(/\.md$/);
+    expect(nyheter.view.primary).toBe("title");
+  });
+
   test("har exakt schemats fält, plus brödtexten", () => {
     const schemafalt = Object.keys(inlaggSchema().shape);
     expect(nyheter.fields.map((falt) => falt.name).sort()).toEqual([...schemafalt, "body"].sort());
@@ -81,7 +96,7 @@ describe("samlingen Nyheter i .pages.yml", () => {
   test("ger ämnet som en rullista med de fyra ämnena och deras svenska namn", () => {
     const amne = nyheter.fields.find((falt) => falt.name === "topic")!;
     expect(amne.type).toBe("select");
-    expect(amne.options?.values).toEqual(amnen.map((name) => ({ name, label: amnesNamn[name] })));
+    expect(amne.options?.values).toEqual(AMNEN.map(({ varde, namn }) => ({ name: varde, label: namn })));
   });
 
   test("sparar brödtexten som Markdown med rich text", () => {

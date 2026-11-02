@@ -157,7 +157,7 @@
 
 /*
  * Placeholders (design system Placeholder). Plain classes rather than utilities, so that
- * the Markdown of a post can use them too: `sl-photo` for a photo that is still missing,
+ * the Markdown of an inlägg can use them too: `sl-photo` for a photo that is still missing,
  * `sl-todo` for a detail that is still missing ("fylls i").
  */
 @layer components {

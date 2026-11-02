@@ -10,6 +10,8 @@ const lights = (page: Page) => page.getByTestId("ljusbandet").getByTestId("ljus"
 const steps = (page: Page) => page.locator("#familjer .step");
 const highlight = (page: Page) => page.locator(".vision blockquote span");
 const cone = (page: Page) => page.locator(".lamp .cone");
+const support = (page: Page) => page.locator("#sa-arbetar-vi .link");
+const runner = (page: Page) => support(page).locator(".runner");
 
 const lightColors = (page: Page) => lights(page).evaluateAll((els) => els.map((el) => getComputedStyle(el).backgroundColor));
 const stepStates = (page: Page) =>
@@ -25,6 +27,14 @@ async function expectFinished(page: Page) {
   expect(await lightColors(page)).toEqual(Array(20).fill(GOLD));
   expect(await stepStates(page)).toEqual(Array(3).fill({ color: COTTON, mark: GOLD }));
   expect(await highlightSize(page)).toBe("100% 100%");
+  await expectSupportFinished(page);
+}
+
+/** The diamond on "Ekonomiskt stöd" rests in the middle of the arrow, still and fully shown. */
+async function expectSupportFinished(page: Page) {
+  await expect(runner(page)).toHaveCSS("animation-name", "none");
+  await expect(runner(page)).toHaveCSS("opacity", "1");
+  await expect(runner(page)).toHaveCSS("transform", "none");
 }
 
 test.describe("med reducerad rörelse", () => {
@@ -35,6 +45,9 @@ test.describe("med reducerad rörelse", () => {
     await expectFinished(page);
     await page.locator(".vision").scrollIntoViewIfNeeded();
     await expectFinished(page);
+    await support(page).scrollIntoViewIfNeeded();
+    await expect(support(page)).not.toHaveClass(/\bflow\b/);
+    await expectSupportFinished(page);
   });
 });
 
@@ -93,9 +106,24 @@ test.describe("med rörelse", () => {
     await expect.poll(() => highlightSize(page)).toBe("100% 100%");
   });
 
+  test("visar pilen Ekonomiskt stöd sitt stöd en gång när den syns, och stannar i färdigt läge", async ({ page }) => {
+    await page.goto("./");
+    await expect(support(page)).not.toHaveClass(/\bflow\b/);
+    await support(page).scrollIntoViewIfNeeded();
+    await expect(support(page)).toHaveClass(/\bflow\b/);
+    await expect(runner(page)).toHaveCSS("animation-name", "support-flow");
+    await expect(runner(page)).toHaveCSS("animation-duration", "3.4s");
+    // When the run is over, the diamond rests in the middle of the arrow, fully shown.
+    await expect
+      .poll(() => runner(page).evaluate((el) => el.getAnimations().every((a) => a.playState === "finished")), { timeout: 6000 })
+      .toBe(true);
+    await expect(runner(page)).toHaveCSS("opacity", "1");
+    await expect(runner(page)).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
+  });
+
   test("ligger inte i någon React-ö", async ({ page }) => {
     await page.goto("./");
-    for (const el of [page.getByTestId("ljusbandet"), page.locator("#familjer .thread"), page.locator(".vision"), page.locator(".lamp")]) {
+    for (const el of [page.getByTestId("ljusbandet"), page.locator("#familjer .thread"), page.locator(".vision"), page.locator(".lamp"), support(page)]) {
       expect(await el.evaluate((node) => node.closest("astro-island") === null)).toBe(true);
     }
   });

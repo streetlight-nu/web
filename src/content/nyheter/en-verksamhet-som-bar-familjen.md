@@ -4,10 +4,6 @@ date: 2026-06-02
 topic: familj
 place: Addis Abeba
 lede: En mamma fick stöd att starta en egen verksamhet. Så ser vardagen ut ett halvår senare.
-# Schemat kräver samtycke för en Berättelse från en familj. Det här exempelinlägget handlar
-# inte om någon verklig familj och har inga foton. Ett riktigt inlägg sätter consent först
-# när familjen har gett sitt samtycke.
-consent: true
 example: true
 ---
 

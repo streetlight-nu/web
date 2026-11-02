@@ -1,17 +1,18 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type SubmitEvent } from "react";
 
+import FyllsI from "@/components/FyllsI";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ChoiceChip, RadioGroup } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  VAL,
+  AVSIKTER,
   skickaIntresseanmalan,
   valideraIntresseanmalan,
   type Fel,
   type Intresseanmalan as Anmalan,
-  type Val,
+  type Avsikt,
 } from "@/lib/intresseanmalan";
 
 interface Props {
@@ -19,7 +20,7 @@ interface Props {
   epost?: string;
 }
 
-const tom: Anmalan = { namn: "", epost: "", telefon: "", val: "fadder-alla", meddelande: "" };
+const tomAnmalan: Anmalan = { namn: "", epost: "", telefon: "", avsikt: "fadder-alla", meddelande: "" };
 
 /**
  * The intresseanmälan form in "Bli fadder". It validates name and e-mail in place and sends only
@@ -27,7 +28,7 @@ const tom: Anmalan = { namn: "", epost: "", telefon: "", val: "fadder-alla", med
  * plainly that nothing was sent, and "Ändra anmälan" brings the form back with the values kept.
  */
 export default function Intresseanmalan({ epost }: Props) {
-  const [anmalan, setAnmalan] = useState<Anmalan>(tom);
+  const [anmalan, setAnmalan] = useState<Anmalan>(tomAnmalan);
   const [fel, setFel] = useState<Fel>({});
   const [lage, setLage] = useState<"formular" | "tack">("formular");
   const [hydrerad, setHydrerad] = useState(false);
@@ -58,7 +59,7 @@ export default function Intresseanmalan({ epost }: Props) {
     }
   }
 
-  async function skicka(event: FormEvent<HTMLFormElement>) {
+  async function skicka(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const nyaFel = valideraIntresseanmalan(anmalan);
     setFel(nyaFel);
@@ -121,18 +122,18 @@ export default function Intresseanmalan({ epost }: Props) {
           />
         </Falt>
         <div className="grid gap-2">
-          <span id="anmalan-val" className="text-label font-semibold">
+          <span id="anmalan-avsikt" className="text-label font-semibold">
             Jag vill
           </span>
           <RadioGroup
-            aria-labelledby="anmalan-val"
-            name="val"
-            value={anmalan.val}
-            onValueChange={(value) => andra("val", value as Val)}
+            aria-labelledby="anmalan-avsikt"
+            name="avsikt"
+            value={anmalan.avsikt}
+            onValueChange={(value) => andra("avsikt", value as Avsikt)}
           >
-            {VAL.map((val) => (
-              <ChoiceChip key={val.value} id={`anmalan-val-${val.value}`} value={val.value}>
-                {val.label}
+            {AVSIKTER.map((avsikt) => (
+              <ChoiceChip key={avsikt.value} id={`anmalan-avsikt-${avsikt.value}`} value={avsikt.value}>
+                {avsikt.label}
               </ChoiceChip>
             ))}
           </RadioGroup>
@@ -170,7 +171,7 @@ export default function Intresseanmalan({ epost }: Props) {
                 {epost}
               </a>
             ) : (
-              <span className="sl-todo">e-post fylls i</span>
+              <FyllsI>e-post fylls i</FyllsI>
             )}{" "}
             och berätta att du vill bli fadder.
           </p>

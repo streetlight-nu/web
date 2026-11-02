@@ -3,6 +3,8 @@ import { resolve } from "node:path";
 
 import { z } from "astro/zod";
 
+import { arEpostadress, valfri } from "./falt";
+
 /**
  * Föreningsuppgifter: the public facts that show who the association is and how to give.
  *
@@ -24,39 +26,35 @@ export interface Foreningsuppgifter {
 /** The data file. FORENINGSUPPGIFTER_FIL points elsewhere, so the browser tests can build with a filled-in test file. */
 export const DATAFIL = "src/data/foreningsuppgifter.json";
 
-// An empty or blank field means "not given yet".
-const optional = z
-  .string()
-  .nullish()
-  .transform((value) => value?.trim() || undefined);
+const ifylldText = z.string().trim();
 
-const schema = z.strictObject({
-  organisationsnummer: optional,
-  nittiokonto: optional,
-  swish: optional,
-  kontaktperson: optional,
-  epost: optional.pipe(z.email({ message: "epost måste vara en e-postadress" }).optional()),
-  arsredovisning: optional.pipe(
-    z.url({ protocol: /^https?$/, message: "arsredovisning måste vara en länk (https://…)" }).optional(),
+const foreningsuppgifterSchema = z.strictObject({
+  organisationsnummer: valfri(ifylldText),
+  nittiokonto: valfri(ifylldText),
+  swish: valfri(ifylldText),
+  kontaktperson: valfri(ifylldText),
+  epost: valfri(ifylldText.refine(arEpostadress, { message: "epost måste vara en e-postadress" })),
+  arsredovisning: valfri(
+    ifylldText.pipe(z.url({ protocol: /^https?$/, message: "arsredovisning måste vara en länk (https://…)" })),
   ),
 });
 
 /** Checks the contents of the data file. Unknown fields and malformed values fail the build. */
-export function parseForeningsuppgifter(data: unknown): Foreningsuppgifter {
-  const result = schema.safeParse(data);
-  if (!result.success) {
-    throw new Error(`Föreningsuppgifterna är felaktiga:\n${z.prettifyError(result.error)}`);
+export function tolkaForeningsuppgifter(data: unknown): Foreningsuppgifter {
+  const resultat = foreningsuppgifterSchema.safeParse(data);
+  if (!resultat.success) {
+    throw new Error(`Föreningsuppgifterna är felaktiga:\n${z.prettifyError(resultat.error)}`);
   }
-  return result.data;
+  return resultat.data;
 }
 
-let cached: Foreningsuppgifter | undefined;
+let lasta: Foreningsuppgifter | undefined;
 
 /** Reads the föreningsuppgifter from the data file, once per build. */
-export function getForeningsuppgifter(): Foreningsuppgifter {
-  if (!cached) {
-    const file = process.env.FORENINGSUPPGIFTER_FIL || DATAFIL;
-    cached = parseForeningsuppgifter(JSON.parse(readFileSync(resolve(file), "utf8")));
+export function hamtaForeningsuppgifter(): Foreningsuppgifter {
+  if (!lasta) {
+    const fil = process.env.FORENINGSUPPGIFTER_FIL || DATAFIL;
+    lasta = tolkaForeningsuppgifter(JSON.parse(readFileSync(resolve(fil), "utf8")));
   }
-  return cached;
+  return lasta;
 }

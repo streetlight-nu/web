@@ -41,8 +41,8 @@ const ingress =
             <Fragment>
               <h2 class="year">{ar}</h2>
               <ol class="m-0 list-none p-0" reversed>
-                {inlagg.map((post) => (
-                  <NewsItem post={post} />
+                {inlagg.map((ettInlagg) => (
+                  <NewsItem inlagg={ettInlagg} />
                 ))}
               </ol>
             </Fragment>

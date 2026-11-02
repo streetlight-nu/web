@@ -209,6 +209,21 @@ const lede = "max-w-[58ch] text-lede";
     );
     io.observe(highlight.closest("blockquote") ?? highlight);
   }
+
+  // Så arbetar vi: the diamond on "Ekonomiskt stöd" shows the direction of support once, when the
+  // arrow is in view. Without the class `flow` it simply rests in the middle of the arrow.
+  const support = document.querySelector<HTMLElement>("#sa-arbetar-vi .link");
+  if (support && !matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        support.classList.add("flow");
+      },
+      { threshold: 0.8 },
+    );
+    io.observe(support);
+  }
 </script>
 
 <style>
@@ -336,6 +351,51 @@ const lede = "max-w-[58ch] text-lede";
     width: 100%;
     height: 40px;
     overflow: visible;
+  }
+  /* The diamond runs along the arrow twice, then comes to rest in the middle. */
+  @keyframes support-flow {
+    0% {
+      transform: translateX(-48px);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    40% {
+      transform: translateX(48px);
+      opacity: 1;
+    }
+    44% {
+      transform: translateX(48px);
+      opacity: 0;
+    }
+    45% {
+      transform: translateX(-48px);
+      opacity: 0;
+    }
+    52% {
+      opacity: 1;
+    }
+    82% {
+      transform: translateX(48px);
+      opacity: 1;
+    }
+    86% {
+      transform: translateX(48px);
+      opacity: 0;
+    }
+    88% {
+      transform: translateX(0);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  /* Set only by the script, so the diamond rests in place without JS or with reduced motion. */
+  .link.flow .runner {
+    animation: support-flow 3.4s cubic-bezier(0.45, 0, 0.25, 1) both;
   }
   @media (max-width: 900px) {
     .link {

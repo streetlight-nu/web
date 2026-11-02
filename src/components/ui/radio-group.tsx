@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 
+import { valchip } from "@/components/ui/valchip";
 import { cn } from "@/lib/utils";
 
 /**
@@ -38,10 +39,7 @@ type ChoiceChipProps = React.ComponentProps<typeof RadioGroupPrimitive.Item> & {
  */
 function ChoiceChip({ id, children, ...props }: ChoiceChipProps) {
   return (
-    <label
-      htmlFor={id}
-      className="flex min-h-11 cursor-pointer items-center gap-2 rounded-pill border-2 border-input px-4 py-[9px] text-label font-medium text-ink has-data-[state=checked]:border-green has-data-[state=checked]:bg-green/8 has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-ink"
-    >
+    <label htmlFor={id} className={cn(valchip, "has-data-[state=checked]:border-green has-data-[state=checked]:bg-green/8")}>
       <RadioGroupItem id={id} {...props} />
       {children}
     </label>

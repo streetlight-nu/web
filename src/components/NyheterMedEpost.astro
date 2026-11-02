@@ -1,0 +1,43 @@
+---
+/**
+ * The section "Få nyheterna med e-post" (#nyheter-med-epost), on green after a thin tibeb band: the heading
+ * and lede on the left, the white form panel on the right, stacked on narrow screens.
+ * The association's e-mail comes from the föreningsuppgifter; the island shows "fylls i" when it is missing.
+ */
+import Prenumerationsformular from "@/components/Prenumerationsformular";
+import TibebBand from "@/components/TibebBand.astro";
+import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { href } from "@/lib/utils";
+
+const { epost } = hamtaForeningsuppgifter();
+---
+
+<TibebBand variant="thin" />
+
+<section
+  id="nyheter-med-epost"
+  aria-labelledby="nyheter-med-epost-rubrik"
+  class="on-green bg-green py-[clamp(64px,9vw,120px)] text-cotton"
+>
+  <div class="band-inner flex flex-wrap items-start gap-[clamp(40px,6vw,88px)]">
+    <div class="min-w-0 flex-[1_1_360px] pt-2">
+      <h2 id="nyheter-med-epost-rubrik" class="max-w-[12ch] text-headline">
+        Följ arbetet i <span class="text-gold">Addis Abeba</span>.
+      </h2>
+      <p class="mt-6 max-w-[34ch] text-lede text-mint">
+        Få föreningens nyheter med e-post. Rapporter från skolan, berättelser från familjerna och vad som händer i
+        föreningen.
+      </p>
+      <p class="mt-8 max-w-[34ch] border-t border-mint/30 pt-6 text-mint">
+        Vill du hellre läsa på sajten? Alla inlägg finns under <a
+          class="inline-flex min-h-11 items-center font-semibold text-cotton underline decoration-2 hover:decoration-gold-soft"
+          href={`${href("/nyheter/")}#alla-nyheter`}>Nyheter</a
+        >.
+      </p>
+    </div>
+
+    <div class="min-w-0 max-w-[540px] flex-[1_1_440px]">
+      <Prenumerationsformular client:load epost={epost} />
+    </div>
+  </div>
+</section>

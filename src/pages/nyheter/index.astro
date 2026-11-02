@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ExampleChip from "@/components/ExampleChip.astro";
 import NewsItem from "@/components/NewsItem.astro";
+import NyheterMedEpost from "@/components/NyheterMedEpost.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { harExempel, perAr } from "@/lib/nyheter";
 import { allaNyheter } from "@/lib/nyheter-samling";
@@ -26,7 +27,11 @@ const ingress =
   </div>
   <TibebBand slot="header-after" variant="thin" />
 
-  <section class="bg-cotton pt-[clamp(48px,7vw,88px)] pb-[clamp(56px,8vw,104px)] text-ink" aria-label="Alla nyheter">
+  <section
+    id="alla-nyheter"
+    class="bg-cotton pt-[clamp(48px,7vw,88px)] pb-[clamp(56px,8vw,104px)] text-ink"
+    aria-label="Alla nyheter"
+  >
     <div class="band-inner">
       {
         harExempel(inlagg) && (
@@ -51,6 +56,8 @@ const ingress =
       </div>
     </div>
   </section>
+
+  <NyheterMedEpost />
 </BaseLayout>
 
 <style>

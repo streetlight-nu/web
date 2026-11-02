@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, type SubmitEvent } from "react";
 
 import FyllsI from "@/components/FyllsI";
+import Lykta from "@/components/Lykta";
 import { Button } from "@/components/ui/button";
+import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ChoiceChip, RadioGroup } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -14,6 +15,7 @@ import {
   type Intresseanmalan as Anmalan,
   type Avsikt,
 } from "@/lib/intresseanmalan";
+import { useHydrerad } from "@/lib/hydrerad";
 
 interface Props {
   /** The association's e-mail from the föreningsuppgifter; missing means "fylls i". */
@@ -31,14 +33,11 @@ export default function Intresseanmalan({ epost }: Props) {
   const [anmalan, setAnmalan] = useState<Anmalan>(tomAnmalan);
   const [fel, setFel] = useState<Fel>({});
   const [lage, setLage] = useState<"formular" | "tack">("formular");
-  const [hydrerad, setHydrerad] = useState(false);
+  const hydrerad = useHydrerad();
   const namnRef = useRef<HTMLInputElement>(null);
   const epostRef = useRef<HTMLInputElement>(null);
   const tackRef = useRef<HTMLDivElement>(null);
   const forstaRendern = useRef(true);
-
-  // Until the island has hydrated, the button stays disabled, so the form never submits natively.
-  useEffect(() => setHydrerad(true), []);
 
   useEffect(() => {
     if (forstaRendern.current) {
@@ -83,44 +82,46 @@ export default function Intresseanmalan({ epost }: Props) {
           Anmäl intresse
         </h3>
         <div className="grid grid-cols-1 gap-4 min-[521px]:grid-cols-2">
-          <Falt id="anmalan-namn" label="Namn" fel={fel.namn}>
-            <Input
-              ref={namnRef}
-              id="anmalan-namn"
-              name="namn"
-              autoComplete="name"
-              required
-              value={anmalan.namn}
-              onChange={(e) => andra("namn", e.target.value)}
-              aria-invalid={fel.namn ? true : undefined}
-              aria-describedby={fel.namn ? "anmalan-namn-fel" : undefined}
-            />
-          </Falt>
-          <Falt id="anmalan-epost" label="E-post" fel={fel.epost}>
-            <Input
-              ref={epostRef}
-              id="anmalan-epost"
-              name="epost"
-              type="email"
-              autoComplete="email"
-              required
-              value={anmalan.epost}
-              onChange={(e) => andra("epost", e.target.value)}
-              aria-invalid={fel.epost ? true : undefined}
-              aria-describedby={fel.epost ? "anmalan-epost-fel" : undefined}
-            />
-          </Falt>
+          <FormField id="anmalan-namn" label="Namn" fel={fel.namn}>
+            {(koppling) => (
+              <Input
+                {...koppling}
+                ref={namnRef}
+                name="namn"
+                autoComplete="name"
+                required
+                value={anmalan.namn}
+                onChange={(e) => andra("namn", e.target.value)}
+              />
+            )}
+          </FormField>
+          <FormField id="anmalan-epost" label="E-post" fel={fel.epost}>
+            {(koppling) => (
+              <Input
+                {...koppling}
+                ref={epostRef}
+                name="epost"
+                type="email"
+                autoComplete="email"
+                required
+                value={anmalan.epost}
+                onChange={(e) => andra("epost", e.target.value)}
+              />
+            )}
+          </FormField>
         </div>
-        <Falt id="anmalan-telefon" label="Telefon" valfritt>
-          <Input
-            id="anmalan-telefon"
-            name="telefon"
-            type="tel"
-            autoComplete="tel"
-            value={anmalan.telefon}
-            onChange={(e) => andra("telefon", e.target.value)}
-          />
-        </Falt>
+        <FormField id="anmalan-telefon" label="Telefon" valfritt>
+          {(koppling) => (
+            <Input
+              {...koppling}
+              name="telefon"
+              type="tel"
+              autoComplete="tel"
+              value={anmalan.telefon}
+              onChange={(e) => andra("telefon", e.target.value)}
+            />
+          )}
+        </FormField>
         <div className="grid gap-2">
           <span id="anmalan-avsikt" className="text-label font-semibold">
             Jag vill
@@ -138,14 +139,16 @@ export default function Intresseanmalan({ epost }: Props) {
             ))}
           </RadioGroup>
         </div>
-        <Falt id="anmalan-meddelande" label="Meddelande" valfritt>
-          <Textarea
-            id="anmalan-meddelande"
-            name="meddelande"
-            value={anmalan.meddelande}
-            onChange={(e) => andra("meddelande", e.target.value)}
-          />
-        </Falt>
+        <FormField id="anmalan-meddelande" label="Meddelande" valfritt>
+          {(koppling) => (
+            <Textarea
+              {...koppling}
+              name="meddelande"
+              value={anmalan.meddelande}
+              onChange={(e) => andra("meddelande", e.target.value)}
+            />
+          )}
+        </FormField>
         <Button type="submit" variant="ink" className="justify-self-start" disabled={!hydrerad}>
           Skicka anmälan
         </Button>
@@ -154,18 +157,13 @@ export default function Intresseanmalan({ epost }: Props) {
 
       {lage === "tack" && (
         <div ref={tackRef} tabIndex={-1} className="grid content-start gap-3 outline-none" aria-labelledby="tack-rubrik" role="region">
-          <svg viewBox="0 0 80 80" aria-hidden="true" className="mb-1.5 size-16">
-            <path d="M46 20H60L76 76H32Z" fill="#F4B400" />
-            <path d="M46 20H60L70.67 57.33H36.67Z" fill="#FFCF45" />
-            <path d="M46 20H60L65.33 38.67H41.33Z" fill="#FFDB73" />
-            <path d="M20 76V30a14 14 0 0 1 14-14H60" fill="none" stroke="#0B2E24" strokeWidth="8" />
-          </svg>
+          <Lykta />
           <h3 id="tack-rubrik" className="text-title tracking-[-0.015em]">
             Tack, {fornamn}!
           </h3>
           <p>
-            Formuläret är inte kopplat till föreningen än, så din anmälan har <strong>inte</strong> skickats. Mejla oss i
-            stället på{" "}
+            Formuläret är inte kopplat till föreningen än, så din anmälan har <strong>inte</strong> skickats. Mejla oss
+            i stället på{" "}
             {epost ? (
               <a className="font-semibold text-ink underline" href={`mailto:${epost}`}>
                 {epost}
@@ -175,37 +173,16 @@ export default function Intresseanmalan({ epost }: Props) {
             )}{" "}
             och berätta att du vill bli fadder.
           </p>
-          <Button type="button" variant="line-ink" className="mt-2 justify-self-start" onClick={() => setLage("formular")}>
+          <Button
+            type="button"
+            variant="line-ink"
+            className="mt-2 justify-self-start"
+            onClick={() => setLage("formular")}
+          >
             Ändra anmälan
           </Button>
         </div>
       )}
     </form>
-  );
-}
-
-interface FaltProps {
-  id: string;
-  label: string;
-  valfritt?: boolean;
-  fel?: string;
-  children: React.ReactNode;
-}
-
-/** One form field (design system FormField): label above, the field, and its error below. */
-function Falt({ id, label, valfritt, fel, children }: FaltProps) {
-  return (
-    <div className="grid min-w-0 gap-[7px]">
-      <Label htmlFor={id}>
-        {label}
-        {valfritt && <span> (valfritt)</span>}
-      </Label>
-      {children}
-      {fel && (
-        <span id={`${id}-fel`} className="text-label font-medium text-error">
-          {fel}
-        </span>
-      )}
-    </div>
   );
 }

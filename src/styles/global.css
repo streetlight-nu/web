@@ -140,6 +140,10 @@
   .on-green :focus-visible {
     outline-color: var(--color-gold);
   }
+  /* A light panel on a green field (a form) goes back to ink. */
+  .on-green .on-light :focus-visible {
+    outline-color: var(--color-ink);
+  }
   main:focus {
     outline: none;
   }

@@ -51,8 +51,9 @@ content:
     label: Nyheter
     type: collection
     path: src/content/nyheter
-    # The file name becomes the post's address: /nyheter/<title as a slug>.
-    filename: "{title}.md"
+    # The file name becomes the post's address: /nyheter/<title as a slug>. {primary} is the primary
+    # field (view.primary, the title), which Pages CMS slugifies when the post is created.
+    filename: "{primary}.md"
     view:
       fields: [title, topic, date]
       primary: title

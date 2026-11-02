@@ -30,6 +30,8 @@ interface Post {
   label: string;
   type: string;
   path: string;
+  filename: string;
+  view: { primary: string };
   fields: Falt[];
 }
 
@@ -66,6 +68,19 @@ describe("ett inlägg sparat i Pages CMS", () => {
 describe("samlingen Nyheter i .pages.yml", () => {
   test("ligger i samma mapp som Astros samling", () => {
     expect(nyheter).toMatchObject({ label: "Nyheter", type: "collection", path: "src/content/nyheter" });
+  });
+
+  test("namnger nya inlägg med Pages CMS dokumenterade platshållare, så att titeln blir adressen", () => {
+    // Pages CMS (lib/schema.ts, generateFilename): datumdelarna, {primary} för huvudfältet och {fields.<namn>}.
+    const kanda = ["year", "month", "day", "hour", "minute", "second", "primary"];
+    const platshallare = [...nyheter.filename.matchAll(/\{([^}]+)\}/g)].map(([, namn]) => namn);
+    expect(platshallare.length).toBeGreaterThan(0);
+    for (const namn of platshallare) {
+      const falt = namn.startsWith("fields.") && nyheter.fields.some((f) => `fields.${f.name}` === namn);
+      expect(kanda.includes(namn) || falt, `{${namn}}`).toBe(true);
+    }
+    expect(nyheter.filename).toMatch(/\.md$/);
+    expect(nyheter.view.primary).toBe("title");
   });
 
   test("har exakt schemats fält, plus brödtexten", () => {

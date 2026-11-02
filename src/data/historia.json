@@ -1,0 +1,41 @@
+{
+  "ingress": "",
+  "perioder": [
+    {
+      "rubrik": "1995–1999",
+      "namn": "",
+      "sammanfattning": "",
+      "handelser": [
+        { "ar": "1995", "rubrik": "", "text": "", "fraga": "" },
+        { "ar": "", "rubrik": "", "text": "", "fraga": "" }
+      ]
+    },
+    {
+      "rubrik": "2000–2009",
+      "namn": "",
+      "sammanfattning": "",
+      "handelser": [
+        { "ar": "", "rubrik": "", "text": "", "fraga": "" },
+        { "ar": "", "rubrik": "", "text": "", "fraga": "" }
+      ]
+    },
+    {
+      "rubrik": "2010–2019",
+      "namn": "",
+      "sammanfattning": "",
+      "handelser": [
+        { "ar": "", "rubrik": "", "text": "", "fraga": "" },
+        { "ar": "", "rubrik": "", "text": "", "fraga": "" }
+      ]
+    },
+    {
+      "rubrik": "2020–idag",
+      "namn": "",
+      "sammanfattning": "",
+      "handelser": [
+        { "ar": "", "rubrik": "", "text": "", "fraga": "" },
+        { "ar": "", "rubrik": "", "text": "", "fraga": "" }
+      ]
+    }
+  ]
+}

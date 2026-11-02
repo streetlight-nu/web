@@ -44,8 +44,9 @@ Utan familjens samtycke publicerar vi ingenting som visar ett fadderbarn eller e
 - Kryssa i **Familjen har gett sitt samtycke** bara när familjen faktiskt har sagt ja till att just den här bilden eller berättelsen publiceras.
 - Webbplatsen **stoppar** ett inlägg som saknar samtycke om
   - ämnet är *Berättelse från en familj*, eller
-  - **Bilden visar barn** är ikryssad.
-- Kontrollen gäller bara bilden överst. Lägger du in bilder i brödtexten gäller samma regel, men ingen kontrollerar det åt dig. Lägg därför helst ett foto där barn syns som bilden överst, så att kontrollen gör sitt jobb.
+  - **Bilden visar barn** är ikryssad, eller
+  - det finns bilder i brödtexten.
+- Webbplatsen kan inte se vad bilderna i brödtexten visar. Därför kräver varje inlägg med bilder i brödtexten samtycke, även om ingen familj syns. Kryssa i samtycket bara när familjen har sagt ja till bilderna.
 - Skriv aldrig barnens efternamn, adress eller annat som gör att någon kan hitta familjen.
 
 ## 4. Alt-text

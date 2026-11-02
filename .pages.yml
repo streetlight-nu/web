@@ -110,7 +110,7 @@ content:
       - name: consent
         label: Familjen har gett sitt samtycke
         type: boolean
-        description: Krävs för en Berättelse från en familj och för en bild där barn syns.
+        description: Krävs för en Berättelse från en familj, för en bild där barn syns och när brödtexten har bilder.
       - name: example
         label: Exempelinlägg
         type: boolean

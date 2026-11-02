@@ -2,8 +2,8 @@ import { useEffect, useRef, useState, type SubmitEvent } from "react";
 
 import FyllsI from "@/components/FyllsI";
 import { Button } from "@/components/ui/button";
+import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ChoiceChip, RadioGroup } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -83,44 +83,46 @@ export default function Intresseanmalan({ epost }: Props) {
           Anmäl intresse
         </h3>
         <div className="grid grid-cols-1 gap-4 min-[521px]:grid-cols-2">
-          <Falt id="anmalan-namn" label="Namn" fel={fel.namn}>
-            <Input
-              ref={namnRef}
-              id="anmalan-namn"
-              name="namn"
-              autoComplete="name"
-              required
-              value={anmalan.namn}
-              onChange={(e) => andra("namn", e.target.value)}
-              aria-invalid={fel.namn ? true : undefined}
-              aria-describedby={fel.namn ? "anmalan-namn-fel" : undefined}
-            />
-          </Falt>
-          <Falt id="anmalan-epost" label="E-post" fel={fel.epost}>
-            <Input
-              ref={epostRef}
-              id="anmalan-epost"
-              name="epost"
-              type="email"
-              autoComplete="email"
-              required
-              value={anmalan.epost}
-              onChange={(e) => andra("epost", e.target.value)}
-              aria-invalid={fel.epost ? true : undefined}
-              aria-describedby={fel.epost ? "anmalan-epost-fel" : undefined}
-            />
-          </Falt>
+          <FormField id="anmalan-namn" label="Namn" fel={fel.namn}>
+            {(koppling) => (
+              <Input
+                {...koppling}
+                ref={namnRef}
+                name="namn"
+                autoComplete="name"
+                required
+                value={anmalan.namn}
+                onChange={(e) => andra("namn", e.target.value)}
+              />
+            )}
+          </FormField>
+          <FormField id="anmalan-epost" label="E-post" fel={fel.epost}>
+            {(koppling) => (
+              <Input
+                {...koppling}
+                ref={epostRef}
+                name="epost"
+                type="email"
+                autoComplete="email"
+                required
+                value={anmalan.epost}
+                onChange={(e) => andra("epost", e.target.value)}
+              />
+            )}
+          </FormField>
         </div>
-        <Falt id="anmalan-telefon" label="Telefon" valfritt>
-          <Input
-            id="anmalan-telefon"
-            name="telefon"
-            type="tel"
-            autoComplete="tel"
-            value={anmalan.telefon}
-            onChange={(e) => andra("telefon", e.target.value)}
-          />
-        </Falt>
+        <FormField id="anmalan-telefon" label="Telefon" valfritt>
+          {(koppling) => (
+            <Input
+              {...koppling}
+              name="telefon"
+              type="tel"
+              autoComplete="tel"
+              value={anmalan.telefon}
+              onChange={(e) => andra("telefon", e.target.value)}
+            />
+          )}
+        </FormField>
         <div className="grid gap-2">
           <span id="anmalan-avsikt" className="text-label font-semibold">
             Jag vill
@@ -138,14 +140,16 @@ export default function Intresseanmalan({ epost }: Props) {
             ))}
           </RadioGroup>
         </div>
-        <Falt id="anmalan-meddelande" label="Meddelande" valfritt>
-          <Textarea
-            id="anmalan-meddelande"
-            name="meddelande"
-            value={anmalan.meddelande}
-            onChange={(e) => andra("meddelande", e.target.value)}
-          />
-        </Falt>
+        <FormField id="anmalan-meddelande" label="Meddelande" valfritt>
+          {(koppling) => (
+            <Textarea
+              {...koppling}
+              name="meddelande"
+              value={anmalan.meddelande}
+              onChange={(e) => andra("meddelande", e.target.value)}
+            />
+          )}
+        </FormField>
         <Button type="submit" variant="ink" className="justify-self-start" disabled={!hydrerad}>
           Skicka anmälan
         </Button>
@@ -164,8 +168,8 @@ export default function Intresseanmalan({ epost }: Props) {
             Tack, {fornamn}!
           </h3>
           <p>
-            Formuläret är inte kopplat till föreningen än, så din anmälan har <strong>inte</strong> skickats. Mejla oss i
-            stället på{" "}
+            Formuläret är inte kopplat till föreningen än, så din anmälan har <strong>inte</strong> skickats. Mejla oss
+            i stället på{" "}
             {epost ? (
               <a className="font-semibold text-ink underline" href={`mailto:${epost}`}>
                 {epost}
@@ -175,37 +179,16 @@ export default function Intresseanmalan({ epost }: Props) {
             )}{" "}
             och berätta att du vill bli fadder.
           </p>
-          <Button type="button" variant="line-ink" className="mt-2 justify-self-start" onClick={() => setLage("formular")}>
+          <Button
+            type="button"
+            variant="line-ink"
+            className="mt-2 justify-self-start"
+            onClick={() => setLage("formular")}
+          >
             Ändra anmälan
           </Button>
         </div>
       )}
     </form>
-  );
-}
-
-interface FaltProps {
-  id: string;
-  label: string;
-  valfritt?: boolean;
-  fel?: string;
-  children: React.ReactNode;
-}
-
-/** One form field (design system FormField): label above, the field, and its error below. */
-function Falt({ id, label, valfritt, fel, children }: FaltProps) {
-  return (
-    <div className="grid min-w-0 gap-[7px]">
-      <Label htmlFor={id}>
-        {label}
-        {valfritt && <span> (valfritt)</span>}
-      </Label>
-      {children}
-      {fel && (
-        <span id={`${id}-fel`} className="text-label font-medium text-error">
-          {fel}
-        </span>
-      )}
-    </div>
   );
 }

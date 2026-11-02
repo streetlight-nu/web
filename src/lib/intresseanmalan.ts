@@ -8,10 +8,13 @@
  * answer type `Svar`, and let the form's thanks state say what the new answer means.
  */
 
-/** What the person wants: fadder for all the children, fadder for one child, or to know more first. */
-export type Val = "fadder-alla" | "fadder-barn" | "veta-mer";
+import { arEpostadress } from "./falt";
 
-export const VAL: { value: Val; label: string }[] = [
+/** What the person wants: fadder for all the children, fadder for one child, or to know more first. */
+export type Avsikt = "fadder-alla" | "fadder-barn" | "veta-mer";
+
+/** The choices under "Jag vill", in the order the form shows them. */
+export const AVSIKTER: { value: Avsikt; label: string }[] = [
   { value: "fadder-alla", label: "fadder för alla barnen" },
   { value: "fadder-barn", label: "fadder för ett barn" },
   { value: "veta-mer", label: "veta mer först" },
@@ -22,20 +25,18 @@ export interface Intresseanmalan {
   epost: string;
   /** Optional; empty when not given. */
   telefon: string;
-  val: Val;
+  avsikt: Avsikt;
   /** Optional; empty when not given. */
   meddelande: string;
 }
 
 export type Fel = Partial<Record<"namn" | "epost", string>>;
 
-const EPOST = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 /** Checks the required fields. Returns one message per wrong field, saying what is wrong and how to fix it. */
 export function valideraIntresseanmalan(anmalan: Pick<Intresseanmalan, "namn" | "epost">): Fel {
   const fel: Fel = {};
   if (!anmalan.namn.trim()) fel.namn = "Skriv ditt namn så vet vi vem vi ska kontakta.";
-  if (!EPOST.test(anmalan.epost.trim())) fel.epost = "Kontrollera e-postadressen, till exempel namn@exempel.se.";
+  if (!arEpostadress(anmalan.epost)) fel.epost = "Kontrollera e-postadressen, till exempel namn@exempel.se.";
   return fel;
 }
 

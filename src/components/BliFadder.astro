@@ -9,9 +9,9 @@ import FyllsI from "@/components/FyllsI.astro";
 import Intresseanmalan from "@/components/Intresseanmalan";
 import Steps from "@/components/Steps.astro";
 import TibebBand from "@/components/TibebBand.astro";
-import { getForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 
-const { kontaktperson, epost, swish } = getForeningsuppgifter();
+const { kontaktperson, epost, swish } = hamtaForeningsuppgifter();
 ---
 
 <TibebBand variant="thin" />

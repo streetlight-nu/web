@@ -1,18 +1,13 @@
 import { z } from "astro/zod";
 
+import { valfri } from "./falt";
+
 /** The four topics (Ämne) a post can have, in the order the design system lists them. */
 export const amnen = ["rapport", "forening", "familj", "tack"] as const;
 export type Amne = (typeof amnen)[number];
 
-const text = z.string().trim().min(1);
-
-/**
- * An optional field. Pages CMS writes a field the editor left empty as `''` (or `null`),
- * which means the same as leaving it out.
- */
-function valfri<T extends z.ZodType>(falt: T) {
-  return z.preprocess((varde) => (varde === "" || varde === null ? undefined : varde), falt.optional());
-}
+/** A text that must be filled in: not empty and not only blanks. */
+const ifylldText = z.string().trim().min(1);
 
 /**
  * The schema for a post (Inlägg) in the Nyheter collection. It knows nothing about Astro,
@@ -22,15 +17,15 @@ function valfri<T extends z.ZodType>(falt: T) {
 export function inlaggSchema<Bild extends z.ZodType = z.ZodString>(image?: Bild) {
   return z
     .object({
-      title: text,
+      title: ifylldText,
       // YAML gives a Date for `2026-09-14`, the CMS may give a string. An empty field must
       // not slip through as 1970, which `z.coerce.date()` would make of null.
-      date: z.union([z.date(), text.pipe(z.coerce.date())]),
+      date: z.union([z.date(), ifylldText.pipe(z.coerce.date())]),
       topic: z.enum(amnen),
-      place: valfri(text),
-      lede: text,
+      place: valfri(ifylldText),
+      lede: ifylldText,
       image: valfri((image ?? z.string()) as Bild),
-      imageAlt: valfri(text),
+      imageAlt: valfri(ifylldText),
       showsChildren: z.boolean().default(false),
       consent: z.boolean().default(false),
       /** An example post (Exempelinlägg): made up to show the template, marked "Exempel". */

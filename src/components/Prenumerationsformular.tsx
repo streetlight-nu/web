@@ -2,8 +2,10 @@ import { useEffect, useRef, useState, type SubmitEvent } from "react";
 
 import FyllsI from "@/components/FyllsI";
 import { Button } from "@/components/ui/button";
+import { CheckboxChip } from "@/components/ui/checkbox-chip";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
+import { AMNEN, amnesvarden, type Amne } from "@/lib/amnen";
 import {
   skickaPrenumeration,
   valideraPrenumeration,
@@ -16,10 +18,10 @@ interface Props {
   epost?: string;
 }
 
-const tomPrenumeration: Prenumeration = { fornamn: "", epost: "", samtycke: false };
+const tomPrenumeration: Prenumeration = { fornamn: "", epost: "", amnen: [...amnesvarden], samtycke: false };
 
 /**
- * The form "Få nyheterna med e-post" at the end of Nyheter. It validates the e-mail and the consent in place
+ * The form "Få nyheterna med e-post" at the end of Nyheter. It validates the e-mail, the topics and the consent in place
  * and sends only through skickaPrenumeration(), which in v1 answers "inte kopplat". The thanks state then says
  * plainly that the e-mail was not saved, and "Ändra" brings the form back with the values kept.
  */
@@ -30,6 +32,7 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
   const [hydrerad, setHydrerad] = useState(false);
   const fornamnRef = useRef<HTMLInputElement>(null);
   const epostRef = useRef<HTMLInputElement>(null);
+  const forstaAmnetRef = useRef<HTMLInputElement>(null);
   const samtyckeRef = useRef<HTMLInputElement>(null);
   const tackRef = useRef<HTMLDivElement>(null);
   const forstaRendern = useRef(true);
@@ -51,9 +54,20 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
     setPrenumeration(ny);
     // An error disappears as soon as the field is right.
     const kvar = valideraPrenumeration(ny);
-    if ((fel.epost && !kvar.epost) || (fel.samtycke && !kvar.samtycke)) {
-      setFel({ epost: fel.epost && kvar.epost, samtycke: fel.samtycke && kvar.samtycke });
+    if ((fel.epost && !kvar.epost) || (fel.amnen && !kvar.amnen) || (fel.samtycke && !kvar.samtycke)) {
+      setFel({ epost: fel.epost && kvar.epost, amnen: fel.amnen && kvar.amnen, samtycke: fel.samtycke && kvar.samtycke });
     }
+  }
+
+  /** Chooses or drops a topic, keeping the topics in the order of the ämnes module. */
+  function valjAmne(varde: Amne, vald: boolean) {
+    const valda = new Set(prenumeration.amnen);
+    if (vald) valda.add(varde);
+    else valda.delete(varde);
+    andra(
+      "amnen",
+      amnesvarden.filter((amne) => valda.has(amne)),
+    );
   }
 
   async function skicka(event: SubmitEvent<HTMLFormElement>) {
@@ -61,6 +75,7 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
     const nyaFel = valideraPrenumeration(prenumeration);
     setFel(nyaFel);
     if (nyaFel.epost) return epostRef.current?.focus();
+    if (nyaFel.amnen) return forstaAmnetRef.current?.focus();
     if (nyaFel.samtycke) return samtyckeRef.current?.focus();
     await skickaPrenumeration(prenumeration);
     setLage("tack");
@@ -107,6 +122,33 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
             )}
           </FormField>
         </div>
+        <fieldset
+          className="grid gap-2"
+          aria-invalid={fel.amnen ? true : undefined}
+          aria-describedby={fel.amnen ? "prenumeration-amnen-fel" : undefined}
+        >
+          <legend className="mb-2 text-label font-semibold">Vilka nyheter vill du ha?</legend>
+          <div className="flex flex-wrap gap-2.5">
+            {AMNEN.map((amne, i) => (
+              <CheckboxChip
+                key={amne.varde}
+                ref={i === 0 ? forstaAmnetRef : undefined}
+                id={`prenumeration-amne-${amne.varde}`}
+                name="amnen"
+                value={amne.varde}
+                checked={prenumeration.amnen.includes(amne.varde)}
+                onChange={(e) => valjAmne(amne.varde, e.target.checked)}
+              >
+                {amne.namn}
+              </CheckboxChip>
+            ))}
+          </div>
+          {fel.amnen && (
+            <span id="prenumeration-amnen-fel" className="text-label font-medium text-error">
+              {fel.amnen}
+            </span>
+          )}
+        </fieldset>
         <div className="grid gap-[7px]">
           <label className="flex min-h-11 cursor-pointer items-start gap-3">
             <input

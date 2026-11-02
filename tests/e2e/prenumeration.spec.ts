@@ -54,6 +54,7 @@ test.describe("sektionen Få nyheterna med e-post", () => {
       f.getByLabel("Förnamn (valfritt)"),
       f.getByLabel("E-post", { exact: true }),
       f.locator("label", { hasText: "Föreningen får spara min e-post" }),
+      ...AMNEN.map((namn) => f.locator("label", { hasText: namn })),
       f.getByRole("button", { name: "Prenumerera" }),
     ];
     for (const yta of ytor) {
@@ -73,6 +74,16 @@ test.describe("sektionen Få nyheterna med e-post", () => {
     const f = formular(page);
     await f.getByLabel("E-post", { exact: true }).focus();
     await page.keyboard.press("Tab");
+    const chip = f.getByRole("checkbox", { name: AMNEN[0] });
+    await expect(chip).toBeFocused();
+    // The ring goes round the whole pill, the chip's label.
+    const pillensRing = await chip.evaluate((el) => {
+      const style = getComputedStyle(el.closest("label")!);
+      return { style: style.outlineStyle, width: style.outlineWidth, color: style.outlineColor };
+    });
+    expect(pillensRing).toEqual({ style: "solid", width: "3px", color: "rgb(11, 46, 36)" });
+
+    for (let i = 0; i < AMNEN.length; i++) await page.keyboard.press("Tab");
     const samtycke = f.getByRole("checkbox", { name: SAMTYCKE });
     await expect(samtycke).toBeFocused();
     expect(await samtycke.evaluate(outline)).toEqual({ visible: true, color: "rgb(11, 46, 36)" });
@@ -87,6 +98,9 @@ test.describe("sektionen Få nyheterna med e-post utan JavaScript", () => {
     await expect(formular(page).getByRole("button", { name: "Prenumerera" })).toBeDisabled();
   });
 });
+
+/** The four topics, with the same names and in the same order as on Nyheter. */
+const AMNEN = ["Rapport från Addis Abeba", "Nyhet från föreningen", "Berättelse från en familj", "Tack till faddrarna"];
 
 const SAMTYCKE = "Föreningen får spara min e-post för att skicka nyheter. Jag kan avsluta när jag vill.";
 
@@ -105,6 +119,50 @@ test.describe("formuläret Få nyheterna med e-post", () => {
     await expect(f.getByRole("button", { name: "Prenumerera" })).toBeEnabled();
   });
 
+  test("har en grupp ”Vilka nyheter vill du ha?” med de fyra ämnena från Nyheter, alla ikryssade", async ({ page }) => {
+    await page.goto("nyheter");
+    const grupp = formular(page).getByRole("group", { name: "Vilka nyheter vill du ha?" });
+    const rutor = grupp.getByRole("checkbox");
+    await expect(rutor).toHaveCount(4);
+    for (const [i, namn] of AMNEN.entries()) {
+      await expect(rutor.nth(i)).toHaveAccessibleName(namn);
+      await expect(rutor.nth(i)).toBeChecked();
+    }
+  });
+
+  test("ett valt ämne syns på mer än färgen: rutan har en bock", async ({ page }) => {
+    await page.goto("nyheter");
+    const f = formular(page);
+    const bock = (namn: string) => f.locator("label", { hasText: namn }).locator("svg");
+    await expect(bock(AMNEN[0])).toBeVisible();
+    await f.getByRole("checkbox", { name: AMNEN[0] }).uncheck();
+    await expect(bock(AMNEN[0])).toBeHidden();
+    await expect(bock(AMNEN[1])).toBeVisible();
+  });
+
+  test("inga valda ämnen ger ämnesfelet och stoppar sändningen, och felet försvinner när ett ämne väljs", async ({
+    page,
+  }) => {
+    await page.goto("nyheter");
+    const f = formular(page);
+    await f.getByLabel("E-post", { exact: true }).fill("anna@exempel.se");
+    for (const namn of AMNEN) await f.getByRole("checkbox", { name: namn }).uncheck();
+    await f.getByRole("checkbox", { name: SAMTYCKE }).check();
+    await f.getByRole("button", { name: "Prenumerera" }).click();
+
+    const grupp = f.getByRole("group", { name: "Vilka nyheter vill du ha?" });
+    await expect(grupp).toHaveAccessibleDescription("Välj minst en sorts nyheter.");
+    await expect(grupp).toHaveAttribute("aria-invalid", "true");
+    await expect(f.getByRole("checkbox", { name: AMNEN[0] })).toBeFocused();
+    await expect(f.getByLabel("E-post", { exact: true })).not.toHaveAttribute("aria-invalid", "true");
+    await expect(f.getByRole("region", { name: /Tack/ })).toHaveCount(0);
+    await expectNoA11yViolations(page);
+
+    await f.getByRole("checkbox", { name: AMNEN[2] }).check();
+    await expect(grupp).not.toHaveAttribute("aria-invalid", "true");
+    await expect(f.getByText("Välj minst en sorts nyheter.")).toHaveCount(0);
+  });
+
   test("tomt formulär ger fel på e-post och samtycke, och fokus går till e-posten", async ({ page }) => {
     await page.goto("nyheter");
     const f = formular(page);
@@ -117,6 +175,7 @@ test.describe("formuläret Få nyheterna med e-post", () => {
     await expect(epost).toHaveAccessibleDescription("Skriv din e-postadress.");
     await expect(samtycke).toHaveAccessibleDescription("Kryssa i rutan, annars kan vi inte skicka något till dig.");
     await expect(f.getByLabel("Förnamn (valfritt)")).not.toHaveAttribute("aria-invalid", "true");
+    await expect(f.getByRole("group", { name: "Vilka nyheter vill du ha?" })).not.toHaveAttribute("aria-invalid", "true");
     await expect(epost).toBeFocused();
     await expectNoA11yViolations(page);
   });
@@ -190,9 +249,15 @@ test.describe("formuläret Få nyheterna med e-post", () => {
 
   test("”Ändra” tar tillbaka formuläret med värdena kvar", async ({ page }) => {
     await page.goto("nyheter");
-    await skickaGiltig(page);
     const f = formular(page);
+    await f.getByRole("checkbox", { name: AMNEN[1] }).uncheck();
+    await skickaGiltig(page);
     await f.getByRole("button", { name: "Ändra" }).click();
+
+    await expect(f.getByRole("checkbox", { name: AMNEN[0] })).toBeChecked();
+    await expect(f.getByRole("checkbox", { name: AMNEN[1] })).not.toBeChecked();
+    await expect(f.getByRole("checkbox", { name: AMNEN[2] })).toBeChecked();
+    await expect(f.getByRole("checkbox", { name: AMNEN[3] })).toBeChecked();
 
     await expect(f.getByRole("region", { name: /Tack/ })).toHaveCount(0);
     await expect(f.getByLabel("Förnamn (valfritt)")).toHaveValue("Anna");

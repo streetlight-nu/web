@@ -20,7 +20,7 @@ npm run dev
 | `npm run preview` | Visar det byggda resultatet lokalt |
 | `npm run check` | Typkontroll |
 | `npm test` | Enhetstester (Vitest) |
-| `npm run test:e2e` | Webbläsartester och tillgänglighet med axe (Playwright, kräver bygge först) |
+| `npm run test:e2e` | Webbläsartester och tillgänglighet med axe (Playwright). Kräver `npm run build` först; testvarianten med ifyllda föreningsuppgifter bygger den själv |
 
 ## Design
 
@@ -38,7 +38,7 @@ Föreningsuppgifterna (organisationsnummer, 90-konto, Swish-nummer, kontaktperso
 
 Komponenterna läser uppgifterna med `hamtaForeningsuppgifter()` från `src/lib/foreningsuppgifter.ts` och skriver aldrig in ett värde själva. Ett tomt fält visas som chipet ”fylls i” (`FyllsI.astro`). Ett felaktigt värde, till exempel en e-post som inte är en e-postadress, stoppar bygget.
 
-Webbläsartesterna bygger sajten en gång till med `tests/fixtures/foreningsuppgifter-ifylld.json` (via `FORENINGSUPPGIFTER_FIL`) och visar den på porten efter `E2E_PORT`.
+`npm run test:e2e` bygger själv sajten en gång till, till `dist-ifylld/`, med `tests/fixtures/foreningsuppgifter-ifylld.json` (via `FORENINGSUPPGIFTER_FIL`), och visar den på porten `E2E_PORT_IFYLLD`. Utan den används porten efter `E2E_PORT` (standard 4321 och 4322). Den vanliga sajten i `dist/` bygger du själv innan.
 
 ## Intresseanmälan
 

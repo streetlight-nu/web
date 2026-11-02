@@ -8,7 +8,12 @@ web
 
 ## Users
 
-Den viktigaste besökaren är en svensk som funderar på att bli fadder. Hen har hört talas om Streetlight, kanske via någon i föreningen, och vill förstå vilka vi är, vart pengarna går och om stödet faktiskt når fram innan hen anmäler intresse. Många läsare är äldre, så texten ska gå lätt att läsa för dem också.
+Den viktigaste besökaren är en svensk som funderar på att bli fadder. Hen har hört talas om Streetlight, kanske via någon i föreningen, och vill förstå vilka vi är, vart pengarna går och om stödet faktiskt når fram innan hen anmäler intresse.
+
+De blivande faddrarna finns i två grupper:
+
+- **Äldre läsare** som vill ge regelbundet och behöver en text som är lätt att läsa och en sida som är lätt att använda.
+- **Barnfamiljer** som vill lära sina egna barn att vara givmilda och tänka på andra. Föräldrarna läser ofta sidan tillsammans med barnen, så texten och berättelserna ska gå att dela med ett barn. De ska förklara vad stödet gör för fadderbarnen, utan att fadderbarnen blir föremål för medlidande.
 
 I andra hand kommer befintliga faddrar och medlemmar, som läser nyheter, följer arbetet och hittar till årsmöte och årsredovisning.
 
@@ -61,4 +66,4 @@ Små med flit. Det är 20 barn och 20 ljus, inte tusentals. Föreningen känner 
 
 ## Accessibility & Inclusion
 
-WCAG 2.1 AA. All text har minst 4,5:1 i kontrast, brödtexten är minst 18 px även på mobil och tryckytor är minst 44 px. Varje vy har en h1 och en hopplänk till innehållet. Sidan ska fungera för äldre läsare.
+WCAG 2.1 AA. All text har minst 4,5:1 i kontrast, brödtexten är minst 18 px även på mobil och tryckytor är minst 44 px. Varje vy har en h1 och en hopplänk till innehållet. Sidan ska fungera för äldre läsare, och för en förälder och ett barn som läser tillsammans.

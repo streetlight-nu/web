@@ -135,7 +135,7 @@ components:
 
 Sidan är en handvävd shemma-duk. Rena vita bomullsfält och djupgröna fält växlar med hårda kanter och fogas ihop av vävda tibeb-band, som sömmarna i ett tyg. Mitt i duken står en gatlykta, och guldet är dess ljus. Ljuset är det enda som lyser på sidan. Det visar vägen till det viktigaste: att bli fadder, ljuset i lyktan och några få betoningsord på grönt.
 
-Känslan är varm och stadig, aldrig flashig. Typografin är tung och nära i rubrikerna och lugn och läsbar i brödtexten. Tryckytorna är stora och sidan är skriven så att äldre läsare också hänger med. Det lilla formatet syns i detaljerna. Bandet med 20 ljus har exakt ett ljus per barn, och guldtråden binder ihop steg och tidslinjer som en tråd genom tyget.
+Känslan är varm och stadig, aldrig flashig. Typografin är tung och nära i rubrikerna och lugn och läsbar i brödtexten. Tryckytorna är stora och sidan är skriven så att både äldre läsare och en förälder som läser med sitt barn hänger med. Det lilla formatet syns i detaljerna. Bandet med 20 ljus har exakt ett ljus per barn, och guldtråden binder ihop steg och tidslinjer som en tråd genom tyget.
 
 Designen ersätter varumärkesguiden med Open Sans, #FFD200, #FF1736 och asfalt, och de tidigare varianterna ”Vägmärken i natten” (ADR 0002). Den ska inte återuppstå.
 

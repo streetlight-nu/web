@@ -4,7 +4,7 @@ import MainNav, { type NavLink } from "@/components/MainNav";
 import { href } from "@/lib/utils";
 
 interface Props {
-  current?: "nyheter";
+  current?: "nyheter" | "historia";
 }
 const { current } = Astro.props;
 
@@ -12,6 +12,7 @@ const links: NavLink[] = [
   { label: "Vårt stöd", href: href("/#stod") },
   { label: "Familjerna", href: href("/#familjer") },
   { label: "Så arbetar vi", href: href("/#sa-arbetar-vi") },
+  { label: "Vår historia", href: href("/historia"), current: current === "historia" },
   { label: "Nyheter", href: href("/nyheter"), current: current === "nyheter" },
 ];
 ---

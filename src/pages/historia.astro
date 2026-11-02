@@ -1,0 +1,218 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FyllsI from "@/components/FyllsI.astro";
+import LightBand from "@/components/LightBand.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { hamtaHistoria, periodId } from "@/lib/historia";
+import { href } from "@/lib/utils";
+
+/**
+ * Vår historia: the timeline from 1995 until today. The periods alternate between cotton and green
+ * fields, joined by the gold thread with a diamond for each event. Its content comes from
+ * src/data/historia.json (Pages CMS); every empty field shows the chip "fylls i".
+ */
+const { ingress, perioder } = hamtaHistoria();
+const beskrivning =
+  ingress ?? "Hur Streetlight började 1995 och hur arbetet med fadderbarnen i Addis Abeba har vuxit fram sedan dess.";
+---
+
+<BaseLayout title="Vår historia" description={beskrivning} current="historia">
+  <div slot="header" class="pt-[clamp(28px,5vw,56px)] pb-[clamp(36px,5vw,60px)]">
+    <nav aria-label="Du är här" class="mb-[18px] flex flex-wrap items-center gap-2.5 text-label font-semibold text-mint">
+      <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page" class="text-cotton">Vår historia</span>
+    </nav>
+    <h1 class="max-w-[16ch] text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[0.98] tracking-[-0.035em]">
+      Vår historia, <span class="text-gold">från 1995 till idag.</span>
+    </h1>
+    <p class="mt-[18px] max-w-[56ch] text-lede text-mint">
+      {ingress ?? <FyllsI>ingress fylls i</FyllsI>}
+    </p>
+    <nav aria-label="Hoppa till en period" class="mt-8">
+      <ul class="m-0 flex list-none flex-wrap gap-3 p-0">
+        {
+          perioder.map((period) => (
+            <li>
+              <a class="jump" href={`#${periodId(period.rubrik)}`}>
+                {period.rubrik}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+  <TibebBand slot="header-after" variant="thin" />
+
+  {
+    perioder.map((period, index) => {
+      const id = periodId(period.rubrik);
+      const gron = index % 2 === 1;
+      return (
+        <section
+          id={id}
+          aria-labelledby={`${id}-rubrik`}
+          class:list={["period py-[clamp(64px,9vw,120px)]", gron ? "on-green bg-green text-cotton" : "bg-cotton text-ink"]}
+        >
+          <div class="band-inner grid grid-cols-1 items-start gap-[clamp(28px,5vw,64px)] min-[901px]:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)]">
+            <header class="min-w-0 min-[901px]:sticky min-[901px]:top-8">
+              <h2 id={`${id}-rubrik`} class="text-headline">
+                {period.rubrik}
+              </h2>
+              <p class="mt-4 font-display text-[1.4rem] leading-[1.3] font-semibold tracking-[-0.01em]">
+                {period.namn ?? <FyllsI>periodens namn fylls i</FyllsI>}
+              </p>
+              <p class:list={["mt-3 max-w-[40ch]", gron ? "text-mint" : "text-ink-soft"]}>
+                {period.sammanfattning ?? <FyllsI>sammanfattning fylls i</FyllsI>}
+              </p>
+            </header>
+            <ol class="thread m-0 min-w-0 list-none p-0">
+              {period.handelser.map((handelse) => (
+                <li class="event">
+                  <p class:list={["text-label font-semibold", gron ? "text-mint" : "text-ink-soft"]}>
+                    {handelse.ar ?? <FyllsI>år fylls i</FyllsI>}
+                  </p>
+                  <h3 class="mt-2 text-title tracking-[-0.015em]">
+                    {handelse.rubrik ?? <FyllsI>rubrik fylls i</FyllsI>}
+                  </h3>
+                  <p class="mt-3 max-w-[60ch]">{handelse.text ?? <FyllsI>text fylls i</FyllsI>}</p>
+                  {handelse.fraga && (
+                    <p class="fraga mt-4 max-w-[56ch]">
+                      <strong class="block text-label font-semibold">Att prata om tillsammans</strong>
+                      {handelse.fraga}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      );
+    })
+  }
+
+  <section aria-labelledby="idag-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="band-inner grid grid-cols-1 items-start gap-[clamp(28px,5vw,64px)] min-[901px]:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)]">
+      <h2 id="idag-rubrik" class="text-headline">Idag</h2>
+      <div class="thread thread--end min-w-0">
+        <div class="event event--lit">
+          <p class="text-title tracking-[-0.015em]">Vi stöttar 20 fadderbarn och deras familjer i Addis Abeba.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <LightBand />
+  <TibebBand variant="thin" />
+
+  <section aria-labelledby="fortsattning-rubrik" class="bg-gold py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="band-inner flex flex-wrap items-end justify-between gap-x-14 gap-y-8">
+      <div class="min-w-0 flex-[999_1_480px]">
+        <h2 id="fortsattning-rubrik" class="text-headline">Var med och skriv nästa kapitel.</h2>
+        <p class="mt-[22px] max-w-[52ch] text-lede">
+          Som fadder stöttar du alla 20 fadderbarnen tillsammans och hjälper oss att hålla ljusen tända.
+        </p>
+      </div>
+      <a class={buttonVariants({ variant: "ink" })} href={href("/#bli-fadder")}>Bli fadder</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .jump {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 2px solid rgb(251 251 248 / 0.45);
+    border-radius: var(--radius-pill);
+    color: var(--color-cotton);
+    font-size: var(--text-label);
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.3s var(--ease-light);
+  }
+  .jump:hover {
+    border-color: var(--color-gold);
+  }
+
+  /* The gold thread down the left of each period, with a diamond for each event. */
+  .thread {
+    position: relative;
+    display: grid;
+    gap: clamp(48px, 6vw, 72px);
+    padding-block: 6px;
+    padding-left: 56px;
+  }
+  .thread::before {
+    content: "";
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: repeating-linear-gradient(180deg, var(--color-gold) 0 14px, transparent 14px 22px);
+  }
+  .event {
+    position: relative;
+  }
+  .event::before {
+    content: "";
+    position: absolute;
+    left: -52px;
+    top: 0.3em;
+    width: 16px;
+    height: 16px;
+    transform: rotate(45deg);
+    background: var(--color-ink);
+  }
+  .on-green .event::before {
+    background: var(--color-gold);
+  }
+
+  /* Today: the thread ends in a lit diamond, drawn in the light's three hard steps. */
+  .thread--end::before {
+    bottom: auto;
+    height: 1.2em;
+  }
+  .event--lit::before {
+    left: -56px;
+    top: 0.15em;
+    width: 24px;
+    height: 24px;
+    background: var(--color-light-high);
+    box-shadow:
+      0 0 0 5px var(--color-light-mid),
+      0 0 0 10px var(--color-gold);
+  }
+
+  /* A question to talk about: set off by a thick rule on top, never a card. */
+  .fraga {
+    padding-top: 14px;
+    border-top: 3px solid currentColor;
+  }
+  .on-green .fraga {
+    border-top-color: var(--color-gold);
+  }
+
+  @media (max-width: 600px) {
+    .thread {
+      padding-left: 40px;
+    }
+    .thread::before {
+      left: 6px;
+    }
+    .event::before {
+      left: -40px;
+      width: 14px;
+      height: 14px;
+    }
+    .event--lit::before {
+      left: -44px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+</style>

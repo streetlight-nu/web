@@ -21,7 +21,7 @@ test("hopplänken leder till innehållet", async ({ page }) => {
   await expect(page.locator("main#main")).toBeFocused();
 });
 
-test("huvudmenyn länkar till startsidans avsnitt och nyheterna", async ({ page, isMobile }) => {
+test("huvudmenyn länkar till startsidans avsnitt, historien och nyheterna", async ({ page, isMobile }) => {
   await page.goto("./");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
@@ -29,6 +29,7 @@ test("huvudmenyn länkar till startsidans avsnitt och nyheterna", async ({ page,
     ["Vårt stöd", "#stod"],
     ["Familjerna", "#familjer"],
     ["Så arbetar vi", "#sa-arbetar-vi"],
+    ["Vår historia", "historia"],
     ["Nyheter", "nyheter"],
   ]) {
     await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", new RegExp(`${path}$`));

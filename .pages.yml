@@ -47,6 +47,59 @@ content:
           regex: "^$|^https?://\\S+$"
           message: Skriv en hel webbadress som börjar med https://.
 
+  - name: historia
+    label: Vår historia
+    type: file
+    path: src/data/historia.json
+    format: json
+    # The fields must match the schema in src/lib/historia.ts; tests/unit/historia.test.ts checks it.
+    fields:
+      - name: ingress
+        label: Ingress
+        type: text
+        description: Ett par meningar överst på sidan om hur allt började. Skriv så att ett barn som läser med en vuxen förstår. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: perioder
+        label: Perioder
+        type: object
+        list: true
+        description: Tidslinjen, äldst först. Varje period visas som ett eget fält på sidan.
+        fields:
+          - name: rubrik
+            label: Årtal för perioden
+            type: string
+            required: true
+            description: Till exempel 1995–1999 eller 2020–idag. Visas som rubrik och i menyn överst.
+          - name: namn
+            label: Periodens namn
+            type: string
+            description: Ett kort namn, till exempel ”De första barnen”.
+          - name: sammanfattning
+            label: Sammanfattning
+            type: text
+            description: En mening om vad som hände under perioden.
+          - name: handelser
+            label: Händelser
+            type: object
+            list: true
+            description: Händelserna under perioden, äldst först.
+            fields:
+              - name: ar
+                label: År
+                type: string
+                description: Till exempel 1995 eller 2003–2004.
+              - name: rubrik
+                label: Rubrik
+                type: string
+                description: Vad som hände, med några få ord.
+              - name: text
+                label: Text
+                type: text
+                description: Två till fyra korta meningar. Skriv så att ett barn förstår, med enkla ord och gärna något konkret, som en skola, en uniform eller en dag. Berätta om barn och familjer med värdighet och bara med deras samtycke.
+              - name: fraga
+                label: Att prata om tillsammans
+                type: string
+                description: En fråga som en förälder kan prata om med sitt barn efteråt, till exempel ”Vad behöver du för att kunna gå till skolan?”. Får lämnas tomt.
+
   - name: nyheter
     label: Nyheter
     type: collection

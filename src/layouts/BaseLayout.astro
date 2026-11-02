@@ -15,7 +15,7 @@ export interface Delningsbild {
 interface Props {
   title: string;
   description: string;
-  current?: "nyheter";
+  current?: "nyheter" | "historia";
   /** Open Graph's type: an inlägg is an "article", every other page a "website". */
   ogType?: "website" | "article";
   delningsbild?: Delningsbild;

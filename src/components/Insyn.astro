@@ -1,0 +1,82 @@
+---
+/**
+ * Insyn: the row of föreningsuppgifter at the end of Så arbetar vi, so a visitor can check the association.
+ * Every value comes from the data file through hamtaForeningsuppgifter(); a missing one shows the chip "fylls i".
+ * Meant for the green field.
+ */
+import FyllsI from "@/components/FyllsI.astro";
+import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+
+const { organisationsnummer, arsredovisning, nittiokonto } = hamtaForeningsuppgifter();
+---
+
+<section class="insyn" aria-labelledby="insyn-rubrik">
+  <h3 id="insyn-rubrik" class="text-title tracking-[-0.015em] text-cotton">Insyn</h3>
+  <dl>
+    <div>
+      <dt>Organisationsnummer</dt>
+      <dd>{organisationsnummer ?? <FyllsI />}</dd>
+    </div>
+    <div>
+      <dt>Senaste årsredovisning</dt>
+      <dd>
+        {
+          arsredovisning ? (
+            <a
+              class="inline-flex min-h-11 items-center font-semibold text-cotton underline underline-offset-4"
+              href={arsredovisning}
+            >
+              Läs årsredovisningen
+            </a>
+          ) : (
+            <FyllsI>länk fylls i</FyllsI>
+          )
+        }
+      </dd>
+    </div>
+    <div>
+      <dt>90-konto</dt>
+      <dd>{nittiokonto ?? <FyllsI />}</dd>
+    </div>
+  </dl>
+</section>
+
+<style>
+  .insyn {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 24px;
+    align-items: baseline;
+  }
+  dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px 32px;
+  }
+  dl > div {
+    min-width: 0;
+    border-top: 1.5px solid rgba(207, 227, 216, 0.3);
+    padding-top: 12px;
+  }
+  dt {
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    color: var(--color-mint);
+  }
+  dd {
+    margin: 6px 0 0;
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 600px) {
+    .insyn {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    dl {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+</style>

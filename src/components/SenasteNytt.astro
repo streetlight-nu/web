@@ -1,0 +1,114 @@
+---
+import { Image } from "astro:assets";
+
+import ExampleChip from "@/components/ExampleChip.astro";
+import Metarad from "@/components/Metarad.astro";
+import Placeholder from "@/components/Placeholder.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import { senaste } from "@/lib/nyheter";
+import { allaNyheter } from "@/lib/nyheter-samling";
+import { href } from "@/lib/utils";
+
+/** "Senaste nytt" (#senaste) on the start page: always the newest inlägg, and a link to all of them. */
+const inlagg = senaste(await allaNyheter());
+---
+
+{
+  inlagg && (
+    <Fragment>
+      <TibebBand variant="thin" />
+      <section id="senaste" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink" aria-labelledby="senaste-rubrik">
+        <div class="band-inner">
+          <div class="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3">
+            <h2 id="senaste-rubrik" class="text-headline">
+              Senaste nytt
+            </h2>
+            <a class="inline-flex min-h-11 items-center font-semibold" href={href("/nyheter")}>
+              Alla nyheter
+            </a>
+          </div>
+          <article class="senaste-inlagg" aria-labelledby="senaste-inlagg-rubrik">
+            {inlagg.data.image ? (
+              <Image
+                class="senaste-foto"
+                src={inlagg.data.image}
+                alt={inlagg.data.imageAlt!}
+                widths={[640, 960, 1280]}
+                sizes="(min-width: 1180px) 1148px, 100vw"
+              />
+            ) : (
+              <Placeholder class="senaste-foto" text="Foto till inlägget" />
+            )}
+            <div>
+              <Metarad
+                amne={inlagg.data.topic}
+                datum={inlagg.data.date}
+                class="gap-x-4 gap-y-1.5 text-label font-semibold text-ink-soft"
+                datumClass="font-medium"
+              />
+              <h3 id="senaste-inlagg-rubrik">
+                <a href={href(`/nyheter/${inlagg.id}`)}>{inlagg.data.title}</a>
+              </h3>
+            </div>
+            <p class="max-w-[44ch] text-ink-soft">{inlagg.data.lede}</p>
+          </article>
+          {inlagg.data.example && (
+            <p class="mt-7 flex items-baseline gap-3 text-ink-soft">
+              <ExampleChip /> Här visas alltid det senaste inlägget.
+            </p>
+          )}
+        </div>
+      </section>
+    </Fragment>
+  )
+}
+
+<style>
+  .senaste-inlagg {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px clamp(24px, 4vw, 56px);
+    align-items: end;
+    margin-top: 36px;
+  }
+  .senaste-inlagg > :global(*) {
+    min-width: 0;
+  }
+  .senaste-inlagg :global(.senaste-foto) {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-height: 440px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+  h3 {
+    margin-top: 12px;
+    font-size: clamp(2.1rem, 4.6vw, 3.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+  }
+  h3 a {
+    text-decoration: none;
+    background-image: linear-gradient(var(--color-gold-soft), var(--color-gold-soft));
+    background-repeat: no-repeat;
+    background-size: 0% 30%;
+    background-position: 0 88%;
+    transition: background-size 0.5s var(--ease-light);
+  }
+  h3 a:hover,
+  h3 a:focus-visible {
+    background-size: 100% 30%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    h3 a {
+      transition: none;
+    }
+  }
+  @media (max-width: 900px) {
+    .senaste-inlagg {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+</style>

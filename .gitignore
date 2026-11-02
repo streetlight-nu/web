@@ -1,5 +1,7 @@
 node_modules/
 dist/
+dist-ifylld/
 .astro/
 test-results/
 playwright-report/
+.claude/worktrees/

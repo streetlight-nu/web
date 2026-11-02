@@ -1,0 +1,76 @@
+---
+/**
+ * The "Bli fadder" dock: on narrow screens (900 px and under), a "Bli fadder" button fixed at the
+ * bottom, within thumb reach, shown only between the hero and the section "Bli fadder", that is when
+ * the main button (marked `data-huvudknapp`) has scrolled out of view and the section is not yet
+ * in view. While hidden it is out of the tab order and the accessibility tree. Without JS it stays hidden.
+ */
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+---
+
+<div class="docka on-green" data-docka aria-hidden="true">
+  <a class={cn(buttonVariants(), "min-h-12 w-full")} href="#bli-fadder" tabindex="-1">Bli fadder</a>
+</div>
+
+<script>
+  const docka = document.querySelector<HTMLElement>("[data-docka]");
+  const huvudknapp = document.querySelector("[data-huvudknapp]");
+  const sektion = document.getElementById("bli-fadder");
+  if (docka && huvudknapp && sektion) {
+    const lank = docka.querySelector("a")!;
+    const smal = window.matchMedia("(max-width: 900px)");
+    let vantar = false;
+    const uppdatera = () => {
+      vantar = false;
+      const visa =
+        smal.matches &&
+        huvudknapp.getBoundingClientRect().bottom < 0 &&
+        sektion.getBoundingClientRect().top > window.innerHeight;
+      docka.classList.toggle("visas", visa);
+      docka.setAttribute("aria-hidden", String(!visa));
+      lank.tabIndex = visa ? 0 : -1;
+    };
+    const begar = () => {
+      if (!vantar) {
+        vantar = true;
+        requestAnimationFrame(uppdatera);
+      }
+    };
+    window.addEventListener("scroll", begar, { passive: true });
+    window.addEventListener("resize", begar);
+    smal.addEventListener("change", begar);
+    uppdatera();
+  }
+</script>
+
+<style>
+  .docka {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .docka {
+      display: block;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 20;
+      background: var(--color-green);
+      border-top: 3px solid var(--color-gold);
+      padding: 12px var(--gutter-r) calc(12px + env(safe-area-inset-bottom, 0px)) var(--gutter-l);
+      transform: translateY(110%);
+      visibility: hidden;
+      transition:
+        transform 0.35s var(--ease-light),
+        visibility 0s linear 0.35s;
+    }
+    .docka.visas {
+      transform: none;
+      visibility: visible;
+      transition:
+        transform 0.35s var(--ease-light),
+        visibility 0s;
+    }
+  }
+</style>

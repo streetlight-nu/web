@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type SubmitEvent } from "react";
 
 import FyllsI from "@/components/FyllsI";
+import Lykta from "@/components/Lykta";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,7 @@ import {
   type Intresseanmalan as Anmalan,
   type Avsikt,
 } from "@/lib/intresseanmalan";
+import { useHydrerad } from "@/lib/hydrerad";
 
 interface Props {
   /** The association's e-mail from the föreningsuppgifter; missing means "fylls i". */
@@ -31,14 +33,11 @@ export default function Intresseanmalan({ epost }: Props) {
   const [anmalan, setAnmalan] = useState<Anmalan>(tomAnmalan);
   const [fel, setFel] = useState<Fel>({});
   const [lage, setLage] = useState<"formular" | "tack">("formular");
-  const [hydrerad, setHydrerad] = useState(false);
+  const hydrerad = useHydrerad();
   const namnRef = useRef<HTMLInputElement>(null);
   const epostRef = useRef<HTMLInputElement>(null);
   const tackRef = useRef<HTMLDivElement>(null);
   const forstaRendern = useRef(true);
-
-  // Until the island has hydrated, the button stays disabled, so the form never submits natively.
-  useEffect(() => setHydrerad(true), []);
 
   useEffect(() => {
     if (forstaRendern.current) {
@@ -158,12 +157,7 @@ export default function Intresseanmalan({ epost }: Props) {
 
       {lage === "tack" && (
         <div ref={tackRef} tabIndex={-1} className="grid content-start gap-3 outline-none" aria-labelledby="tack-rubrik" role="region">
-          <svg viewBox="0 0 80 80" aria-hidden="true" className="mb-1.5 size-16">
-            <path d="M46 20H60L76 76H32Z" fill="#F4B400" />
-            <path d="M46 20H60L70.67 57.33H36.67Z" fill="#FFCF45" />
-            <path d="M46 20H60L65.33 38.67H41.33Z" fill="#FFDB73" />
-            <path d="M20 76V30a14 14 0 0 1 14-14H60" fill="none" stroke="#0B2E24" strokeWidth="8" />
-          </svg>
+          <Lykta />
           <h3 id="tack-rubrik" className="text-title tracking-[-0.015em]">
             Tack, {fornamn}!
           </h3>

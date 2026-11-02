@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { valchip } from "@/components/ui/radio-group";
+import { valchip } from "@/components/ui/valchip";
 import { cn } from "@/lib/utils";
 
 type CheckboxChipProps = Omit<React.ComponentProps<"input">, "type"> & { id: string };

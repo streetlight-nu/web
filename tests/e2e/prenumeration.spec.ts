@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { AMNEN as AMNESMODULEN } from "../../src/lib/amnen";
 import { expectNoA11yViolations } from "./helpers";
 
 /** The section "Följ arbetet i Addis Abeba." at the end of the Nyheter page. */
@@ -63,6 +64,33 @@ test.describe("sektionen Få nyheterna med e-post", () => {
     }
   });
 
+  test("länken till Nyheter är bomullsvit, och får en understrykning i mjukt guld vid hovring", async ({ page, isMobile }) => {
+    test.skip(isMobile, "hovring finns inte på pekskärm");
+    await page.goto("nyheter");
+    const lank = sektion(page).getByRole("link", { name: "Nyheter" });
+    const stil = (el: Element) => {
+      const style = getComputedStyle(el);
+      return { color: style.color, line: style.textDecorationLine, decoration: style.textDecorationColor };
+    };
+    // Cotton text, underlined in its own colour: not gold, which is kept for "Addis Abeba".
+    expect(await lank.evaluate(stil)).toEqual({
+      color: "rgb(251, 251, 248)",
+      line: "underline",
+      decoration: "rgb(251, 251, 248)",
+    });
+    await lank.hover();
+    expect(await lank.evaluate(stil)).toEqual({
+      color: "rgb(251, 251, 248)",
+      line: "underline",
+      decoration: "rgb(255, 212, 92)",
+    });
+  });
+
+  test("panelen på det gröna fältet har ingen skugga", async ({ page }) => {
+    await page.goto("nyheter");
+    expect(await formular(page).evaluate((el) => getComputedStyle(el).boxShadow)).toBe("none");
+  });
+
   test("fokusringen är guld på grönt och bläck på den vita panelen", async ({ page }) => {
     await page.goto("nyheter");
     const outline = (el: Element) => ({ visible: el.matches(":focus-visible"), color: getComputedStyle(el).outlineColor });
@@ -84,9 +112,9 @@ test.describe("sektionen Få nyheterna med e-post", () => {
     expect(pillensRing).toEqual({ style: "solid", width: "3px", color: "rgb(11, 46, 36)" });
 
     for (let i = 0; i < AMNEN.length; i++) await page.keyboard.press("Tab");
-    const samtycke = f.getByRole("checkbox", { name: SAMTYCKE });
-    await expect(samtycke).toBeFocused();
-    expect(await samtycke.evaluate(outline)).toEqual({ visible: true, color: "rgb(11, 46, 36)" });
+    const medgivande = f.getByRole("checkbox", { name: MEDGIVANDE });
+    await expect(medgivande).toBeFocused();
+    expect(await medgivande.evaluate(outline)).toEqual({ visible: true, color: "rgb(11, 46, 36)" });
   });
 });
 
@@ -99,10 +127,10 @@ test.describe("sektionen Få nyheterna med e-post utan JavaScript", () => {
   });
 });
 
-/** The four topics, with the same names and in the same order as on Nyheter. */
-const AMNEN = ["Rapport från Addis Abeba", "Nyhet från föreningen", "Berättelse från en familj", "Tack till faddrarna"];
+/** The topics' names, in the order of the ämnes module, the same as on Nyheter. */
+const AMNEN = AMNESMODULEN.map((amne) => amne.namn);
 
-const SAMTYCKE = "Föreningen får spara min e-post för att skicka nyheter. Jag kan avsluta när jag vill.";
+const MEDGIVANDE = "Föreningen får spara min e-post för att skicka nyheter. Jag kan avsluta när jag vill.";
 
 test.describe("formuläret Få nyheterna med e-post", () => {
   test("säger före sändning att formuläret inte är kopplat", async ({ page }) => {
@@ -110,12 +138,12 @@ test.describe("formuläret Få nyheterna med e-post", () => {
     await expect(formular(page).getByText("Formuläret är inte kopplat än.")).toBeVisible();
   });
 
-  test("har förnamn, e-post och en samtyckesruta som inte är ikryssad", async ({ page }) => {
+  test("har förnamn, e-post och en medgivanderuta som inte är ikryssad", async ({ page }) => {
     await page.goto("nyheter");
     const f = formular(page);
     await expect(f.getByLabel("Förnamn (valfritt)")).toBeVisible();
     await expect(f.getByLabel("E-post", { exact: true })).toBeVisible();
-    await expect(f.getByRole("checkbox", { name: SAMTYCKE })).not.toBeChecked();
+    await expect(f.getByRole("checkbox", { name: MEDGIVANDE })).not.toBeChecked();
     await expect(f.getByRole("button", { name: "Prenumerera" })).toBeEnabled();
   });
 
@@ -123,7 +151,7 @@ test.describe("formuläret Få nyheterna med e-post", () => {
     await page.goto("nyheter");
     const grupp = formular(page).getByRole("group", { name: "Vilka nyheter vill du ha?" });
     const rutor = grupp.getByRole("checkbox");
-    await expect(rutor).toHaveCount(4);
+    await expect(rutor).toHaveCount(AMNEN.length);
     for (const [i, namn] of AMNEN.entries()) {
       await expect(rutor.nth(i)).toHaveAccessibleName(namn);
       await expect(rutor.nth(i)).toBeChecked();
@@ -147,35 +175,40 @@ test.describe("formuläret Få nyheterna med e-post", () => {
     const f = formular(page);
     await f.getByLabel("E-post", { exact: true }).fill("anna@exempel.se");
     for (const namn of AMNEN) await f.getByRole("checkbox", { name: namn }).uncheck();
-    await f.getByRole("checkbox", { name: SAMTYCKE }).check();
+    await f.getByRole("checkbox", { name: MEDGIVANDE }).check();
     await f.getByRole("button", { name: "Prenumerera" }).click();
 
     const grupp = f.getByRole("group", { name: "Vilka nyheter vill du ha?" });
     await expect(grupp).toHaveAccessibleDescription("Välj minst en sorts nyheter.");
-    await expect(grupp).toHaveAttribute("aria-invalid", "true");
+    await expect(grupp).not.toHaveAttribute("aria-invalid");
+    for (const namn of AMNEN) {
+      const ruta = f.getByRole("checkbox", { name: namn });
+      await expect(ruta).toHaveAttribute("aria-invalid", "true");
+      await expect(ruta).toHaveAccessibleDescription("Välj minst en sorts nyheter.");
+    }
     await expect(f.getByRole("checkbox", { name: AMNEN[0] })).toBeFocused();
     await expect(f.getByLabel("E-post", { exact: true })).not.toHaveAttribute("aria-invalid", "true");
     await expect(f.getByRole("region", { name: /Tack/ })).toHaveCount(0);
     await expectNoA11yViolations(page);
 
     await f.getByRole("checkbox", { name: AMNEN[2] }).check();
-    await expect(grupp).not.toHaveAttribute("aria-invalid", "true");
+    for (const namn of AMNEN) await expect(f.getByRole("checkbox", { name: namn })).not.toHaveAttribute("aria-invalid");
     await expect(f.getByText("Välj minst en sorts nyheter.")).toHaveCount(0);
   });
 
-  test("tomt formulär ger fel på e-post och samtycke, och fokus går till e-posten", async ({ page }) => {
+  test("tomt formulär ger fel på e-post och medgivande, och fokus går till e-posten", async ({ page }) => {
     await page.goto("nyheter");
     const f = formular(page);
     await f.getByRole("button", { name: "Prenumerera" }).click();
 
     const epost = f.getByLabel("E-post", { exact: true });
-    const samtycke = f.getByRole("checkbox", { name: SAMTYCKE });
+    const medgivande = f.getByRole("checkbox", { name: MEDGIVANDE });
     await expect(epost).toHaveAttribute("aria-invalid", "true");
-    await expect(samtycke).toHaveAttribute("aria-invalid", "true");
+    await expect(medgivande).toHaveAttribute("aria-invalid", "true");
     await expect(epost).toHaveAccessibleDescription("Skriv din e-postadress.");
-    await expect(samtycke).toHaveAccessibleDescription("Kryssa i rutan, annars kan vi inte skicka något till dig.");
+    await expect(medgivande).toHaveAccessibleDescription("Kryssa i rutan, annars kan vi inte skicka något till dig.");
     await expect(f.getByLabel("Förnamn (valfritt)")).not.toHaveAttribute("aria-invalid", "true");
-    await expect(f.getByRole("group", { name: "Vilka nyheter vill du ha?" })).not.toHaveAttribute("aria-invalid", "true");
+    for (const namn of AMNEN) await expect(f.getByRole("checkbox", { name: namn })).not.toHaveAttribute("aria-invalid");
     await expect(epost).toBeFocused();
     await expectNoA11yViolations(page);
   });
@@ -184,13 +217,13 @@ test.describe("formuläret Få nyheterna med e-post", () => {
     await page.goto("nyheter");
     const f = formular(page);
     await f.getByLabel("E-post", { exact: true }).fill("anna@");
-    await f.getByRole("checkbox", { name: SAMTYCKE }).check();
+    await f.getByRole("checkbox", { name: MEDGIVANDE }).check();
     await f.getByRole("button", { name: "Prenumerera" }).click();
 
     const epost = f.getByLabel("E-post", { exact: true });
     await expect(epost).toHaveAttribute("aria-invalid", "true");
     await expect(epost).toHaveAccessibleDescription("Kontrollera e-postadressen, till exempel namn@exempel.se.");
-    await expect(f.getByRole("checkbox", { name: SAMTYCKE })).not.toHaveAttribute("aria-invalid", "true");
+    await expect(f.getByRole("checkbox", { name: MEDGIVANDE })).not.toHaveAttribute("aria-invalid", "true");
     await expect(epost).toBeFocused();
 
     await epost.fill("anna@exempel.se");
@@ -198,17 +231,32 @@ test.describe("formuläret Få nyheterna med e-post", () => {
     await expect(f.getByText("Kontrollera e-postadressen")).toHaveCount(0);
   });
 
-  test("samtyckesfelet försvinner när rutan kryssas i", async ({ page }) => {
+  test("ett fel som visas byts mot det aktuella när man skriver: tom e-post blir ogiltig e-post", async ({ page }) => {
+    await page.goto("nyheter");
+    const f = formular(page);
+    await f.getByRole("button", { name: "Prenumerera" }).click();
+
+    const epost = f.getByLabel("E-post", { exact: true });
+    await expect(epost).toHaveAccessibleDescription("Skriv din e-postadress.");
+    await epost.fill("a");
+    await expect(epost).toHaveAttribute("aria-invalid", "true");
+    await expect(epost).toHaveAccessibleDescription("Kontrollera e-postadressen, till exempel namn@exempel.se.");
+    await expect(f.getByText("Skriv din e-postadress.")).toHaveCount(0);
+    // The other error is still shown, unchanged.
+    await expect(f.getByRole("checkbox", { name: MEDGIVANDE })).toHaveAttribute("aria-invalid", "true");
+  });
+
+  test("medgivandefelet försvinner när rutan kryssas i", async ({ page }) => {
     await page.goto("nyheter");
     const f = formular(page);
     await f.getByLabel("E-post", { exact: true }).fill("anna@exempel.se");
     await f.getByRole("button", { name: "Prenumerera" }).click();
 
-    const samtycke = f.getByRole("checkbox", { name: SAMTYCKE });
-    await expect(samtycke).toHaveAttribute("aria-invalid", "true");
-    await expect(samtycke).toBeFocused();
-    await samtycke.check();
-    await expect(samtycke).not.toHaveAttribute("aria-invalid", "true");
+    const medgivande = f.getByRole("checkbox", { name: MEDGIVANDE });
+    await expect(medgivande).toHaveAttribute("aria-invalid", "true");
+    await expect(medgivande).toBeFocused();
+    await medgivande.check();
+    await expect(medgivande).not.toHaveAttribute("aria-invalid", "true");
     await expect(f.getByText("Kryssa i rutan")).toHaveCount(0);
   });
 
@@ -217,7 +265,7 @@ test.describe("formuläret Få nyheterna med e-post", () => {
     const f = formular(page);
     if (fornamn) await f.getByLabel("Förnamn (valfritt)").fill(fornamn);
     await f.getByLabel("E-post", { exact: true }).fill("anna@exempel.se");
-    await f.getByRole("checkbox", { name: SAMTYCKE }).check();
+    await f.getByRole("checkbox", { name: MEDGIVANDE }).check();
     await f.getByRole("button", { name: "Prenumerera" }).click();
   }
 
@@ -263,7 +311,7 @@ test.describe("formuläret Få nyheterna med e-post", () => {
     await expect(f.getByLabel("Förnamn (valfritt)")).toHaveValue("Anna");
     await expect(f.getByLabel("Förnamn (valfritt)")).toBeFocused();
     await expect(f.getByLabel("E-post", { exact: true })).toHaveValue("anna@exempel.se");
-    await expect(f.getByRole("checkbox", { name: SAMTYCKE })).toBeChecked();
+    await expect(f.getByRole("checkbox", { name: MEDGIVANDE })).toBeChecked();
     await expect(f.getByText("Formuläret är inte kopplat än.")).toBeVisible();
   });
 });
@@ -275,7 +323,7 @@ test.describe("formuläret Få nyheterna med e-post med ifylld testfil", () => {
     await page.goto("nyheter");
     const f = formular(page);
     await f.getByLabel("E-post", { exact: true }).fill("anna@exempel.se");
-    await f.getByRole("checkbox", { name: SAMTYCKE }).check();
+    await f.getByRole("checkbox", { name: MEDGIVANDE }).check();
     await f.getByRole("button", { name: "Prenumerera" }).click();
     const tack = f.getByRole("region", { name: "Tack!" });
     await expect(tack.getByRole("link", { name: "test@example.org" })).toHaveAttribute("href", "mailto:test@example.org");

@@ -55,6 +55,14 @@ _Undvik_: kategori, tagg
 Att få föreningens nyheter skickade till sin e-post. Besökaren anmäler sig i formuläret ”Få nyheterna med e-post” och trycker på Prenumerera.
 _Undvik_: nyhetsbrev, utskick
 
+**Prenumeration**:
+Att anmäla sig till Nyheter med e-post: en person lämnar sin e-post, väljer ämnen och ger sitt medgivande till att föreningen sparar e-posten.
+_Undvik_: registrering, signup
+
+**Medgivande**:
+En persons uttryckliga ja, vid en prenumeration, till att föreningen sparar e-posten för att skicka nyheter. Är aldrig förkryssat.
+_Undvik_: samtycke (det är familjens tillåtelse till publicering)
+
 **Exempelinlägg**:
 Ett påhittat inlägg som visar hur ett inlägg ser ut och som är tydligt märkt "Exempel". Det tas bort när föreningens egna inlägg finns.
 _Undvik_: testinlägg, dummy

@@ -16,17 +16,22 @@ export interface Prenumeration {
   epost: string;
   /** The topics (Ämne) the person wants news about, by value. All are chosen to begin with. */
   amnen: Amne[];
-  /** The person's explicit yes to the association keeping the e-mail to send news. Never preselected. */
-  samtycke: boolean;
+  /**
+   * The person's medgivande: their explicit yes to the association keeping the e-mail to send news.
+   * Never preselected. (Not "samtycke", which is a family's consent to publication.)
+   */
+  medgivande: boolean;
 }
 
-export type Fel = Partial<Record<"epost" | "amnen" | "samtycke", string>>;
+/** One message per wrong field, in the order the fields come in the form. */
+export type Fel = Partial<Record<"epost" | "amnen" | "medgivande", string>>;
 
 /**
- * Checks the e-mail, the topics and the consent. Returns one message per wrong field, saying what is wrong
- * and how to fix it. The topics must be at least one, each a value from the ämnes module.
+ * Checks the e-mail, the topics and the medgivande. Returns one message per wrong field, saying what is wrong
+ * and how to fix it, with the keys in the order of the form. The topics must be at least one, each a value
+ * from the ämnes module.
  */
-export function valideraPrenumeration(prenumeration: Pick<Prenumeration, "epost" | "amnen" | "samtycke">): Fel {
+export function valideraPrenumeration(prenumeration: Pick<Prenumeration, "epost" | "amnen" | "medgivande">): Fel {
   const fel: Fel = {};
   if (!prenumeration.epost.trim()) fel.epost = "Skriv din e-postadress.";
   else if (!arEpostadress(prenumeration.epost)) fel.epost = "Kontrollera e-postadressen, till exempel namn@exempel.se.";
@@ -34,7 +39,7 @@ export function valideraPrenumeration(prenumeration: Pick<Prenumeration, "epost"
   if (prenumeration.amnen.length === 0 || !prenumeration.amnen.every((amne) => kanda.includes(amne))) {
     fel.amnen = "Välj minst en sorts nyheter.";
   }
-  if (!prenumeration.samtycke) fel.samtycke = "Kryssa i rutan, annars kan vi inte skicka något till dig.";
+  if (!prenumeration.medgivande) fel.medgivande = "Kryssa i rutan, annars kan vi inte skicka något till dig.";
   return fel;
 }
 

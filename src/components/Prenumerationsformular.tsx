@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState, type SubmitEvent } from "react";
+import { useEffect, useRef, useState, type RefObject, type SubmitEvent } from "react";
 
 import FyllsI from "@/components/FyllsI";
+import Lykta from "@/components/Lykta";
 import { Button } from "@/components/ui/button";
 import { CheckboxChip } from "@/components/ui/checkbox-chip";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { AMNEN, amnesvarden, type Amne } from "@/lib/amnen";
+import { useHydrerad } from "@/lib/hydrerad";
 import {
   skickaPrenumeration,
   valideraPrenumeration,
@@ -18,27 +20,30 @@ interface Props {
   epost?: string;
 }
 
-const tomPrenumeration: Prenumeration = { fornamn: "", epost: "", amnen: [...amnesvarden], samtycke: false };
+const tomPrenumeration: Prenumeration = { fornamn: "", epost: "", amnen: [...amnesvarden], medgivande: false };
 
 /**
- * The form "Få nyheterna med e-post" at the end of Nyheter. It validates the e-mail, the topics and the consent in place
- * and sends only through skickaPrenumeration(), which in v1 answers "inte kopplat". The thanks state then says
+ * The form "Få nyheterna med e-post" at the end of Nyheter. It validates the e-mail, the topics and the
+ * medgivande in place and sends only through skickaPrenumeration(), which in v1 answers "inte kopplat". The thanks state then says
  * plainly that the e-mail was not saved, and "Ändra" brings the form back with the values kept.
  */
 export default function Prenumerationsformular({ epost: foreningensEpost }: Props) {
   const [prenumeration, setPrenumeration] = useState<Prenumeration>(tomPrenumeration);
   const [fel, setFel] = useState<Fel>({});
   const [lage, setLage] = useState<"formular" | "tack">("formular");
-  const [hydrerad, setHydrerad] = useState(false);
+  const hydrerad = useHydrerad();
   const fornamnRef = useRef<HTMLInputElement>(null);
   const epostRef = useRef<HTMLInputElement>(null);
   const forstaAmnetRef = useRef<HTMLInputElement>(null);
-  const samtyckeRef = useRef<HTMLInputElement>(null);
+  const medgivandeRef = useRef<HTMLInputElement>(null);
+  /** The field to focus for each error. */
+  const felfalt: Record<keyof Fel, RefObject<HTMLInputElement | null>> = {
+    epost: epostRef,
+    amnen: forstaAmnetRef,
+    medgivande: medgivandeRef,
+  };
   const tackRef = useRef<HTMLDivElement>(null);
   const forstaRendern = useRef(true);
-
-  // Until the island has hydrated, the button stays disabled, so the form never submits natively.
-  useEffect(() => setHydrerad(true), []);
 
   useEffect(() => {
     if (forstaRendern.current) {
@@ -52,11 +57,11 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
   function andra<K extends keyof Prenumeration>(falt: K, varde: Prenumeration[K]) {
     const ny = { ...prenumeration, [falt]: varde };
     setPrenumeration(ny);
-    // An error disappears as soon as the field is right.
+    // Every error shown is checked again: it disappears as soon as the field is right, and otherwise
+    // says what is wrong now (an empty e-mail that gets a letter is no longer empty but unclear).
     const kvar = valideraPrenumeration(ny);
-    if ((fel.epost && !kvar.epost) || (fel.amnen && !kvar.amnen) || (fel.samtycke && !kvar.samtycke)) {
-      setFel({ epost: fel.epost && kvar.epost, amnen: fel.amnen && kvar.amnen, samtycke: fel.samtycke && kvar.samtycke });
-    }
+    const visade = (Object.keys(fel) as (keyof Fel)[]).filter((nyckel) => kvar[nyckel]);
+    setFel(Object.fromEntries(visade.map((nyckel) => [nyckel, kvar[nyckel]])));
   }
 
   /** Chooses or drops a topic, keeping the topics in the order of the ämnes module. */
@@ -74,9 +79,9 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
     event.preventDefault();
     const nyaFel = valideraPrenumeration(prenumeration);
     setFel(nyaFel);
-    if (nyaFel.epost) return epostRef.current?.focus();
-    if (nyaFel.amnen) return forstaAmnetRef.current?.focus();
-    if (nyaFel.samtycke) return samtyckeRef.current?.focus();
+    // The errors come in the order of the form, so the first one is the first wrong field.
+    const forstaFelet = (Object.keys(nyaFel) as (keyof Fel)[])[0];
+    if (forstaFelet) return felfalt[forstaFelet].current?.focus();
     await skickaPrenumeration(prenumeration);
     setLage("tack");
   }
@@ -88,7 +93,7 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
       aria-labelledby="prenumeration-rubrik"
       noValidate
       onSubmit={skicka}
-      className="on-light grid gap-6 rounded-lg bg-cotton p-[clamp(24px,3.4vw,44px)] text-ink shadow-panel"
+      className="on-light grid gap-6 rounded-lg bg-cotton p-[clamp(24px,3.4vw,44px)] text-ink"
     >
       <div className="grid gap-6" hidden={lage !== "formular"}>
         <h3 id="prenumeration-rubrik" className="text-title tracking-[-0.015em]">
@@ -124,7 +129,6 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
         </div>
         <fieldset
           className="grid gap-2"
-          aria-invalid={fel.amnen ? true : undefined}
           aria-describedby={fel.amnen ? "prenumeration-amnen-fel" : undefined}
         >
           <legend className="mb-2 text-label font-semibold">Vilka nyheter vill du ha?</legend>
@@ -136,6 +140,8 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
                 id={`prenumeration-amne-${amne.varde}`}
                 name="amnen"
                 value={amne.varde}
+                aria-invalid={fel.amnen ? true : undefined}
+                aria-describedby={fel.amnen ? "prenumeration-amnen-fel" : undefined}
                 checked={prenumeration.amnen.includes(amne.varde)}
                 onChange={(e) => valjAmne(amne.varde, e.target.checked)}
               >
@@ -152,21 +158,21 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
         <div className="grid gap-[7px]">
           <label className="flex min-h-11 cursor-pointer items-start gap-3">
             <input
-              ref={samtyckeRef}
+              ref={medgivandeRef}
               type="checkbox"
-              name="samtycke"
+              name="medgivande"
               required
-              aria-invalid={fel.samtycke ? true : undefined}
-              aria-describedby={fel.samtycke ? "prenumeration-samtycke-fel" : undefined}
-              checked={prenumeration.samtycke}
-              onChange={(e) => andra("samtycke", e.target.checked)}
+              aria-invalid={fel.medgivande ? true : undefined}
+              aria-describedby={fel.medgivande ? "prenumeration-medgivande-fel" : undefined}
+              checked={prenumeration.medgivande}
+              onChange={(e) => andra("medgivande", e.target.checked)}
               className="mt-[5px] size-5 shrink-0 cursor-pointer accent-ink"
             />
             <span>Föreningen får spara min e-post för att skicka nyheter. Jag kan avsluta när jag vill.</span>
           </label>
-          {fel.samtycke && (
-            <span id="prenumeration-samtycke-fel" className="ml-8 text-label font-medium text-error">
-              {fel.samtycke}
+          {fel.medgivande && (
+            <span id="prenumeration-medgivande-fel" className="ml-8 text-label font-medium text-error">
+              {fel.medgivande}
             </span>
           )}
         </div>
@@ -184,12 +190,7 @@ export default function Prenumerationsformular({ epost: foreningensEpost }: Prop
           aria-labelledby="prenumeration-tack-rubrik"
           role="region"
         >
-          <svg viewBox="0 0 80 80" aria-hidden="true" className="mb-1.5 size-16">
-            <path d="M46 20H60L76 76H32Z" fill="#F4B400" />
-            <path d="M46 20H60L70.67 57.33H36.67Z" fill="#FFCF45" />
-            <path d="M46 20H60L65.33 38.67H41.33Z" fill="#FFDB73" />
-            <path d="M20 76V30a14 14 0 0 1 14-14H60" fill="none" stroke="#0B2E24" strokeWidth="8" />
-          </svg>
+          <Lykta />
           <h3 id="prenumeration-tack-rubrik" className="text-title tracking-[-0.015em]">
             {fornamn ? `Tack, ${fornamn}!` : "Tack!"}
           </h3>

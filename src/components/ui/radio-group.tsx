@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 
+import { valchip } from "@/components/ui/valchip";
 import { cn } from "@/lib/utils";
 
 /**
@@ -30,13 +31,6 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
   );
 }
 
-/**
- * The pill every choice chip shares, radio (ChoiceChip) or checkbox (CheckboxChip): the whole pill is the
- * touch target (at least 44 px) and carries the focus ring of the field inside it.
- */
-const valchip =
-  "flex min-h-11 cursor-pointer items-center gap-2 rounded-pill border-2 border-input px-4 py-[9px] text-label font-medium text-ink has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-ink";
-
 type ChoiceChipProps = React.ComponentProps<typeof RadioGroupPrimitive.Item> & { id: string };
 
 /**
@@ -52,4 +46,4 @@ function ChoiceChip({ id, children, ...props }: ChoiceChipProps) {
   );
 }
 
-export { RadioGroup, RadioGroupItem, ChoiceChip, valchip };
+export { RadioGroup, RadioGroupItem, ChoiceChip };

@@ -4,8 +4,8 @@ import path from "node:path";
 import { describe, expect, test } from "vitest";
 import { parse } from "yaml";
 
-import { amnesNamn } from "@/lib/nyheter";
-import { amnen, inlaggSchema } from "@/lib/nyheter-schema";
+import { AMNEN } from "@/lib/amnen";
+import { inlaggSchema } from "@/lib/nyheter-schema";
 
 const rot = path.resolve(import.meta.dirname, "../..");
 const fixturer = path.join(import.meta.dirname, "fixtures/pages-cms");
@@ -96,7 +96,7 @@ describe("samlingen Nyheter i .pages.yml", () => {
   test("ger ämnet som en rullista med de fyra ämnena och deras svenska namn", () => {
     const amne = nyheter.fields.find((falt) => falt.name === "topic")!;
     expect(amne.type).toBe("select");
-    expect(amne.options?.values).toEqual(amnen.map((name) => ({ name, label: amnesNamn[name] })));
+    expect(amne.options?.values).toEqual(AMNEN.map(({ varde, namn }) => ({ name: varde, label: namn })));
   });
 
   test("sparar brödtexten som Markdown med rich text", () => {

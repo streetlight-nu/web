@@ -2,10 +2,10 @@
 import { Image } from "astro:assets";
 
 import ExampleChip from "@/components/ExampleChip.astro";
-import Knot from "@/components/Knot.astro";
+import Metarad from "@/components/Metarad.astro";
 import Placeholder from "@/components/Placeholder.astro";
 import TibebBand from "@/components/TibebBand.astro";
-import { amnesNamn, formateraDatum, isoDatum, senaste } from "@/lib/nyheter";
+import { senaste } from "@/lib/nyheter";
 import { allaNyheter } from "@/lib/nyheter-samling";
 import { href } from "@/lib/utils";
 
@@ -40,15 +40,12 @@ const post = senaste(await allaNyheter());
               <Placeholder class="latest-photo" text="Foto till inlägget" />
             )}
             <div>
-              <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-label font-semibold text-ink-soft">
-                <span class="inline-flex items-center gap-3">
-                  <Knot topic={post.data.topic} />
-                  {amnesNamn[post.data.topic]}
-                </span>
-                <time class="font-medium tabular-nums" datetime={isoDatum(post.data.date)}>
-                  {formateraDatum(post.data.date)}
-                </time>
-              </div>
+              <Metarad
+                amne={post.data.topic}
+                datum={post.data.date}
+                class="gap-x-4 gap-y-1.5 text-label font-semibold text-ink-soft"
+                datumClass="font-medium"
+              />
               <h3 id="senaste-inlagg">
                 <a href={href(`/nyheter/${post.id}`)}>{post.data.title}</a>
               </h3>

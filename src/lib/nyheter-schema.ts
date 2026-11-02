@@ -1,10 +1,8 @@
 import { z } from "astro/zod";
 
+import { amnesvarden } from "./amnen";
 import { valfri } from "./falt";
 
-/** The four topics (Ämne) a post can have, in the order the design system lists them. */
-export const amnen = ["rapport", "forening", "familj", "tack"] as const;
-export type Amne = (typeof amnen)[number];
 
 /** A text that must be filled in: not empty and not only blanks. */
 const ifylldText = z.string().trim().min(1);
@@ -21,7 +19,7 @@ export function inlaggSchema<Bild extends z.ZodType = z.ZodString>(image?: Bild)
       // YAML gives a Date for `2026-09-14`, the CMS may give a string. An empty field must
       // not slip through as 1970, which `z.coerce.date()` would make of null.
       date: z.union([z.date(), ifylldText.pipe(z.coerce.date())]),
-      topic: z.enum(amnen),
+      topic: z.enum(amnesvarden),
       place: valfri(ifylldText),
       lede: ifylldText,
       image: valfri((image ?? z.string()) as Bild),

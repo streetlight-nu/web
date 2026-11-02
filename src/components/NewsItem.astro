@@ -2,15 +2,17 @@
 import type { CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
 
-import Knot from "@/components/Knot.astro";
+import Metarad from "@/components/Metarad.astro";
 import Placeholder from "@/components/Placeholder.astro";
-import { amnesNamn, formateraDatum, isoDatum } from "@/lib/nyheter";
 import { href } from "@/lib/utils";
 
 /**
  * A post on the gold thread (design system NewsItem): knot, date, topic, title, lede and a
  * photo or a Placeholder. The whole row is clickable through the title's link, which is the
  * row's only link, so a keyboard stops once per post.
+ *
+ * The meta row (Metarad) is `contents` here: its date takes the first column, its topic sits
+ * above the title, and its knot hangs on the thread to the left of the row.
  */
 interface Props {
   post: CollectionEntry<"nyheter">;
@@ -20,13 +22,9 @@ const { title, date, topic, lede, image } = post.data;
 ---
 
 <li class="news-item">
-  <Knot topic={topic} class="news-knot" />
-  <time datetime={isoDatum(date)}>{formateraDatum(date)}</time>
-  <div>
-    <span class="topic">{amnesNamn[topic]}</span>
-    <h3><a href={href(`/nyheter/${post.id}`)}>{title}</a></h3>
-    <p>{lede}</p>
-  </div>
+  <Metarad amne={topic} datum={date} class="contents" amneClass="topic" knotClass="news-knot" />
+  <h3><a href={href(`/nyheter/${post.id}`)}>{title}</a></h3>
+  <p>{lede}</p>
   {
     image ? (
       <Image class="news-photo" src={image} alt="" widths={[220, 440]} sizes="220px" />
@@ -41,7 +39,12 @@ const { title, date, topic, lede, image } = post.data;
     position: relative;
     display: grid;
     grid-template-columns: 7.5rem minmax(0, 1fr) 220px;
-    gap: 28px;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "datum amne bild"
+      ". rubrik bild"
+      ". ingress bild";
+    column-gap: 28px;
     align-items: start;
     padding-block: 30px;
     border-top: 1.5px solid var(--color-rule);
@@ -59,19 +62,22 @@ const { title, date, topic, lede, image } = post.data;
     width: 20px;
     height: 20px;
   }
-  time {
+  .news-item :global(time) {
+    grid-area: datum;
     padding-top: 6px;
     color: var(--color-ink-soft);
     font-size: var(--text-label);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
   }
-  .topic {
+  .news-item :global(.topic) {
+    grid-area: amne;
     color: var(--color-ink-soft);
     font-size: var(--text-label);
     font-weight: 600;
   }
   h3 {
+    grid-area: rubrik;
     margin-block: 10px;
     font-size: var(--text-title);
     line-height: var(--text-title--line-height);
@@ -97,10 +103,12 @@ const { title, date, topic, lede, image } = post.data;
     background-size: 100% 30%;
   }
   p {
+    grid-area: ingress;
     max-width: 56ch;
     color: var(--color-ink-soft);
   }
   .news-item :global(.news-photo) {
+    grid-area: bild;
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
@@ -114,14 +122,16 @@ const { title, date, topic, lede, image } = post.data;
   @media (max-width: 900px) {
     .news-item {
       grid-template-columns: minmax(0, 1fr);
-      gap: 8px;
+      grid-template-rows: none;
+      grid-template-areas: "datum" "amne" "rubrik" "ingress" "bild";
     }
     .news-item :global(.news-photo) {
       max-width: 420px;
-      margin-top: 14px;
+      margin-top: 22px;
     }
-    time {
+    .news-item :global(time) {
       padding-top: 0;
+      margin-bottom: 8px;
     }
     .news-item :global(.news-knot) {
       top: 36px;

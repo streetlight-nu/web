@@ -5,9 +5,10 @@ import { getImage, Image } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ExampleChip from "@/components/ExampleChip.astro";
 import Knot from "@/components/Knot.astro";
+import Metarad from "@/components/Metarad.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
-import { amnesNamn, formateraDatum, isoDatum } from "@/lib/nyheter";
+import { isoDatum } from "@/lib/nyheter";
 import { allaNyheter } from "@/lib/nyheter-samling";
 import { href } from "@/lib/utils";
 
@@ -61,13 +62,14 @@ const delningsbild = image
           stroke-linejoin="round"></path></svg
       >Alla nyheter
     </a>
-    <div class="mt-[22px] flex flex-wrap items-center gap-x-[22px] gap-y-2.5 text-label font-medium text-mint">
-      <span class="inline-flex items-center gap-3 font-semibold text-cotton">
-        <Knot topic={topic} />{amnesNamn[topic]}
-      </span>
-      <time class="tabular-nums" datetime={isoDatum(date)}>{formateraDatum(date)}</time>
+    <Metarad
+      amne={topic}
+      datum={date}
+      class="mt-[22px] gap-x-[22px] gap-y-2.5 text-label font-medium text-mint"
+      amneClass="font-semibold text-cotton"
+    >
       {place && <span>{place}</span>}
-    </div>
+    </Metarad>
     <h1
       id="inlagg-rubrik"
       class="mt-[18px] max-w-[18ch] text-[clamp(2.2rem,5.4vw,4.6rem)] leading-none tracking-[-0.035em]"

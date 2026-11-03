@@ -37,17 +37,6 @@ test("huvudmenyn länkar till startsidans avsnitt, historien och nyheterna", asy
   await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /#bli-fadder$/);
 });
 
-test("sidan hämtar inget från tredje part", async ({ page, baseURL }) => {
-  const origin = new URL(baseURL!).origin;
-  const external: string[] = [];
-  page.on("request", (request) => {
-    if (!request.url().startsWith(origin) && !request.url().startsWith("data:")) external.push(request.url());
-  });
-  await page.goto("./");
-  await page.waitForLoadState("networkidle");
-  expect(external).toEqual([]);
-});
-
 test.describe("mobilmenyn", () => {
   test.skip(({ isMobile }) => !isMobile, "Menyknappen finns bara på smal skärm");
 

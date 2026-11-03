@@ -1,0 +1,90 @@
+---
+/**
+ * Repejo, embedded (ADR 0003): its script, its checkout and its progress bar towards the fundraising goal.
+ * Everything Repejo-specific (host, organisation id, short code) lives here and in `src/lib/repejo.ts`.
+ *
+ * - `del="skript"`: Repejo's `checkout.js`, loaded with `defer`. Put it once per page, in the head.
+ * - `del="checkout"`: `<repejo-checkout>`, with a reserved minimum height so the page does not jump.
+ * - `del="matare"`: `<repejo-progress-bar>`, the progress bar towards the goal.
+ *
+ * Until Repejo has defined its element (without JS, or when Repejo cannot be reached), a link to the
+ * campaign's own page at Repejo is shown in its place, so a visitor can always give.
+ * Repejo draws everything inside the elements: amounts, card fields and payment.
+ */
+import { JULKAMPANJ_KORTKOD, REPEJO_HOST, REPEJO_ORGANISATION, kampanjsida } from "@/lib/repejo";
+
+interface Props {
+  del: "skript" | "checkout" | "matare";
+  /** The campaign's short code at Repejo. */
+  kortkod?: string;
+}
+const { del, kortkod = JULKAMPANJ_KORTKOD } = Astro.props;
+const reserv = kampanjsida(kortkod);
+---
+
+{
+  del === "skript" && (
+    <script
+      is:inline
+      defer
+      type="text/javascript"
+      src={`${REPEJO_HOST}/assets/checkout.js`}
+      data-organisation-id={REPEJO_ORGANISATION}
+      data-host={REPEJO_HOST}
+    />
+  )
+}
+{
+  del === "checkout" && (
+    <div class="repejo repejo--checkout">
+      <repejo-checkout short_code={kortkod} host={REPEJO_HOST} />
+      <p class="reserv">
+        Här visas Repejos formulär för julklappen. Syns det inte? Ge din julklapp på{" "}
+        <a href={reserv}>Repejos kampanjsida</a>.
+      </p>
+    </div>
+  )
+}
+{
+  del === "matare" && (
+    <div class="repejo repejo--matare">
+      <repejo-progress-bar short-code={kortkod} host={REPEJO_HOST} />
+      <p class="reserv">
+        Här visas insamlingsmätaren från Repejo. Syns den inte? Se hur långt vi har kommit på{" "}
+        <a href={reserv}>Repejos kampanjsida</a>.
+      </p>
+    </div>
+  )
+}
+
+<style>
+  .repejo {
+    min-width: 0;
+  }
+  repejo-checkout,
+  repejo-progress-bar {
+    display: block;
+    min-width: 0;
+  }
+  /* Room for the checkout before Repejo draws it, so the page does not jump when it appears. */
+  .repejo--checkout {
+    min-height: 480px;
+  }
+  .reserv {
+    padding: 20px 22px;
+    border: 2px dashed currentColor;
+    border-radius: var(--radius-lg);
+  }
+  .reserv a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    font-weight: 600;
+    color: inherit;
+    text-decoration: underline;
+  }
+  /* Once Repejo has defined its element, the element shows itself and the fallback steps aside. */
+  .repejo:has(> repejo-checkout:defined, > repejo-progress-bar:defined) .reserv {
+    display: none;
+  }
+</style>

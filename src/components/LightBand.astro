@@ -5,8 +5,10 @@
  * change it only if the number of children changes.
  * Motion: once the band is in view the lights come on one by one, 90 ms apart, after the lamp has lit.
  * It is an addition: the markup is fully lit, and only the script dims it first (never with reduced motion or without JS).
+ * A page with its own text under the lights (the Christmas campaign) puts it in the default slot instead of the line.
  */
 const CHILDREN = 20;
+const ownText = Astro.slots.has("default");
 ---
 
 <div class="bg-green-deep text-cotton">
@@ -17,12 +19,18 @@ const CHILDREN = 20;
       </ul>
     </div>
   </div>
-  <div class="band-inner py-[18px]">
-    <p class="max-w-[75ch] text-mint">
-      <strong class="font-semibold text-cotton">20 barn, 20 ljus.</strong> Vi är små med flit, så att stödet når fram och
-      vi känner varje familj.
-    </p>
-  </div>
+  {
+    ownText ? (
+      <slot />
+    ) : (
+      <div class="band-inner py-[18px]">
+        <p class="max-w-[75ch] text-mint">
+          <strong class="font-semibold text-cotton">20 barn, 20 ljus.</strong> Vi är små med flit, så att stödet når fram
+          och vi känner varje familj.
+        </p>
+      </div>
+    )
+  }
 </div>
 
 <style>

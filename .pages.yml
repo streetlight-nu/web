@@ -47,6 +47,30 @@ content:
           regex: "^$|^https?://\\S+$"
           message: Skriv en hel webbadress som börjar med https://.
 
+  - name: julkampanj
+    label: Julkampanjen
+    type: file
+    path: src/data/julkampanj.json
+    format: json
+    # The fields must match the schema in src/lib/julkampanj.ts; tests/unit/julkampanj.test.ts checks it.
+    # Amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
+    fields:
+      - name: sistaDag
+        label: Sista dagen att ge en julklapp med kort
+        type: string
+        description: Skriv som du vill att det ska stå, till exempel ”20 december”. Visas överst på sidan Ge en julklapp. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: vadJulklappenGor
+        label: Det här gör julklappen
+        type: text
+        description: En eller två meningar om vad pengarna från julklapparna går till. Visas under ”Vart julklappen går”. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: epost
+        label: E-post för frågor om julkampanjen
+        type: string
+        description: Lämna tomt för att använda föreningens kontakt-e-post.
+        pattern:
+          regex: "^$|^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+          message: Skriv en e-postadress, till exempel namn@exempel.se.
+
   - name: historia
     label: Vår historia
     type: file

@@ -4,9 +4,9 @@ const base = (process.env.BASE_PATH ?? "/").replace(/\/?$/, "/");
 // E2E_PORT lets several checkouts run their browser tests at the same time.
 const port = Number(process.env.E2E_PORT ?? 4321);
 
-// A second build of the site with filled-in föreningsuppgifter from a test file, served on its own port
-// (E2E_PORT_IFYLLD, by default the one after E2E_PORT), so the tests can see both the "fylls i" chips
-// (the real, empty data file) and real values.
+// A second build of the site with filled-in föreningsuppgifter and julkampanj from test files, served on its
+// own port (E2E_PORT_IFYLLD, by default the one after E2E_PORT), so the tests can see both the "fylls i" chips
+// (the real, empty data files) and real values.
 const filledPort = Number(process.env.E2E_PORT_IFYLLD ?? port + 1);
 process.env.E2E_IFYLLD_URL = `http://localhost:${filledPort}${base}`;
 const filledOutDir = "dist-ifylld";
@@ -29,7 +29,9 @@ export default defineConfig({
     },
     {
       command:
-        `FORENINGSUPPGIFTER_FIL=tests/fixtures/foreningsuppgifter-ifylld.json npm run build -- --outDir ${filledOutDir}` +
+        "FORENINGSUPPGIFTER_FIL=tests/fixtures/foreningsuppgifter-ifylld.json" +
+        " JULKAMPANJ_FIL=tests/fixtures/julkampanj-ifylld.json" +
+        ` npm run build -- --outDir ${filledOutDir}` +
         ` && npm run preview -- --outDir ${filledOutDir} --port ${filledPort} --ignore-lock`,
       url: process.env.E2E_IFYLLD_URL,
       reuseExistingServer: !process.env.CI,

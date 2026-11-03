@@ -1,8 +1,6 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
-
 import { z } from "astro/zod";
 
+import { lasDatafil } from "./datafil";
 import { arEpostadress, valfri } from "./falt";
 
 /**
@@ -42,8 +40,7 @@ export function tolkaJulkampanj(data: unknown): Julkampanj {
   return resultat.data;
 }
 
-/** Reads the campaign's facts from the data file. */
+/** Reads the campaign's facts from the data file, once per build. */
 export function hamtaJulkampanj(): Julkampanj {
-  const fil = process.env.JULKAMPANJ_FIL || DATAFIL;
-  return tolkaJulkampanj(JSON.parse(readFileSync(resolve(fil), "utf8")));
+  return lasDatafil(process.env.JULKAMPANJ_FIL || DATAFIL, tolkaJulkampanj);
 }

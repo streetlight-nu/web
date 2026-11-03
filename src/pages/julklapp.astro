@@ -8,6 +8,7 @@ import Placeholder from "@/components/Placeholder.astro";
 import Repejo from "@/components/Repejo.astro";
 import Steps from "@/components/Steps.astro";
 import TibebBand from "@/components/TibebBand.astro";
+import TjugoLjus from "@/components/TjugoLjus.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 import { hamtaJulkampanj } from "@/lib/julkampanj";
@@ -102,10 +103,7 @@ const arrow = `<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h11M10 4
       >
         <div class="min-w-0">
           <h2 id="mal-rubrik" class={h2}>Håll ljusen <span class="text-gold">tända</span> i jul</h2>
-          <p class="mt-3.5 max-w-[46ch] text-mint">
-            <strong class="font-semibold text-cotton">20 barn, 20 ljus.</strong> Vi är små med flit, så att stödet når
-            fram och vi känner varje familj.
-          </p>
+          <p class="mt-3.5 max-w-[46ch] text-mint"><TjugoLjus /></p>
         </div>
         <div class="min-w-0">
           <p class="mb-2.5 font-semibold text-mint">Så långt har vi kommit mot insamlingsmålet</p>

@@ -30,7 +30,7 @@ I `.astro`-filer används `buttonVariants()` direkt på `<a>`. React-komponenten
 
 En delad länk visar sajtens standardbild `public/delningsbild.png` (1200 × 630), eller inläggets egen bild. Standardbilden ritas av `node scripts/rita-delningsbild.mjs` från logotypen; kör skriptet igen om logotypen ändras.
 
-Typsnitten läggs på egen server via Fontsource. Sajten gör inga anrop till tredje part, och ett test kontrollerar det.
+Typsnitten läggs på egen server via Fontsource, och sajtens egen kod hämtar dem aldrig från Google Fonts. En sida får anropa en extern tjänst bara när en funktion kräver det ([ADR 0003](docs/adr/0003-externa-tjanster-som-repejo-far-anropas.md)). I dag gäller det bara julkampanjen, som använder Repejo. Testet `tests/e2e/tredje-part.spec.ts` har en tillåtelselista per sida för vad vår egen kod anropar. Det stubbar Repejo och ser därför inte vad Repejos skript själv hämtar på `/julklapp`: typsnitt från Google, Stripe, Adyen, BankID och kanske Metas pixel. ADR 0003 listar dem.
 
 ## Föreningsuppgifter och Pages CMS
 
@@ -38,7 +38,13 @@ Föreningsuppgifterna (organisationsnummer, 90-konto, Swish-nummer, kontaktperso
 
 Komponenterna läser uppgifterna med `hamtaForeningsuppgifter()` från `src/lib/foreningsuppgifter.ts` och skriver aldrig in ett värde själva. Ett tomt fält visas som chipet ”fylls i” (`FyllsI.astro`). Ett felaktigt värde, till exempel en e-post som inte är en e-postadress, stoppar bygget.
 
-`npm run test:e2e` bygger själv sajten en gång till, till `dist-ifylld/`, med `tests/fixtures/foreningsuppgifter-ifylld.json` (via `FORENINGSUPPGIFTER_FIL`), och visar den på porten `E2E_PORT_IFYLLD`. Utan den används porten efter `E2E_PORT` (standard 4321 och 4322). Den vanliga sajten i `dist/` bygger du själv innan.
+`npm run test:e2e` bygger själv sajten två gånger till, med testfiler i stället för datafilerna (via `FORENINGSUPPGIFTER_FIL` och `JULKAMPANJ_FIL`), så att testerna aldrig beror på vad föreningen har fyllt i: till `dist-ifylld/` med ifyllda uppgifter (`tests/fixtures/*-ifylld.json`) på porten `E2E_PORT_IFYLLD`, och till `dist-tom/` med tomma uppgifter (`tests/fixtures/*-tom.json`) på porten `E2E_PORT_TOM`. Utan dem används de två portarna efter `E2E_PORT` (standard 4321, 4322 och 4323). Den vanliga sajten i `dist/` bygger du själv innan. Testerna som letar efter ”fylls i” går mot `dist-tom/`.
+
+## Julkampanjen och Repejo
+
+Sidan ”Ge en julklapp” (`src/pages/julklapp.astro`, `/julklapp`) bäddar in Repejos checkout och insamlingsmätare via `src/components/Repejo.astro`. Värd, organisations-id och kampanjens kortkod finns i `src/lib/repejo.ts`. Under checkouten och mätaren finns alltid en länk till Repejos kampanjsida, så att besökaren kan ge även om Repejo inte fungerar. Kampanjens egna uppgifter (sista dagen, vad julklappen gör och en e-post för frågor) finns i `src/data/julkampanj.json` och fylls i i Pages CMS under Julkampanjen. Webbläsartesterna stubbar Repejo och läser kampanjens uppgifter från `tests/fixtures/julkampanj-ifylld.json` och `julkampanj-tom.json` (via `JULKAMPANJ_FIL`).
+
+Kampanjen är säsongsbunden. Efter jul kan sidan tas bort, eller kortkoden bytas, utan att något annat ändras. Tas sidan bort tas den också bort ur tillåtelselistan i `tests/e2e/tredje-part.spec.ts`.
 
 ## Intresseanmälan
 

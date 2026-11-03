@@ -37,7 +37,8 @@ Små med flit. Det är 20 barn och 20 ljus, inte tusentals. Föreningen känner 
 ## Capabilities and Constraints
 
 - Statisk sajt byggd med Astro, React-öar, shadcn/ui och Tailwind v4 (ADR 0001).
-- Inga anrop till tredje part. Typsnitten ligger på egen server via Fontsource (GDPR), och ett test kontrollerar det.
+- Sidor får anropa externa tjänster när en funktion kräver det, till exempel Repejo för insamling, betalning och insamlingsmål (`checkout.js`, `<repejo-checkout>` och `<repejo-progress-bar>`). Välj tjänster som tar GDPR på allvar, och berätta i integritetstexten vilka tjänster sidan använder.
+- Typsnitten ligger kvar på egen server via Fontsource (GDPR) och hämtas aldrig från Google Fonts.
 - Nyheter har exakt fyra ämnen: Rapport från Addis Abeba, Nyhet från föreningen, Berättelse från en familj och Tack till faddrarna.
 - Ett formulär som inte är kopplat ska säga det, även i tackmeddelandet.
 - Begrepp och ord som ska undvikas står i `GLOSSARY.md`.

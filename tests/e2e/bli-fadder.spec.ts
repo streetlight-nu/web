@@ -30,8 +30,12 @@ test.describe("sektionen Bli fadder", () => {
     const sista = await page.locator("main > section").last().getAttribute("id");
     expect(sista).toBe("bli-fadder");
   });
+});
 
-  test("tom datafil: kontakt, e-post och Swish visar ”fylls i”", async ({ page }) => {
+test.describe("sektionen Bli fadder med tom testfil", () => {
+  test.use({ baseURL: process.env.E2E_TOM_URL });
+
+  test("kontakt, e-post och Swish visar ”fylls i”", async ({ page }) => {
     await page.goto("./");
     const s = sektion(page);
     await expect(s.locator("p", { hasText: "Frågor?" })).toContainText("namn fylls i");
@@ -63,6 +67,9 @@ function formular(page: Page) {
 }
 
 test.describe("intresseanmälan", () => {
+  // The tack state shows the föreningsuppgifter's e-mail, so these run on the build with empty test files.
+  test.use({ baseURL: process.env.E2E_TOM_URL });
+
   test("säger före sändning att formuläret inte är kopplat", async ({ page }) => {
     await page.goto("./");
     await expect(formular(page).getByText("Formuläret är inte kopplat än.")).toBeVisible();

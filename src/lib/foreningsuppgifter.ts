@@ -1,8 +1,6 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
-
 import { z } from "astro/zod";
 
+import { lasDatafil } from "./datafil";
 import { arEpostadress, valfri } from "./falt";
 
 /**
@@ -48,13 +46,7 @@ export function tolkaForeningsuppgifter(data: unknown): Foreningsuppgifter {
   return resultat.data;
 }
 
-let lasta: Foreningsuppgifter | undefined;
-
 /** Reads the föreningsuppgifter from the data file, once per build. */
 export function hamtaForeningsuppgifter(): Foreningsuppgifter {
-  if (!lasta) {
-    const fil = process.env.FORENINGSUPPGIFTER_FIL || DATAFIL;
-    lasta = tolkaForeningsuppgifter(JSON.parse(readFileSync(resolve(fil), "utf8")));
-  }
-  return lasta;
+  return lasDatafil(process.env.FORENINGSUPPGIFTER_FIL || DATAFIL, tolkaForeningsuppgifter);
 }

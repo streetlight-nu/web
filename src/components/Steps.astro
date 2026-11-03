@@ -7,16 +7,15 @@
 import type { HTMLAttributes } from "astro/types";
 
 type Props = HTMLAttributes<"ol">;
-const props = Astro.props;
+const { class: className, ...props } = Astro.props;
 ---
 
-<ol class="sl-steps" {...props}><slot /></ol>
+<ol class:list={["sl-steps", className]} {...props}><slot /></ol>
 
 <style>
   .sl-steps {
     list-style: none;
     counter-reset: step;
-    margin: 0;
     padding: 0;
     display: grid;
     gap: 14px;

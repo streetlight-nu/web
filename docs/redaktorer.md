@@ -89,3 +89,12 @@ Sidan **Vår historia** är en tidslinje från 1995 till idag. Allt som inte är
 5. Fältet **Att prata om tillsammans** är frivilligt. Där kan du skriva en fråga som en förälder kan prata om med sitt barn efteråt, till exempel ”Vad behöver du för att kunna gå till skolan?”.
 
 Många läser sidan tillsammans med sina barn. Skriv därför med enkla ord och korta meningar, och gärna något konkret: en skola, en uniform, en vanlig dag. Berätta om barnen och familjerna med värdighet, och bara det de har gett sitt samtycke till.
+
+## 8. Fyll i julkampanjen
+
+Sidan **Ge en julklapp** (`/julklapp`) är föreningens julkampanj. Belopp, insamlingsmål och betalning sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas som ”fylls i” tills det finns.
+
+1. Klicka på **Julkampanjen** i menyn till vänster.
+2. Skriv **Sista dagen att ge en julklapp med kort**, som du vill att det ska stå, till exempel ”20 december”.
+3. Skriv **Det här gör julklappen**: en eller två meningar om vad pengarna går till.
+4. Fältet **E-post för frågor om julkampanjen** är frivilligt. Lämnar du det tomt visas föreningens kontakt-e-post.

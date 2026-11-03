@@ -133,6 +133,9 @@ const AMNEN = AMNESMODULEN.map((amne) => amne.namn);
 const MEDGIVANDE = "Föreningen får spara min e-post för att skicka nyheter. Jag kan avsluta när jag vill.";
 
 test.describe("formuläret Få nyheterna med e-post", () => {
+  // The tack state shows the föreningsuppgifter's e-mail, so these run on the build with empty test files.
+  test.use({ baseURL: process.env.E2E_TOM_URL });
+
   test("säger före sändning att formuläret inte är kopplat", async ({ page }) => {
     await page.goto("nyheter");
     await expect(formular(page).getByText("Formuläret är inte kopplat än.")).toBeVisible();

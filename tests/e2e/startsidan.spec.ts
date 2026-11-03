@@ -127,7 +127,8 @@ test.describe("startsidans berättelse", () => {
   });
 
   test("texterna följer ordlistan och hittar inte på några siffror", async ({ page }) => {
-    await page.goto("./");
+    // On the build with empty test files: the föreningsuppgifter the association fills in have figures of their own.
+    await page.goto(process.env.E2E_TOM_URL!);
     const text = (await page.getByRole("banner").innerText()) + (await page.locator("main").innerText());
     // "Senaste nytt" shows the newest inlägg's date, which comes from the inlägg, not from the page.
     const utanNyheter = await page.locator("main").evaluate((main) => {

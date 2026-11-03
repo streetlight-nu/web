@@ -19,9 +19,14 @@ const konfiguration = parse(readFileSync(path.join(rot, ".pages.yml"), "utf8")) 
 const julkampanj = konfiguration.content.find((del) => del.name === "julkampanj")!;
 
 describe("julkampanjens uppgifter i src/data/julkampanj.json", () => {
-  test("klarar schemat och är tomma tills föreningen fyller i dem", () => {
+  // Only the schema: the association fills the file in through Pages CMS, so its values are not the tests' business.
+  test("datafilen i repot klarar schemat", () => {
     const data = JSON.parse(readFileSync(path.join(rot, DATAFIL), "utf8"));
-    expect(tolkaJulkampanj(data)).toEqual({});
+    expect(() => tolkaJulkampanj(data)).not.toThrow();
+  });
+
+  test("tomma fält räknas som inte ifyllda", () => {
+    expect(tolkaJulkampanj({ sistaDag: "", vadJulklappenGor: "   ", epost: "" })).toEqual({});
   });
 
   test("stoppar bygget när e-posten inte är en e-postadress eller ett okänt fält finns", () => {

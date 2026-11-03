@@ -14,7 +14,10 @@ function uppgift(page: Page, label: string) {
   });
 }
 
-test.describe("föreningsuppgifter med tom datafil", () => {
+test.describe("föreningsuppgifter med tom testfil", () => {
+  // A build of the site made from tests/fixtures/*-tom.json (see playwright.config.ts).
+  test.use({ baseURL: process.env.E2E_TOM_URL });
+
   test("Insyn visar ”fylls i” för organisationsnummer, årsredovisning och 90-konto", async ({ page }) => {
     await page.goto("./");
     await expect(insyn(page).getByRole("heading", { name: "Insyn" })).toBeVisible();

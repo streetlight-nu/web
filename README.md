@@ -30,7 +30,7 @@ I `.astro`-filer används `buttonVariants()` direkt på `<a>`. React-komponenten
 
 En delad länk visar sajtens standardbild `public/delningsbild.png` (1200 × 630), eller inläggets egen bild. Standardbilden ritas av `node scripts/rita-delningsbild.mjs` från logotypen; kör skriptet igen om logotypen ändras.
 
-Typsnitten läggs på egen server via Fontsource. Sajten gör inga anrop till tredje part, och ett test kontrollerar det.
+Typsnitten läggs på egen server via Fontsource och hämtas aldrig från Google Fonts. En sida får anropa en extern tjänst bara när en funktion kräver det ([ADR 0003](docs/adr/0003-externa-tjanster-som-repejo-far-anropas.md)). I dag gäller det bara julkampanjen, som använder Repejo. Testet `tests/e2e/tredje-part.spec.ts` har en tillåtelselista per sida och stoppar typsnitt från andra värdar.
 
 ## Föreningsuppgifter och Pages CMS
 
@@ -39,6 +39,12 @@ Föreningsuppgifterna (organisationsnummer, 90-konto, Swish-nummer, kontaktperso
 Komponenterna läser uppgifterna med `hamtaForeningsuppgifter()` från `src/lib/foreningsuppgifter.ts` och skriver aldrig in ett värde själva. Ett tomt fält visas som chipet ”fylls i” (`FyllsI.astro`). Ett felaktigt värde, till exempel en e-post som inte är en e-postadress, stoppar bygget.
 
 `npm run test:e2e` bygger själv sajten en gång till, till `dist-ifylld/`, med `tests/fixtures/foreningsuppgifter-ifylld.json` (via `FORENINGSUPPGIFTER_FIL`), och visar den på porten `E2E_PORT_IFYLLD`. Utan den används porten efter `E2E_PORT` (standard 4321 och 4322). Den vanliga sajten i `dist/` bygger du själv innan.
+
+## Julkampanjen och Repejo
+
+Sidan ”Ge en julklapp” (`src/pages/julklapp.astro`, `/julklapp`) bäddar in Repejos checkout och insamlingsmätare via `src/components/Repejo.astro`. Värd, organisations-id och kampanjens kortkod finns i `src/lib/repejo.ts`. Laddas inte Repejos skript visas en länk till Repejos kampanjsida i stället. Kampanjens egna uppgifter (sista dagen, vad julklappen gör och en e-post för frågor) finns i `src/data/julkampanj.json` och fylls i i Pages CMS under Julkampanjen. Webbläsartesterna stubbar Repejo, och testvarianten med ifyllda uppgifter läser `tests/fixtures/julkampanj-ifylld.json` (via `JULKAMPANJ_FIL`).
+
+Kampanjen är säsongsbunden. Efter jul kan sidan tas bort, eller kortkoden bytas, utan att något annat ändras. Tas sidan bort tas den också bort ur tillåtelselistan i `tests/e2e/tredje-part.spec.ts`.
 
 ## Intresseanmälan
 

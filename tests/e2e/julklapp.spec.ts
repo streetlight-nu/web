@@ -1,8 +1,10 @@
 import { expect, test } from "@playwright/test";
 
-import { blockRepejo, expectNoA11yViolations, REPEJO, stubRepejo } from "./helpers";
+import { JULKAMPANJ_KORTKOD, kampanjsida } from "../../src/lib/repejo";
+import { blockRepejo, expectNoA11yViolations, stubRepejo } from "./helpers";
 
 const sida = "julklapp";
+const reservlank = kampanjsida(JULKAMPANJ_KORTKOD);
 
 test.beforeEach(async ({ page }) => {
   await stubRepejo(page);
@@ -51,7 +53,17 @@ test("knappen Ge en julklapp i första vyn leder till Repejos checkout", async (
   await expect(ge.getByRole("heading", { level: 2, name: "Ge en julklapp" })).toBeInViewport();
   await expect(ge.getByText("Repejos checkout (stubb)")).toBeVisible();
   await expect(ge.getByText("Repejo sköter betalningen", { exact: false })).toBeVisible();
-  await expect(ge.getByRole("link", { name: "Repejos kampanjsida" })).toBeHidden();
+});
+
+test("länken till Repejos kampanjsida syns under checkouten även när Repejo har laddats", async ({ page }) => {
+  // Repejo can define its elements and still fail later, so the way out is always there.
+  await page.goto(sida);
+  const ge = page.locator("#ge");
+  await expect(ge.getByText("Repejos checkout (stubb)")).toBeVisible();
+  const lank = ge.getByRole("link", { name: "Ge via Repejos kampanjsida" });
+  await expect(lank).toBeVisible();
+  await expect(lank).toHaveAttribute("href", reservlank);
+  await expect(ge).toContainText("Fungerar inte betalningen?");
 });
 
 test("insamlingsmätaren finns i avsnittet om insamlingsmålet", async ({ page }) => {
@@ -71,10 +83,19 @@ test.describe("utan Repejo", () => {
   test("syns en länk till Repejos kampanjsida där checkouten och mätaren sitter", async ({ page }) => {
     await page.goto(sida);
     for (const del of [page.locator("#ge"), page.getByRole("region", { name: "Håll ljusen tända i jul" })]) {
-      await expect(del.getByRole("link", { name: "Repejos kampanjsida" })).toHaveAttribute("href", `${REPEJO}/s/TSpuB`);
-      await expect(del.getByRole("link", { name: "Repejos kampanjsida" })).toBeVisible();
+      const lank = del.getByRole("link", { name: /Repejos kampanjsida/ });
+      await expect(lank).toHaveAttribute("href", reservlank);
+      await expect(lank).toBeVisible();
     }
     await expectNoA11yViolations(page);
+  });
+
+  test("har checkouten och mätaren sin plats reserverad, så att sidan inte hoppar när Repejo ritar dem", async ({
+    page,
+  }) => {
+    await page.goto(sida);
+    expect((await page.locator("repejo-checkout").boundingBox())!.height).toBeGreaterThanOrEqual(400);
+    expect((await page.locator("repejo-progress-bar").boundingBox())!.height).toBeGreaterThanOrEqual(40);
   });
 });
 
@@ -113,7 +134,11 @@ test("avslutas med en uppmaning som leder till checkouten", async ({ page }) => 
   await expect(slut.getByRole("link", { name: "Ge en julklapp" })).toHaveAttribute("href", "#ge");
 });
 
-test.describe("kampanjuppgifter med tom datafil", () => {
+test.describe("kampanjuppgifter med tom testfil", () => {
+  // A build of the site made from tests/fixtures/*-tom.json (see playwright.config.ts), so these tests do not
+  // break when the association fills in src/data/julkampanj.json.
+  test.use({ baseURL: process.env.E2E_TOM_URL });
+
   test("sista dagen, vad julklappen gör och e-posten visas som ”fylls i”", async ({ page }) => {
     await page.goto(sida);
     await expect(page.getByRole("banner").getByText("datum fylls i", { exact: true })).toBeVisible();

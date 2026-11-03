@@ -5,11 +5,12 @@
  *
  * - `del="skript"`: Repejo's `checkout.js`, loaded with `defer`. Put it once per page, in the head.
  * - `del="checkout"`: `<repejo-checkout>`, with a reserved minimum height so the page does not jump.
- * - `del="matare"`: `<repejo-progress-bar>`, the progress bar towards the goal.
+ * - `del="matare"`: `<repejo-progress-bar>`, the progress bar towards the goal, also with a reserved height.
  *
- * Until Repejo has defined its element (without JS, or when Repejo cannot be reached), a link to the
- * campaign's own page at Repejo is shown in its place, so a visitor can always give.
- * Repejo draws everything inside the elements: amounts, card fields and payment.
+ * Under each element there is always a small link to the campaign's own page at Repejo, so a visitor can
+ * give even when Repejo fails, also after it has defined its elements. Until Repejo has defined an element
+ * (without JS, or when Repejo cannot be reached), the reserved space shows a dashed frame saying what goes
+ * there. Repejo draws everything inside the elements: amounts, card fields and payment.
  */
 import { JULKAMPANJ_KORTKOD, REPEJO_HOST, REPEJO_ORGANISATION, kampanjsida } from "@/lib/repejo";
 
@@ -36,22 +37,20 @@ const reserv = kampanjsida(kortkod);
 }
 {
   del === "checkout" && (
-    <div class="repejo repejo--checkout">
-      <repejo-checkout short_code={kortkod} host={REPEJO_HOST} />
+    <div class="repejo">
+      <repejo-checkout short_code={kortkod} host={REPEJO_HOST} data-vantar="Här visas Repejos formulär för julklappen." />
       <p class="reserv">
-        Här visas Repejos formulär för julklappen. Syns det inte? Ge din julklapp på{" "}
-        <a href={reserv}>Repejos kampanjsida</a>.
+        Fungerar inte betalningen? <a href={reserv}>Ge via Repejos kampanjsida</a>
       </p>
     </div>
   )
 }
 {
   del === "matare" && (
-    <div class="repejo repejo--matare">
-      <repejo-progress-bar short-code={kortkod} host={REPEJO_HOST} />
+    <div class="repejo">
+      <repejo-progress-bar short-code={kortkod} host={REPEJO_HOST} data-vantar="Här visas insamlingsmätaren." />
       <p class="reserv">
-        Här visas insamlingsmätaren från Repejo. Syns den inte? Se hur långt vi har kommit på{" "}
-        <a href={reserv}>Repejos kampanjsida</a>.
+        Syns inte mätaren? <a href={reserv}>Se insamlingen på Repejos kampanjsida</a>
       </p>
     </div>
   )
@@ -66,14 +65,26 @@ const reserv = kampanjsida(kortkod);
     display: block;
     min-width: 0;
   }
-  /* Room for the checkout before Repejo draws it, so the page does not jump when it appears. */
-  .repejo--checkout {
+  /* Room for Repejo's elements before Repejo draws them, so the page does not jump when they appear. */
+  repejo-checkout {
     min-height: 480px;
   }
-  .reserv {
-    padding: 20px 22px;
+  repejo-progress-bar {
+    min-height: 56px;
+  }
+  /* Until Repejo has defined an element, its reserved space says what goes there. */
+  repejo-checkout:not(:defined),
+  repejo-progress-bar:not(:defined) {
+    padding: 16px 20px;
     border: 2px dashed currentColor;
     border-radius: var(--radius-lg);
+  }
+  repejo-checkout:not(:defined)::before,
+  repejo-progress-bar:not(:defined)::before {
+    content: attr(data-vantar);
+  }
+  .reserv {
+    margin-top: 8px;
   }
   .reserv a {
     display: inline-flex;
@@ -82,9 +93,5 @@ const reserv = kampanjsida(kortkod);
     font-weight: 600;
     color: inherit;
     text-decoration: underline;
-  }
-  /* Once Repejo has defined its element, the element shows itself and the fallback steps aside. */
-  .repejo:has(> repejo-checkout:defined, > repejo-progress-bar:defined) .reserv {
-    display: none;
   }
 </style>

@@ -257,12 +257,21 @@ test.describe("julkampanjen på startsidan", () => {
       await expect(page.locator("[data-adventsljus] .ljus.slackt .laga").first()).toHaveCSS("opacity", "1");
     });
 
-    test("utanför advent brinner alla fyra ljusen och ingen etikett visas", async ({ page }) => {
+    test("före första advent brinner inget ljus och ingen etikett visas", async ({ page }) => {
       await page.clock.install({ time: new Date(2026, 10, 4, 12) });
       await page.goto("./");
       await expect(page.locator("[data-adventsljus] .ljus")).toHaveCount(4);
-      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(4);
       await expect(page.locator("[data-advent]")).toBeHidden();
+      // A julklapp keeps the lights on: pointing at the button still lights them.
+      await page.locator("#julklapp").getByRole("link", { name: "Ge en julklapp" }).hover();
+      await expect(page.locator("[data-adventsljus] .ljus.slackt .laga").first()).toHaveCSS("opacity", "1");
+    });
+
+    test("på julafton brinner alla fyra ljusen", async ({ page }) => {
+      await page.clock.install({ time: new Date(2026, 11, 24, 9) });
+      await page.goto("./");
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
     });
 
     test("räknar ner dagarna till julafton, när julkortet kommer fram", async ({ page }) => {
@@ -304,8 +313,8 @@ test.describe("julkampanjen på startsidan", () => {
       await page.locator("#julklapp").scrollIntoViewIfNeeded();
       await page.clock.runFor(8000);
       await expect(page.locator("[data-nedrakning-text]")).toHaveText("26 dagar kvar till julafton.");
-      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
-      // Midnight: första advent, so three of the four candles go out.
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(4);
+      // Midnight: första advent, so the first candle is lit and three stay dark.
       await page.clock.runFor(70_000);
       await expect(page.locator("[data-nedrakning-text]")).toHaveText("25 dagar kvar till julafton.");
       await expect(page.locator("[data-advent]")).toHaveText("Första advent, ett ljus är tänt.");
@@ -319,7 +328,7 @@ test.describe("julkampanjen på startsidan", () => {
       await page.clock.install({ time: new Date(2027, 0, 10, 12) });
       await page.goto("./");
       await expect(page.locator("[data-nedrakning]")).toBeHidden();
-      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(4);
     });
 
     test("ett långt ”sista dag” bryts under knappen och trycker inte ihop texten", async ({ page, isMobile }) => {

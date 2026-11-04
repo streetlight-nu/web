@@ -7,6 +7,10 @@
  * so the campaign gets a line button and a smaller heading than the page's sections. Fadder is the regular
  * support, the julklapp a gift at Christmas.
  *
+ * Julkänsla: an adventsljusstake whose foot is a woven tibeb band, where Swedish Advent meets the shemma cloth.
+ * "Ljus" is both light and candle: as many candles burn as there have been Advent Sundays, and pointing at
+ * "Ge en julklapp" lights the rest. The flames are drawn in the lamp's three hard gold steps.
+ *
  * Seasonal: shown only while `visasPaStartsidan` is ticked in Pages CMS (src/data/julkampanj.json).
  * It only links to /julklapp and never loads Repejo (ADR 0003).
  */
@@ -22,16 +26,60 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
     <section id="julklapp" aria-labelledby="julklapp-rubrik" class="on-green bg-green-deep text-cotton">
       <div class="band-inner">
         <div class="rad">
-          {/* A julkort with a woven band, as on the campaign page. Drawn, not a photo. */}
-          <svg class="kortet" viewBox="0 0 88 64" aria-hidden="true">
-            <g transform="rotate(-6 44 32)">
-              <rect x="8" y="6" width="72" height="52" rx="3" fill="#FBFBF8" />
-              <rect x="8" y="6" width="72" height="11" fill="#0E4A38" />
-              <path d="M8 17h72" stroke="#F4B400" stroke-width="2" />
-              <path d="M18 8l3.5 3.5L18 15l-3.5-3.5zM32 8l3.5 3.5L32 15l-3.5-3.5zM46 8l3.5 3.5L46 15l-3.5-3.5zM60 8l3.5 3.5L60 15l-3.5-3.5zM74 8l3.5 3.5L74 15l-3.5-3.5z" fill="#F4B400" />
-              <path d="M18 29h34M18 37h46M18 45h24" stroke="#0B2E24" stroke-width="3" stroke-linecap="round" opacity="0.55" />
-            </g>
-          </svg>
+          {/* Adventsljusstaken: four candles on a woven tibeb foot. Lit by default (no JS, reduced motion);
+              the script lights as many as there have been Advent Sundays, and the rest on hover over "Ge en julklapp". */}
+          <div class="stake">
+            <svg class="adventsljus" viewBox="0 0 180 104" aria-hidden="true" data-adventsljus>
+              <g class="ljus" transform="translate(30 0)">
+                <rect x="-7" y="44" width="14" height="46" rx="1.5" fill="#FBFBF8" />
+                <path d="M0 44v-6" stroke="#CFE3D8" stroke-width="2" stroke-linecap="round" />
+                <g class="laga">
+                  <circle cx="0" cy="30" r="19" fill="#F4B400" opacity="0.12" />
+                  <circle cx="0" cy="30" r="12.5" fill="#FFCF45" opacity="0.16" />
+                  <path d="M0 12C5 20 8 26 8 31a8 8 0 0 1-16 0c0-5 3-11 8-19Z" fill="#F4B400" />
+                  <path d="M0 20C3.5 25 5.5 29 5.5 32a5.5 5.5 0 0 1-11 0c0-3 2-7 5.5-12Z" fill="#FFCF45" />
+                  <path d="M0 27C2 30 3 32 3 34a3 3 0 0 1-6 0c0-2 1-4 3-7Z" fill="#FFDB73" />
+                </g>
+              </g>
+              <g class="ljus" transform="translate(70 0)">
+                <rect x="-7" y="44" width="14" height="46" rx="1.5" fill="#FBFBF8" />
+                <path d="M0 44v-6" stroke="#CFE3D8" stroke-width="2" stroke-linecap="round" />
+                <g class="laga">
+                  <circle cx="0" cy="30" r="19" fill="#F4B400" opacity="0.12" />
+                  <circle cx="0" cy="30" r="12.5" fill="#FFCF45" opacity="0.16" />
+                  <path d="M0 12C5 20 8 26 8 31a8 8 0 0 1-16 0c0-5 3-11 8-19Z" fill="#F4B400" />
+                  <path d="M0 20C3.5 25 5.5 29 5.5 32a5.5 5.5 0 0 1-11 0c0-3 2-7 5.5-12Z" fill="#FFCF45" />
+                  <path d="M0 27C2 30 3 32 3 34a3 3 0 0 1-6 0c0-2 1-4 3-7Z" fill="#FFDB73" />
+                </g>
+              </g>
+              <g class="ljus" transform="translate(110 0)">
+                <rect x="-7" y="44" width="14" height="46" rx="1.5" fill="#FBFBF8" />
+                <path d="M0 44v-6" stroke="#CFE3D8" stroke-width="2" stroke-linecap="round" />
+                <g class="laga">
+                  <circle cx="0" cy="30" r="19" fill="#F4B400" opacity="0.12" />
+                  <circle cx="0" cy="30" r="12.5" fill="#FFCF45" opacity="0.16" />
+                  <path d="M0 12C5 20 8 26 8 31a8 8 0 0 1-16 0c0-5 3-11 8-19Z" fill="#F4B400" />
+                  <path d="M0 20C3.5 25 5.5 29 5.5 32a5.5 5.5 0 0 1-11 0c0-3 2-7 5.5-12Z" fill="#FFCF45" />
+                  <path d="M0 27C2 30 3 32 3 34a3 3 0 0 1-6 0c0-2 1-4 3-7Z" fill="#FFDB73" />
+                </g>
+              </g>
+              <g class="ljus" transform="translate(150 0)">
+                <rect x="-7" y="44" width="14" height="46" rx="1.5" fill="#FBFBF8" />
+                <path d="M0 44v-6" stroke="#CFE3D8" stroke-width="2" stroke-linecap="round" />
+                <g class="laga">
+                  <circle cx="0" cy="30" r="19" fill="#F4B400" opacity="0.12" />
+                  <circle cx="0" cy="30" r="12.5" fill="#FFCF45" opacity="0.16" />
+                  <path d="M0 12C5 20 8 26 8 31a8 8 0 0 1-16 0c0-5 3-11 8-19Z" fill="#F4B400" />
+                  <path d="M0 20C3.5 25 5.5 29 5.5 32a5.5 5.5 0 0 1-11 0c0-3 2-7 5.5-12Z" fill="#FFCF45" />
+                  <path d="M0 27C2 30 3 32 3 34a3 3 0 0 1-6 0c0-2 1-4 3-7Z" fill="#FFDB73" />
+                </g>
+              </g>
+              <rect x="2" y="88" width="176" height="16" fill="#0E4A38" />
+              <path d="M2 89.5h176M2 102.5h176" stroke="#D64527" stroke-width="3" />
+              <path d="M16 92l4 4-4 4-4-4zM36 92l4 4-4 4-4-4zM56 92l4 4-4 4-4-4zM76 92l4 4-4 4-4-4zM96 92l4 4-4 4-4-4zM116 92l4 4-4 4-4-4zM136 92l4 4-4 4-4-4zM156 92l4 4-4 4-4-4zM176 92l4 4-4 4-4-4z" fill="#F4B400" />
+            </svg>
+            <span class="advent text-label text-mint" data-advent hidden></span>
+          </div>
           <h2 id="julklapp-rubrik" class="rubrik text-title tracking-[-0.015em]">Håll ljusen tända i jul</h2>
           <p class="ingress max-w-[60ch] text-mint">
             Ge en julklapp till barnen i Addis Abeba och glädj samtidigt någon du tycker om. Vi skickar ditt julkort i
@@ -58,6 +106,47 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
   )
 }
 
+<script>
+  // Advent: as many candles burn as there have been Advent Sundays, as in a Swedish home. Outside Advent all four burn.
+  // The markup is fully lit; only the script puts candles out, and lights the lit ones one by one when they come into view.
+  const stake = document.querySelector<SVGElement>("[data-adventsljus]");
+  if (stake) {
+    const ljus = [...stake.querySelectorAll<SVGGElement>(".ljus")];
+    const idag = new Date();
+    const ar = idag.getFullYear();
+    const juldagen = new Date(ar, 11, 25);
+    // The fourth Advent Sunday is the last Sunday before Christmas Day; the first is three weeks earlier.
+    const fjarde = new Date(ar, 11, 25 - (juldagen.getDay() || 7));
+    const forsta = new Date(ar, 11, fjarde.getDate() - 21);
+    const dag = new Date(ar, idag.getMonth(), idag.getDate());
+    const under = dag >= forsta && dag <= new Date(ar, 11, 24);
+    const tanda = under ? Math.min(4, 1 + Math.floor((dag.getTime() - forsta.getTime()) / (7 * 864e5))) : 4;
+    ljus.forEach((el, i) => el.classList.toggle("slackt", i >= tanda));
+    if (under) {
+      const etikett = document.querySelector<HTMLElement>("[data-advent]")!;
+      const ordning = ["Första", "Andra", "Tredje", "Fjärde"][tanda - 1];
+      const antal = ["ett ljus är tänt", "två ljus är tända", "tre ljus är tända", "fyra ljus är tända"][tanda - 1];
+      etikett.textContent = `${ordning} advent, ${antal}.`;
+      etikett.hidden = false;
+    }
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+      const brinner = ljus.filter((el) => !el.classList.contains("slackt"));
+      brinner.forEach((el) => el.classList.add("vantar"));
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((e) => e.isIntersecting)) return;
+          io.disconnect();
+          brinner.forEach((el, i) => setTimeout(() => el.classList.replace("vantar", "tands"), 300 + i * 420));
+        },
+        { threshold: 0.8 },
+      );
+      io.observe(stake);
+      // Never leave a candle out that should burn.
+      setTimeout(() => brinner.forEach((el) => el.classList.remove("vantar")), 6000);
+    }
+  }
+</script>
+
 <style>
   /* One row on wide screens: the card, the text, the action. The rule above ties it to the light band's line. */
   .rad {
@@ -71,10 +160,69 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
     border-top: 1.5px solid rgba(207, 227, 216, 0.25);
     padding-block: clamp(28px, 3.5vw, 40px) clamp(32px, 4vw, 48px);
   }
-  .kortet {
+  .stake {
     grid-area: kort;
-    width: 88px;
-    height: 64px;
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    width: 176px;
+  }
+  .adventsljus {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .advent {
+    font-weight: 600;
+    text-align: center;
+    text-wrap: balance;
+  }
+  .laga {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    transition:
+      opacity 0.5s var(--ease-light),
+      transform 0.5s var(--ease-light);
+  }
+  /* A candle that is out shows only its wick. Pointing at "Ge en julklapp" lights the rest: a julklapp keeps the lights on. */
+  .slackt .laga,
+  .vantar .laga {
+    opacity: 0;
+    transform: scale(0.4, 0.1);
+  }
+  .vantar .laga {
+    transition: none;
+  }
+  .rad:has(.handling a:hover, .handling a:focus-visible) .slackt .laga {
+    opacity: 1;
+    transform: none;
+  }
+  /* The flame catches: a flicker, then it stands, like the lamp at dusk. */
+  @keyframes tands {
+    0% {
+      opacity: 0;
+      transform: scale(0.4, 0.1);
+    }
+    25% {
+      opacity: 1;
+      transform: scale(0.7, 0.6);
+    }
+    40% {
+      opacity: 0.35;
+      transform: scale(0.6, 0.4);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .tands .laga {
+    animation: tands 0.9s var(--ease-light) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .laga {
+      transition: none;
+    }
   }
   .rubrik {
     grid-area: rubrik;
@@ -99,7 +247,10 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
         "kort rubrik"
         "ingress ingress"
         "handling handling";
-      column-gap: 16px;
+      column-gap: 20px;
+    }
+    .stake {
+      width: 132px;
     }
     .rubrik {
       align-self: center;
@@ -112,9 +263,8 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
     }
   }
   @media (max-width: 520px) {
-    .kortet {
-      width: 64px;
-      height: 47px;
+    .stake {
+      width: 116px;
     }
     .handling,
     .handling a {

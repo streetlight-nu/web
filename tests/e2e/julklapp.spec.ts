@@ -242,6 +242,29 @@ test.describe("julkampanjen på startsidan", () => {
       await expectNoA11yViolations(page);
     });
 
+    test("adventsljusstaken har lika många tända ljus som det har varit adventssöndagar", async ({ page }) => {
+      const brinner = () =>
+        page
+          .locator("[data-adventsljus] .ljus")
+          .evaluateAll((els) => els.map((el) => !el.classList.contains("slackt")));
+      // 2026: första advent är 29 november, fjärde advent 20 december.
+      await page.clock.install({ time: new Date(2026, 11, 7, 12) });
+      await page.goto("./");
+      expect(await brinner()).toEqual([true, true, false, false]);
+      await expect(page.locator("[data-advent]")).toHaveText("Andra advent, två ljus är tända.");
+      // A julklapp keeps the lights on: pointing at the button lights the rest.
+      await page.locator("#julklapp").getByRole("link", { name: "Ge en julklapp" }).hover();
+      await expect(page.locator("[data-adventsljus] .ljus.slackt .laga").first()).toHaveCSS("opacity", "1");
+    });
+
+    test("utanför advent brinner alla fyra ljusen och ingen etikett visas", async ({ page }) => {
+      await page.clock.install({ time: new Date(2026, 10, 4, 12) });
+      await page.goto("./");
+      await expect(page.locator("[data-adventsljus] .ljus")).toHaveCount(4);
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
+      await expect(page.locator("[data-advent]")).toBeHidden();
+    });
+
     test("har en länk i menyn", async ({ page, isMobile }) => {
       await page.goto("./");
       const nav = page.getByRole("navigation", { name: "Huvudmeny" });

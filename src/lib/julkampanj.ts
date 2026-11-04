@@ -31,7 +31,7 @@ export const julkampanjSchema = z.strictObject({
   sistaDag: valfri(ifylldText),
   vadJulklappenGor: valfri(ifylldText),
   epost: valfri(ifylldText.refine(arEpostadress, { message: "epost måste vara en e-postadress" })),
-  visasPaStartsidan: valfri(z.boolean()),
+  visasPaStartsidan: valfri(z.boolean({ error: "visasPaStartsidan måste vara ibockad eller inte (true eller false)" })),
 });
 
 /** Checks the contents of the data file. Unknown fields and malformed values fail the build. */

@@ -40,7 +40,7 @@ export default function MainNav({ links, sponsorHref, sponsorVariant = "gold" }:
     <>
       <ul
         id={listId}
-        className={`order-3 m-0 w-full list-none flex-col p-0 font-medium min-[901px]:order-none min-[901px]:flex min-[901px]:w-auto min-[901px]:flex-row min-[901px]:gap-x-[clamp(14px,1.6vw,28px)] min-[901px]:whitespace-nowrap ${open ? "flex" : "hidden"}`}
+        className={`order-3 m-0 w-full list-none flex-col p-0 font-medium min-[901px]:order-none min-[901px]:flex min-[901px]:w-auto min-[901px]:min-w-0 min-[901px]:flex-row min-[901px]:flex-wrap min-[901px]:justify-center min-[901px]:gap-x-[clamp(14px,1.6vw,28px)] min-[901px]:gap-y-1 min-[901px]:whitespace-nowrap ${open ? "flex" : "hidden"}`}
       >
         {links.map((link) => (
           <li key={link.href}>
@@ -56,7 +56,7 @@ export default function MainNav({ links, sponsorHref, sponsorVariant = "gold" }:
         ))}
       </ul>
       <div className="ml-auto flex items-center gap-2.5 max-[400px]:gap-2">
-        <Button asChild variant={sponsorVariant} size="small" className="max-[520px]:px-4 max-[400px]:px-3.5">
+        <Button asChild variant={sponsorVariant} size="small" className="whitespace-nowrap max-[520px]:px-4 max-[400px]:px-3.5">
           <a href={sponsorHref}>Bli fadder</a>
         </Button>
         <button

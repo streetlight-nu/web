@@ -322,6 +322,18 @@ test.describe("julkampanjen på startsidan", () => {
       await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
     });
 
+    test("ett långt ”sista dag” bryts under knappen och trycker inte ihop texten", async ({ page, isMobile }) => {
+      await page.goto("./");
+      const jul = page.locator("#julklapp");
+      const ingress = (await jul.locator(".ingress").boundingBox())!;
+      const handling = (await jul.locator(".handling").boundingBox())!;
+      expect(ingress.width).toBeGreaterThan(isMobile ? 280 : 400);
+      // Side by side on wide screens, under each other on narrow: never on top of each other.
+      if (!isMobile) expect(handling.x).toBeGreaterThanOrEqual(ingress.x + ingress.width);
+      else expect(handling.y).toBeGreaterThanOrEqual(ingress.y + ingress.height);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+    });
+
     test("har en länk i menyn", async ({ page, isMobile }) => {
       await page.goto("./");
       const nav = page.getByRole("navigation", { name: "Huvudmeny" });

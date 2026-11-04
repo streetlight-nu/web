@@ -102,6 +102,9 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
   const ORDNING = ["Första", "Andra", "Tredje", "Fjärde"];
   const TANDA = ["ett ljus är tänt", "två ljus är tända", "tre ljus är tända", "fyra ljus är tända"];
 
+  /** Whole days from a to b, counted on the calendar: a 23- or 25-hour day at a clock change is still one day. */
+  const dagar = (a: Date, b: Date) => Math.round((b.getTime() - a.getTime()) / DAG);
+
   /** The candles that burn, whether it is Advent, and the days left to julafton (undefined outside 1 Nov–24 Dec). */
   function kalender(nu: Date) {
     const ar = nu.getFullYear();
@@ -111,10 +114,13 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
     const fjarde = new Date(ar, 11, 25 - (new Date(ar, 11, 25).getDay() || 7));
     const forsta = new Date(ar, 11, fjarde.getDate() - 21);
     const under = dag >= forsta && dag <= julafton;
-    const tanda = under ? Math.min(4, 1 + Math.floor((dag.getTime() - forsta.getTime()) / (7 * DAG))) : 4;
-    const kvar = dag >= new Date(ar, 10, 1) && dag <= julafton ? Math.round((julafton.getTime() - dag.getTime()) / DAG) : undefined;
+    const tanda = under ? Math.min(4, 1 + Math.floor(dagar(forsta, dag) / 7)) : 4;
+    const kvar = dag >= new Date(ar, 10, 1) && dag <= julafton ? dagar(dag, julafton) : undefined;
     return { under, tanda, kvar };
   }
+
+  /** The running count-down, so that a new one (or a new day) stops it instead of the two writing over each other. */
+  let vandning: ReturnType<typeof setTimeout> | undefined;
 
   /** Counts the number down the last few days to today's, slowing as it lands, like a calendar being turned. */
   function vand(siffra: HTMLElement, kvar: number) {
@@ -124,13 +130,14 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
     const steg = () => {
       siffra.textContent = String(--tal);
       vanta *= 1.22;
-      if (tal > kvar) setTimeout(steg, vanta);
+      vandning = tal > kvar ? setTimeout(steg, vanta) : undefined;
     };
-    setTimeout(steg, vanta);
+    vandning = setTimeout(steg, vanta);
   }
 
   /** Shows today: which candles burn, the Advent label and the countdown ("God jul!" on julafton). */
   function visa(rulla: boolean) {
+    clearTimeout(vandning);
     const { under, tanda, kvar } = kalender(new Date());
     stake!.querySelectorAll(".ljus").forEach((el, i) => el.classList.toggle("slackt", i >= tanda));
 
@@ -175,12 +182,19 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
       // Never leave a candle out that should burn.
       setTimeout(() => brinner.forEach((el) => el.classList.remove("vantar")), 6000);
     }
-    const nu = new Date();
-    const tillMidnatt = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate() + 1).getTime() - nu.getTime();
-    setTimeout(function nyDag() {
-      visa(false);
-      setTimeout(nyDag, DAG);
-    }, tillMidnatt + 1000);
+    // A new day: at midnight on a page left open (worked out afresh each day, so clock changes do not drift),
+    // and when a tab that slept in the background, or a page restored from the back-forward cache, is shown again.
+    const nyDag = () => {
+      const nu = new Date();
+      const tillMidnatt = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate() + 1).getTime() - nu.getTime();
+      setTimeout(() => {
+        visa(false);
+        nyDag();
+      }, tillMidnatt + 1000);
+    };
+    nyDag();
+    document.addEventListener("visibilitychange", () => document.visibilityState === "visible" && visa(false));
+    window.addEventListener("pageshow", (e) => e.persisted && visa(false));
   }
 </script>
 
@@ -297,11 +311,17 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
     align-self: start;
     margin-top: 6px;
   }
+  /* Capped, so a long "sista dag" from the editor wraps under the button instead of squeezing the text. */
   .handling {
     grid-area: handling;
     display: grid;
     justify-items: start;
     gap: 10px;
+    max-width: 18rem;
+  }
+  .handling p {
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
   }
   .tid {
     display: grid;
@@ -341,6 +361,7 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
       margin-top: 12px;
     }
     .handling {
+      max-width: none;
       margin-top: 22px;
     }
   }

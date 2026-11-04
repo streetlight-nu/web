@@ -1,12 +1,14 @@
 ---
 import Logo from "@/components/Logo.astro";
 import MainNav, { type NavLink } from "@/components/MainNav";
+import { hamtaJulkampanj } from "@/lib/julkampanj";
 import { href } from "@/lib/utils";
 
 interface Props {
-  current?: "nyheter" | "historia";
+  current?: "nyheter" | "historia" | "julklapp";
 }
 const { current } = Astro.props;
+const { visasPaStartsidan } = hamtaJulkampanj();
 
 const links: NavLink[] = [
   { label: "Vårt stöd", href: href("/#stod") },
@@ -14,14 +16,20 @@ const links: NavLink[] = [
   { label: "Så arbetar vi", href: href("/#sa-arbetar-vi") },
   { label: "Vår historia", href: href("/historia"), current: current === "historia" },
   { label: "Nyheter", href: href("/nyheter"), current: current === "nyheter" },
+  // Seasonal: the association turns the campaign on and off in Pages CMS (src/data/julkampanj.json).
+  ...(visasPaStartsidan || current === "julklapp"
+    ? [{ label: "Julklapp", href: href("/julklapp"), current: current === "julklapp" }]
+    : []),
 ];
+// The Ett ljus rule: on the campaign page "Ge en julklapp" is the gold button, so "Bli fadder" steps back to a line.
+const sponsorVariant = current === "julklapp" ? "line" : "gold";
 ---
 
 <header class="on-green bg-green text-cotton">
   <div class="band-inner">
-    <nav aria-label="Huvudmeny" class="flex flex-wrap items-center justify-between gap-3 py-[22px] min-[901px]:flex-nowrap min-[901px]:gap-6 max-[520px]:gap-2">
+    <nav aria-label="Huvudmeny" class="flex flex-wrap items-center justify-between gap-3 py-[22px] min-[901px]:flex-nowrap min-[901px]:gap-[clamp(16px,2vw,24px)] max-[520px]:gap-2">
       <Logo on="green" href={href("/")} />
-      <MainNav client:load links={links} sponsorHref={href("/#bli-fadder")} />
+      <MainNav client:load links={links} sponsorHref={href("/#bli-fadder")} sponsorVariant={sponsorVariant} />
     </nav>
     <slot />
   </div>

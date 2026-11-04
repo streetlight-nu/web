@@ -197,3 +197,170 @@ test.describe("med reducerad rörelse", () => {
     );
   });
 });
+
+test("på kampanjsidan är Ge en julklapp den enda guldknappen i första vyn, och Bli fadder i menyn en linjeknapp", async ({
+  page,
+}) => {
+  await page.goto(sida);
+  const guld = "rgb(244, 180, 0)";
+  const bakgrund = (el: Element) => getComputedStyle(el).backgroundColor;
+  const nav = page.getByRole("navigation", { name: "Huvudmeny" });
+  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/#bli-fadder$/);
+  expect(await nav.getByRole("link", { name: "Bli fadder" }).evaluate(bakgrund)).not.toBe(guld);
+  expect(await page.getByRole("banner").getByRole("link", { name: "Ge en julklapp" }).evaluate(bakgrund)).toBe(guld);
+});
+
+test("menyn markerar Julklapp som aktuell sida, även när kampanjen inte visas på startsidan", async ({ page, isMobile }) => {
+  await page.goto(`${process.env.E2E_TOM_URL}${sida}`);
+  const nav = page.getByRole("navigation", { name: "Huvudmeny" });
+  if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
+  await expect(nav.getByRole("link", { name: "Julklapp", exact: true })).toHaveAttribute("aria-current", "page");
+});
+
+test.describe("julkampanjen på startsidan", () => {
+  test.describe("när föreningen har slagit på den", () => {
+    test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
+    test("står direkt under ljusbandet och leder till kampanjsidan utan att konkurrera med Bli fadder", async ({
+      page,
+    }) => {
+      await page.goto("./");
+      const jul = page.getByRole("region", { name: "Håll ljusen tända i jul" });
+      await expect(jul).toBeVisible();
+      // First in the content, right under the light band in the header.
+      expect(await page.locator("main > section").first().getAttribute("id")).toBe("julklapp");
+      const lank = jul.getByRole("link", { name: "Ge en julklapp" });
+      await expect(lank).toHaveAttribute("href", /\/julklapp$/);
+      expect((await lank.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      await expect(jul).toContainText("TEST-SISTA-DAG");
+      // The Ett ljus rule: "Bli fadder" stays the only gold button, the campaign gets a line button.
+      expect(await lank.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgba(0, 0, 0, 0)");
+      await expect(page.getByRole("banner").getByRole("link", { name: "Bli fadder" }).last()).toHaveCSS(
+        "background-color",
+        "rgb(244, 180, 0)",
+      );
+      await expectNoA11yViolations(page);
+    });
+
+    test("adventsljusstaken har lika många tända ljus som det har varit adventssöndagar", async ({ page }) => {
+      const brinner = () =>
+        page
+          .locator("[data-adventsljus] .ljus")
+          .evaluateAll((els) => els.map((el) => !el.classList.contains("slackt")));
+      // 2026: första advent är 29 november, fjärde advent 20 december.
+      await page.clock.install({ time: new Date(2026, 11, 7, 12) });
+      await page.goto("./");
+      expect(await brinner()).toEqual([true, true, false, false]);
+      await expect(page.locator("[data-advent]")).toHaveText("Andra advent, två ljus är tända.");
+      // A julklapp keeps the lights on: pointing at the button lights the rest.
+      await page.locator("#julklapp").getByRole("link", { name: "Ge en julklapp" }).hover();
+      await expect(page.locator("[data-adventsljus] .ljus.slackt .laga").first()).toHaveCSS("opacity", "1");
+    });
+
+    test("utanför advent brinner alla fyra ljusen och ingen etikett visas", async ({ page }) => {
+      await page.clock.install({ time: new Date(2026, 10, 4, 12) });
+      await page.goto("./");
+      await expect(page.locator("[data-adventsljus] .ljus")).toHaveCount(4);
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
+      await expect(page.locator("[data-advent]")).toBeHidden();
+    });
+
+    test("räknar ner dagarna till julafton, när julkortet kommer fram", async ({ page }) => {
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      const nedrakning = page.locator("[data-nedrakning]");
+      for (const [dag, siffra, text] of [
+        [new Date(2026, 10, 4, 12), "50", "50 dagar kvar till julafton."],
+        [new Date(2026, 11, 23, 12), "1", "1 dag kvar till julafton."],
+      ] as const) {
+        await page.clock.install({ time: dag });
+        await page.goto("./");
+        await expect(nedrakning).toBeVisible();
+        await expect(nedrakning.locator("[data-siffra]")).toHaveText(siffra);
+        await expect(nedrakning.locator("[data-nedrakning-text]")).toHaveText(text);
+      }
+    });
+
+    test("på julafton står det God jul, och efter julafton syns ingen nedräkning", async ({ browser }) => {
+      for (const [dag, visas] of [
+        [new Date(2026, 11, 24, 9), true],
+        [new Date(2026, 11, 26, 9), false],
+      ] as const) {
+        const page = await browser.newPage({ baseURL: process.env.E2E_IFYLLD_URL, reducedMotion: "reduce" });
+        await page.clock.install({ time: dag });
+        await page.goto("./");
+        if (visas) {
+          await expect(page.locator("[data-siffra]")).toHaveText("God jul!");
+          await expect(page.locator("[data-advent]")).toBeHidden();
+        } else {
+          await expect(page.locator("[data-nedrakning]")).toBeHidden();
+        }
+        await page.close();
+      }
+    });
+
+    test("en sida som står öppen går vidare till nästa dag vid midnatt", async ({ page }) => {
+      await page.clock.install({ time: new Date(2026, 10, 28, 23, 59) });
+      await page.goto("./");
+      await page.locator("#julklapp").scrollIntoViewIfNeeded();
+      await page.clock.runFor(8000);
+      await expect(page.locator("[data-nedrakning-text]")).toHaveText("26 dagar kvar till julafton.");
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
+      // Midnight: första advent, so three of the four candles go out.
+      await page.clock.runFor(70_000);
+      await expect(page.locator("[data-nedrakning-text]")).toHaveText("25 dagar kvar till julafton.");
+      await expect(page.locator("[data-advent]")).toHaveText("Första advent, ett ljus är tänt.");
+      await expect(page.locator("[data-adventsljus] .slackt .laga")).toHaveCount(3);
+      for (const laga of await page.locator("[data-adventsljus] .slackt .laga").all()) {
+        await expect(laga).toHaveCSS("opacity", "0");
+      }
+    });
+
+    test("utanför november och december syns ingen nedräkning", async ({ page }) => {
+      await page.clock.install({ time: new Date(2027, 0, 10, 12) });
+      await page.goto("./");
+      await expect(page.locator("[data-nedrakning]")).toBeHidden();
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
+    });
+
+    test("ett långt ”sista dag” bryts under knappen och trycker inte ihop texten", async ({ page, isMobile }) => {
+      await page.goto("./");
+      const jul = page.locator("#julklapp");
+      const ingress = (await jul.locator(".ingress").boundingBox())!;
+      const handling = (await jul.locator(".handling").boundingBox())!;
+      expect(ingress.width).toBeGreaterThan(isMobile ? 280 : 400);
+      // Side by side on wide screens, under each other on narrow: never on top of each other.
+      if (!isMobile) expect(handling.x).toBeGreaterThanOrEqual(ingress.x + ingress.width);
+      else expect(handling.y).toBeGreaterThanOrEqual(ingress.y + ingress.height);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+    });
+
+    test("har en länk i menyn", async ({ page, isMobile }) => {
+      await page.goto("./");
+      const nav = page.getByRole("navigation", { name: "Huvudmeny" });
+      if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
+      await expect(nav.getByRole("link", { name: "Julklapp", exact: true })).toHaveAttribute("href", /\/julklapp$/);
+    });
+
+    test("menyn ryms på en rad vid 901 px", async ({ page, isMobile }) => {
+      test.skip(isMobile, "på smal skärm är menyn ihopfälld");
+      await page.setViewportSize({ width: 901, height: 800 });
+      await page.goto("./");
+      const nav = page.getByRole("navigation", { name: "Huvudmeny" });
+      const hojd = (await nav.getByRole("link", { name: "Julklapp", exact: true }).boundingBox())!.height;
+      expect(hojd).toBeLessThan(40);
+      const logga = (await nav.getByRole("link").first().boundingBox())!;
+      const knapp = (await nav.getByRole("link", { name: "Bli fadder" }).boundingBox())!;
+      expect(Math.abs(logga.y + logga.height / 2 - (knapp.y + knapp.height / 2))).toBeLessThan(8);
+    });
+  });
+
+  test.describe("när föreningen har slagit av den", () => {
+    test.use({ baseURL: process.env.E2E_TOM_URL });
+
+    test("syns varken avsnittet eller länken i menyn", async ({ page }) => {
+      await page.goto("./");
+      await expect(page.locator("#julklapp")).toHaveCount(0);
+      await expect(page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Julklapp" })).toHaveCount(0);
+    });
+  });
+});

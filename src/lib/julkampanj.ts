@@ -18,6 +18,8 @@ export interface Julkampanj {
   vadJulklappenGor?: string;
   /** The campaign's own e-mail for questions. Without one, the föreningsuppgifter's e-mail is used. */
   epost?: string;
+  /** Whether the campaign is shown on the home page and in the menu. Off (missing) by default, so it ends without code after Christmas. */
+  visasPaStartsidan?: boolean;
 }
 
 /** The data file. JULKAMPANJ_FIL points elsewhere, so the browser tests can build with a filled-in test file. */
@@ -29,6 +31,7 @@ export const julkampanjSchema = z.strictObject({
   sistaDag: valfri(ifylldText),
   vadJulklappenGor: valfri(ifylldText),
   epost: valfri(ifylldText.refine(arEpostadress, { message: "epost måste vara en e-postadress" })),
+  visasPaStartsidan: valfri(z.boolean({ error: "visasPaStartsidan måste vara ibockad eller inte (true eller false)" })),
 });
 
 /** Checks the contents of the data file. Unknown fields and malformed values fail the build. */

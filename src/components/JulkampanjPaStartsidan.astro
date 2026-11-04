@@ -8,8 +8,8 @@
  * support, the julklapp a gift at Christmas.
  *
  * Julkänsla: an adventsljusstake whose foot is a woven tibeb band, where Swedish Advent meets the shemma cloth.
- * "Ljus" is both light and candle: as many candles burn as there have been Advent Sundays, and pointing at
- * "Ge en julklapp" lights the rest. The flames are drawn in the lamp's three hard gold steps.
+ * "Ljus" is both light and candle: as many candles burn as there have been Advent Sundays (none before the first),
+ * and pointing at "Ge en julklapp" lights the rest. The flames are drawn in the lamp's three hard gold steps.
  *
  * Seasonal: shown only while `visasPaStartsidan` is ticked in Pages CMS (src/data/julkampanj.json).
  * It only links to /julklapp and never loads Repejo (ADR 0003).
@@ -93,7 +93,8 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
 }
 
 <script>
-  // Advent: as many candles burn as there have been Advent Sundays, as in a Swedish home. Outside Advent all four burn.
+  // Advent: as many candles burn as there have been Advent Sundays, as in a Swedish home. Before the first Advent none burn;
+  // after julafton all four do.
   // The markup is fully lit; only the script puts candles out, and lights the lit ones one by one when they come into view.
   // Under the candles the days to julafton count down from 1 November, to the morning the julkort arrives.
   // A page left open moves on to the next day at midnight.
@@ -114,7 +115,8 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
     const fjarde = new Date(ar, 11, 25 - (new Date(ar, 11, 25).getDay() || 7));
     const forsta = new Date(ar, 11, fjarde.getDate() - 21);
     const under = dag >= forsta && dag <= julafton;
-    const tanda = under ? Math.min(4, 1 + Math.floor(dagar(forsta, dag) / 7)) : 4;
+    // Before the first Advent Sunday the candlestick stands dark; once Christmas has come, all four burn.
+    const tanda = under ? Math.min(4, 1 + Math.floor(dagar(forsta, dag) / 7)) : dag < forsta ? 0 : 4;
     const kvar = dag >= new Date(ar, 10, 1) && dag <= julafton ? dagar(dag, julafton) : undefined;
     return { under, tanda, kvar };
   }

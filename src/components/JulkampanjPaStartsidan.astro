@@ -19,6 +19,10 @@ import { hamtaJulkampanj } from "@/lib/julkampanj";
 import { cn, href } from "@/lib/utils";
 
 const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
+
+/** The four candles' centres, and the gold diamonds woven into the candlestick's tibeb foot. */
+const LJUS = [30, 70, 110, 150];
+const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4-4z`).join("");
 ---
 
 {
@@ -30,61 +34,32 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
               the script lights as many as there have been Advent Sundays, and the rest on hover over "Ge en julklapp". */}
           <div class="stake">
             <svg class="adventsljus" viewBox="0 0 180 104" aria-hidden="true" data-adventsljus>
-              <g class="ljus" transform="translate(30 0)">
-                <rect x="-7" y="44" width="14" height="46" rx="1.5" fill="#FBFBF8" />
-                <path d="M0 44v-6" stroke="#CFE3D8" stroke-width="2" stroke-linecap="round" />
-                <g class="laga">
-                  <circle cx="0" cy="30" r="19" fill="#F4B400" opacity="0.12" />
-                  <circle cx="0" cy="30" r="12.5" fill="#FFCF45" opacity="0.16" />
-                  <path d="M0 12C5 20 8 26 8 31a8 8 0 0 1-16 0c0-5 3-11 8-19Z" fill="#F4B400" />
-                  <path d="M0 20C3.5 25 5.5 29 5.5 32a5.5 5.5 0 0 1-11 0c0-3 2-7 5.5-12Z" fill="#FFCF45" />
-                  <path d="M0 27C2 30 3 32 3 34a3 3 0 0 1-6 0c0-2 1-4 3-7Z" fill="#FFDB73" />
-                </g>
-              </g>
-              <g class="ljus" transform="translate(70 0)">
-                <rect x="-7" y="44" width="14" height="46" rx="1.5" fill="#FBFBF8" />
-                <path d="M0 44v-6" stroke="#CFE3D8" stroke-width="2" stroke-linecap="round" />
-                <g class="laga">
-                  <circle cx="0" cy="30" r="19" fill="#F4B400" opacity="0.12" />
-                  <circle cx="0" cy="30" r="12.5" fill="#FFCF45" opacity="0.16" />
-                  <path d="M0 12C5 20 8 26 8 31a8 8 0 0 1-16 0c0-5 3-11 8-19Z" fill="#F4B400" />
-                  <path d="M0 20C3.5 25 5.5 29 5.5 32a5.5 5.5 0 0 1-11 0c0-3 2-7 5.5-12Z" fill="#FFCF45" />
-                  <path d="M0 27C2 30 3 32 3 34a3 3 0 0 1-6 0c0-2 1-4 3-7Z" fill="#FFDB73" />
-                </g>
-              </g>
-              <g class="ljus" transform="translate(110 0)">
-                <rect x="-7" y="44" width="14" height="46" rx="1.5" fill="#FBFBF8" />
-                <path d="M0 44v-6" stroke="#CFE3D8" stroke-width="2" stroke-linecap="round" />
-                <g class="laga">
-                  <circle cx="0" cy="30" r="19" fill="#F4B400" opacity="0.12" />
-                  <circle cx="0" cy="30" r="12.5" fill="#FFCF45" opacity="0.16" />
-                  <path d="M0 12C5 20 8 26 8 31a8 8 0 0 1-16 0c0-5 3-11 8-19Z" fill="#F4B400" />
-                  <path d="M0 20C3.5 25 5.5 29 5.5 32a5.5 5.5 0 0 1-11 0c0-3 2-7 5.5-12Z" fill="#FFCF45" />
-                  <path d="M0 27C2 30 3 32 3 34a3 3 0 0 1-6 0c0-2 1-4 3-7Z" fill="#FFDB73" />
-                </g>
-              </g>
-              <g class="ljus" transform="translate(150 0)">
-                <rect x="-7" y="44" width="14" height="46" rx="1.5" fill="#FBFBF8" />
-                <path d="M0 44v-6" stroke="#CFE3D8" stroke-width="2" stroke-linecap="round" />
-                <g class="laga">
-                  <circle cx="0" cy="30" r="19" fill="#F4B400" opacity="0.12" />
-                  <circle cx="0" cy="30" r="12.5" fill="#FFCF45" opacity="0.16" />
-                  <path d="M0 12C5 20 8 26 8 31a8 8 0 0 1-16 0c0-5 3-11 8-19Z" fill="#F4B400" />
-                  <path d="M0 20C3.5 25 5.5 29 5.5 32a5.5 5.5 0 0 1-11 0c0-3 2-7 5.5-12Z" fill="#FFCF45" />
-                  <path d="M0 27C2 30 3 32 3 34a3 3 0 0 1-6 0c0-2 1-4 3-7Z" fill="#FFDB73" />
-                </g>
-              </g>
+              {
+                LJUS.map((x) => (
+                  <g class="ljus" transform={`translate(${x} 0)`}>
+                    <rect x="-7" y="44" width="14" height="46" rx="1.5" fill="#FBFBF8" />
+                    <path d="M0 44v-6" stroke="#CFE3D8" stroke-width="2" stroke-linecap="round" />
+                    <g class="laga">
+                      <circle cy="30" r="19" fill="#F4B400" opacity="0.12" />
+                      <circle cy="30" r="12.5" fill="#FFCF45" opacity="0.16" />
+                      <path d="M0 12C5 20 8 26 8 31a8 8 0 0 1-16 0c0-5 3-11 8-19Z" fill="#F4B400" />
+                      <path d="M0 20C3.5 25 5.5 29 5.5 32a5.5 5.5 0 0 1-11 0c0-3 2-7 5.5-12Z" fill="#FFCF45" />
+                      <path d="M0 27C2 30 3 32 3 34a3 3 0 0 1-6 0c0-2 1-4 3-7Z" fill="#FFDB73" />
+                    </g>
+                  </g>
+                ))
+              }
               <rect x="2" y="88" width="176" height="16" fill="#0E4A38" />
               <path d="M2 89.5h176M2 102.5h176" stroke="#D64527" stroke-width="3" />
-              <path d="M16 92l4 4-4 4-4-4zM36 92l4 4-4 4-4-4zM56 92l4 4-4 4-4-4zM76 92l4 4-4 4-4-4zM96 92l4 4-4 4-4-4zM116 92l4 4-4 4-4-4zM136 92l4 4-4 4-4-4zM156 92l4 4-4 4-4-4zM176 92l4 4-4 4-4-4z" fill="#F4B400" />
+              <path d={ROMBER} fill="#F4B400" />
             </svg>
             <div class="tid">
-            <p class="nedrakning" data-nedrakning hidden>
-              <span class="siffra" aria-hidden="true" data-siffra></span>
-              <span class="enhet" aria-hidden="true" data-enhet></span>
-              <span class="sr-only" data-nedrakning-text></span>
-            </p>
-            <span class="advent text-label text-mint" data-advent hidden></span>
+              <p class="nedrakning" data-nedrakning hidden>
+                <span class="siffra" aria-hidden="true" data-siffra></span>
+                <span class="enhet" aria-hidden="true" data-enhet></span>
+                <span class="sr-only" data-nedrakning-text></span>
+              </p>
+              <span class="advent text-label text-mint" data-advent hidden></span>
             </div>
           </div>
           <h2 id="julklapp-rubrik" class="rubrik text-title tracking-[-0.015em]">Håll ljusen tända i jul</h2>
@@ -105,7 +80,11 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
                   stroke-linejoin="round"></path></svg
               >
             </a>
-            {sistaDag && <p class="text-mint">Sista dagen med kort: <strong class="font-semibold text-cotton">{sistaDag}</strong></p>}
+            {sistaDag && (
+              <p class="text-mint">
+                Sista dagen med kort: <strong class="font-semibold text-cotton">{sistaDag}</strong>
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -116,28 +95,49 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
 <script>
   // Advent: as many candles burn as there have been Advent Sundays, as in a Swedish home. Outside Advent all four burn.
   // The markup is fully lit; only the script puts candles out, and lights the lit ones one by one when they come into view.
-  // Under the candles the days to julafton count down, the morning the julkort arrives. It updates at midnight.
+  // Under the candles the days to julafton count down from 1 November, to the morning the julkort arrives.
+  // A page left open moves on to the next day at midnight.
   const stake = document.querySelector<SVGElement>("[data-adventsljus]");
-  const lugn = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const DAG = 864e5;
+  const ORDNING = ["Första", "Andra", "Tredje", "Fjärde"];
+  const TANDA = ["ett ljus är tänt", "två ljus är tända", "tre ljus är tända", "fyra ljus är tända"];
 
-  /** Today's date at midnight, the candles that burn and the days left to julafton (undefined after it). */
+  /** The candles that burn, whether it is Advent, and the days left to julafton (undefined outside 1 Nov–24 Dec). */
   function kalender(nu: Date) {
     const ar = nu.getFullYear();
     const dag = new Date(ar, nu.getMonth(), nu.getDate());
     const julafton = new Date(ar, 11, 24);
-    const juldagen = new Date(ar, 11, 25);
     // The fourth Advent Sunday is the last Sunday before Christmas Day; the first is three weeks earlier.
-    const fjarde = new Date(ar, 11, 25 - (juldagen.getDay() || 7));
+    const fjarde = new Date(ar, 11, 25 - (new Date(ar, 11, 25).getDay() || 7));
     const forsta = new Date(ar, 11, fjarde.getDate() - 21);
     const under = dag >= forsta && dag <= julafton;
     const tanda = under ? Math.min(4, 1 + Math.floor((dag.getTime() - forsta.getTime()) / (7 * DAG))) : 4;
-    const kvar = dag <= julafton ? Math.round((julafton.getTime() - dag.getTime()) / DAG) : undefined;
+    const kvar = dag >= new Date(ar, 10, 1) && dag <= julafton ? Math.round((julafton.getTime() - dag.getTime()) / DAG) : undefined;
     return { under, tanda, kvar };
   }
 
-  /** The countdown: a number in the display face and its unit, or "God jul!" on julafton. */
-  function nedrakning(kvar: number | undefined, rulla: boolean) {
+  /** Counts the number down the last few days to today's, slowing as it lands, like a calendar being turned. */
+  function vand(siffra: HTMLElement, kvar: number) {
+    let tal = kvar + 9;
+    let vanta = 40;
+    siffra.textContent = String(tal);
+    const steg = () => {
+      siffra.textContent = String(--tal);
+      vanta *= 1.22;
+      if (tal > kvar) setTimeout(steg, vanta);
+    };
+    setTimeout(steg, vanta);
+  }
+
+  /** Shows today: which candles burn, the Advent label and the countdown ("God jul!" on julafton). */
+  function visa(rulla: boolean) {
+    const { under, tanda, kvar } = kalender(new Date());
+    stake!.querySelectorAll(".ljus").forEach((el, i) => el.classList.toggle("slackt", i >= tanda));
+
+    const etikett = document.querySelector<HTMLElement>("[data-advent]")!;
+    etikett.hidden = !under || kvar === 0;
+    etikett.textContent = etikett.hidden ? "" : `${ORDNING[tanda - 1]} advent, ${TANDA[tanda - 1]}.`;
+
     const ruta = document.querySelector<HTMLElement>("[data-nedrakning]")!;
     const siffra = ruta.querySelector<HTMLElement>("[data-siffra]")!;
     const enhet = ruta.querySelector<HTMLElement>("[data-enhet]")!;
@@ -154,42 +154,20 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
     enhet.textContent = ord;
     text.textContent = `${kvar} ${ord}.`;
     siffra.textContent = String(kvar);
-    if (!rulla) return;
-    // Counts down the last few days to today's number, slowing as it lands, like a calendar being turned.
-    let tal = kvar + 9;
-    let vanta = 40;
-    siffra.textContent = String(tal);
-    const vand = () => {
-      tal -= 1;
-      siffra.textContent = String(tal);
-      vanta *= 1.22;
-      if (tal > kvar) setTimeout(vand, vanta);
-    };
-    setTimeout(vand, vanta);
+    if (rulla) vand(siffra, kvar);
   }
 
   if (stake) {
-    const ljus = [...stake.querySelectorAll<SVGGElement>(".ljus")];
-    const { under, tanda, kvar } = kalender(new Date());
-    ljus.forEach((el, i) => el.classList.toggle("slackt", i >= tanda));
-    if (under && kvar !== 0) {
-      const etikett = document.querySelector<HTMLElement>("[data-advent]")!;
-      const ordning = ["Första", "Andra", "Tredje", "Fjärde"][tanda - 1];
-      const antal = ["ett ljus är tänt", "två ljus är tända", "tre ljus är tända", "fyra ljus är tända"][tanda - 1];
-      etikett.textContent = `${ordning} advent, ${antal}.`;
-      etikett.hidden = false;
-    }
-    const animera = !lugn && "IntersectionObserver" in window;
-    nedrakning(kvar, false);
-    if (animera) {
-      const brinner = ljus.filter((el) => !el.classList.contains("slackt"));
+    visa(false);
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+      const brinner = [...stake.querySelectorAll(".ljus:not(.slackt)")];
       brinner.forEach((el) => el.classList.add("vantar"));
       const io = new IntersectionObserver(
         (entries) => {
           if (!entries.some((e) => e.isIntersecting)) return;
           io.disconnect();
           brinner.forEach((el, i) => setTimeout(() => el.classList.replace("vantar", "tands"), 300 + i * 420));
-          nedrakning(kvar, true);
+          visa(true);
         },
         { threshold: 0.8 },
       );
@@ -197,31 +175,30 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
       // Never leave a candle out that should burn.
       setTimeout(() => brinner.forEach((el) => el.classList.remove("vantar")), 6000);
     }
-    // A page left open counts down at midnight.
     const nu = new Date();
-    const midnatt = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate() + 1).getTime() - nu.getTime();
+    const tillMidnatt = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate() + 1).getTime() - nu.getTime();
     setTimeout(function nyDag() {
-      nedrakning(kalender(new Date()).kvar, false);
+      visa(false);
       setTimeout(nyDag, DAG);
-    }, midnatt + 1000);
+    }, tillMidnatt + 1000);
   }
 </script>
 
 <style>
-  /* One row on wide screens: the card, the text, the action. The rule above ties it to the light band's line. */
+  /* One row on wide screens: the candles, the text, the action. The rule above ties it to the light band's line. */
   .rad {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-areas:
-      "kort rubrik handling"
-      "kort ingress handling";
+      "ljus rubrik handling"
+      "ljus ingress handling";
     align-items: center;
     column-gap: clamp(24px, 3vw, 40px);
     border-top: 1.5px solid rgba(207, 227, 216, 0.25);
     padding-block: clamp(28px, 3.5vw, 40px) clamp(32px, 4vw, 48px);
   }
   .stake {
-    grid-area: kort;
+    grid-area: ljus;
     display: grid;
     justify-items: center;
     gap: 8px;
@@ -302,7 +279,8 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
       transform: none;
     }
   }
-  .tands .laga {
+  /* Not on a candle put out since (at midnight a new Advent Sunday can leave fewer burning). */
+  .tands:not(.slackt) .laga {
     animation: tands 0.9s var(--ease-light) both;
   }
   @media (prefers-reduced-motion: reduce) {
@@ -335,7 +313,7 @@ const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
     .rad {
       grid-template-columns: minmax(0, 1fr);
       grid-template-areas:
-        "kort"
+        "ljus"
         "rubrik"
         "ingress"
         "handling";

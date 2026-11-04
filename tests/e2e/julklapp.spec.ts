@@ -298,6 +298,30 @@ test.describe("julkampanjen på startsidan", () => {
       }
     });
 
+    test("en sida som står öppen går vidare till nästa dag vid midnatt", async ({ page }) => {
+      await page.clock.install({ time: new Date(2026, 10, 28, 23, 59) });
+      await page.goto("./");
+      await page.locator("#julklapp").scrollIntoViewIfNeeded();
+      await page.clock.runFor(8000);
+      await expect(page.locator("[data-nedrakning-text]")).toHaveText("26 dagar kvar till julafton.");
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
+      // Midnight: första advent, so three of the four candles go out.
+      await page.clock.runFor(70_000);
+      await expect(page.locator("[data-nedrakning-text]")).toHaveText("25 dagar kvar till julafton.");
+      await expect(page.locator("[data-advent]")).toHaveText("Första advent, ett ljus är tänt.");
+      await expect(page.locator("[data-adventsljus] .slackt .laga")).toHaveCount(3);
+      for (const laga of await page.locator("[data-adventsljus] .slackt .laga").all()) {
+        await expect(laga).toHaveCSS("opacity", "0");
+      }
+    });
+
+    test("utanför november och december syns ingen nedräkning", async ({ page }) => {
+      await page.clock.install({ time: new Date(2027, 0, 10, 12) });
+      await page.goto("./");
+      await expect(page.locator("[data-nedrakning]")).toBeHidden();
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(0);
+    });
+
     test("har en länk i menyn", async ({ page, isMobile }) => {
       await page.goto("./");
       const nav = page.getByRole("navigation", { name: "Huvudmeny" });

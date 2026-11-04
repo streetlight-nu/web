@@ -265,6 +265,39 @@ test.describe("julkampanjen på startsidan", () => {
       await expect(page.locator("[data-advent]")).toBeHidden();
     });
 
+    test("räknar ner dagarna till julafton, när julkortet kommer fram", async ({ page }) => {
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      const nedrakning = page.locator("[data-nedrakning]");
+      for (const [dag, siffra, text] of [
+        [new Date(2026, 10, 4, 12), "50", "50 dagar kvar till julafton."],
+        [new Date(2026, 11, 23, 12), "1", "1 dag kvar till julafton."],
+      ] as const) {
+        await page.clock.install({ time: dag });
+        await page.goto("./");
+        await expect(nedrakning).toBeVisible();
+        await expect(nedrakning.locator("[data-siffra]")).toHaveText(siffra);
+        await expect(nedrakning.locator("[data-nedrakning-text]")).toHaveText(text);
+      }
+    });
+
+    test("på julafton står det God jul, och efter julafton syns ingen nedräkning", async ({ browser }) => {
+      for (const [dag, visas] of [
+        [new Date(2026, 11, 24, 9), true],
+        [new Date(2026, 11, 26, 9), false],
+      ] as const) {
+        const page = await browser.newPage({ baseURL: process.env.E2E_IFYLLD_URL, reducedMotion: "reduce" });
+        await page.clock.install({ time: dag });
+        await page.goto("./");
+        if (visas) {
+          await expect(page.locator("[data-siffra]")).toHaveText("God jul!");
+          await expect(page.locator("[data-advent]")).toBeHidden();
+        } else {
+          await expect(page.locator("[data-nedrakning]")).toBeHidden();
+        }
+        await page.close();
+      }
+    });
+
     test("har en länk i menyn", async ({ page, isMobile }) => {
       await page.goto("./");
       const nav = page.getByRole("navigation", { name: "Huvudmeny" });

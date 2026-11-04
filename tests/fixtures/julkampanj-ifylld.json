@@ -1,5 +1,6 @@
 {
   "sistaDag": "TEST-SISTA-DAG",
   "vadJulklappenGor": "TEST-VAD-JULKLAPPEN-GOR",
-  "epost": "julklapp@example.org"
+  "epost": "julklapp@example.org",
+  "visasPaStartsidan": true
 }

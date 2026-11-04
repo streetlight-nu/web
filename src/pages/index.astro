@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BliFadder from "@/components/BliFadder.astro";
 import Insyn from "@/components/Insyn.astro";
+import JulkampanjPaStartsidan from "@/components/JulkampanjPaStartsidan.astro";
 import LightBand from "@/components/LightBand.astro";
 import SenasteNytt from "@/components/SenasteNytt.astro";
 import Ledger,{ type LedgerItem } from "@/components/Ledger.astro";
@@ -98,7 +99,9 @@ const lede = "max-w-[58ch] text-lede";
 
   <LightBand slot="header-after" />
 
-  <section id="stod"class={`bg-cotton text-ink ${section}`}>
+  <JulkampanjPaStartsidan />
+
+  <section id="stod" class={`bg-cotton text-ink ${section}`}>
     <div class={`band-inner ${split}`}>
       <div class="min-w-0">
         <h2 class={h2}>Utbildning är vägen ut ur fattigdom.</h2>

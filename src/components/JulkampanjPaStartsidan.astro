@@ -1,0 +1,124 @@
+---
+/**
+ * The Christmas campaign on the home page (#julklapp), right under the light band: a compact row on
+ * green-deep that continues the band's line "20 barn, 20 ljus." into "Håll ljusen tända i jul".
+ *
+ * It must not compete with "Bli fadder": that stays the one gold button on the page (the Ett ljus rule),
+ * so the campaign gets a line button and a smaller heading than the page's sections. Fadder is the regular
+ * support, the julklapp a gift at Christmas.
+ *
+ * Seasonal: shown only while `visasPaStartsidan` is ticked in Pages CMS (src/data/julkampanj.json).
+ * It only links to /julklapp and never loads Repejo (ADR 0003).
+ */
+import { buttonVariants } from "@/components/ui/button";
+import { hamtaJulkampanj } from "@/lib/julkampanj";
+import { cn, href } from "@/lib/utils";
+
+const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
+---
+
+{
+  visasPaStartsidan && (
+    <section id="julklapp" aria-labelledby="julklapp-rubrik" class="on-green bg-green-deep text-cotton">
+      <div class="band-inner">
+        <div class="rad">
+          {/* A julkort with a woven band, as on the campaign page. Drawn, not a photo. */}
+          <svg class="kortet" viewBox="0 0 88 64" aria-hidden="true">
+            <g transform="rotate(-6 44 32)">
+              <rect x="8" y="6" width="72" height="52" rx="3" fill="#FBFBF8" />
+              <rect x="8" y="6" width="72" height="11" fill="#0E4A38" />
+              <path d="M8 17h72" stroke="#F4B400" stroke-width="2" />
+              <path d="M18 8l3.5 3.5L18 15l-3.5-3.5zM32 8l3.5 3.5L32 15l-3.5-3.5zM46 8l3.5 3.5L46 15l-3.5-3.5zM60 8l3.5 3.5L60 15l-3.5-3.5zM74 8l3.5 3.5L74 15l-3.5-3.5z" fill="#F4B400" />
+              <path d="M18 29h34M18 37h46M18 45h24" stroke="#0B2E24" stroke-width="3" stroke-linecap="round" opacity="0.55" />
+            </g>
+          </svg>
+          <h2 id="julklapp-rubrik" class="rubrik text-title tracking-[-0.015em]">Håll ljusen tända i jul</h2>
+          <p class="ingress max-w-[60ch] text-mint">
+            Ge en julklapp till barnen i Addis Abeba och glädj samtidigt någon du tycker om. Vi skickar ditt julkort i
+            ditt namn på julaftonsmorgonen.
+          </p>
+          <div class="handling">
+            <a class={cn(buttonVariants({ variant: "line" }), "whitespace-nowrap")} href={href("/julklapp")}>
+              Ge en julklapp
+              <svg viewBox="0 0 18 18" aria-hidden="true"
+                ><path
+                  d="M3 9h11M10 4.5 14.5 9 10 13.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path></svg
+              >
+            </a>
+            {sistaDag && <p class="text-mint">Sista dagen med kort: <strong class="font-semibold text-cotton">{sistaDag}</strong></p>}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  /* One row on wide screens: the card, the text, the action. The rule above ties it to the light band's line. */
+  .rad {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "kort rubrik handling"
+      "kort ingress handling";
+    align-items: center;
+    column-gap: clamp(24px, 3vw, 40px);
+    border-top: 1.5px solid rgba(207, 227, 216, 0.25);
+    padding-block: clamp(28px, 3.5vw, 40px) clamp(32px, 4vw, 48px);
+  }
+  .kortet {
+    grid-area: kort;
+    width: 88px;
+    height: 64px;
+  }
+  .rubrik {
+    grid-area: rubrik;
+    align-self: end;
+  }
+  .ingress {
+    grid-area: ingress;
+    align-self: start;
+    margin-top: 6px;
+  }
+  .handling {
+    grid-area: handling;
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+  }
+  /* Narrow: the card beside the heading, the text and the button in full width under it. */
+  @media (max-width: 900px) {
+    .rad {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas:
+        "kort rubrik"
+        "ingress ingress"
+        "handling handling";
+      column-gap: 16px;
+    }
+    .rubrik {
+      align-self: center;
+    }
+    .ingress {
+      margin-top: 14px;
+    }
+    .handling {
+      margin-top: 22px;
+    }
+  }
+  @media (max-width: 520px) {
+    .kortet {
+      width: 64px;
+      height: 47px;
+    }
+    .handling,
+    .handling a {
+      width: 100%;
+    }
+  }
+</style>

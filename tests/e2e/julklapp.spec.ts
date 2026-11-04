@@ -197,3 +197,78 @@ test.describe("med reducerad rörelse", () => {
     );
   });
 });
+
+test("på kampanjsidan är Ge en julklapp den enda guldknappen i första vyn, och Bli fadder i menyn en linjeknapp", async ({
+  page,
+}) => {
+  await page.goto(sida);
+  const guld = "rgb(244, 180, 0)";
+  const bakgrund = (el: Element) => getComputedStyle(el).backgroundColor;
+  const nav = page.getByRole("navigation", { name: "Huvudmeny" });
+  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/#bli-fadder$/);
+  expect(await nav.getByRole("link", { name: "Bli fadder" }).evaluate(bakgrund)).not.toBe(guld);
+  expect(await page.getByRole("banner").getByRole("link", { name: "Ge en julklapp" }).evaluate(bakgrund)).toBe(guld);
+});
+
+test("menyn markerar Julklapp som aktuell sida, även när kampanjen inte visas på startsidan", async ({ page, isMobile }) => {
+  await page.goto(`${process.env.E2E_TOM_URL}${sida}`);
+  const nav = page.getByRole("navigation", { name: "Huvudmeny" });
+  if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
+  await expect(nav.getByRole("link", { name: "Julklapp", exact: true })).toHaveAttribute("aria-current", "page");
+});
+
+test.describe("julkampanjen på startsidan", () => {
+  test.describe("när föreningen har slagit på den", () => {
+    test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
+    test("står direkt under ljusbandet och leder till kampanjsidan utan att konkurrera med Bli fadder", async ({
+      page,
+    }) => {
+      await page.goto("./");
+      const jul = page.getByRole("region", { name: "Håll ljusen tända i jul" });
+      await expect(jul).toBeVisible();
+      // First in the content, right under the light band in the header.
+      expect(await page.locator("main > section").first().getAttribute("id")).toBe("julklapp");
+      const lank = jul.getByRole("link", { name: "Ge en julklapp" });
+      await expect(lank).toHaveAttribute("href", /\/julklapp$/);
+      expect((await lank.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      await expect(jul).toContainText("TEST-SISTA-DAG");
+      // The Ett ljus rule: "Bli fadder" stays the only gold button, the campaign gets a line button.
+      expect(await lank.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgba(0, 0, 0, 0)");
+      await expect(page.getByRole("banner").getByRole("link", { name: "Bli fadder" }).last()).toHaveCSS(
+        "background-color",
+        "rgb(244, 180, 0)",
+      );
+      await expectNoA11yViolations(page);
+    });
+
+    test("har en länk i menyn", async ({ page, isMobile }) => {
+      await page.goto("./");
+      const nav = page.getByRole("navigation", { name: "Huvudmeny" });
+      if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
+      await expect(nav.getByRole("link", { name: "Julklapp", exact: true })).toHaveAttribute("href", /\/julklapp$/);
+    });
+
+    test("menyn ryms på en rad vid 901 px", async ({ page, isMobile }) => {
+      test.skip(isMobile, "på smal skärm är menyn ihopfälld");
+      await page.setViewportSize({ width: 901, height: 800 });
+      await page.goto("./");
+      const nav = page.getByRole("navigation", { name: "Huvudmeny" });
+      const hojd = (await nav.getByRole("link", { name: "Julklapp", exact: true }).boundingBox())!.height;
+      expect(hojd).toBeLessThan(40);
+      const logga = (await nav.getByRole("link").first().boundingBox())!;
+      const knapp = (await nav.getByRole("link", { name: "Bli fadder" }).boundingBox())!;
+      expect(Math.abs(logga.y + logga.height / 2 - (knapp.y + knapp.height / 2))).toBeLessThan(8);
+    });
+  });
+
+  test.describe("när föreningen har slagit av den", () => {
+    test.use({ baseURL: process.env.E2E_TOM_URL });
+
+    test("syns varken avsnittet eller länken i menyn", async ({ page }) => {
+      await page.goto("./");
+      await expect(page.locator("#julklapp")).toHaveCount(0);
+      await expect(page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Julklapp" })).toHaveCount(0);
+    });
+  });
+});

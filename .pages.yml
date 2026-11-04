@@ -70,6 +70,10 @@ content:
         pattern:
           regex: "^$|^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
           message: Skriv en e-postadress, till exempel namn@exempel.se.
+      - name: visasPaStartsidan
+        label: Visa julkampanjen på startsidan och i menyn
+        type: boolean
+        description: Bocka i när kampanjen pågår. Bocka ur efter jul, så försvinner den från startsidan och menyn. Sidan Ge en julklapp finns kvar.
 
   - name: historia
     label: Vår historia

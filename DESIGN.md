@@ -265,7 +265,8 @@ Varma och stadiga, med stora tryckytor som är lätta att träffa.
 - **Error:** kanten blir `thread-red` (`aria-invalid`) och meddelandet står i `error`.
 
 ### Navigation
-- **Style:** ligger på grönt sidhuvud, med logotypen till vänster och länkarna i etikettstorlek i bomull. ”Bli fadder” är en liten guldknapp.
+- **Style:** ligger på grönt sidhuvud, med logotypen till vänster och länkarna i etikettstorlek i bomull. ”Bli fadder” är en liten guldknapp. På en sida vars eget huvudsteg är guld, som julkampanjens ”Ge en julklapp”, blir den en linjeknapp (The Ett ljus Rule).
+- **Säsong:** medan julkampanjen pågår finns länken ”Julklapp” sist i menyn. Föreningen slår på och av den i Pages CMS.
 - **States:** hovring ger understrykning. Aktuell sida markeras med `aria-current`.
 - **Mobile:** under 900 px fälls länkarna ihop bakom knappen ”Meny”. Escape stänger och lämnar fokus tillbaka på knappen.
 
@@ -274,6 +275,9 @@ Den vävda bården är sidans fog och går alltid i full bredd. Det fulla bandet
 
 ### Ljusbandet med 20 ljus (signatur)
 Bandet ligger under startsidans topp och har exakt 20 guldromber, ett ljus per fadderbarn, följt av raden ”20 barn, 20 ljus.” på djupgrönt. Antalet är en del av budskapet och ändras bara om antalet barn ändras. Ljusen tänds ett i taget med 90 ms mellanrum när bandet syns.
+
+### Julkampanjen på startsidan
+En kompakt rad direkt under ljusbandet, på djupgrönt och skild från raden ”20 barn, 20 ljus.” med en tunn mintlinje. Den har ett litet ritat julkort, en rubrik i Title-storlek, en ingress i mint och en linjeknapp, ”Ge en julklapp”. Den får aldrig guld eller en Headline-rubrik, eftersom ”Bli fadder” är startsidans enda guldknapp. Fadderskapet är det regelbundna stödet och julklappen en gåva i jul. Raden syns bara medan föreningen har slagit på julkampanjen.
 
 ### Guldtråden (signatur)
 Guldtråden är en streckad guldlinje som binder ihop steg och tidslinjer på grönt, med en guldromb vid varje steg. Medan man läser fylls guldet i bakom strecken och varje steg tänds när läsaren når det. Utan JavaScript eller med reducerad rörelse visas tråden i färdigt läge.

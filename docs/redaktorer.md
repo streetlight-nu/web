@@ -90,6 +90,18 @@ Sidan **Vår historia** är en tidslinje från 1995 till idag. Allt som inte är
 
 Många läser sidan tillsammans med sina barn. Skriv därför med enkla ord och korta meningar, och gärna något konkret: en skola, en uniform, en vanlig dag. Berätta om barnen och familjerna med värdighet, och bara det de har gett sitt samtycke till.
 
+### Foton på Vår historia och Om föreningen
+
+Där det ännu inte finns något foto visar sidan en mörkgrön ruta med ett förslag på vilket foto som passar, till exempel ”Foto: Merry som liten, eller Tryggve hos Merrys familj”. Varje period i **Vår historia** har ett eget foto, och **Idag** har ett. På **Om föreningen** finns foton till *Så började det*, *Två föreningar, ett arbete* och *Vilka vi är*.
+
+1. Öppna **Vår historia** eller **Om föreningen** och leta upp fältet, till exempel **Foto från perioden** under en period eller **Foto till Så började det**.
+2. Ladda upp fotot under **Foto**, i full storlek. Webbplatsen gör själv mindre versioner.
+3. Skriv en **Alt-text** (se avsnitt 4).
+4. Kryssa i **Fotot visar ett barn eller en familj** om ett barn eller en familj syns på fotot. Kryssa då också i **Familjen har gett sitt samtycke**, men bara när familjen har sagt ja till just det här fotot.
+5. Spara. Fotot ersätter rutan inom några minuter.
+
+Samma regler gäller som för inläggen: ett foto utan alt-text, eller ett foto av ett barn eller en familj utan samtycke, publiceras inte (se avsnitt 5). Vill du ta bort ett foto tömmer du fältet **Foto**, så visas förslaget igen.
+
 ## 8. Fyll i julkampanjen
 
 Sidan **Ge en julklapp** (`/julklapp`) är föreningens julkampanj. Belopp, insamlingsmål och betalning sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas som ”fylls i” tills det finns.

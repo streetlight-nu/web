@@ -3,6 +3,7 @@ import { z } from "astro/zod";
 import data from "@/data/om-foreningen.json";
 
 import { valfri } from "./falt";
+import { valfriSidbild } from "./sidbild";
 
 /**
  * Om föreningen: who we are, what we believe in, how it began, the boards and how to get in touch,
@@ -49,10 +50,14 @@ export const omForeningenSchema = z.strictObject({
   tror: z.array(tankeSchema),
   /** Så började det. Paragraphs are separated by an empty line. */
   borjan: text,
+  borjanBild: valfriSidbild,
   /** Två föreningar, ett arbete. Paragraphs are separated by an empty line. */
   foreningar: text,
+  foreningarBild: valfriSidbild,
   grund: grundSchema.optional(),
   styrelser: z.array(styrelseSchema),
+  /** A photo for Vilka vi är, under its heading. */
+  vilkaBild: valfriSidbild,
 });
 
 export type Tanke = z.infer<typeof tankeSchema>;

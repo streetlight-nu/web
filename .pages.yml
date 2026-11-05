@@ -75,6 +75,50 @@ content:
         type: boolean
         description: Bocka i när kampanjen pågår. Bocka ur efter jul, så försvinner den från startsidan och menyn. Sidan Ge en julklapp finns kvar.
 
+  - name: vanligaFragor
+    label: Vanliga frågor
+    type: collection
+    path: src/content/fragor
+    # The file name becomes the question's anchor: /vanliga-fragor#fraga-<question as a slug>. It does not
+    # change when the question is reworded. The fields must match the schema in src/lib/vanliga-fragor.ts;
+    # tests/unit/vanliga-fragor.test.ts checks it.
+    filename: "{primary}.md"
+    view:
+      fields: [fraga, grupp, ordning]
+      primary: fraga
+      sort: [grupp, ordning]
+      default:
+        sort: ordning
+        order: asc
+    fields:
+      - name: fraga
+        label: Fråga
+        type: string
+        required: true
+        description: Som en besökare skulle fråga, till exempel ”Hur väljs barnen ut?”.
+      - name: grupp
+        label: Grupp
+        type: select
+        required: true
+        options:
+          values:
+            - name: fadder
+              label: Att vara fadder
+            - name: barnen
+              label: Barnen och familjerna
+            - name: foreningen
+              label: Föreningen
+      - name: ordning
+        label: Ordning
+        type: number
+        description: Lägre tal visas först i gruppen, till exempel 1, 2, 3. Får lämnas tomt, så hamnar frågan sist.
+      - name: body
+        label: Svar
+        type: rich-text
+        description: "Lämna tomt tills svaret finns, så visas ”fylls i av föreningen”. Skriv {swish}, {epost}, {kontaktperson}, {organisationsnummer}, {nittiokonto} eller {arsredovisning} för att visa uppgiften från Föreningsuppgifter."
+        options:
+          format: markdown
+
   - name: historia
     label: Vår historia
     type: file

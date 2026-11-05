@@ -99,3 +99,37 @@ Sidan **Ge en julklapp** (`/julklapp`) är föreningens julkampanj. Belopp, insa
 3. Skriv **Det här gör julklappen**: en eller två meningar om vad pengarna går till.
 4. Fältet **E-post för frågor om julkampanjen** är frivilligt. Lämnar du det tomt visas föreningens kontakt-e-post.
 5. Bocka i **Visa julkampanjen på startsidan och i menyn** när kampanjen pågår. Då syns ett kort avsnitt om julklappen direkt under de 20 ljusen på startsidan, och länken **Julklapp** i menyn. Bocka ur rutan efter jul, så försvinner båda. Sidan Ge en julklapp finns kvar för den som har en länk.
+
+## 9. Skriv Vanliga frågor
+
+Sidan **Vanliga frågor** (`/vanliga-fragor`) svarar på det som blivande faddrar brukar undra. Varje fråga är en egen post, precis som ett inlägg i Nyheter.
+
+1. Klicka på **Vanliga frågor** i menyn till vänster. Där finns alla frågor.
+2. Öppna en fråga för att ändra den, eller lägg till en ny (Add an entry).
+3. Fyll i fälten:
+
+| Fält | Vad du skriver |
+| --- | --- |
+| **Fråga** | Som en besökare skulle fråga, till exempel ”Hur väljs barnen ut?”. Måste fyllas i. Frågan blir också dess adress, till exempel `/vanliga-fragor#fraga-hur-valjs-barnen-ut`. Adressen ändras inte om du formulerar om frågan senare. |
+| **Grupp** | Att vara fadder, Barnen och familjerna eller Föreningen. |
+| **Ordning** | Lägre tal visas först i gruppen: 1, 2, 3 … Lämnar du det tomt hamnar frågan sist. |
+| **Svar** | Själva svaret. Du kan göra listor och länkar med knapparna ovanför textrutan, men inte lägga in bilder. Lämna det tomt tills svaret finns, så visas ”fylls i av föreningen”. |
+
+4. Klicka på spara (Save).
+
+Några svar saknas än och visas som ”fylls i av föreningen”: vad det kostar, hur man betalar, hur man slutar och om man kan bli medlem.
+
+**Föreningsuppgifter i ett svar.** Skriv inte Swish-numret eller e-posten direkt i ett svar. Skriv i stället namnet inom klammerparenteser, så hämtas uppgiften från **Föreningsuppgifter**. Då räcker det att ändra den på ett ställe. Saknas uppgiften visas ”fylls i”.
+
+| Skriv | Så visas |
+| --- | --- |
+| `{swish}` | Swish-numret |
+| `{epost}` | Kontakt-e-posten, som en länk |
+| `{kontaktperson}` | Kontaktpersonen |
+| `{organisationsnummer}` | Organisationsnumret |
+| `{nittiokonto}` | 90-kontot |
+| `{arsredovisning}` | Länken ”Läs årsredovisningen” |
+
+Ett felstavat namn, till exempel `{bankgiro}`, stoppar sidan. Då fortsätter webbplatsen att visa det som fanns innan (se avsnitt 5). Rätta stavningen och spara igen.
+
+**Startsidan** länkar till frågan ”Hur vet jag att pengarna når fram?” under Insyn. Tar du bort den frågan försvinner länken.

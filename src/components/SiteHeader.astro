@@ -5,7 +5,7 @@ import { hamtaJulkampanj } from "@/lib/julkampanj";
 import { href } from "@/lib/utils";
 
 interface Props {
-  current?: "nyheter" | "historia" | "julklapp";
+  current?: "nyheter" | "historia" | "julklapp" | "fragor";
 }
 const { current } = Astro.props;
 const { visasPaStartsidan } = hamtaJulkampanj();
@@ -16,6 +16,7 @@ const links: NavLink[] = [
   { label: "Så arbetar vi", href: href("/#sa-arbetar-vi") },
   { label: "Vår historia", href: href("/historia"), current: current === "historia" },
   { label: "Nyheter", href: href("/nyheter"), current: current === "nyheter" },
+  { label: "Frågor", href: href("/vanliga-fragor"), current: current === "fragor" },
   // Seasonal: the association turns the campaign on and off in Pages CMS (src/data/julkampanj.json).
   ...(visasPaStartsidan || current === "julklapp"
     ? [{ label: "Julklapp", href: href("/julklapp"), current: current === "julklapp" }]

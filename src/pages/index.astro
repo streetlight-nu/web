@@ -1,4 +1,6 @@
 ---
+import { getEntry } from "astro:content";
+
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BliFadder from "@/components/BliFadder.astro";
 import Insyn from "@/components/Insyn.astro";
@@ -10,6 +12,7 @@ import Thread from "@/components/Thread.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { href } from "@/lib/utils";
+import { fragaId } from "@/lib/vanliga-fragor";
 
 const support: LedgerItem[] = [
   {
@@ -32,6 +35,9 @@ const familySteps = [
   "Familjen får en egen inkomst att bygga vidare på.",
   "Barnet kan fortsätta gå i skolan, med en ljusare framtid framför sig.",
 ];
+
+// Under Insyn: a link straight to the answer, as long as the association keeps the question.
+const narFram = await getEntry("fragor", "hur-vet-jag-att-pengarna-nar-fram");
 
 const section = "py-[clamp(64px,9vw,120px)]";
 const field = `on-green bg-green text-cotton ${section}`;
@@ -184,6 +190,16 @@ const lede = "max-w-[58ch] text-lede";
         </p>
       </div>
       <Insyn />
+      {
+        narFram && (
+          <p class="mt-6">
+            <a
+              class="inline-block py-2.5 font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4"
+              href={href(`/vanliga-fragor#${fragaId(narFram.id)}`)}>{narFram.data.fraga}</a
+            >
+          </p>
+        )
+      }
     </div>
   </section>
 

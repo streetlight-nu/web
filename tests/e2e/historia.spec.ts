@@ -14,12 +14,11 @@ test("historien har en h1 och visar perioderna i tidsordning, följt av idag", a
   ]);
 });
 
-test("det som saknas visas som ”fylls i” och inget hittas på", async ({ page }) => {
+test("ett årtal som saknas visas som ”fylls i” och hittas inte på", async ({ page }) => {
   await page.goto("historia");
   const forsta = page.getByRole("region", { name: "1995–1999" });
   await expect(forsta.getByRole("listitem").first()).toContainText("1995");
-  await expect(forsta.getByText("rubrik fylls i").first()).toBeVisible();
-  await expect(forsta.getByText("text fylls i").first()).toBeVisible();
+  await expect(forsta.getByRole("listitem").nth(1).getByText("år fylls i")).toBeVisible();
 });
 
 test("menyn för perioderna hoppar till varje period", async ({ page }) => {
@@ -31,11 +30,11 @@ test("menyn för perioderna hoppar till varje period", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 2, name: "2010–2019" })).toBeInViewport();
 });
 
-test("menyn markerar Vår historia som aktiv", async ({ page, isMobile }) => {
+test("historien ligger under Om föreningen i sökvägen", async ({ page }) => {
   await page.goto("historia");
-  const nav = page.getByRole("navigation", { name: "Huvudmeny" });
-  if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-  await expect(nav.getByRole("link", { name: "Vår historia", exact: true })).toHaveAttribute("aria-current", "page");
+  const sokvag = page.getByRole("navigation", { name: "Du är här" });
+  await expect(sokvag.getByRole("link", { name: "Om föreningen" })).toHaveAttribute("href", /\/om-foreningen$/);
+  await expect(sokvag.getByText("Vår historia")).toHaveAttribute("aria-current", "page");
 });
 
 test("historien leder vidare till Bli fadder", async ({ page }) => {

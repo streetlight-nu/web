@@ -14,6 +14,7 @@ const tillatna: Record<string, string[]> = {
   "./": [],
   nyheter: [],
   historia: [],
+  "om-foreningen": [],
   julklapp: [repejo],
 };
 

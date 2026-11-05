@@ -172,6 +172,89 @@ content:
                 type: string
                 description: En fråga som en förälder kan prata om med sitt barn efteråt, till exempel ”Vad behöver du för att kunna gå till skolan?”. Får lämnas tomt.
 
+  - name: omForeningen
+    label: Om föreningen
+    type: file
+    path: src/data/om-foreningen.json
+    format: json
+    # The fields must match the schema in src/lib/om-foreningen.ts; tests/unit/om-foreningen.test.ts checks it.
+    # The headings are the page's own. Kontakt comes from Föreningsuppgifter.
+    fields:
+      - name: ingress
+        label: Ingress
+        type: text
+        description: Ett par meningar överst på sidan om vilka vi är. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: vision
+        label: Vår vision
+        type: text
+        description: Visionen i en mening. Visas med stor text. Orden ”ljus framtid” markeras med guld.
+      - name: visionText
+        label: Text under visionen
+        type: text
+        description: Två eller tre korta meningar om vad visionen betyder. Får lämnas tomt.
+      - name: tror
+        label: Det här tror vi på
+        type: object
+        list: true
+        description: Det som styr arbetet, en tanke i taget. Visas som en lista.
+        fields:
+          - name: rubrik
+            label: Rubrik
+            type: string
+            description: En kort mening som bär tanken, till exempel ”Skolan öppnar vägen.”.
+          - name: text
+            label: Text
+            type: text
+            description: Tre eller fyra korta meningar.
+      - name: borjan
+        label: Så började det
+        type: text
+        description: Berättelsen om hur Streetlight började. Lämna en tom rad mellan styckena.
+      - name: foreningar
+        label: Två föreningar, ett arbete
+        type: text
+        description: Om Streetlight Sverige, Streetlight Etiopien och hur barnen väljs ut. Lämna en tom rad mellan styckena.
+      - name: grund
+        label: Vår grund
+        type: object
+        description: Töm alla fälten för att ta bort avsnittet från sidan.
+        fields:
+          - name: text
+            label: Text
+            type: text
+          - name: citat
+            label: Citat
+            type: text
+            description: Skriv utan citattecken; sidan sätter dem.
+          - name: kalla
+            label: Källa
+            type: string
+            description: Till exempel 1 Kor 12:26.
+      - name: styrelser
+        label: Vilka vi är
+        type: object
+        list: true
+        description: Styrelserna i de två föreningarna.
+        fields:
+          - name: forening
+            label: Förening
+            type: string
+            required: true
+            description: Till exempel Streetlight Sverige.
+          - name: personer
+            label: Personer i styrelsen
+            type: object
+            list: true
+            description: Ett tomt namn visas som ”fylls i”.
+            fields:
+              - name: namn
+                label: Namn
+                type: string
+              - name: roll
+                label: Roll
+                type: string
+                description: Till exempel Ordförande, Kassör eller Ledamot.
+
   - name: nyheter
     label: Nyheter
     type: collection

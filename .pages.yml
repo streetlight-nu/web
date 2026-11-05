@@ -4,10 +4,19 @@
 # The fields of Nyheter must match the schema in src/lib/nyheter-schema.ts; tests/unit/pages-cms.test.ts checks it.
 
 # Images are uploaded under src/assets, where Astro finds and optimises them at build time.
-# `output` is the path written into an inlägg, relative to the inlägg's folder (src/content/nyheter).
+# nyheter (the default, first): `output` is the path written into an inlägg, relative to the inlägg's
+# folder (src/content/nyheter).
+# sidor: the photos on Om föreningen and Vår historia. The path is written from the site's root,
+# `/src/assets/sidor/<file>`, which src/lib/sidbild.ts checks and the component Foto finds.
 media:
-  input: src/assets/nyheter
-  output: ../../assets/nyheter
+  - name: nyheter
+    label: Nyheter
+    input: src/assets/nyheter
+    output: ../../assets/nyheter
+  - name: sidor
+    label: Om föreningen och Vår historia
+    input: src/assets/sidor
+    output: /src/assets/sidor
 
 content:
   - name: foreningsuppgifter
@@ -149,6 +158,29 @@ content:
             label: Sammanfattning
             type: text
             description: En mening om vad som hände under perioden.
+          - name: bild
+            label: Foto från perioden
+            type: object
+            description: Visas under sammanfattningen.
+            fields:
+              - name: src
+                label: Foto
+                type: image
+                description: Ladda upp fotot i full storlek. Webbplatsen gör själv mindre versioner. Lämna tomt, så visas ett förslag på vilket foto som passar här.
+                options:
+                  media: sidor
+              - name: alt
+                label: Alt-text
+                type: string
+                description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
+              - name: visarFamilj
+                label: Fotot visar ett barn eller en familj
+                type: boolean
+                description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
+              - name: samtycke
+                label: Familjen har gett sitt samtycke
+                type: boolean
+                description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
           - name: handelser
             label: Händelser
             type: object
@@ -171,6 +203,29 @@ content:
                 label: Att prata om tillsammans
                 type: string
                 description: En fråga som en förälder kan prata om med sitt barn efteråt, till exempel ”Vad behöver du för att kunna gå till skolan?”. Får lämnas tomt.
+      - name: idagBild
+        label: Foto till Idag
+        type: object
+        description: Visas sist i tidslinjen, under rubriken Idag.
+        fields:
+          - name: src
+            label: Foto
+            type: image
+            description: Ladda upp fotot i full storlek. Webbplatsen gör själv mindre versioner. Lämna tomt, så visas ett förslag på vilket foto som passar här.
+            options:
+              media: sidor
+          - name: alt
+            label: Alt-text
+            type: string
+            description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
+          - name: visarFamilj
+            label: Fotot visar ett barn eller en familj
+            type: boolean
+            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
+          - name: samtycke
+            label: Familjen har gett sitt samtycke
+            type: boolean
+            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
 
   - name: omForeningen
     label: Om föreningen
@@ -210,10 +265,56 @@ content:
         label: Så började det
         type: text
         description: Berättelsen om hur Streetlight började. Lämna en tom rad mellan styckena.
+      - name: borjanBild
+        label: Foto till Så började det
+        type: object
+        description: Visas under årtalet 1995.
+        fields:
+          - name: src
+            label: Foto
+            type: image
+            description: Ladda upp fotot i full storlek. Webbplatsen gör själv mindre versioner. Lämna tomt, så visas ett förslag på vilket foto som passar här.
+            options:
+              media: sidor
+          - name: alt
+            label: Alt-text
+            type: string
+            description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
+          - name: visarFamilj
+            label: Fotot visar ett barn eller en familj
+            type: boolean
+            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
+          - name: samtycke
+            label: Familjen har gett sitt samtycke
+            type: boolean
+            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
       - name: foreningar
         label: Två föreningar, ett arbete
         type: text
         description: Om Streetlight Sverige, Streetlight Etiopien och hur barnen väljs ut. Lämna en tom rad mellan styckena.
+      - name: foreningarBild
+        label: Foto till Två föreningar, ett arbete
+        type: object
+        description: Visas under rubriken.
+        fields:
+          - name: src
+            label: Foto
+            type: image
+            description: Ladda upp fotot i full storlek. Webbplatsen gör själv mindre versioner. Lämna tomt, så visas ett förslag på vilket foto som passar här.
+            options:
+              media: sidor
+          - name: alt
+            label: Alt-text
+            type: string
+            description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
+          - name: visarFamilj
+            label: Fotot visar ett barn eller en familj
+            type: boolean
+            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
+          - name: samtycke
+            label: Familjen har gett sitt samtycke
+            type: boolean
+            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
       - name: grund
         label: Vår grund
         type: object
@@ -254,6 +355,29 @@ content:
                 label: Roll
                 type: string
                 description: Till exempel Ordförande, Kassör eller Ledamot.
+      - name: vilkaBild
+        label: Foto till Vilka vi är
+        type: object
+        description: Visas under rubriken, till exempel ett foto av styrelserna.
+        fields:
+          - name: src
+            label: Foto
+            type: image
+            description: Ladda upp fotot i full storlek. Webbplatsen gör själv mindre versioner. Lämna tomt, så visas ett förslag på vilket foto som passar här.
+            options:
+              media: sidor
+          - name: alt
+            label: Alt-text
+            type: string
+            description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
+          - name: visarFamilj
+            label: Fotot visar ett barn eller en familj
+            type: boolean
+            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
+          - name: samtycke
+            label: Familjen har gett sitt samtycke
+            type: boolean
+            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
 
   - name: nyheter
     label: Nyheter
@@ -308,6 +432,8 @@ content:
         label: Bild
         type: image
         description: Ladda upp bilden i full storlek. Webbplatsen gör själv mindre versioner.
+        options:
+          media: nyheter
       - name: imageAlt
         label: Alt-text
         type: string

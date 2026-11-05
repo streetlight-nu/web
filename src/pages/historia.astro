@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FyllsI from "@/components/FyllsI.astro";
 import LightBand from "@/components/LightBand.astro";
+import Foto from "@/components/Foto.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaHistoria, periodId } from "@/lib/historia";
@@ -12,7 +13,16 @@ import { href } from "@/lib/utils";
  * fields, joined by the gold thread with a diamond for each event. Its content comes from
  * src/data/historia.json (Pages CMS); every empty field shows the chip "fylls i".
  */
-const { ingress, perioder } = hamtaHistoria();
+const { ingress, perioder, idagBild } = hamtaHistoria();
+// A suggested photo for each period, shown until the association uploads its own in Pages CMS.
+const BILDFORSLAG: Record<string, string> = {
+  "1995–1999": "Foto: Merry som liten, eller Tryggve hos Merrys familj",
+  "2000–2009": "Foto: barnen i skoluniform, eller Merry under studietiden",
+  "2010–2019": "Foto: Merry som nyexaminerad läkare, eller faddrarna med barnen på resan 2019",
+  "2020–idag": "Foto: Aklilu i skoverkstaden, eller barnen på sommarskolan",
+};
+const bildforslag = (rubrik: string) => BILDFORSLAG[rubrik] ?? "Foto från perioden, med familjernas samtycke";
+
 const beskrivning =
   ingress ?? "Hur Streetlight började 1995 och hur arbetet med fadderbarnen i Addis Abeba har vuxit fram sedan dess.";
 ---
@@ -69,6 +79,12 @@ const beskrivning =
               <p class:list={["mt-3 max-w-[40ch]", gron ? "text-mint" : "text-ink-soft"]}>
                 {period.sammanfattning ?? <FyllsI>sammanfattning fylls i</FyllsI>}
               </p>
+              <Foto
+                class="mt-[clamp(24px,3vw,36px)] aspect-[3/2] max-w-[420px]"
+                bild={period.bild}
+                forslag={bildforslag(period.rubrik)}
+                sizes="(min-width: 901px) 420px, 100vw"
+              />
             </header>
             <ol class="thread m-0 min-w-0 list-none p-0">
               {period.handelser.map((handelse) => (
@@ -97,7 +113,15 @@ const beskrivning =
 
   <section aria-labelledby="idag-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
     <div class="band-inner grid grid-cols-1 items-start gap-[clamp(28px,5vw,64px)] min-[901px]:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)]">
-      <h2 id="idag-rubrik" class="text-headline">Idag</h2>
+      <div class="min-w-0">
+        <h2 id="idag-rubrik" class="text-headline">Idag</h2>
+        <Foto
+          class="mt-[clamp(24px,3vw,36px)] aspect-[3/2] max-w-[420px]"
+          bild={idagBild}
+          forslag="Foto: fadderbarnen och deras familjer idag, med familjernas samtycke"
+          sizes="(min-width: 901px) 420px, 100vw"
+        />
+      </div>
       <div class="thread thread--end min-w-0">
         <div class="event event--lit">
           <p class="text-title tracking-[-0.015em]">Vi stöttar 20 fadderbarn och deras familjer i Addis Abeba.</p>

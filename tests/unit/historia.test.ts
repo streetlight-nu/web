@@ -40,7 +40,7 @@ describe("historien i src/data/historia.json", () => {
 
   test("stoppar bygget när en period saknar rubrik eller ett okänt fält finns", () => {
     expect(() => tolkaHistoria({ perioder: [{ rubrik: "", handelser: [] }] })).toThrow(/rubrik/);
-    expect(() => tolkaHistoria({ perioder: [{ rubrik: "1995", handelser: [], bild: "x" }] })).toThrow();
+    expect(() => tolkaHistoria({ perioder: [{ rubrik: "1995", handelser: [], foto: "x" }] })).toThrow();
     expect(() => tolkaHistoria({ perioder: [] })).toThrow();
   });
 

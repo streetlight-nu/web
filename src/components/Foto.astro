@@ -1,0 +1,45 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+import Placeholder from "@/components/Placeholder.astro";
+import type { Sidbild } from "@/lib/sidbild";
+import { cn } from "@/lib/utils";
+
+/**
+ * A photo on Om föreningen or Vår historia: the association's own photo from Pages CMS, or, until
+ * it is uploaded, a placeholder that suggests which photo should go here. The class sets the
+ * size and aspect ratio, the same for both, so the layout does not move when the photo arrives.
+ */
+interface Props {
+  bild?: Sidbild;
+  /** Which photo would fit here, shown on the placeholder, e.g. "Foto: barnen på sommarskolan". */
+  forslag: string;
+  /** The width the photo is shown at, for the browser to pick a size. */
+  sizes?: string;
+  class?: string;
+}
+const { bild, forslag, sizes = "(min-width: 901px) 440px, 100vw", class: className } = Astro.props;
+
+const filer = import.meta.glob<{ default: ImageMetadata }>("/src/assets/sidor/**/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG}", {
+  eager: true,
+});
+const fil = bild?.src ? filer[bild.src] : undefined;
+if (bild?.src && !fil) {
+  throw new Error(`Fotot ${bild.src} finns inte. Ladda upp det igen i Pages CMS.`);
+}
+---
+
+{
+  fil && bild?.alt ? (
+    <Image
+      class={cn("block w-full rounded-md object-cover", className)}
+      src={fil.default}
+      alt={bild.alt}
+      widths={[440, 880, 1320]}
+      sizes={sizes}
+    />
+  ) : (
+    <Placeholder class={className} text={forslag} />
+  )
+}

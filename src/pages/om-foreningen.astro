@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FyllsI from "@/components/FyllsI.astro";
 import Ledger from "@/components/Ledger.astro";
+import Foto from "@/components/Foto.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
@@ -121,6 +122,11 @@ const hopp = [
       <div class="min-w-0">
         <h2 id="borjan-rubrik" class="text-headline">Så började det.</h2>
         <p class="ar" aria-hidden="true">1995</p>
+        <Foto
+          class="mt-[clamp(28px,4vw,48px)] aspect-[4/3] max-w-[440px]"
+          bild={om.borjanBild}
+          forslag="Foto: Merry som liten med sin familj, eller Tryggve hemma hos dem i Addis Abeba"
+        />
       </div>
       <div class="min-w-0">
         {
@@ -154,6 +160,11 @@ const hopp = [
     <div class={split}>
       <div class="min-w-0">
         <h2 id="foreningar-rubrik" class="text-headline">Två föreningar, ett arbete.</h2>
+        <Foto
+          class="mt-[clamp(28px,4vw,48px)] aspect-[4/3] max-w-[440px]"
+          bild={om.foreningarBild}
+          forslag="Foto: en söndagsträff med barn, föräldrar och volontärer, med familjernas samtycke"
+        />
       </div>
       <div class="min-w-0">
         {
@@ -209,6 +220,11 @@ const hopp = [
         <p class="mt-[22px] max-w-[40ch] text-lede text-ink-soft">
           Streetlight Sverige och Streetlight Etiopien har var sin styrelse.
         </p>
+        <Foto
+          class="mt-[clamp(28px,4vw,48px)] aspect-[4/3] max-w-[440px]"
+          bild={om.vilkaBild}
+          forslag="Foto: styrelserna i Sverige och Etiopien, gärna tillsammans"
+        />
       </div>
       <div class="styrelser min-w-0">
         {

@@ -38,7 +38,7 @@ Föreningsuppgifterna (organisationsnummer, 90-konto, Swish-nummer, kontaktperso
 
 Komponenterna läser uppgifterna med `hamtaForeningsuppgifter()` från `src/lib/foreningsuppgifter.ts` och skriver aldrig in ett värde själva. Ett tomt fält visas som chipet ”fylls i” (`FyllsI.astro`). Ett felaktigt värde, till exempel en e-post som inte är en e-postadress, stoppar bygget.
 
-`npm run test:e2e` bygger själv sajten två gånger till, med testfiler i stället för datafilerna (via `FORENINGSUPPGIFTER_FIL` och `JULKAMPANJ_FIL`), så att testerna aldrig beror på vad föreningen har fyllt i: till `dist-ifylld/` med ifyllda uppgifter (`tests/fixtures/*-ifylld.json`) på porten `E2E_PORT_IFYLLD`, och till `dist-tom/` med tomma uppgifter (`tests/fixtures/*-tom.json`) på porten `E2E_PORT_TOM`. Utan dem används de portarna efter `E2E_PORT` (standard 4321, 4322 och 4323). Den vanliga sajten i `dist/` bygger du själv innan. Testerna som letar efter ”fylls i” går mot `dist-tom/`.
+`npm run test:e2e` bygger själv sajten tre gånger till (den tredje, `dist-av/`, för funktionsflaggorna, se Funktionsflaggor), med testfiler i stället för datafilerna (via `FORENINGSUPPGIFTER_FIL` och `JULKAMPANJ_FIL`), så att testerna aldrig beror på vad föreningen har fyllt i: till `dist-ifylld/` med ifyllda uppgifter (`tests/fixtures/*-ifylld.json`) på porten `E2E_PORT_IFYLLD`, och till `dist-tom/` med tomma uppgifter (`tests/fixtures/*-tom.json`) på porten `E2E_PORT_TOM`. Utan dem används de portarna efter `E2E_PORT` (standard 4321, 4322 och 4323; `dist-av/` får 4324). Den vanliga sajten i `dist/` bygger du själv innan. Testerna som letar efter ”fylls i” går mot `dist-tom/`.
 
 ## Funktionsflaggor
 
@@ -67,7 +67,7 @@ const { julklapp } = hamtaFunktioner();
 
 En ny flagga läggs till på fyra ställen: listan `FUNKTIONER` i `src/lib/funktioner.ts`, datafilen, ett fält i `.pages.yml` och en rad i `tests/fixtures/funktioner-av.json`. Enhetstestet och bygget stoppar om något av dem saknas. En flagga som saknas i datafilen stoppar bygget i stället för att tyst bli av eller på.
 
-Webbläsartesterna bygger sajten en tredje gång till `dist-av/`, som produktion med flaggorna från `tests/fixtures/funktioner-av.json` (via `FUNKTIONER_FIL` och `MILJO`), på porten `E2E_PORT_AV` (standard två efter `E2E_PORT_TOM`, alltså `E2E_PORT` + 3). `tests/e2e/funktioner.spec.ts` kontrollerar att sidorna ger 404 och att länkarna saknas.
+Webbläsartesterna bygger sajten en tredje gång till `dist-av/`, som produktion med flaggorna från `tests/fixtures/funktioner-av.json` (via `FUNKTIONER_FIL` och `MILJO`), på porten `E2E_PORT_AV` (standard `E2E_PORT` + 3, alltså 4324). `tests/e2e/funktioner.spec.ts` kontrollerar att sidorna ger 404 och att länkarna saknas.
 
 ## Julkampanjen och Repejo
 

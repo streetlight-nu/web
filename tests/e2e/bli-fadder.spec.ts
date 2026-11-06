@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { expectNoA11yViolations } from "./helpers";
+import { blockRepejo, expectNoA11yViolations, stubRepejo } from "./helpers";
 
 /** The section "Bli fadder" on the home page. */
 function sektion(page: Page) {
@@ -18,9 +18,9 @@ test.describe("sektionen Bli fadder", () => {
     await expect(s.getByRole("heading", { name: "Så går det till" })).toBeVisible();
     const steg = s.getByRole("list", { name: "Så går det till" }).getByRole("listitem");
     await expect(steg).toHaveCount(3);
-    await expect(steg.nth(0)).toContainText("Du skickar en intresseanmälan");
-    await expect(steg.nth(1)).toContainText("Någon i föreningen hör av sig");
-    await expect(steg.nth(2)).toContainText("Du börjar ge.");
+    await expect(steg.nth(0)).toContainText("Du väljer belopp och betalsätt");
+    await expect(steg.nth(1)).toContainText("Betalningen går via Repejo");
+    await expect(steg.nth(2)).toContainText("Någon i föreningen hör av sig");
 
     await expect(s.getByText("Barnen väljs ut tillsammans med de lokala myndigheterna i Addis Abeba.")).toBeVisible();
   });
@@ -61,126 +61,23 @@ test.describe("sektionen Bli fadder med ifylld testfil", () => {
   });
 });
 
-/** The intresseanmälan form in the section. */
-function formular(page: Page) {
-  return sektion(page).getByRole("form", { name: "Anmäl intresse" });
-}
-
-test.describe("intresseanmälan", () => {
-  // The tack state shows the föreningsuppgifter's e-mail, so these run on the build with empty test files.
-  test.use({ baseURL: process.env.E2E_TOM_URL });
-
-  test("säger före sändning att formuläret inte är kopplat", async ({ page }) => {
+test.describe("Repejos formulär i sektionen", () => {
+  test("visar Repejos checkout för att bli fadder, med en reservlänk under", async ({ page }) => {
+    await stubRepejo(page);
     await page.goto("./");
-    await expect(formular(page).getByText("Formuläret är inte kopplat än.")).toBeVisible();
+    const s = sektion(page);
+    await expect(s.getByText("Repejos checkout (stubb)")).toBeVisible();
+    await expect(s.locator("repejo-checkout")).toHaveAttribute("short_code", "7r3dB");
+    await expect(s.getByRole("link", { name: "Bli fadder via Repejos kampanjsida" })).toHaveAttribute(
+      "href",
+      "https://app.repejo.se/s/7r3dB",
+    );
   });
 
-  test("har fälten och valet, med fadder för alla barnen förvalt", async ({ page }) => {
+  test("reservlänken finns kvar när Repejo inte kan nås", async ({ page }) => {
+    await blockRepejo(page);
     await page.goto("./");
-    const f = formular(page);
-    await expect(f.getByLabel("Namn")).toBeVisible();
-    await expect(f.getByLabel("E-post")).toBeVisible();
-    await expect(f.getByLabel("Telefon (valfritt)")).toBeVisible();
-    await expect(f.getByLabel("Meddelande (valfritt)")).toBeVisible();
-    const val = f.getByRole("radiogroup", { name: "Jag vill" });
-    await expect(val.getByRole("radio")).toHaveCount(3);
-    await expect(val.getByRole("radio", { name: "fadder för alla barnen" })).toBeChecked();
-    await expect(val.getByRole("radio", { name: "fadder för ett barn" })).not.toBeChecked();
-    await expect(val.getByRole("radio", { name: "veta mer först" })).not.toBeChecked();
-  });
-
-  test("tomt namn och tom e-post ger fel kopplade till fälten, och fokus går till första felet", async ({ page }) => {
-    await page.goto("./");
-    const f = formular(page);
-    await f.getByRole("button", { name: "Skicka anmälan" }).click();
-
-    const namn = f.getByLabel("Namn");
-    const epost = f.getByLabel("E-post");
-    await expect(namn).toHaveAttribute("aria-invalid", "true");
-    await expect(epost).toHaveAttribute("aria-invalid", "true");
-    await expect(namn).toHaveAccessibleDescription("Skriv ditt namn så vet vi vem vi ska kontakta.");
-    await expect(epost).toHaveAccessibleDescription("Kontrollera e-postadressen, till exempel namn@exempel.se.");
-    await expect(namn).toBeFocused();
-    await expectNoA11yViolations(page);
-  });
-
-  test("ogiltig e-post ger fel bara på e-posten, och felet försvinner när man rättar", async ({ page }) => {
-    await page.goto("./");
-    const f = formular(page);
-    await f.getByLabel("Namn").fill("Anna Andersson");
-    await f.getByLabel("E-post").fill("anna@");
-    await f.getByRole("button", { name: "Skicka anmälan" }).click();
-
-    const epost = f.getByLabel("E-post");
-    await expect(f.getByLabel("Namn")).not.toHaveAttribute("aria-invalid", "true");
-    await expect(epost).toHaveAttribute("aria-invalid", "true");
-    await expect(epost).toBeFocused();
-
-    await epost.fill("anna@exempel.se");
-    await expect(epost).not.toHaveAttribute("aria-invalid", "true");
-    await expect(f.getByText("Kontrollera e-postadressen")).toHaveCount(0);
-  });
-
-  /** Fills in a valid intresseanmälan and sends it. */
-  async function skickaGiltig(page: Page) {
-    const f = formular(page);
-    await f.getByLabel("Namn").fill("Anna Andersson");
-    await f.getByLabel("E-post").fill("anna@exempel.se");
-    await f.getByLabel("Telefon (valfritt)").fill("070-000 00 00");
-    await f.getByRole("radio", { name: "fadder för ett barn" }).click();
-    await f.getByLabel("Meddelande (valfritt)").fill("Hej!");
-    await f.getByRole("button", { name: "Skicka anmälan" }).click();
-  }
-
-  test("tackläget säger att anmälan inte har skickats, och ingen data lämnar sidan", async ({ page }) => {
-    await page.goto("./");
-    await page.waitForLoadState("networkidle");
-    const anrop: string[] = [];
-    page.on("request", (request) => anrop.push(`${request.method()} ${request.url()}`));
-    const url = page.url();
-
-    await skickaGiltig(page);
-
-    const tack = formular(page).getByRole("region", { name: "Tack, Anna!" });
-    await expect(tack).toBeVisible();
-    await expect(tack).toBeFocused();
-    await expect(tack).toContainText("din anmälan har inte skickats");
-    await expect(tack.getByText("e-post fylls i", { exact: true })).toBeVisible();
-    await expect(formular(page).getByLabel("Namn")).toBeHidden();
-    expect(page.url()).toBe(url);
-    expect(anrop).toEqual([]);
-    await expectNoA11yViolations(page);
-  });
-
-  test("”Ändra anmälan” tar tillbaka formuläret med värdena kvar", async ({ page }) => {
-    await page.goto("./");
-    await skickaGiltig(page);
-    const f = formular(page);
-    await f.getByRole("button", { name: "Ändra anmälan" }).click();
-
-    await expect(f.getByRole("region", { name: /Tack/ })).toHaveCount(0);
-    await expect(f.getByLabel("Namn")).toHaveValue("Anna Andersson");
-    await expect(f.getByLabel("Namn")).toBeFocused();
-    await expect(f.getByLabel("E-post")).toHaveValue("anna@exempel.se");
-    await expect(f.getByLabel("Telefon (valfritt)")).toHaveValue("070-000 00 00");
-    await expect(f.getByRole("radio", { name: "fadder för ett barn" })).toBeChecked();
-    await expect(f.getByLabel("Meddelande (valfritt)")).toHaveValue("Hej!");
-    await expect(f.getByText("Formuläret är inte kopplat än.")).toBeVisible();
-  });
-});
-
-test.describe("intresseanmälan med ifylld testfil", () => {
-  test.use({ baseURL: process.env.E2E_IFYLLD_URL });
-
-  test("tackläget hänvisar till föreningens e-post", async ({ page }) => {
-    await page.goto("./");
-    const f = formular(page);
-    await f.getByLabel("Namn").fill("Anna");
-    await f.getByLabel("E-post").fill("anna@exempel.se");
-    await f.getByRole("button", { name: "Skicka anmälan" }).click();
-    const tack = f.getByRole("region", { name: "Tack, Anna!" });
-    await expect(tack.getByRole("link", { name: "test@example.org" })).toHaveAttribute("href", "mailto:test@example.org");
-    await expect(tack.getByText(/fylls i/)).toHaveCount(0);
+    await expect(sektion(page).getByRole("link", { name: "Bli fadder via Repejos kampanjsida" })).toBeVisible();
   });
 });
 

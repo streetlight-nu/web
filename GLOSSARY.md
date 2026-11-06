@@ -29,10 +29,6 @@ _Undvik_: sponsor, givare, donator
 En variant av fadderskap där faddern följer ett av fadderbarnen. En fadder för ett barn är fortfarande en fadder.
 _Undvik_: personlig fadder, barnfadder
 
-**Intresseanmälan**:
-Det första steget mot att bli fadder: en person anmäler intresse och föreningen hör av sig.
-_Undvik_: ansökan, registrering
-
 **Föreningsuppgifter**:
 De offentliga uppgifter som visar vem föreningen är och hur man ger: organisationsnummer, 90-konto, Swish-nummer, kontaktperson och årsredovisning.
 _Undvik_: kontaktinfo, betalinfo

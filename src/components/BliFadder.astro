@@ -1,15 +1,16 @@
 ---
 /**
  * The home page section "Bli fadder" (#bli-fadder), on gold: what a fadder does, the three steps,
- * the trust row, who to contact and Swish for a one-off gift, and the intresseanmälan.
+ * the trust row, who to contact and Swish for a one-off gift, and Repejo's checkout for becoming a fadder.
  * Contact and Swish come from the föreningsuppgifter; a missing one shows the chip "fylls i".
  */
 import BliFadderDocka from "@/components/BliFadderDocka.astro";
 import FyllsI from "@/components/FyllsI.astro";
-import Intresseanmalan from "@/components/Intresseanmalan";
+import Repejo from "@/components/Repejo.astro";
 import Steps from "@/components/Steps.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { FADDER_KORTKOD } from "@/lib/repejo";
 
 const { kontaktperson, epost, swish } = hamtaForeningsuppgifter();
 ---
@@ -27,14 +28,14 @@ const { kontaktperson, epost, swish } = hamtaForeningsuppgifter();
         och vård i Addis Abeba.
       </p>
       <p class="mt-[18px] max-w-[52ch] border-t-[3px] border-ink pt-4">
-        Vill du hellre följa ett av barnen? Det går också. Välj <strong>fadder för ett barn</strong> i formuläret.
+        Vill du hellre följa ett av barnen? Det går också. Skriv det i ett mejl till oss, så ordnar vi det.
       </p>
 
       <h3 id="sa-gar-det-till" class="mt-9 text-title tracking-[-0.015em]">Så går det till</h3>
       <Steps aria-labelledby="sa-gar-det-till">
-        <li>Du skickar en intresseanmälan i formuläret.</li>
-        <li>Någon i föreningen hör av sig och berättar mer om barnen och om hur du betalar.</li>
-        <li>Du börjar ge. Belopp och betalsätt: <FyllsI>fylls i av föreningen</FyllsI></li>
+        <li>Du väljer belopp och betalsätt i formuläret.</li>
+        <li>Betalningen går via Repejo, föreningens insamlingstjänst.</li>
+        <li>Någon i föreningen hör av sig och berättar mer om barnen.</li>
       </Steps>
 
       <p
@@ -65,7 +66,12 @@ const { kontaktperson, epost, swish } = hamtaForeningsuppgifter();
     </div>
 
     <div class="min-w-0 self-stretch">
-      <Intresseanmalan client:load epost={epost} />
+      <Repejo
+        del="checkout"
+        kortkod={FADDER_KORTKOD}
+        vantar="Här visas Repejos formulär för att bli fadder."
+        reservtext="Bli fadder via Repejos kampanjsida"
+      />
     </div>
   </div>
 </section>

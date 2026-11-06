@@ -1,6 +1,6 @@
 # Astro med React-öar i stället för en React-app
 
-Webbplatsen byggs med Astro, och React och shadcn/ui används för komponenterna. Önskemålet var "React", men sajten är en innehållssajt med några få interaktiva delar: mobilmenyn, intresseanmälan och animationerna. Den ska ligga statiskt på GitHub Pages, och nyheterna ska vara Markdown som föreningen redigerar i Pages CMS. Astro ger färdig HTML per sida, nästan ingen JS till besökaren och Content Collections med ett schema som stoppar trasiga inlägg när sajten byggs.
+Webbplatsen byggs med Astro, och React och shadcn/ui används för komponenterna. Önskemålet var "React", men sajten är en innehållssajt med några få interaktiva delar: mobilmenyn och animationerna. Den ska ligga statiskt på GitHub Pages, och nyheterna ska vara Markdown som föreningen redigerar i Pages CMS. Astro ger färdig HTML per sida, nästan ingen JS till besökaren och Content Collections med ett schema som stoppar trasiga inlägg när sajten byggs.
 
 ## Övervägda alternativ
 

@@ -1,9 +1,11 @@
 ---
 import Logo from "@/components/Logo.astro";
 import TibebBand from "@/components/TibebBand.astro";
+import { hamtaFunktioner } from "@/lib/funktioner";
 import { href } from "@/lib/utils";
 
 const year = new Date().getFullYear();
+const { historia } = hamtaFunktioner();
 ---
 
 <footer class="on-green bg-green-deep text-base text-mint">
@@ -23,7 +25,7 @@ const year = new Date().getFullYear();
         <li><a class="inline-block py-2" href={href("/#stod")}>Vårt stöd</a></li>
         <li><a class="inline-block py-2" href={href("/#sa-arbetar-vi")}>Så arbetar vi</a></li>
         <li><a class="inline-block py-2" href={href("/om-foreningen")}>Om föreningen</a></li>
-        <li><a class="inline-block py-2" href={href("/historia")}>Vår historia</a></li>
+        {historia && <li><a class="inline-block py-2" href={href("/historia")}>Vår historia</a></li>}
         <li><a class="inline-block py-2" href={href("/om-foreningen#kontakt")}>Kontakt</a></li>
         <li><a class="inline-block py-2" href={href("/nyheter")}>Nyheter</a></li>
         <li><a class="inline-block py-2" href={href("/vanliga-fragor")}>Vanliga frågor</a></li>

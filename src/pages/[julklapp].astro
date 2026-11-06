@@ -8,6 +8,7 @@ import Placeholder from "@/components/Placeholder.astro";
 import Repejo from "@/components/Repejo.astro";
 import Steps from "@/components/Steps.astro";
 import TibebBand from "@/components/TibebBand.astro";
+import { hamtaFunktioner } from "@/lib/funktioner";
 import TjugoLjus from "@/components/TjugoLjus.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
@@ -24,6 +25,11 @@ import { href } from "@/lib/utils";
  */
 const { sistaDag, vadJulklappenGor, epost: kampanjensEpost } = hamtaJulkampanj();
 const epost = kampanjensEpost ?? hamtaForeningsuppgifter().epost;
+
+/** The page is built only when the flag `julklapp` is on (src/data/funktioner.json); otherwise /julklapp is a 404. */
+export function getStaticPaths() {
+  return hamtaFunktioner().julklapp ? [{ params: { julklapp: "julklapp" } }] : [];
+}
 
 const mark = markOnLight
   .replace(/ width="\d+" height="\d+"/, "")

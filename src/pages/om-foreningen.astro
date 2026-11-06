@@ -6,6 +6,7 @@ import Foto from "@/components/Foto.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { hamtaFunktioner } from "@/lib/funktioner";
 import { hamtaOmForeningen, stycken, visaGrund } from "@/lib/om-foreningen";
 import { href } from "@/lib/utils";
 
@@ -16,6 +17,7 @@ import { href } from "@/lib/utils";
  * The fields alternate cotton and green, and only the final field is gold (The Ett ljus rule).
  */
 const om = hamtaOmForeningen();
+const { historia } = hamtaFunktioner();
 const { kontaktperson, epost, swish, nittiokonto, organisationsnummer, arsredovisning } = hamtaForeningsuppgifter();
 const beskrivning =
   om.ingress ?? "Vilka vi är, vad vi tror på och hur Streetlight började. Och hur du når föreningen.";
@@ -140,18 +142,22 @@ const hopp = [
             <FyllsI>berättelsen fylls i</FyllsI>
           )
         }
-        <a class:list={[buttonVariants({ variant: "line" }), "mt-9"]} href={href("/historia")}>
-          Läs hela vår historia
-          <svg viewBox="0 0 18 18" aria-hidden="true"
-            ><path
-              d={pil}
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path></svg
-          >
-        </a>
+        {
+          historia && (
+            <a class:list={[buttonVariants({ variant: "line" }), "mt-9"]} href={href("/historia")}>
+              Läs hela vår historia
+              <svg viewBox="0 0 18 18" aria-hidden="true"
+                ><path
+                  d={pil}
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path></svg
+              >
+            </a>
+          )
+        }
       </div>
     </div>
   </section>

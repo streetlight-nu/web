@@ -11,14 +11,17 @@
  * "Ljus" is both light and candle: as many candles burn as there have been Advent Sundays (none before the first),
  * and pointing at "Ge en julklapp" lights the rest. The flames are drawn in the lamp's three hard gold steps.
  *
- * Seasonal: shown only while `visasPaStartsidan` is ticked in Pages CMS (src/data/julkampanj.json).
+ * Seasonal: shown only while `visasPaStartsidan` is ticked in Pages CMS (src/data/julkampanj.json) and the flag
+ * `julklapp` is on (src/data/funktioner.json).
  * It only links to /julklapp and never loads Repejo (ADR 0003).
  */
 import { buttonVariants } from "@/components/ui/button";
+import { hamtaFunktioner } from "@/lib/funktioner";
 import { hamtaJulkampanj } from "@/lib/julkampanj";
 import { cn, href } from "@/lib/utils";
 
 const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
+const { julklapp } = hamtaFunktioner();
 
 /** The four candles' centres, and the gold diamonds woven into the candlestick's tibeb foot. */
 const LJUS = [30, 70, 110, 150];
@@ -26,7 +29,7 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
 ---
 
 {
-  visasPaStartsidan && (
+  julklapp && visasPaStartsidan && (
     <section id="julklapp" aria-labelledby="julklapp-rubrik" class="on-green bg-green-deep text-cotton">
       <div class="band-inner">
         <div class="rad">

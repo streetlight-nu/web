@@ -2,6 +2,7 @@ node_modules/
 dist/
 dist-ifylld/
 dist-tom/
+dist-av/
 .astro/
 test-results/
 playwright-report/

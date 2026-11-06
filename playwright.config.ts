@@ -15,6 +15,11 @@ const filledOutDir = "dist-ifylld";
 const emptyPort = Number(process.env.E2E_PORT_TOM ?? port + 2);
 process.env.E2E_TOM_URL = `http://localhost:${emptyPort}${base}`;
 const emptyOutDir = "dist-tom";
+// A third build with the funktionsflaggor off (E2E_AV_URL, port E2E_PORT_AV, by default three after E2E_PORT): it is
+// built as production (MILJO=produktion) from tests/fixtures/funktioner-av.json, so it covers both `av` and `ejProduktion`.
+const offPort = Number(process.env.E2E_PORT_AV ?? port + 3);
+process.env.E2E_AV_URL = `http://localhost:${offPort}${base}`;
+const offOutDir = "dist-av";
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -36,6 +41,8 @@ export default defineConfig({
       command:
         "FORENINGSUPPGIFTER_FIL=tests/fixtures/foreningsuppgifter-ifylld.json" +
         " JULKAMPANJ_FIL=tests/fixtures/julkampanj-ifylld.json" +
+        // Not production, even when CI sets MILJO on master, so that `ejProduktion` is on (tests/e2e/funktioner.spec.ts).
+        " MILJO= FUNKTIONER_FIL=tests/fixtures/funktioner-ejproduktion.json" +
         " FRAGOR_MAPP=tests/fixtures/fragor" +
         ` npm run build -- --outDir ${filledOutDir}` +
         ` && npm run preview -- --outDir ${filledOutDir} --port ${filledPort} --ignore-lock`,
@@ -51,6 +58,15 @@ export default defineConfig({
         ` npm run build -- --outDir ${emptyOutDir}` +
         ` && npm run preview -- --outDir ${emptyOutDir} --port ${emptyPort} --ignore-lock`,
       url: process.env.E2E_TOM_URL,
+      reuseExistingServer: !process.env.CI,
+      timeout: 180_000,
+    },
+    {
+      command:
+        "MILJO=produktion FUNKTIONER_FIL=tests/fixtures/funktioner-av.json" +
+        ` npm run build -- --outDir ${offOutDir}` +
+        ` && npm run preview -- --outDir ${offOutDir} --port ${offPort} --ignore-lock`,
+      url: process.env.E2E_AV_URL,
       reuseExistingServer: !process.env.CI,
       timeout: 180_000,
     },

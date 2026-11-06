@@ -304,5 +304,5 @@ Märket är en gatlykta ritad med en enda linje på ett rutnät om 80 × 80, med
 - **Don't** betona med kursiv.
 - **Don't** bygg sidor av rutnät med likadana kort. Använd Ledger, Steps eller guldtråden.
 - **Don't** använd emoji eller en ikonuppsättning. De få ikonerna ritas som SVG med samma linjetjocklek.
-- **Don't** ladda typsnitt från tredje part i vår egen kod, och anropa en extern tjänst bara när en funktion kräver det, som Repejo för julkampanjens betalning. Repejos skript kan själv hämta typsnitt och andra tjänster (ADR 0003).
+- **Don't** ladda typsnitt från tredje part i vår egen kod, men en extern tjänst får anropas, som Repejo för julkampanjens betalning. Repejos skript kan själv hämta typsnitt och andra tjänster (ADR 0003).
 - **Don't** återinför varumärkesguidens Open Sans, #FFD200, #FF1736 eller asfaltslooken.

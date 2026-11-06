@@ -1,6 +1,7 @@
 ---
 import Logo from "@/components/Logo.astro";
 import MainNav, { type NavLink } from "@/components/MainNav";
+import { hamtaFunktioner } from "@/lib/funktioner";
 import { hamtaJulkampanj } from "@/lib/julkampanj";
 import { href } from "@/lib/utils";
 
@@ -9,6 +10,7 @@ interface Props {
 }
 const { current } = Astro.props;
 const { visasPaStartsidan } = hamtaJulkampanj();
+const { julklapp } = hamtaFunktioner();
 
 const links: NavLink[] = [
   { label: "Vårt stöd", href: href("/#stod") },
@@ -18,8 +20,9 @@ const links: NavLink[] = [
   { label: "Om föreningen", href: href("/om-foreningen"), current: current === "om" },
   { label: "Nyheter", href: href("/nyheter"), current: current === "nyheter" },
   { label: "Frågor", href: href("/vanliga-fragor"), current: current === "fragor" },
-  // Seasonal: the association turns the campaign on and off in Pages CMS (src/data/julkampanj.json).
-  ...(visasPaStartsidan || current === "julklapp"
+  // Seasonal: the association turns the campaign on and off in Pages CMS (src/data/julkampanj.json). The flag
+  // `julklapp` (src/data/funktioner.json) removes the page and every link to it.
+  ...(julklapp && (visasPaStartsidan || current === "julklapp")
     ? [{ label: "Julklapp", href: href("/julklapp"), current: current === "julklapp" }]
     : []),
 ];

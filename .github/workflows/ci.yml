@@ -19,6 +19,9 @@ env:
   # and BASE_PATH (/) instead of changing this file.
   SITE_URL: ${{ vars.SITE_URL || 'https://streetlight-nu.github.io' }}
   BASE_PATH: ${{ vars.BASE_PATH || '/web' }}
+  # Funktionsflaggorna (src/data/funktioner.json): only the build on master is production, where a flag set to
+  # "ejProduktion" is off. Every other build (branches, pull requests) shows those features.
+  MILJO: ${{ github.ref == 'refs/heads/master' && 'produktion' || '' }}
 
 jobs:
   test:

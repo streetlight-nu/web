@@ -84,6 +84,35 @@ content:
         type: boolean
         description: Bocka i när kampanjen pågår. Bocka ur efter jul, så försvinner den från startsidan och menyn. Sidan Ge en julklapp finns kvar.
 
+  - name: funktioner
+    label: Funktioner
+    type: file
+    path: src/data/funktioner.json
+    format: json
+    # The fields must match the flags in src/lib/funktioner.ts; tests/unit/funktioner.test.ts checks it.
+    # A change takes effect when the site is built and published again, which takes a few minutes.
+    fields:
+      - name: julklapp
+        label: Ge en julklapp (sidan, länken i menyn och rutan på startsidan)
+        type: select
+        required: true
+        default: pa
+        options:
+          values:
+            - { value: pa, label: På, visas överallt }
+            - { value: av, label: Av, visas ingenstans }
+            - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
+      - name: historia
+        label: Vår historia (sidan och länkarna till den)
+        type: select
+        required: true
+        default: pa
+        options:
+          values:
+            - { value: pa, label: På, visas överallt }
+            - { value: av, label: Av, visas ingenstans }
+            - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
+
   - name: vanligaFragor
     label: Vanliga frågor
     type: collection

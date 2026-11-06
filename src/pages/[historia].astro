@@ -5,8 +5,14 @@ import LightBand from "@/components/LightBand.astro";
 import Foto from "@/components/Foto.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
+import { hamtaFunktioner } from "@/lib/funktioner";
 import { hamtaHistoria, periodId } from "@/lib/historia";
 import { href } from "@/lib/utils";
+
+/** The page is built only when the flag `historia` is on (src/data/funktioner.json); otherwise /historia is a 404. */
+export function getStaticPaths() {
+  return hamtaFunktioner().historia ? [{ params: { historia: "historia" } }] : [];
+}
 
 /**
  * Vår historia: the timeline from 1995 until today. The periods alternate between cotton and green

@@ -1,10 +1,9 @@
 /**
  * Repejo (https://repejo.se): the association's fundraising service, which handles payment, the checkout
- * and the progress bar towards the fundraising goal. It is the only external service a page may call,
- * and only a page that needs it (ADR 0003).
+ * and the progress bar towards the fundraising goal. It is an external service the campaign page calls (ADR 0003).
  */
 
-/** Repejo's host. The browser tests allow requests to it only on the campaign page. */
+/** Repejo's host. The browser tests stub it. */
 export const REPEJO_HOST = "https://app.repejo.se";
 
 /** The association's organisation id at Repejo. */

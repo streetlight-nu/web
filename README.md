@@ -75,9 +75,9 @@ Sidan ”Ge en julklapp” (`src/pages/[julklapp].astro`, `/julklapp`) bäddar i
 
 Kampanjen är säsongsbunden. Efter jul kan sidan tas bort, eller kortkoden bytas, utan att något annat ändras.
 
-## Intresseanmälan
+## Bli fadder
 
-Formuläret i "Bli fadder" (`src/components/Intresseanmalan.tsx`) är inte kopplat till någon formulärtjänst än, och det säger det till besökaren. Ingen data lämnar sidan. Formuläret skickar bara via `skickaIntresseanmalan()` i `src/lib/intresseanmalan.ts`, som i v1 svarar `inte-kopplat`. När föreningen har valt tjänst och mottagare kopplas den in där, och tackläget i formuläret ändras så att det säger vad det nya svaret betyder.
+Formuläret i ”Bli fadder” är Repejos checkout (`<repejo-checkout>`) med kortkoden `FADDER_KORTKOD` i `src/lib/repejo.ts`. Startsidan laddar Repejos skript, och under formuläret finns en länk till kampanjens egen sida hos Repejo. Det besökaren fyller i går till Repejo.
 
 ## Publicering
 

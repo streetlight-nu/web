@@ -12,6 +12,9 @@ export const REPEJO_ORGANISATION = "org_2ipufW9fncbNaQ5aFFYTLH";
 /** The short code of the Christmas campaign "Ge en julklapp som sprider hopp". */
 export const JULKAMPANJ_KORTKOD = "TSpuB";
 
+/** The short code of the checkout for becoming a fadder (the "Bli fadder" section on the home page). */
+export const FADDER_KORTKOD = "7r3dB";
+
 /** Repejo's own page for a campaign: the fallback when its script does not load. */
 export function kampanjsida(kortkod: string): string {
   return `${REPEJO_HOST}/s/${kortkod}`;

@@ -5,6 +5,7 @@
  *
  * - `del="skript"`: Repejo's `checkout.js`, loaded with `defer`. Put it once per page, in the head.
  * - `del="checkout"`: `<repejo-checkout>`, with a reserved minimum height so the page does not jump.
+ *   `vantar` and `reservtext` say what the reserved space and the fallback link say (default: the julklapp's).
  * - `del="matare"`: `<repejo-progress-bar>`, the progress bar towards the goal, also with a reserved height.
  *
  * Under each element there is always a small link to the campaign's own page at Repejo, so a visitor can
@@ -18,8 +19,17 @@ interface Props {
   del: "skript" | "checkout" | "matare";
   /** The campaign's short code at Repejo. */
   kortkod?: string;
+  /** What the dashed frame says until Repejo has drawn the checkout. */
+  vantar?: string;
+  /** The fallback link's text under the checkout. */
+  reservtext?: string;
 }
-const { del, kortkod = JULKAMPANJ_KORTKOD } = Astro.props;
+const {
+  del,
+  kortkod = JULKAMPANJ_KORTKOD,
+  vantar = "Här visas Repejos formulär för julklappen.",
+  reservtext = "Ge via Repejos kampanjsida",
+} = Astro.props;
 const reserv = kampanjsida(kortkod);
 ---
 
@@ -38,9 +48,9 @@ const reserv = kampanjsida(kortkod);
 {
   del === "checkout" && (
     <div class="repejo">
-      <repejo-checkout short_code={kortkod} host={REPEJO_HOST} data-vantar="Här visas Repejos formulär för julklappen." />
+      <repejo-checkout short_code={kortkod} host={REPEJO_HOST} data-vantar={vantar} />
       <p class="reserv">
-        Fungerar inte betalningen? <a href={reserv}>Ge via Repejos kampanjsida</a>
+        Fungerar inte betalningen? <a href={reserv}>{reservtext}</a>
       </p>
     </div>
   )

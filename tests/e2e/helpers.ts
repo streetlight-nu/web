@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page } from "@playwright/test";
 
@@ -35,4 +37,16 @@ export async function stubRepejo(page: Page) {
 /** Blocks Repejo, as when its script cannot be loaded. */
 export async function blockRepejo(page: Page) {
   await page.route(`${REPEJO_HOST}/**`, (route) => route.abort());
+}
+
+/**
+ * Whether a funktionsflagga (src/data/funktioner.json) is on in the ordinary build, which is built from the real
+ * data file with the same MILJO as CI. The association edits that file in Pages CMS, so tests of a page or an
+ * element behind a flag skip themselves when it is off, instead of failing. The tests in funktioner.spec.ts use
+ * their own builds from fixtures and do not need this.
+ */
+export function funktionPa(funktion: "julklapp" | "historia"): boolean {
+  const lagen = JSON.parse(readFileSync("src/data/funktioner.json", "utf8")) as Record<string, string>;
+  const lage = lagen[funktion];
+  return lage === "pa" || (lage === "ejProduktion" && process.env.MILJO !== "produktion");
 }

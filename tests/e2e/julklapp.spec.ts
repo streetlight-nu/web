@@ -1,7 +1,9 @@
 import { expect, test } from "@playwright/test";
 
 import { JULKAMPANJ_KORTKOD, kampanjsida } from "../../src/lib/repejo";
-import { blockRepejo, expectNoA11yViolations, stubRepejo } from "./helpers";
+import { blockRepejo, expectNoA11yViolations, funktionPa, stubRepejo } from "./helpers";
+
+test.skip(!funktionPa("julklapp"), "julklapp är avstängd i funktioner.json");
 
 const sida = "julklapp";
 const reservlank = kampanjsida(JULKAMPANJ_KORTKOD);

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { expectNoA11yViolations } from "./helpers";
+import { expectNoA11yViolations, funktionPa } from "./helpers";
 
 /** The value shown for one föreningsuppgift under Kontakt, found by its label. */
 function uppgift(page: Page, label: string) {
@@ -37,6 +37,7 @@ test("menyn markerar Om föreningen som aktiv", async ({ page, isMobile }) => {
 });
 
 test("Så började det leder till Vår historia, och sidfoten till Kontakt", async ({ page }) => {
+  test.skip(!funktionPa("historia"), "historia är avstängd i funktioner.json");
   await page.goto("om-foreningen");
   await page.getByRole("link", { name: "Läs hela vår historia" }).click();
   await expect(page).toHaveURL(/\/historia$/);

@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-import { expectNoA11yViolations } from "./helpers";
+import { expectNoA11yViolations, funktionPa } from "./helpers";
+
+test.skip(!funktionPa("historia"), "historia är avstängd i funktioner.json");
 
 const perioder = ["1995–1999", "2000–2009", "2010–2019", "2020–idag"];
 

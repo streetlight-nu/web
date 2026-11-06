@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { REPEJO_HOST } from "../../src/lib/repejo";
-import { stubRepejo } from "./helpers";
+import { funktionPa, stubRepejo } from "./helpers";
 
 /**
  * The campaign page loads Repejo's script (ADR 0003). Repejo is stubbed with a script that loads nothing, so
@@ -9,6 +9,7 @@ import { stubRepejo } from "./helpers";
  * Adyen and possibly a Meta pixel): see ADR 0003.
  */
 test("julklapp hämtar Repejos skript från Repejo, en gång", async ({ page }) => {
+  test.skip(!funktionPa("julklapp"), "julklapp är avstängd i funktioner.json");
   await stubRepejo(page);
   const skript: string[] = [];
   page.on("request", (request) => {

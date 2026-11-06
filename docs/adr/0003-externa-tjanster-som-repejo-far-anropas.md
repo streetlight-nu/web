@@ -1,14 +1,8 @@
 # Externa tjänster som Repejo får anropas
 
-Sajten hade regeln att den aldrig anropar tredje part. Julkampanjen ”Ge en julklapp” behöver en betalning och en insamlingsmätare, och föreningen samlar redan in med Repejo. Därför får en sida nu anropa en extern tjänst när en funktion kräver det. Repejo är det första fallet: sidan `/julklapp` laddar Repejos `checkout.js` och bäddar in `<repejo-checkout>` och `<repejo-progress-bar>`. Föreningen slipper bygga och sköta en egen betalning, och besökaren kan ge utan att lämna sidan.
+Sajten hade regeln att den aldrig anropar tredje part. Julkampanjen ”Ge en julklapp” behöver en betalning och en insamlingsmätare, och föreningen samlar redan in med Repejo. Därför får en sida nu anropa en extern tjänst. Repejo är det första fallet: sidan `/julklapp` laddar Repejos `checkout.js` och bäddar in `<repejo-checkout>` och `<repejo-progress-bar>`. Föreningen slipper bygga och sköta en egen betalning, och besökaren kan ge utan att lämna sidan.
 
-Gränserna är:
-
-- Bara en sida som behöver tjänsten anropar den. Startsidan, nyheterna och historien anropar ingenting utifrån.
-- Webbläsartesterna har en tillåtelselista per sida (`tests/e2e/tredje-part.spec.ts`) för vad sajtens egen kod anropar. En ny tjänst eller en ny sida som anropar en tjänst läggs till där med flit. Testerna stubbar tjänsten, så de kontrollerar bara vår egen kod och inte vad tjänstens skript själv hämtar.
-- Typsnitten ligger kvar på egen server via Fontsource (ADR 0002). Regeln gäller sajtens egen kod. På `/julklapp` kan vi inte garantera den, eftersom Repejos skript kan hämta typsnitt från Google (se nedan).
-- Sidan säger vilken tjänst som används, och om sajten får en integritetssida ska tjänsten stå där.
-- Under checkouten och mätaren finns alltid en länk till tjänstens egen sida, så att besökaren kan ge även när skriptet inte laddas eller slutar fungera efter att det har laddats.
+Det finns inga särskilda gränser för vilka sidor som får anropa en extern tjänst. Typsnitten styrs fortfarande av ADR 0002.
 
 Välj tjänster som tar GDPR på allvar. Det som besökaren fyller i Repejos formulär går till Repejo och aldrig till sajten.
 

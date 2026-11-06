@@ -1,10 +1,11 @@
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { describe, expect, test } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
 import { parse } from "yaml";
 
-import { DATAFIL, FUNKTIONER, LAGEN, arPa, funktionerSchema, tolkaFunktioner } from "@/lib/funktioner";
+import { DATAFIL, FUNKTIONER, LAGEN, arPa, funktionerSchema, hamtaFunktioner, tolkaFunktioner } from "@/lib/funktioner";
 
 interface Falt {
   name: string;
@@ -38,6 +39,46 @@ describe("funktionsflaggorna i src/data/funktioner.json", () => {
     expect(arPa("av", false)).toBe(false);
     expect(arPa("ejProduktion", true)).toBe(false);
     expect(arPa("ejProduktion", false)).toBe(true);
+  });
+});
+
+describe("hamtaFunktioner", () => {
+  const mapp = mkdtempSync(path.join(tmpdir(), "funktioner-"));
+  let antal = 0;
+
+  /** A data file of its own per call: lasDatafil remembers each file for the rest of the process. */
+  function skrivFil(innehall: object) {
+    const fil = path.join(mapp, `funktioner-${antal++}.json`);
+    writeFileSync(fil, JSON.stringify(innehall));
+    return fil;
+  }
+
+  afterEach(() => vi.unstubAllEnvs());
+
+  test("läser filen som FUNKTIONER_FIL pekar på", () => {
+    vi.stubEnv("FUNKTIONER_FIL", skrivFil({ julklapp: "av", historia: "pa" }));
+    vi.stubEnv("MILJO", "");
+    expect(hamtaFunktioner()).toEqual({ julklapp: false, historia: true });
+  });
+
+  test("ejProduktion är på utan MILJO och av när MILJO=produktion", () => {
+    const fil = skrivFil({ julklapp: "ejProduktion", historia: "pa" });
+    vi.stubEnv("FUNKTIONER_FIL", fil);
+    vi.stubEnv("MILJO", "");
+    expect(hamtaFunktioner()).toEqual({ julklapp: true, historia: true });
+    vi.stubEnv("MILJO", "produktion");
+    expect(hamtaFunktioner()).toEqual({ julklapp: false, historia: true });
+  });
+
+  test("ett annat värde på MILJO räknas inte som produktion", () => {
+    vi.stubEnv("FUNKTIONER_FIL", skrivFil({ julklapp: "ejProduktion", historia: "ejProduktion" }));
+    vi.stubEnv("MILJO", "test");
+    expect(hamtaFunktioner()).toEqual({ julklapp: true, historia: true });
+  });
+
+  test("en felaktig fil stoppar bygget", () => {
+    vi.stubEnv("FUNKTIONER_FIL", skrivFil({ julklapp: "pa" }));
+    expect(() => hamtaFunktioner()).toThrow(/Funktionsflaggorna är felaktiga/);
   });
 });
 

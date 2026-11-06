@@ -41,6 +41,8 @@ export default defineConfig({
       command:
         "FORENINGSUPPGIFTER_FIL=tests/fixtures/foreningsuppgifter-ifylld.json" +
         " JULKAMPANJ_FIL=tests/fixtures/julkampanj-ifylld.json" +
+        // Not production, even when CI sets MILJO on master, so that `ejProduktion` is on (tests/e2e/funktioner.spec.ts).
+        " MILJO= FUNKTIONER_FIL=tests/fixtures/funktioner-ejproduktion.json" +
         " FRAGOR_MAPP=tests/fixtures/fragor" +
         ` npm run build -- --outDir ${filledOutDir}` +
         ` && npm run preview -- --outDir ${filledOutDir} --port ${filledPort} --ignore-lock`,

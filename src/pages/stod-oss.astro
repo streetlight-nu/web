@@ -1,0 +1,139 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Repejo from "@/components/Repejo.astro";
+import Steps from "@/components/Steps.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import { FADDER_KORTKOD } from "@/lib/repejo";
+import { href } from "@/lib/utils";
+
+/**
+ * Stöd oss: becoming a fadder comes first. The gold field #bli-fadder holds the heading, three facts, the
+ * steps and Repejo's checkout (ADR 0003), so a visitor can become a fadder right away. On wide screens the
+ * text stands in the left column and the checkout in the right, full height; under 900 px the checkout comes
+ * right after the heading and the lede, before the facts and the steps.
+ */
+const fakta = [
+  [
+    "Alla 20 barnen tillsammans.",
+    "Vill du hellre följa ett av barnen? Det går också. Skriv det i ett mejl till oss, så ordnar vi det.",
+  ],
+  ["Barnen väljs ut tillsammans med de lokala myndigheterna", "i Addis Abeba."],
+  ["Pengarna går via den svenska föreningen", "till arbetet i Etiopien."],
+];
+---
+
+<BaseLayout
+  title="Stöd oss"
+  current="stod"
+  description="Bli fadder och håll ljusen tända. Som fadder stöttar du alla 20 fadderbarnen i Addis Abeba tillsammans."
+>
+  <Repejo slot="head" del="skript" />
+
+  <div slot="header" class="pt-[clamp(8px,2vw,20px)] pb-[clamp(24px,3vw,36px)]">
+    <nav aria-label="Du är här" class="flex flex-wrap items-center gap-2.5 text-label font-semibold text-mint">
+      <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page" class="text-cotton">Stöd oss</span>
+    </nav>
+  </div>
+  <TibebBand slot="header-after" variant="thin" />
+
+  <section
+    id="bli-fadder"
+    aria-labelledby="bli-fadder-rubrik"
+    class="bg-gold pt-[clamp(40px,5vw,64px)] pb-[clamp(64px,9vw,120px)] text-ink"
+  >
+    <div class="fadder band-inner">
+      <div class="fadder-intro">
+        <h1
+          id="bli-fadder-rubrik"
+          class="max-w-[13ch] text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[0.98] tracking-[-0.035em]"
+        >
+          Bli fadder och håll ljusen tända.
+        </h1>
+        <p class="mt-[22px] max-w-[46ch] text-lede">
+          Som fadder stöttar du alla 20 fadderbarnen tillsammans. Ditt bidrag går till skolavgifter, uniform, skolmaterial
+          och vård i Addis Abeba.
+        </p>
+      </div>
+
+      <div class="fadder-rest">
+        <ul class="mt-7 grid list-none gap-4 border-t-[3px] border-ink p-0 pt-5">
+          {
+            fakta.map(([fet, resten]) => (
+              <li class="grid grid-cols-[26px_minmax(0,1fr)] items-start gap-3.5">
+                <svg viewBox="0 0 26 26" aria-hidden="true" class="mt-0.5 size-[26px]">
+                  <path d="M13 1 25 13 13 25 1 13Z" fill="#0B2E24" />
+                  <path d="M13 7 19 13 13 19 7 13Z" fill="#FBFBF8" />
+                </svg>
+                <span>
+                  <strong class="font-semibold">{fet}</strong> {resten}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 id="sa-gar-det-till" class="mt-9 mb-4 text-title tracking-[-0.015em]">Så går det till</h2>
+        <Steps aria-labelledby="sa-gar-det-till">
+          <li>Du väljer belopp och betalsätt i formuläret.</li>
+          <li>Betalningen går via Repejo, föreningens insamlingstjänst.</li>
+          <li>Någon i föreningen hör av sig och berättar mer om barnen.</li>
+        </Steps>
+      </div>
+
+      <div class="fadder-form">
+        <Repejo
+          del="checkout"
+          kortkod={FADDER_KORTKOD}
+          vantar="Här visas Repejos formulär för att bli fadder."
+          utanReserv
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Text in the left column, the checkout in the right one at full height. */
+  .fadder {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "intro form" "rest form";
+    column-gap: clamp(32px, 6vw, 96px);
+  }
+  .fadder-intro {
+    grid-area: intro;
+    min-width: 0;
+  }
+  .fadder-rest {
+    grid-area: rest;
+    min-width: 0;
+  }
+  .fadder-form {
+    grid-area: form;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .fadder-form > :global(.repejo) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .fadder-form :global(repejo-checkout) {
+    flex: 1;
+  }
+  /* Under 900 px the checkout comes right after the heading and the lede, before the facts and the steps. */
+  @media (max-width: 900px) {
+    .fadder {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      grid-template-areas: "intro" "form" "rest";
+    }
+    .fadder-form {
+      margin-top: 28px;
+    }
+  }
+</style>

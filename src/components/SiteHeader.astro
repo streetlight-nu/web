@@ -6,7 +6,7 @@ import { hamtaJulkampanj } from "@/lib/julkampanj";
 import { href } from "@/lib/utils";
 
 interface Props {
-  current?: "nyheter" | "om" | "historia" | "julklapp" | "fragor";
+  current?: "nyheter" | "om" | "historia" | "julklapp" | "fragor" | "stod";
 }
 const { current } = Astro.props;
 const { visasPaStartsidan } = hamtaJulkampanj();
@@ -27,14 +27,21 @@ const links: NavLink[] = [
     : []),
 ];
 // The Ett ljus rule: on the campaign page "Ge en julklapp" is the gold button, so "Bli fadder" steps back to a line.
-const sponsorVariant = current === "julklapp" ? "line" : "gold";
+// On Stöd oss the visitor is already where "Bli fadder" leads, so it is a line marked as the current page.
+const sponsorVariant = current === "julklapp" || current === "stod" ? "line" : "gold";
 ---
 
 <header class="on-green bg-green text-cotton">
   <div class="band-inner">
     <nav aria-label="Huvudmeny" class="flex flex-wrap items-center justify-between gap-3 py-[22px] min-[901px]:flex-nowrap min-[901px]:gap-[clamp(16px,2vw,24px)] max-[520px]:gap-2">
       <Logo on="green" href={href("/")} />
-      <MainNav client:load links={links} sponsorHref={href("/#bli-fadder")} sponsorVariant={sponsorVariant} />
+      <MainNav
+        client:load
+        links={links}
+        sponsorHref={href(current === "stod" ? "/stod-oss" : "/#bli-fadder")}
+        sponsorVariant={sponsorVariant}
+        sponsorCurrent={current === "stod"}
+      />
     </nav>
     <slot />
   </div>

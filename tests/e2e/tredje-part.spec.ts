@@ -19,3 +19,14 @@ test("julklapp hämtar Repejos skript från Repejo, en gång", async ({ page }) 
   await page.waitForLoadState("networkidle");
   expect(skript).toEqual([`${REPEJO_HOST}/assets/checkout.js`]);
 });
+
+test("Stöd oss hämtar Repejos skript från Repejo, en gång", async ({ page }) => {
+  await stubRepejo(page);
+  const skript: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().startsWith(`${REPEJO_HOST}/`)) skript.push(request.url());
+  });
+  await page.goto("stod-oss");
+  await page.waitForLoadState("networkidle");
+  expect(skript).toEqual([`${REPEJO_HOST}/assets/checkout.js`]);
+});

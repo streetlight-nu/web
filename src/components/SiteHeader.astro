@@ -5,8 +5,11 @@ import { hamtaFunktioner } from "@/lib/funktioner";
 import { hamtaJulkampanj } from "@/lib/julkampanj";
 import { href } from "@/lib/utils";
 
+/** The page the visitor is on, when it has its own place in the main menu or is where "Bli fadder" leads. */
+export type AktuellSida = "nyheter" | "om" | "historia" | "julklapp" | "fragor" | "stod";
+
 interface Props {
-  current?: "nyheter" | "om" | "historia" | "julklapp" | "fragor" | "stod";
+  current?: AktuellSida;
 }
 const { current } = Astro.props;
 const { visasPaStartsidan } = hamtaJulkampanj();

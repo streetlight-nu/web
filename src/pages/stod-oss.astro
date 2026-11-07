@@ -1,0 +1,318 @@
+---
+import { getEntry } from "astro:content";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FlerSattAttStodja from "@/components/FlerSattAttStodja.astro";
+import Fraga from "@/components/Fraga.astro";
+import Insyn from "@/components/Insyn.astro";
+import Ledger, { type LedgerItem } from "@/components/Ledger.astro";
+import Repejo from "@/components/Repejo.astro";
+import Steps from "@/components/Steps.astro";
+import Thread from "@/components/Thread.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import TjugoLjus from "@/components/TjugoLjus.astro";
+import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { FADDER_KORTKOD } from "@/lib/repejo";
+import { href } from "@/lib/utils";
+
+/**
+ * Stöd oss: becoming a fadder comes first. The gold field #bli-fadder holds the heading, three facts, the
+ * steps and Repejo's checkout (ADR 0003), so a visitor can become a fadder right away. On wide screens the
+ * text stands in the left column and the checkout in the right, full height; under 900 px the checkout comes
+ * right after the heading and the lede, before the facts and the steps.
+ */
+const fakta = [
+  [
+    "Alla 20 barnen tillsammans.",
+    "Vill du hellre följa ett av barnen? Det går också. Skriv det i ett mejl till oss, så ordnar vi det.",
+  ],
+  ["Barnen väljs ut tillsammans med de lokala myndigheterna", "i Addis Abeba."],
+  ["Pengarna går via den svenska föreningen", "till arbetet i Etiopien."],
+];
+
+/** The jump links to the page's sections, in the header. Each section adds its own once it exists. */
+const hopp = [
+  ["Vart pengarna går", "vart"],
+  ["Så når det fram", "nar-fram"],
+  ["Frågor", "fragor"],
+  ["Fler sätt att stödja", "fler"],
+];
+
+/**
+ * The questions future fadder tend to ask (#fragor), from Vanliga frågor in this order. A question the association
+ * has removed in Pages CMS is skipped. They are shown without the anchors #fraga-<id>, which belong to Vanliga frågor.
+ */
+const uppgifter = hamtaForeningsuppgifter();
+const fragor = (
+  await Promise.all(
+    [
+      "vad-innebar-det-att-vara-fadder",
+      "vad-kostar-det-att-vara-fadder",
+      "hur-betalar-jag",
+      "kan-jag-sluta-vara-fadder",
+      "far-jag-hora-hur-det-gar",
+    ].map((id) => getEntry("fragor", id)),
+  )
+).filter((fraga) => fraga !== undefined);
+
+/** Vart ditt bidrag går: the start page's four rows, plus the family's own income from Vanliga frågor. */
+const bidrag: LedgerItem[] = [
+  {
+    title: "Skolavgifter",
+    text: "Barnet får en plats i skolan och kan stanna kvar där, utan att familjen behöver välja mellan mat och avgift.",
+  },
+  { title: "Skoluniform", text: "En egen uniform gör att barnet kan gå till skolan som alla andra." },
+  {
+    title: "Skolmaterial",
+    text: "Böcker, skrivhäften och pennor, så att barnet kan följa undervisningen och göra läxorna.",
+  },
+  {
+    title: "Vård när barnet blir sjukt",
+    text: "Vi betalar eventuella medicinska kostnader, så att en sjukdom inte blir slutet på skolgången.",
+  },
+  {
+    title: "En egen inkomst för familjen",
+    text: "Föräldrarna kan få stöd och ekonomisk hjälp att starta en egen verksamhet som ger inkomst.",
+  },
+];
+
+/** Så når det fram: the way of the money, along the gold thread. */
+const vagen = [
+  "Du blir fadder via Repejo.",
+  "Streetlight Sverige samlar in pengarna och stöttar arbetet i Etiopien ekonomiskt.",
+  "Streetlight Etiopien bär arbetet med barnen och familjerna på plats i Addis Abeba.",
+];
+---
+
+<BaseLayout
+  title="Stöd oss"
+  current="stod"
+  description="Bli fadder och håll ljusen tända. Som fadder stöttar du alla 20 fadderbarnen i Addis Abeba tillsammans."
+>
+  <Repejo slot="head" del="skript" />
+
+  <div
+    slot="header"
+    class="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 pt-[clamp(8px,2vw,20px)] pb-[clamp(24px,3vw,36px)]"
+  >
+    <nav aria-label="Du är här" class="flex flex-wrap items-center gap-2.5 text-label font-semibold text-mint">
+      <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page" class="text-cotton">Stöd oss</span>
+    </nav>
+    <nav aria-label="Hoppa till ett avsnitt">
+      <ul class="m-0 flex list-none flex-wrap gap-3 p-0">
+        {
+          hopp.map(([namn, id]) => (
+            <li>
+              <a class="jump" href={`#${id}`}>
+                {namn}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+  <TibebBand slot="header-after" variant="thin" />
+
+  <section
+    id="bli-fadder"
+    aria-labelledby="bli-fadder-rubrik"
+    class="bg-gold pt-[clamp(40px,5vw,64px)] pb-[clamp(64px,9vw,120px)] text-ink"
+  >
+    <div class="fadder band-inner">
+      <div class="fadder-intro">
+        <h1
+          id="bli-fadder-rubrik"
+          class="max-w-[13ch] text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[0.98] tracking-[-0.035em]"
+        >
+          Bli fadder och håll ljusen tända.
+        </h1>
+        <p class="mt-[22px] max-w-[46ch] text-lede">
+          Som fadder stöttar du alla 20 fadderbarnen tillsammans. Ditt bidrag går till skolavgifter, uniform, skolmaterial
+          och vård i Addis Abeba.
+        </p>
+      </div>
+
+      <div class="fadder-rest">
+        <ul class="mt-7 grid list-none gap-4 border-t-[3px] border-ink p-0 pt-5">
+          {
+            fakta.map(([fet, resten]) => (
+              <li class="grid grid-cols-[26px_minmax(0,1fr)] items-start gap-3.5">
+                <svg viewBox="0 0 26 26" aria-hidden="true" class="mt-0.5 size-[26px]">
+                  <path d="M13 1 25 13 13 25 1 13Z" fill="#0B2E24" />
+                  <path d="M13 7 19 13 13 19 7 13Z" fill="#FBFBF8" />
+                </svg>
+                <span>
+                  <strong class="font-semibold">{fet}</strong> {resten}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 id="sa-gar-det-till" class="mt-9 mb-4 text-title tracking-[-0.015em]">Så går det till</h2>
+        <Steps aria-labelledby="sa-gar-det-till">
+          <li>Du väljer belopp och betalsätt i formuläret.</li>
+          <li>Betalningen går via Repejo, föreningens insamlingstjänst.</li>
+          <li>Någon i föreningen hör av sig och berättar mer om barnen.</li>
+        </Steps>
+      </div>
+
+      <div class="fadder-form">
+        <Repejo
+          del="checkout"
+          kortkod={FADDER_KORTKOD}
+          vantar="Här visas Repejos formulär för att bli fadder."
+          utanReserv
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="vart" aria-labelledby="vart-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="split band-inner">
+      <div class="min-w-0">
+        <h2 id="vart-rubrik" class="text-headline">Vart ditt bidrag går.</h2>
+        <p class="mt-[22px] max-w-[46ch] text-lede text-ink-soft">
+          Till det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
+        </p>
+      </div>
+      <div class="min-w-0"><Ledger items={bidrag} /></div>
+    </div>
+  </section>
+
+  <TibebBand />
+
+  <section
+    id="nar-fram"
+    aria-labelledby="nar-fram-rubrik"
+    class="on-green bg-green py-[clamp(64px,9vw,120px)] text-cotton"
+  >
+    <div class="band-inner">
+      <div class="split split--mitt">
+        <div class="min-w-0">
+          <h2 id="nar-fram-rubrik" class="text-headline">
+            Små med flit, så att det <span class="text-gold">når fram.</span>
+          </h2>
+          <p class="mt-[22px] max-w-[46ch] text-lede text-mint">
+            <TjugoLjus /> Två föreningar med var sin styrelse gör arbetet tillsammans.
+          </p>
+        </div>
+        <div class="min-w-0"><Thread steps={vagen} /></div>
+      </div>
+      <Insyn />
+      <p class="mt-6 text-mint">
+        Vill du veta mer om föreningarna?{" "}
+        <a
+          class="inline-block py-2.5 font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4"
+          href={href("/om-foreningen")}>Läs om föreningen</a
+        >
+      </p>
+    </div>
+  </section>
+
+  <section id="fragor" aria-labelledby="fragor-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="split band-inner">
+      <div class="min-w-0">
+        <h2 id="fragor-rubrik" class="text-headline">Innan du bestämmer dig.</h2>
+        <p class="mt-[22px] max-w-[40ch] text-lede text-ink-soft">
+          Det här brukar de som funderar på att bli fadder fråga om.
+        </p>
+      </div>
+      <div class="min-w-0">
+        <div>
+          {fragor.map((fraga) => <Fraga fraga={fraga} uppgifter={uppgifter} />)}
+        </div>
+        <p class="mt-6">
+          <a
+            class="font-semibold underline decoration-gold decoration-2 underline-offset-[0.22em]"
+            href={href("/vanliga-fragor")}>Alla vanliga frågor</a
+          >
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <FlerSattAttStodja />
+</BaseLayout>
+
+<style>
+  /* The jump links in the header, as on Om föreningen. */
+  .jump {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 2px solid rgb(251 251 248 / 0.45);
+    border-radius: var(--radius-pill);
+    color: var(--color-cotton);
+    font-size: var(--text-label);
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.3s var(--ease-light);
+  }
+  .jump:hover {
+    border-color: var(--color-gold);
+  }
+
+  /* A section's heading in the left column, its content in the right one; stacked under 900 px. */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+    gap: clamp(32px, 6vw, 96px);
+  }
+  /* Så når det fram: the heading and the gold thread are centred on each other. */
+  .split--mitt {
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Text in the left column, the checkout in the right one at full height. */
+  .fadder {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "intro form" "rest form";
+    column-gap: clamp(32px, 6vw, 96px);
+  }
+  .fadder-intro {
+    grid-area: intro;
+    min-width: 0;
+  }
+  .fadder-rest {
+    grid-area: rest;
+    min-width: 0;
+  }
+  .fadder-form {
+    grid-area: form;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .fadder-form > :global(.repejo) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .fadder-form :global(repejo-checkout) {
+    flex: 1;
+  }
+  /* Under 900 px the checkout comes right after the heading and the lede, before the facts and the steps. */
+  @media (max-width: 900px) {
+    .fadder {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      grid-template-areas: "intro" "form" "rest";
+    }
+    .fadder-form {
+      margin-top: 28px;
+    }
+  }
+</style>

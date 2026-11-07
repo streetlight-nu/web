@@ -42,7 +42,7 @@ test("menyn markerar Frågor som aktiv och sidfoten länkar hit", async ({ page,
 
 test("leder vidare till Bli fadder och klarar WCAG 2.1 AA, även med alla frågor öppna", async ({ page }) => {
   await page.goto(sida);
-  await expect(page.getByRole("main").getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/#bli-fadder$/);
+  await expect(page.getByRole("main").getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
   await expectNoA11yViolations(page);
   await oppnaAlla(page);
   await expectNoA11yViolations(page);
@@ -66,8 +66,11 @@ test.describe("med testfrågorna och tomma föreningsuppgifter", () => {
     await expect(page.locator("summary")).toHaveText([
       "Första frågan?",
       "Andra frågan?",
+      "Hur betalar jag?",
+      "Vad innebär det att vara fadder?",
       "En fråga om barnen?",
       "Hur vet jag att pengarna når fram?",
+      "Får jag höra hur det går?",
     ]);
   });
 
@@ -123,8 +126,8 @@ test.describe("med testfrågorna och ifyllda föreningsuppgifter", () => {
       "href",
       "https://example.org/test-arsredovisning.pdf",
     );
-    // Only the empty answer is left to fill in.
-    await expect(page.getByRole("main").locator(".sl-todo")).toHaveText(["fylls i av föreningen"]);
+    // Only the empty answers are left to fill in.
+    await expect(page.getByRole("main").locator(".sl-todo")).toHaveText(["fylls i av föreningen", "fylls i av föreningen"]);
     await expectNoA11yViolations(page);
   });
 });

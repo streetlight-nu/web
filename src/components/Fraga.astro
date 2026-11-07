@@ -1,0 +1,122 @@
+---
+/**
+ * Fraga: one question from Vanliga frågor (the collection `fragor`) as a native <details>, with the question, the
+ * plus that folds into a minus, and the answer. The answer gets the föreningsuppgifter filled in, a link written
+ * from the site's root gets the base path, and an empty answer shows the chip "fylls i av föreningen".
+ *
+ * Vanliga frågor gives each question its anchor (`medId`, #fraga-<file name>), so a link opens it. Another page
+ * showing the same question leaves `medId` off, so the anchors stay unique to Vanliga frågor.
+ */
+import type { CollectionEntry } from "astro:content";
+
+import type { Foreningsuppgifter } from "@/lib/foreningsuppgifter";
+import { fragaId, fyllIUppgifter } from "@/lib/vanliga-fragor";
+import { href } from "@/lib/utils";
+
+interface Props {
+  fraga: CollectionEntry<"fragor">;
+  uppgifter: Foreningsuppgifter;
+  /** Give the question the anchor #fraga-<file name>. Only Vanliga frågor does. */
+  medId?: boolean;
+}
+
+const { fraga, uppgifter, medId = false } = Astro.props;
+// A link in an answer is written from the site's root (/nyheter); the site may be published under a base path.
+const medBas = (html: string) => html.replace(/href="\/(?!\/)/g, `href="${href("/")}`);
+const svar = medBas(fyllIUppgifter(fraga.rendered?.html ?? "", uppgifter));
+---
+
+<details id={medId ? fragaId(fraga.id) : undefined}>
+  <summary>
+    <span>{fraga.data.fraga}</span>
+    <svg viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M3 10h14" />
+      <path class="v" d="M10 3v14" />
+    </svg>
+  </summary>
+  <div class="svar" set:html={svar} />
+</details>
+
+<style>
+  details {
+    border-top: 1.5px solid var(--color-rule);
+    scroll-margin-top: 16px;
+  }
+  details:last-child {
+    border-bottom: 1.5px solid var(--color-rule);
+  }
+  summary {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    min-height: 44px;
+    padding-block: 18px;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary:hover span {
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 0.2em;
+  }
+  summary svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 2.5;
+  }
+  /* The plus folds into a minus when the question is open. */
+  summary .v {
+    transform-origin: 10px 10px;
+    transition: transform 0.3s var(--ease-light);
+  }
+  details[open] summary .v {
+    transform: scaleY(0);
+  }
+  /* The question someone linked to is marked with the gold light. */
+  details:target summary span {
+    background: linear-gradient(transparent 62%, var(--color-gold-soft) 62%, var(--color-gold-soft) 92%, transparent 92%);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  /* The answer is the association's Markdown, so its elements are styled here. */
+  .svar {
+    display: grid;
+    gap: 12px;
+    max-width: 62ch;
+    padding-bottom: 22px;
+    overflow-wrap: anywhere;
+  }
+  .svar :global(a) {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.22em;
+  }
+  .svar :global(ul),
+  .svar :global(ol) {
+    margin: 0;
+    padding-left: 1.1em;
+    display: grid;
+    gap: 6px;
+  }
+  .svar :global(ul) {
+    list-style: disc;
+  }
+  .svar :global(ol) {
+    list-style: decimal;
+  }
+</style>

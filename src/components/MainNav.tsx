@@ -13,13 +13,15 @@ interface Props {
   sponsorHref: string;
   /** "gold" on every page except one whose own main action is gold (the campaign page), where it is a line. */
   sponsorVariant?: "gold" | "line";
+  /** True on the page "Bli fadder" leads to (Stöd oss): the button is then marked as the current page. */
+  sponsorCurrent?: boolean;
 }
 
 /**
  * The main menu. On wide screens the links sit in a row; under 900 px they fold
  * into a disclosure opened by the "Meny" button. Escape closes it and returns focus.
  */
-export default function MainNav({ links, sponsorHref, sponsorVariant = "gold" }: Props) {
+export default function MainNav({ links, sponsorHref, sponsorVariant = "gold", sponsorCurrent = false }: Props) {
   const [open, setOpen] = useState(false);
   const listId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -57,7 +59,9 @@ export default function MainNav({ links, sponsorHref, sponsorVariant = "gold" }:
       </ul>
       <div className="ml-auto flex items-center gap-2.5 max-[400px]:gap-2">
         <Button asChild variant={sponsorVariant} size="small" className="whitespace-nowrap max-[520px]:px-4 max-[400px]:px-3.5">
-          <a href={sponsorHref}>Bli fadder</a>
+          <a href={sponsorHref} aria-current={sponsorCurrent ? "page" : undefined}>
+            Bli fadder
+          </a>
         </Button>
         <button
           ref={toggleRef}

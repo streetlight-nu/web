@@ -1,6 +1,6 @@
 # Externa tjänster som Repejo får anropas
 
-Sajten hade regeln att den aldrig anropar tredje part. Julkampanjen ”Ge en julklapp” behöver en betalning och en insamlingsmätare, och föreningen samlar redan in med Repejo. Därför får en sida nu anropa en extern tjänst. Repejo är det första fallet: sidorna `/julklapp` och startsidan (Bli fadder) laddar Repejos `checkout.js` och bäddar in `<repejo-checkout>` och `<repejo-progress-bar>`. Föreningen slipper bygga och sköta en egen betalning, och besökaren kan ge utan att lämna sidan.
+Sajten hade regeln att den aldrig anropar tredje part. Julkampanjen ”Ge en julklapp” behöver en betalning och en insamlingsmätare, och föreningen samlar redan in med Repejo. Därför får en sida nu anropa en extern tjänst. Repejo är det första fallet: sidorna `/stod-oss` (Stöd oss) och `/julklapp` laddar Repejos `checkout.js` och bäddar in `<repejo-checkout>` och `<repejo-progress-bar>`. Föreningen slipper bygga och sköta en egen betalning, och besökaren kan ge utan att lämna sidan.
 
 Det finns inga särskilda gränser för vilka sidor som får anropa en extern tjänst. Typsnitten styrs fortfarande av ADR 0002.
 

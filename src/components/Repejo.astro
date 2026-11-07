@@ -8,8 +8,9 @@
  *   `vantar` and `reservtext` say what the reserved space and the fallback link say (default: the julklapp's).
  * - `del="matare"`: `<repejo-progress-bar>`, the progress bar towards the goal, also with a reserved height.
  *
- * Under each element there is always a small link to the campaign's own page at Repejo, so a visitor can
- * give even when Repejo fails, also after it has defined its elements. Until Repejo has defined an element
+ * Under each element there is a small link to the campaign's own page at Repejo, so a visitor can give even
+ * when Repejo fails, also after it has defined its elements. `utanReserv` leaves the link out under the
+ * checkout (Stöd oss does, as in its design; off by default). Until Repejo has defined an element
  * (without JS, or when Repejo cannot be reached), the reserved space shows a dashed frame saying what goes
  * there. Repejo draws everything inside the elements: amounts, card fields and payment.
  */
@@ -23,12 +24,15 @@ interface Props {
   vantar?: string;
   /** The fallback link's text under the checkout. */
   reservtext?: string;
+  /** Leaves out the fallback link under the checkout. The reserved space and its dashed frame stay. */
+  utanReserv?: boolean;
 }
 const {
   del,
   kortkod = JULKAMPANJ_KORTKOD,
   vantar = "Här visas Repejos formulär för julklappen.",
   reservtext = "Ge via Repejos kampanjsida",
+  utanReserv = false,
 } = Astro.props;
 const reserv = kampanjsida(kortkod);
 ---
@@ -49,9 +53,11 @@ const reserv = kampanjsida(kortkod);
   del === "checkout" && (
     <div class="repejo">
       <repejo-checkout short_code={kortkod} host={REPEJO_HOST} data-vantar={vantar} />
-      <p class="reserv">
-        Fungerar inte betalningen? <a href={reserv}>{reservtext}</a>
-      </p>
+      {!utanReserv && (
+        <p class="reserv">
+          Fungerar inte betalningen? <a href={reserv}>{reservtext}</a>
+        </p>
+      )}
     </div>
   )
 }

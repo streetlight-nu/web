@@ -145,3 +145,5 @@ Några svar saknas än och visas som ”fylls i av föreningen”: vad det kosta
 Ett felstavat namn, till exempel `{bankgiro}`, stoppar sidan. Då fortsätter webbplatsen att visa det som fanns innan (se avsnitt 5). Rätta stavningen och spara igen.
 
 **Startsidan** länkar till frågan ”Hur vet jag att pengarna når fram?” under Insyn. Tar du bort den frågan försvinner länken.
+
+**Stöd oss** visar fem av frågorna under ”Innan du bestämmer dig.”, med samma svar som här: ”Vad innebär det att vara fadder?”, ”Vad kostar det att vara fadder?”, ”Hur betalar jag?”, ”Kan jag sluta vara fadder?” och ”Får jag höra hur det går?”. Ändrar du ett svar ändras det på båda sidorna. Tar du bort en av frågorna försvinner den från Stöd oss.

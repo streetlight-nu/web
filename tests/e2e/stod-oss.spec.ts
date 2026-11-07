@@ -215,3 +215,58 @@ test.describe("frågorna med testfrågorna och ifylld testfil", () => {
     expect(har).toEqual(pa);
   });
 });
+
+/** The deep green field "Fler sätt att stödja oss." (#fler), last on the page. */
+function fler(page: Page) {
+  return page.locator("#fler");
+}
+
+test.describe("Fler sätt att stödja oss med ifylld testfil", () => {
+  test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
+  test("visar raderna Swisha en gåva och Följ och berätta, med Swishnumret", async ({ page }) => {
+    await stubRepejo(page);
+    await page.goto(sida);
+    const s = fler(page);
+    await expect(s.getByRole("heading", { level: 2, name: "Fler sätt att stödja oss." })).toBeVisible();
+    const rader = s.getByRole("listitem");
+    await expect(rader).toHaveCount(2);
+    await expect(rader.nth(0).getByRole("heading", { level: 3 })).toHaveText("Swisha en gåva");
+    await expect(rader.nth(0)).toContainText("Vill du hellre ge en gång? Swisha en gåva till föreningen.");
+    await expect(rader.nth(0).getByText("TEST-SWISH", { exact: true })).toBeVisible();
+    await expect(rader.nth(1).getByRole("heading", { level: 3 })).toHaveText("Följ och berätta");
+    await expectNoA11yViolations(page);
+  });
+});
+
+test.describe("Fler sätt att stödja oss med tom testfil", () => {
+  test.use({ baseURL: process.env.E2E_TOM_URL });
+
+  test("ett saknat Swishnummer visas som ”nummer fylls i”", async ({ page }) => {
+    await stubRepejo(page);
+    await page.goto(sida);
+    const swish = fler(page).getByRole("listitem").filter({ hasText: "Swisha en gåva" });
+    await expect(swish.getByText("nummer fylls i")).toBeVisible();
+    await expectNoA11yViolations(page);
+  });
+});
+
+test("Få nyheterna med e-post leder till formuläret på Nyheter", async ({ page }) => {
+  await page.goto(sida);
+  const knapp = fler(page).getByRole("link", { name: "Få nyheterna med e-post" });
+  await expect(knapp).toHaveAttribute("href", /\/nyheter#nyheter-med-epost$/);
+  await knapp.click();
+  await expect(page).toHaveURL(/\/nyheter#nyheter-med-epost$/);
+  await expect(page.locator("#nyheter-med-epost")).toBeInViewport();
+});
+
+test("hopplänken Fler sätt att stödja leder till avsnittet, sist på sidan", async ({ page }) => {
+  await page.goto(sida);
+  const hopp = page
+    .getByRole("navigation", { name: "Hoppa till ett avsnitt" })
+    .getByRole("link", { name: "Fler sätt att stödja" });
+  await expect(hopp).toHaveAttribute("href", "#fler");
+  await hopp.click();
+  await expect(fler(page).getByRole("heading", { name: "Fler sätt att stödja oss." })).toBeInViewport();
+  expect(await page.locator("main > section").last().getAttribute("id")).toBe("fler");
+});

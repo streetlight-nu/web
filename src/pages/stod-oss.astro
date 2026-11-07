@@ -1,8 +1,12 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Insyn from "@/components/Insyn.astro";
+import Ledger, { type LedgerItem } from "@/components/Ledger.astro";
 import Repejo from "@/components/Repejo.astro";
 import Steps from "@/components/Steps.astro";
+import Thread from "@/components/Thread.astro";
 import TibebBand from "@/components/TibebBand.astro";
+import TjugoLjus from "@/components/TjugoLjus.astro";
 import { FADDER_KORTKOD } from "@/lib/repejo";
 import { href } from "@/lib/utils";
 
@@ -20,6 +24,45 @@ const fakta = [
   ["Barnen väljs ut tillsammans med de lokala myndigheterna", "i Addis Abeba."],
   ["Pengarna går via den svenska föreningen", "till arbetet i Etiopien."],
 ];
+
+/** The jump links in the header, one per section below the gold field, in the order of the page. */
+const hopp = [
+  ["Vart pengarna går", "vart"],
+  ["Så når det fram", "nar-fram"],
+];
+
+/** Vart ditt bidrag går: the start page's four rows, plus the family's own income from Vanliga frågor. */
+const bidrag: LedgerItem[] = [
+  {
+    title: "Skolavgifter",
+    text: "Barnet får en plats i skolan och kan stanna kvar där, utan att familjen behöver välja mellan mat och avgift.",
+  },
+  { title: "Skoluniform", text: "En egen uniform gör att barnet kan gå till skolan som alla andra." },
+  {
+    title: "Skolmaterial",
+    text: "Böcker, skrivhäften och pennor, så att barnet kan följa undervisningen och göra läxorna.",
+  },
+  {
+    title: "Vård när barnet blir sjukt",
+    text: "Vi betalar eventuella medicinska kostnader, så att en sjukdom inte blir slutet på skolgången.",
+  },
+  {
+    title: "En egen inkomst för familjen",
+    text: "Föräldrarna kan få stöd och ekonomisk hjälp att starta en egen verksamhet som ger inkomst.",
+  },
+];
+
+/** Så når det fram: the way of the money, along the gold thread. */
+const vagen = [
+  "Du blir fadder via Repejo.",
+  "Streetlight Sverige samlar in pengarna och stöttar arbetet i Etiopien ekonomiskt.",
+  "Streetlight Etiopien bär arbetet med barnen och familjerna på plats i Addis Abeba.",
+];
+
+const section = "py-[clamp(64px,9vw,120px)]";
+const split =
+  "grid grid-cols-1 items-start gap-[clamp(32px,6vw,96px)] min-[901px]:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]";
+const lede = "mt-[22px] max-w-[46ch] text-lede";
 ---
 
 <BaseLayout
@@ -34,6 +77,19 @@ const fakta = [
       <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
       <span aria-hidden="true">/</span>
       <span aria-current="page" class="text-cotton">Stöd oss</span>
+    </nav>
+    <nav aria-label="Hoppa till ett avsnitt" class="mt-5">
+      <ul class="m-0 flex list-none flex-wrap gap-3 p-0">
+        {
+          hopp.map(([namn, id]) => (
+            <li>
+              <a class="jump" href={`#${id}`}>
+                {namn}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </nav>
   </div>
   <TibebBand slot="header-after" variant="thin" />
@@ -92,9 +148,65 @@ const fakta = [
       </div>
     </div>
   </section>
+
+  <section id="vart" aria-labelledby="vart-rubrik" class={`bg-cotton text-ink ${section}`}>
+    <div class={`band-inner ${split}`}>
+      <div class="min-w-0">
+        <h2 id="vart-rubrik" class="text-headline">Vart ditt bidrag går.</h2>
+        <p class={`${lede} text-ink-soft`}>
+          Till det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
+        </p>
+      </div>
+      <div class="min-w-0"><Ledger items={bidrag} /></div>
+    </div>
+  </section>
+
+  <TibebBand />
+
+  <section id="nar-fram" aria-labelledby="nar-fram-rubrik" class={`on-green bg-green text-cotton ${section}`}>
+    <div class="band-inner">
+      <div class={`${split} min-[901px]:items-center`}>
+        <div class="min-w-0">
+          <h2 id="nar-fram-rubrik" class="text-headline">
+            Små med flit, så att det <span class="text-gold">når fram.</span>
+          </h2>
+          <p class={`${lede} text-mint`}>
+            <TjugoLjus /> Två föreningar med var sin styrelse gör arbetet tillsammans.
+          </p>
+        </div>
+        <div class="min-w-0"><Thread steps={vagen} /></div>
+      </div>
+      <Insyn />
+      <p class="mt-6 text-mint">
+        Vill du veta mer om föreningarna?{" "}
+        <a
+          class="inline-block py-2.5 font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4"
+          href={href("/om-foreningen")}>Läs om föreningen</a
+        >
+      </p>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
+  /* The jump links in the header, the same pills as on Om föreningen. */
+  .jump {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 2px solid rgb(251 251 248 / 0.45);
+    border-radius: var(--radius-pill);
+    color: var(--color-cotton);
+    font-size: var(--text-label);
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.3s var(--ease-light);
+  }
+  .jump:hover {
+    border-color: var(--color-gold);
+  }
+
   /* Text in the left column, the checkout in the right one at full height. */
   .fadder {
     display: grid;

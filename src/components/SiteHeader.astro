@@ -28,7 +28,7 @@ const links: NavLink[] = [
 ];
 // The Ett ljus rule: on the campaign page "Ge en julklapp" is the gold button, so "Bli fadder" steps back to a line.
 // On Stöd oss the visitor is already where "Bli fadder" leads, so it is a line marked as the current page.
-const sponsorVariant = current === "julklapp" || current === "stod" ? "line" : "gold";
+const sponsor = current === "stod" ? "current" : current === "julklapp" ? "line" : "gold";
 ---
 
 <header class="on-green bg-green text-cotton">
@@ -39,8 +39,7 @@ const sponsorVariant = current === "julklapp" || current === "stod" ? "line" : "
         client:load
         links={links}
         sponsorHref={href("/stod-oss")}
-        sponsorVariant={sponsorVariant}
-        sponsorCurrent={current === "stod"}
+        sponsor={sponsor}
       />
     </nav>
     <slot />

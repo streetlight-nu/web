@@ -11,17 +11,18 @@ export interface NavLink {
 interface Props {
   links: NavLink[];
   sponsorHref: string;
-  /** "gold" on every page except one whose own main action is gold (the campaign page), where it is a line. */
-  sponsorVariant?: "gold" | "line";
-  /** True on the page "Bli fadder" leads to (Stöd oss): the button is then marked as the current page. */
-  sponsorCurrent?: boolean;
+  /**
+   * How "Bli fadder" shows: "gold" on most pages; "line" on a page whose own main action is gold (the campaign page);
+   * "current" on the page it leads to (Stöd oss), a line marked as the current page.
+   */
+  sponsor?: "gold" | "line" | "current";
 }
 
 /**
  * The main menu. On wide screens the links sit in a row; under 900 px they fold
  * into a disclosure opened by the "Meny" button. Escape closes it and returns focus.
  */
-export default function MainNav({ links, sponsorHref, sponsorVariant = "gold", sponsorCurrent = false }: Props) {
+export default function MainNav({ links, sponsorHref, sponsor = "gold" }: Props) {
   const [open, setOpen] = useState(false);
   const listId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -58,8 +59,8 @@ export default function MainNav({ links, sponsorHref, sponsorVariant = "gold", s
         ))}
       </ul>
       <div className="ml-auto flex items-center gap-2.5 max-[400px]:gap-2">
-        <Button asChild variant={sponsorVariant} size="small" className="whitespace-nowrap max-[520px]:px-4 max-[400px]:px-3.5">
-          <a href={sponsorHref} aria-current={sponsorCurrent ? "page" : undefined}>
+        <Button asChild variant={sponsor === "gold" ? "gold" : "line"} size="small" className="whitespace-nowrap max-[520px]:px-4 max-[400px]:px-3.5">
+          <a href={sponsorHref} aria-current={sponsor === "current" ? "page" : undefined}>
             Bli fadder
           </a>
         </Button>

@@ -66,8 +66,11 @@ test.describe("med testfrågorna och tomma föreningsuppgifter", () => {
     await expect(page.locator("summary")).toHaveText([
       "Första frågan?",
       "Andra frågan?",
+      "Hur betalar jag?",
+      "Vad innebär det att vara fadder?",
       "En fråga om barnen?",
       "Hur vet jag att pengarna når fram?",
+      "Får jag höra hur det går?",
     ]);
   });
 
@@ -123,8 +126,8 @@ test.describe("med testfrågorna och ifyllda föreningsuppgifter", () => {
       "href",
       "https://example.org/test-arsredovisning.pdf",
     );
-    // Only the empty answer is left to fill in.
-    await expect(page.getByRole("main").locator(".sl-todo")).toHaveText(["fylls i av föreningen"]);
+    // Only the empty answers are left to fill in.
+    await expect(page.getByRole("main").locator(".sl-todo")).toHaveText(["fylls i av föreningen", "fylls i av föreningen"]);
     await expectNoA11yViolations(page);
   });
 });

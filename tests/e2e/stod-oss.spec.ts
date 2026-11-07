@@ -128,3 +128,90 @@ test.describe("Stöd oss med tom testfil", () => {
     expect(sizes.filter((s) => s.px < 18)).toEqual([]);
   });
 });
+
+/** The cotton field "Innan du bestämmer dig." (#fragor) with the questions future fadder tend to ask. */
+function fragorna(page: Page) {
+  return page.locator("#fragor");
+}
+
+// The two fixture builds use the test questions in tests/fixtures/fragor: of the five chosen questions, three are
+// there (one of them without an answer) and two are missing.
+test.describe("frågorna med testfrågorna och tom testfil", () => {
+  test.use({ baseURL: process.env.E2E_TOM_URL });
+
+  test("visar de valda frågorna i sidans ordning och hoppar över dem som saknas", async ({ page }) => {
+    await page.goto(sida);
+    const s = fragorna(page);
+    await expect(s.getByRole("heading", { level: 2, name: "Innan du bestämmer dig." })).toBeVisible();
+    await expect(s.getByText("Det här brukar de som funderar på att bli fadder fråga om.")).toBeVisible();
+    await expect(s.locator("summary")).toHaveText([
+      "Vad innebär det att vara fadder?",
+      "Hur betalar jag?",
+      "Får jag höra hur det går?",
+    ]);
+  });
+
+  test("en fråga öppnas och stängs med tangentbordet", async ({ page }) => {
+    await page.goto(sida);
+    const fraga = fragorna(page).locator("details").first();
+    const svar = fraga.getByText("Ett svar om fadderskapet.");
+    await expect(svar).toBeHidden();
+    await fraga.locator("summary").focus();
+    await page.keyboard.press("Enter");
+    await expect(svar).toBeVisible();
+    await page.keyboard.press("Enter");
+    await expect(svar).toBeHidden();
+  });
+
+  test("ett tomt svar och en saknad föreningsuppgift visas som ”fylls i”", async ({ page }) => {
+    await page.goto(sida);
+    const s = fragorna(page);
+    await s.locator("summary").first().click();
+    await expect(s.locator("details").first()).toContainText("Swish: nummer fylls i");
+    const tomt = s.locator("details").filter({ hasText: "Hur betalar jag?" });
+    await tomt.locator("summary").click();
+    await expect(tomt.getByText("fylls i av föreningen")).toBeVisible();
+  });
+
+  test("frågorna har inga id:n som krockar med Vanliga frågor", async ({ page }) => {
+    await page.goto(sida);
+    await expect(fragorna(page).locator("details[id]")).toHaveCount(0);
+    await expect(page.locator('[id^="fraga-"]')).toHaveCount(0);
+  });
+
+  test("hopplänken Frågor leder till avsnittet, som slutar med länken till alla vanliga frågor", async ({ page }) => {
+    await page.goto(sida);
+    const hopp = page.getByRole("navigation", { name: "Hoppa till ett avsnitt" }).getByRole("link", { name: "Frågor" });
+    await expect(hopp).toHaveAttribute("href", "#fragor");
+    await hopp.click();
+    await expect(fragorna(page).getByRole("heading", { name: "Innan du bestämmer dig." })).toBeInViewport();
+
+    const alla = fragorna(page).getByRole("link", { name: "Alla vanliga frågor" });
+    await expect(alla).toHaveAttribute("href", /\/vanliga-fragor$/);
+    await alla.click();
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Vanliga frågor.");
+  });
+});
+
+test.describe("frågorna med testfrågorna och ifylld testfil", () => {
+  test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
+  test("svaren är samma som på Vanliga frågor, med föreningsuppgifterna ifyllda", async ({ page }) => {
+    await page.goto(sida);
+    const s = fragorna(page);
+    await s.locator("details").evaluateAll((els) => els.forEach((el) => ((el as HTMLDetailsElement).open = true)));
+    await expect(s.locator("details").first()).toContainText("Swish: TEST-SWISH");
+    await expect(s.getByRole("link", { name: "Nyheter" })).toHaveAttribute("href", /\/nyheter$/);
+    await expectNoA11yViolations(page);
+
+    const har = await s.locator("details").allInnerTexts();
+    await page.goto("vanliga-fragor");
+    const pa = [];
+    for (const id of ["vad-innebar-det-att-vara-fadder", "hur-betalar-jag", "far-jag-hora-hur-det-gar"]) {
+      const fraga = page.locator(`#fraga-${id}`);
+      await fraga.evaluate((el) => ((el as HTMLDetailsElement).open = true));
+      pa.push(await fraga.innerText());
+    }
+    expect(har).toEqual(pa);
+  });
+});

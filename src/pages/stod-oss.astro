@@ -4,9 +4,13 @@ import { getEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FlerSattAttStodja from "@/components/FlerSattAttStodja.astro";
 import Fraga from "@/components/Fraga.astro";
+import Insyn from "@/components/Insyn.astro";
+import Ledger, { type LedgerItem } from "@/components/Ledger.astro";
 import Repejo from "@/components/Repejo.astro";
 import Steps from "@/components/Steps.astro";
+import Thread from "@/components/Thread.astro";
 import TibebBand from "@/components/TibebBand.astro";
+import TjugoLjus from "@/components/TjugoLjus.astro";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 import { FADDER_KORTKOD } from "@/lib/repejo";
 import { href } from "@/lib/utils";
@@ -28,6 +32,8 @@ const fakta = [
 
 /** The jump links to the page's sections, in the header. Each section adds its own once it exists. */
 const hopp = [
+  ["Vart pengarna går", "vart"],
+  ["Så når det fram", "nar-fram"],
   ["Frågor", "fragor"],
   ["Fler sätt att stödja", "fler"],
 ];
@@ -48,6 +54,34 @@ const fragor = (
     ].map((id) => getEntry("fragor", id)),
   )
 ).filter((fraga) => fraga !== undefined);
+
+/** Vart ditt bidrag går: the start page's four rows, plus the family's own income from Vanliga frågor. */
+const bidrag: LedgerItem[] = [
+  {
+    title: "Skolavgifter",
+    text: "Barnet får en plats i skolan och kan stanna kvar där, utan att familjen behöver välja mellan mat och avgift.",
+  },
+  { title: "Skoluniform", text: "En egen uniform gör att barnet kan gå till skolan som alla andra." },
+  {
+    title: "Skolmaterial",
+    text: "Böcker, skrivhäften och pennor, så att barnet kan följa undervisningen och göra läxorna.",
+  },
+  {
+    title: "Vård när barnet blir sjukt",
+    text: "Vi betalar eventuella medicinska kostnader, så att en sjukdom inte blir slutet på skolgången.",
+  },
+  {
+    title: "En egen inkomst för familjen",
+    text: "Föräldrarna kan få stöd och ekonomisk hjälp att starta en egen verksamhet som ger inkomst.",
+  },
+];
+
+/** Så når det fram: the way of the money, along the gold thread. */
+const vagen = [
+  "Du blir fadder via Repejo.",
+  "Streetlight Sverige samlar in pengarna och stöttar arbetet i Etiopien ekonomiskt.",
+  "Streetlight Etiopien bär arbetet med barnen och familjerna på plats i Addis Abeba.",
+];
 ---
 
 <BaseLayout
@@ -137,6 +171,48 @@ const fragor = (
     </div>
   </section>
 
+  <section id="vart" aria-labelledby="vart-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="split band-inner">
+      <div class="min-w-0">
+        <h2 id="vart-rubrik" class="text-headline">Vart ditt bidrag går.</h2>
+        <p class="mt-[22px] max-w-[46ch] text-lede text-ink-soft">
+          Till det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
+        </p>
+      </div>
+      <div class="min-w-0"><Ledger items={bidrag} /></div>
+    </div>
+  </section>
+
+  <TibebBand />
+
+  <section
+    id="nar-fram"
+    aria-labelledby="nar-fram-rubrik"
+    class="on-green bg-green py-[clamp(64px,9vw,120px)] text-cotton"
+  >
+    <div class="band-inner">
+      <div class="split split--mitt">
+        <div class="min-w-0">
+          <h2 id="nar-fram-rubrik" class="text-headline">
+            Små med flit, så att det <span class="text-gold">når fram.</span>
+          </h2>
+          <p class="mt-[22px] max-w-[46ch] text-lede text-mint">
+            <TjugoLjus /> Två föreningar med var sin styrelse gör arbetet tillsammans.
+          </p>
+        </div>
+        <div class="min-w-0"><Thread steps={vagen} /></div>
+      </div>
+      <Insyn />
+      <p class="mt-6 text-mint">
+        Vill du veta mer om föreningarna?{" "}
+        <a
+          class="inline-block py-2.5 font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4"
+          href={href("/om-foreningen")}>Läs om föreningen</a
+        >
+      </p>
+    </div>
+  </section>
+
   <section id="fragor" aria-labelledby="fragor-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
     <div class="split band-inner">
       <div class="min-w-0">
@@ -187,6 +263,10 @@ const fragor = (
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     align-items: start;
     gap: clamp(32px, 6vw, 96px);
+  }
+  /* Så når det fram: the heading and the gold thread are centred on each other. */
+  .split--mitt {
+    align-items: center;
   }
   @media (max-width: 900px) {
     .split {

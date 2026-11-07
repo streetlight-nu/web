@@ -3,6 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import FyllsI from "@/components/FyllsI.astro";
 import Ledger from "@/components/Ledger.astro";
 import Foto from "@/components/Foto.astro";
+import Pil from "@/components/Pil.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
@@ -31,7 +32,6 @@ const section = "py-[clamp(64px,9vw,120px)]";
 const split =
   "band-inner grid grid-cols-1 items-start gap-[clamp(28px,6vw,96px)] min-[901px]:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]";
 const lank = "font-semibold underline decoration-gold decoration-2 underline-offset-[0.22em]";
-const pil = "M3 9h11M10 4.5 14.5 9 10 13.5";
 const hopp = [
   ["Det här tror vi på", "tror"],
   ["Så började det", "borjan"],
@@ -146,15 +146,7 @@ const hopp = [
           historia && (
             <a class:list={[buttonVariants({ variant: "line" }), "mt-9"]} href={href("/historia")}>
               Läs hela vår historia
-              <svg viewBox="0 0 18 18" aria-hidden="true"
-                ><path
-                  d={pil}
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"></path></svg
-              >
+              <Pil />
             </a>
           )
         }

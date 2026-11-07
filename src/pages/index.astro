@@ -6,6 +6,7 @@ import BliFadder from "@/components/BliFadder.astro";
 import Insyn from "@/components/Insyn.astro";
 import JulkampanjPaStartsidan from "@/components/JulkampanjPaStartsidan.astro";
 import LightBand from "@/components/LightBand.astro";
+import Pil from "@/components/Pil.astro";
 import SenasteNytt from "@/components/SenasteNytt.astro";
 import Ledger,{ type LedgerItem } from "@/components/Ledger.astro";
 import Thread from "@/components/Thread.astro";
@@ -71,15 +72,7 @@ const lede = "max-w-[58ch] text-lede";
       <div class="mt-[34px] flex flex-wrap gap-3.5 pb-3 max-[520px]:mt-[26px] min-[901px]:pb-[clamp(40px,6vw,76px)]">
         <a class={buttonVariants()} href={href("/stod-oss")} data-huvudknapp>
           Bli fadder
-          <svg viewBox="0 0 18 18" aria-hidden="true"
-              ><path
-                d="M3 9h11M10 4.5 14.5 9 10 13.5"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path></svg
-            >
+          <Pil />
         </a>
         <a class={buttonVariants({ variant: "line" })} href={href("/#stod")}>Vad stödet går till</a>
       </div>

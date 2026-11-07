@@ -15,6 +15,7 @@
  * `julklapp` is on (src/data/funktioner.json).
  * It only links to /julklapp and never loads Repejo (ADR 0003).
  */
+import Pil from "@/components/Pil.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaFunktioner } from "@/lib/funktioner";
 import { hamtaJulkampanj } from "@/lib/julkampanj";
@@ -73,15 +74,7 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
           <div class="handling">
             <a class={cn(buttonVariants({ variant: "line" }), "whitespace-nowrap")} href={href("/julklapp")}>
               Ge en julklapp
-              <svg viewBox="0 0 18 18" aria-hidden="true"
-                ><path
-                  d="M3 9h11M10 4.5 14.5 9 10 13.5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"></path></svg
-              >
+              <Pil />
             </a>
             {sistaDag && (
               <p class="text-mint">

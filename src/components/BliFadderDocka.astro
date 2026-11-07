@@ -1,16 +1,17 @@
 ---
 /**
  * The "Bli fadder" dock: on narrow screens (900 px and under), a "Bli fadder" button fixed at the
- * bottom, within thumb reach, shown only between the hero and the section "Bli fadder", that is when
- * the main button (marked `data-huvudknapp`) has scrolled out of view and the section is not yet
- * in view. While hidden it is out of the tab order and the accessibility tree. Without JS it stays hidden.
+ * bottom, within thumb reach, leading to Stöd oss. It shows only between the hero and the home page's gold
+ * field "Bli fadder" (#bli-fadder), that is when the main button (marked `data-huvudknapp`) has scrolled out of
+ * view and the gold field is not yet in view. While hidden it is out of the tab order and the accessibility tree.
+ * Without JS it stays hidden.
  */
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, href } from "@/lib/utils";
 ---
 
 <div class="docka on-green" data-docka aria-hidden="true">
-  <a class={cn(buttonVariants(), "min-h-12 w-full")} href="#bli-fadder" tabindex="-1">Bli fadder</a>
+  <a class={cn(buttonVariants(), "min-h-12 w-full")} href={href("/stod-oss")} tabindex="-1">Bli fadder</a>
 </div>
 
 <script>

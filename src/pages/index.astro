@@ -2,7 +2,6 @@
 import { getEntry } from "astro:content";
 
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Repejo from "@/components/Repejo.astro";
 import BliFadder from "@/components/BliFadder.astro";
 import Insyn from "@/components/Insyn.astro";
 import JulkampanjPaStartsidan from "@/components/JulkampanjPaStartsidan.astro";
@@ -57,7 +56,6 @@ const lede = "max-w-[58ch] text-lede";
       if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("dusk");
     } catch (e) {}
   </script>
-  <Repejo slot="head" del="skript" />
   <div
     slot="header"
     class="grid grid-cols-1 items-end gap-8 pt-[clamp(28px,5vw,64px)] min-[901px]:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)]"
@@ -71,7 +69,7 @@ const lede = "max-w-[58ch] text-lede";
         deras föräldrar att bygga en egen inkomst.
       </p>
       <div class="mt-[34px] flex flex-wrap gap-3.5 pb-3 max-[520px]:mt-[26px] min-[901px]:pb-[clamp(40px,6vw,76px)]">
-        <a class={buttonVariants()} href={href("/#bli-fadder")} data-huvudknapp>
+        <a class={buttonVariants()} href={href("/stod-oss")} data-huvudknapp>
           Bli fadder
           <svg viewBox="0 0 18 18" aria-hidden="true"
               ><path

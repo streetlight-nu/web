@@ -127,7 +127,7 @@ test("Vart julklappen går har en plats för ett foto med samtycke och leder vid
   const vart = page.getByRole("region", { name: "Vart julklappen går" });
   await expect(vart.getByText("Foto från föreningen, med familjens samtycke")).toBeVisible();
   await expect(vart.getByText("20 fadderbarns skolgång", { exact: false })).toBeVisible();
-  await expect(vart.getByRole("link", { name: "Läs om att bli fadder" })).toHaveAttribute("href", /\/#bli-fadder$/);
+  await expect(vart.getByRole("link", { name: "Läs om att bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
 });
 
 test("avslutas med en uppmaning som leder till checkouten", async ({ page }) => {
@@ -207,7 +207,7 @@ test("på kampanjsidan är Ge en julklapp den enda guldknappen i första vyn, oc
   const guld = "rgb(244, 180, 0)";
   const bakgrund = (el: Element) => getComputedStyle(el).backgroundColor;
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
-  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/#bli-fadder$/);
+  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
   expect(await nav.getByRole("link", { name: "Bli fadder" }).evaluate(bakgrund)).not.toBe(guld);
   expect(await page.getByRole("banner").getByRole("link", { name: "Ge en julklapp" }).evaluate(bakgrund)).toBe(guld);
 });

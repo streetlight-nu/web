@@ -16,6 +16,18 @@ test.describe("guldfältet Bli fadder på startsidan", () => {
     await expect(s.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
   });
 
+  test("guldfältet leder hellre-en-engångsgåva till Fler sätt att stödja oss", async ({ page }) => {
+    await page.goto("./");
+    const s = sektion(page);
+    await expect(s.getByText("Hellre en engångsgåva?")).toBeVisible();
+    const lank = s.getByRole("link", { name: "Fler sätt att stödja oss" });
+    await expect(lank).toHaveAttribute("href", /\/stod-oss#fler$/);
+    await lank.click();
+    await expect(page).toHaveURL(/\/stod-oss#fler$/);
+    await expect(page.getByRole("heading", { name: "Fler sätt att stödja oss." })).toBeInViewport();
+    await expectNoA11yViolations(page);
+  });
+
   test("guldfältet ligger sist i innehållet", async ({ page }) => {
     await page.goto("./");
     const sista = await page.locator("main > section").last().getAttribute("id");
@@ -107,5 +119,18 @@ test.describe("Bli fadder på hela sajten", () => {
     await expect(fot.getByText("Som fadder stöttar du alla 20 fadderbarnen tillsammans.")).toBeVisible();
     await expect(fot.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
     await expect(fot.getByRole("link", { name: "Anmäl intresse" })).toHaveCount(0);
+  });
+
+  test("sidfoten har länken Swisha en gåva till Fler sätt att stödja oss på alla sidor", async ({ page }) => {
+    const sidor = ["./", "stod-oss", "om-foreningen", "vanliga-fragor", "nyheter", "nyheter/skolstart-i-addis-abeba"];
+    if (funktionPa("historia")) sidor.push("historia");
+    if (funktionPa("julklapp")) sidor.push("julklapp");
+    for (const sida of sidor) {
+      await page.goto(sida);
+      await expect(
+        page.getByRole("contentinfo").getByRole("link", { name: "Swisha en gåva" }),
+        sida,
+      ).toHaveAttribute("href", /\/stod-oss#fler$/);
+    }
   });
 });

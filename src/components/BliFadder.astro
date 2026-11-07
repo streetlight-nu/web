@@ -1,7 +1,8 @@
 ---
 /**
- * The home page's short gold field "Bli fadder" (#bli-fadder), last in the content: the heading, the lede and an
- * ink button to Stöd oss, where the visitor signs up. The mobile dock goes with it and hides while the field shows.
+ * The home page's short gold field "Bli fadder" (#bli-fadder), last in the content: the heading, the lede, a link to
+ * the other ways to support us (/stod-oss#fler) and an ink button to Stöd oss, where the visitor signs up. The mobile
+ * dock goes with it and hides while the field shows.
  */
 import BliFadderDocka from "@/components/BliFadderDocka.astro";
 import TibebBand from "@/components/TibebBand.astro";
@@ -18,6 +19,12 @@ import { href } from "@/lib/utils";
       <p class="mt-[22px] max-w-[52ch] text-lede">
         Som fadder stöttar du alla 20 fadderbarnen tillsammans. Ditt bidrag går till skolavgifter, uniform, skolmaterial
         och vård i Addis Abeba.
+      </p>
+      <p class="mt-5">
+        Hellre en engångsgåva? <a
+          class="inline-flex min-h-11 items-center font-semibold underline decoration-2 underline-offset-[0.22em]"
+          href={href("/stod-oss#fler")}>Fler sätt att stödja oss</a
+        >
       </p>
     </div>
     <a class={buttonVariants({ variant: "ink" })} href={href("/stod-oss")}>

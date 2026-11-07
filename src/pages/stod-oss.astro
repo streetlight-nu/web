@@ -1,5 +1,8 @@
 ---
+import { getEntry } from "astro:content";
+
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Fraga from "@/components/Fraga.astro";
 import Insyn from "@/components/Insyn.astro";
 import Ledger, { type LedgerItem } from "@/components/Ledger.astro";
 import Repejo from "@/components/Repejo.astro";
@@ -7,6 +10,7 @@ import Steps from "@/components/Steps.astro";
 import Thread from "@/components/Thread.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import TjugoLjus from "@/components/TjugoLjus.astro";
+import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 import { FADDER_KORTKOD } from "@/lib/repejo";
 import { href } from "@/lib/utils";
 
@@ -25,11 +29,29 @@ const fakta = [
   ["Pengarna går via den svenska föreningen", "till arbetet i Etiopien."],
 ];
 
-/** The jump links in the header, one per section below the gold field, in the order of the page. */
+/** The jump links to the page's sections, in the header. Each section adds its own once it exists. */
 const hopp = [
   ["Vart pengarna går", "vart"],
   ["Så når det fram", "nar-fram"],
+  ["Frågor", "fragor"],
 ];
+
+/**
+ * The questions future fadder tend to ask (#fragor), from Vanliga frågor in this order. A question the association
+ * has removed in Pages CMS is skipped. They are shown without the anchors #fraga-<id>, which belong to Vanliga frågor.
+ */
+const uppgifter = hamtaForeningsuppgifter();
+const fragor = (
+  await Promise.all(
+    [
+      "vad-innebar-det-att-vara-fadder",
+      "vad-kostar-det-att-vara-fadder",
+      "hur-betalar-jag",
+      "kan-jag-sluta-vara-fadder",
+      "far-jag-hora-hur-det-gar",
+    ].map((id) => getEntry("fragor", id)),
+  )
+).filter((fraga) => fraga !== undefined);
 
 /** Vart ditt bidrag går: the start page's four rows, plus the family's own income from Vanliga frågor. */
 const bidrag: LedgerItem[] = [
@@ -58,11 +80,6 @@ const vagen = [
   "Streetlight Sverige samlar in pengarna och stöttar arbetet i Etiopien ekonomiskt.",
   "Streetlight Etiopien bär arbetet med barnen och familjerna på plats i Addis Abeba.",
 ];
-
-const section = "py-[clamp(64px,9vw,120px)]";
-const split =
-  "grid grid-cols-1 items-start gap-[clamp(32px,6vw,96px)] min-[901px]:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]";
-const lede = "mt-[22px] max-w-[46ch] text-lede";
 ---
 
 <BaseLayout
@@ -72,13 +89,16 @@ const lede = "mt-[22px] max-w-[46ch] text-lede";
 >
   <Repejo slot="head" del="skript" />
 
-  <div slot="header" class="pt-[clamp(8px,2vw,20px)] pb-[clamp(24px,3vw,36px)]">
+  <div
+    slot="header"
+    class="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 pt-[clamp(8px,2vw,20px)] pb-[clamp(24px,3vw,36px)]"
+  >
     <nav aria-label="Du är här" class="flex flex-wrap items-center gap-2.5 text-label font-semibold text-mint">
       <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
       <span aria-hidden="true">/</span>
       <span aria-current="page" class="text-cotton">Stöd oss</span>
     </nav>
-    <nav aria-label="Hoppa till ett avsnitt" class="mt-5">
+    <nav aria-label="Hoppa till ett avsnitt">
       <ul class="m-0 flex list-none flex-wrap gap-3 p-0">
         {
           hopp.map(([namn, id]) => (
@@ -149,11 +169,11 @@ const lede = "mt-[22px] max-w-[46ch] text-lede";
     </div>
   </section>
 
-  <section id="vart" aria-labelledby="vart-rubrik" class={`bg-cotton text-ink ${section}`}>
-    <div class={`band-inner ${split}`}>
+  <section id="vart" aria-labelledby="vart-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="split band-inner">
       <div class="min-w-0">
         <h2 id="vart-rubrik" class="text-headline">Vart ditt bidrag går.</h2>
-        <p class={`${lede} text-ink-soft`}>
+        <p class="mt-[22px] max-w-[46ch] text-lede text-ink-soft">
           Till det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
         </p>
       </div>
@@ -163,14 +183,18 @@ const lede = "mt-[22px] max-w-[46ch] text-lede";
 
   <TibebBand />
 
-  <section id="nar-fram" aria-labelledby="nar-fram-rubrik" class={`on-green bg-green text-cotton ${section}`}>
+  <section
+    id="nar-fram"
+    aria-labelledby="nar-fram-rubrik"
+    class="on-green bg-green py-[clamp(64px,9vw,120px)] text-cotton"
+  >
     <div class="band-inner">
-      <div class={`${split} min-[901px]:items-center`}>
+      <div class="split split--mitt">
         <div class="min-w-0">
           <h2 id="nar-fram-rubrik" class="text-headline">
             Små med flit, så att det <span class="text-gold">når fram.</span>
           </h2>
-          <p class={`${lede} text-mint`}>
+          <p class="mt-[22px] max-w-[46ch] text-lede text-mint">
             <TjugoLjus /> Två föreningar med var sin styrelse gör arbetet tillsammans.
           </p>
         </div>
@@ -186,10 +210,32 @@ const lede = "mt-[22px] max-w-[46ch] text-lede";
       </p>
     </div>
   </section>
+
+  <section id="fragor" aria-labelledby="fragor-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="split band-inner">
+      <div class="min-w-0">
+        <h2 id="fragor-rubrik" class="text-headline">Innan du bestämmer dig.</h2>
+        <p class="mt-[22px] max-w-[40ch] text-lede text-ink-soft">
+          Det här brukar de som funderar på att bli fadder fråga om.
+        </p>
+      </div>
+      <div class="min-w-0">
+        <div>
+          {fragor.map((fraga) => <Fraga fraga={fraga} uppgifter={uppgifter} />)}
+        </div>
+        <p class="mt-6">
+          <a
+            class="font-semibold underline decoration-gold decoration-2 underline-offset-[0.22em]"
+            href={href("/vanliga-fragor")}>Alla vanliga frågor</a
+          >
+        </p>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  /* The jump links in the header, the same pills as on Om föreningen. */
+  /* The jump links in the header, as on Om föreningen. */
   .jump {
     display: inline-flex;
     align-items: center;
@@ -205,6 +251,23 @@ const lede = "mt-[22px] max-w-[46ch] text-lede";
   }
   .jump:hover {
     border-color: var(--color-gold);
+  }
+
+  /* A section's heading in the left column, its content in the right one; stacked under 900 px. */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+    gap: clamp(32px, 6vw, 96px);
+  }
+  /* Så når det fram: the heading and the gold thread are centred on each other. */
+  .split--mitt {
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
   /* Text in the left column, the checkout in the right one at full height. */

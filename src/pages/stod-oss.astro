@@ -4,6 +4,7 @@ import { getEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FlerSattAttStodja from "@/components/FlerSattAttStodja.astro";
 import Fraga from "@/components/Fraga.astro";
+import HoppaTill from "@/components/HoppaTill.astro";
 import Insyn from "@/components/Insyn.astro";
 import Ledger, { type LedgerItem } from "@/components/Ledger.astro";
 import Repejo from "@/components/Repejo.astro";
@@ -30,12 +31,12 @@ const fakta = [
   ["Pengarna går via den svenska föreningen", "till arbetet i Etiopien."],
 ];
 
-/** The jump links to the page's sections, in the header. Each section adds its own once it exists. */
+/** The jump links to the page's sections, in the header. */
 const hopp = [
-  ["Vart pengarna går", "vart"],
-  ["Så når det fram", "nar-fram"],
-  ["Frågor", "fragor"],
-  ["Fler sätt att stödja", "fler"],
+  { namn: "Vart pengarna går", id: "vart" },
+  { namn: "Så når det fram", id: "nar-fram" },
+  { namn: "Frågor", id: "fragor" },
+  { namn: "Fler sätt att stödja", id: "fler" },
 ];
 
 /**
@@ -100,19 +101,7 @@ const vagen = [
       <span aria-hidden="true">/</span>
       <span aria-current="page" class="text-cotton">Stöd oss</span>
     </nav>
-    <nav aria-label="Hoppa till ett avsnitt">
-      <ul class="m-0 flex list-none flex-wrap gap-3 p-0">
-        {
-          hopp.map(([namn, id]) => (
-            <li>
-              <a class="jump" href={`#${id}`}>
-                {namn}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+    <HoppaTill etikett="Hoppa till ett avsnitt" lankar={hopp} />
   </div>
   <TibebBand slot="header-after" variant="thin" />
 
@@ -239,24 +228,6 @@ const vagen = [
 </BaseLayout>
 
 <style>
-  /* The jump links in the header, as on Om föreningen. */
-  .jump {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 18px;
-    border: 2px solid rgb(251 251 248 / 0.45);
-    border-radius: var(--radius-pill);
-    color: var(--color-cotton);
-    font-size: var(--text-label);
-    font-weight: 600;
-    text-decoration: none;
-    transition: border-color 0.3s var(--ease-light);
-  }
-  .jump:hover {
-    border-color: var(--color-gold);
-  }
-
   /* A section's heading in the left column, its content in the right one; stacked under 900 px. */
   .split {
     display: grid;

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FyllsI from "@/components/FyllsI.astro";
+import HoppaTill from "@/components/HoppaTill.astro";
 import Ledger from "@/components/Ledger.astro";
 import Foto from "@/components/Foto.astro";
 import Pil from "@/components/Pil.astro";
@@ -33,10 +34,10 @@ const split =
   "band-inner grid grid-cols-1 items-start gap-[clamp(28px,6vw,96px)] min-[901px]:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]";
 const lank = "font-semibold underline decoration-gold decoration-2 underline-offset-[0.22em]";
 const hopp = [
-  ["Det här tror vi på", "tror"],
-  ["Så började det", "borjan"],
-  ["Vilka vi är", "vilka"],
-  ["Kontakt", "kontakt"],
+  { namn: "Det här tror vi på", id: "tror" },
+  { namn: "Så började det", id: "borjan" },
+  { namn: "Vilka vi är", id: "vilka" },
+  { namn: "Kontakt", id: "kontakt" },
 ];
 ---
 
@@ -51,19 +52,7 @@ const hopp = [
       Om <span class="text-gold">föreningen.</span>
     </h1>
     <p class="mt-[18px] max-w-[58ch] text-lede text-mint">{om.ingress ?? <FyllsI>ingress fylls i</FyllsI>}</p>
-    <nav aria-label="Hoppa till ett avsnitt" class="mt-8">
-      <ul class="m-0 flex list-none flex-wrap gap-3 p-0">
-        {
-          hopp.map(([namn, id]) => (
-            <li>
-              <a class="jump" href={`#${id}`}>
-                {namn}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+    <HoppaTill etikett="Hoppa till ett avsnitt" lankar={hopp} class="mt-8" />
   </div>
   <TibebBand slot="header-after" variant="thin" />
 
@@ -332,23 +321,6 @@ const hopp = [
 </BaseLayout>
 
 <style>
-  .jump {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 18px;
-    border: 2px solid rgb(251 251 248 / 0.45);
-    border-radius: var(--radius-pill);
-    color: var(--color-cotton);
-    font-size: var(--text-label);
-    font-weight: 600;
-    text-decoration: none;
-    transition: border-color 0.3s var(--ease-light);
-  }
-  .jump:hover {
-    border-color: var(--color-gold);
-  }
-
   .highlight {
     background-image: linear-gradient(
       transparent 62%,

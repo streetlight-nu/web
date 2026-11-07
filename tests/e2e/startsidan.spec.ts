@@ -34,7 +34,7 @@ test("huvudmenyn länkar till startsidans avsnitt, Om föreningen och nyheterna"
   ]) {
     await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", new RegExp(`${path}$`));
   }
-  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /#bli-fadder$/);
+  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
 });
 
 test.describe("mobilmenyn", () => {

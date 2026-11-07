@@ -42,7 +42,7 @@ test("menyn markerar Frågor som aktiv och sidfoten länkar hit", async ({ page,
 
 test("leder vidare till Bli fadder och klarar WCAG 2.1 AA, även med alla frågor öppna", async ({ page }) => {
   await page.goto(sida);
-  await expect(page.getByRole("main").getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/#bli-fadder$/);
+  await expect(page.getByRole("main").getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
   await expectNoA11yViolations(page);
   await oppnaAlla(page);
   await expectNoA11yViolations(page);

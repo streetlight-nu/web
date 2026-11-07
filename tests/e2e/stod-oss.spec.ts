@@ -10,6 +10,15 @@ function guldfaltet(page: Page) {
   return page.locator("#bli-fadder");
 }
 
+/** The value shown for one föreningsuppgift in Insyn under Så når det fram, found by its label. */
+function uppgift(page: Page, label: string) {
+  return page
+    .locator("#nar-fram")
+    .getByRole("region", { name: "Insyn" })
+    .getByRole("definition")
+    .filter({ has: page.locator(`xpath=preceding-sibling::dt[normalize-space()="${label}"]`) });
+}
+
 test("Stöd oss har titel, en h1 och klarar WCAG 2.1 AA", async ({ page }) => {
   await stubRepejo(page);
   await page.goto(sida);
@@ -41,6 +50,20 @@ test("brödsmulorna visar Startsidan / Stöd oss", async ({ page }) => {
   await expect(smulor.getByRole("link", { name: "Startsidan" })).toHaveAttribute("href", /\/$/);
   await expect(smulor.getByText("Stöd oss")).toHaveAttribute("aria-current", "page");
 });
+
+for (const [namn, id] of [
+  ["Vart pengarna går", "vart"],
+  ["Så når det fram", "nar-fram"],
+]) {
+  test(`hopplänken ${namn} i sidhuvudet leder till #${id}`, async ({ page }) => {
+    await page.goto(sida);
+    const lank = page.getByRole("navigation", { name: "Hoppa till ett avsnitt" }).getByRole("link", { name: namn });
+    await expect(lank).toHaveAttribute("href", `#${id}`);
+    await lank.click();
+    await expect(page).toHaveURL(new RegExp(`#${id}$`));
+    await expect(page.locator(`#${id}`)).toBeInViewport();
+  });
+}
 
 test("Bli fadder i menyn är en linjeknapp markerad som aktuell sida", async ({ page }) => {
   await page.goto(sida);
@@ -114,8 +137,64 @@ test("på dator står formuläret bredvid texten, på mobil direkt efter ingress
   }
 });
 
+test("Vart ditt bidrag går har en Ledger med fem rader", async ({ page }) => {
+  await page.goto(sida);
+  const s = page.locator("#vart");
+  await expect(s.getByRole("heading", { level: 2, name: "Vart ditt bidrag går." })).toBeVisible();
+  const rader = s.getByRole("listitem");
+  await expect(rader).toHaveCount(5);
+  await expect(s.getByRole("heading", { level: 3 })).toHaveText([
+    "Skolavgifter",
+    "Skoluniform",
+    "Skolmaterial",
+    "Vård när barnet blir sjukt",
+    "En egen inkomst för familjen",
+  ]);
+});
+
+test("Så når det fram visar rubriken, 20 barn, 20 ljus och guldtråden med tre steg", async ({ page }) => {
+  await page.goto(sida);
+  const s = page.locator("#nar-fram");
+  await expect(s.getByRole("heading", { level: 2, name: "Små med flit, så att det når fram." })).toBeVisible();
+  await expect(s.getByText("20 barn, 20 ljus.")).toBeVisible();
+  await expect(s.getByText("Två föreningar med var sin styrelse")).toBeVisible();
+  const steg = s.getByText(/^(Du blir fadder|Streetlight Sverige samlar|Streetlight Etiopien bär)/);
+  await expect(steg).toHaveText([
+    "Du blir fadder via Repejo.",
+    "Streetlight Sverige samlar in pengarna och stöttar arbetet i Etiopien ekonomiskt.",
+    "Streetlight Etiopien bär arbetet med barnen och familjerna på plats i Addis Abeba.",
+  ]);
+});
+
+test("länken i Så når det fram leder till Om föreningen", async ({ page }) => {
+  await page.goto(sida);
+  await page.locator("#nar-fram").getByRole("link", { name: "Läs om föreningen" }).click();
+  await expect(page).toHaveURL(/\/om-foreningen\/?$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Om föreningen.");
+});
+
+test.describe("Stöd oss med ifylld testfil", () => {
+  test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
+  test("Insyn visar föreningsuppgifterna från datafilen", async ({ page }) => {
+    await page.goto(sida);
+    await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");
+    await expect(uppgift(page, "90-konto")).toHaveText("TEST-90-KONTO");
+    await expect(
+      uppgift(page, "Senaste årsredovisning").getByRole("link", { name: "Läs årsredovisningen" }),
+    ).toHaveAttribute("href", "https://example.org/test-arsredovisning.pdf");
+  });
+});
+
 test.describe("Stöd oss med tom testfil", () => {
   test.use({ baseURL: process.env.E2E_TOM_URL });
+
+  test("Insyn visar ”fylls i” för det som saknas", async ({ page }) => {
+    await page.goto(sida);
+    await expect(uppgift(page, "Organisationsnummer")).toHaveText("fylls i");
+    await expect(uppgift(page, "Senaste årsredovisning")).toHaveText("länk fylls i");
+    await expect(uppgift(page, "90-konto")).toHaveText("fylls i");
+  });
 
   test("brödtexten är minst 18 px", async ({ page }) => {
     await page.goto(sida);

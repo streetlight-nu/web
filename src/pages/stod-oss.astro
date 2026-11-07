@@ -14,6 +14,7 @@ import TibebBand from "@/components/TibebBand.astro";
 import TjugoLjus from "@/components/TjugoLjus.astro";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 import { FADDER_KORTKOD } from "@/lib/repejo";
+import { STODET } from "@/lib/stodet";
 import { href } from "@/lib/utils";
 
 /**
@@ -58,19 +59,7 @@ const fragor = (
 
 /** Vart ditt bidrag går: the start page's four rows, plus the family's own income from Vanliga frågor. */
 const bidrag: LedgerItem[] = [
-  {
-    title: "Skolavgifter",
-    text: "Barnet får en plats i skolan och kan stanna kvar där, utan att familjen behöver välja mellan mat och avgift.",
-  },
-  { title: "Skoluniform", text: "En egen uniform gör att barnet kan gå till skolan som alla andra." },
-  {
-    title: "Skolmaterial",
-    text: "Böcker, skrivhäften och pennor, så att barnet kan följa undervisningen och göra läxorna.",
-  },
-  {
-    title: "Vård när barnet blir sjukt",
-    text: "Vi betalar eventuella medicinska kostnader, så att en sjukdom inte blir slutet på skolgången.",
-  },
+  ...STODET,
   {
     title: "En egen inkomst för familjen",
     text: "Föräldrarna kan få stöd och ekonomisk hjälp att starta en egen verksamhet som ger inkomst.",

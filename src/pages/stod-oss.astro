@@ -23,12 +23,12 @@ import { href } from "@/lib/utils";
  * right after the heading and the lede, before the facts and the steps.
  */
 const fakta = [
-  [
-    "Alla 20 barnen tillsammans.",
-    "Vill du hellre följa ett av barnen? Det går också. Skriv det i ett mejl till oss, så ordnar vi det.",
-  ],
-  ["Barnen väljs ut tillsammans med de lokala myndigheterna", "i Addis Abeba."],
-  ["Pengarna går via den svenska föreningen", "till arbetet i Etiopien."],
+  {
+    fet: "Alla 20 barnen tillsammans.",
+    resten: "Vill du hellre följa ett av barnen? Det går också. Skriv det i ett mejl till oss, så ordnar vi det.",
+  },
+  { fet: "Barnen väljs ut tillsammans med de lokala myndigheterna", resten: "i Addis Abeba." },
+  { fet: "Pengarna går via den svenska föreningen", resten: "till arbetet i Etiopien." },
 ];
 
 /** The jump links to the page's sections, in the header. */
@@ -127,11 +127,11 @@ const vagen = [
       <div class="fadder-rest">
         <ul class="mt-7 grid list-none gap-4 border-t-[3px] border-ink p-0 pt-5">
           {
-            fakta.map(([fet, resten]) => (
+            fakta.map(({ fet, resten }) => (
               <li class="grid grid-cols-[26px_minmax(0,1fr)] items-start gap-3.5">
                 <svg viewBox="0 0 26 26" aria-hidden="true" class="mt-0.5 size-[26px]">
-                  <path d="M13 1 25 13 13 25 1 13Z" fill="#0B2E24" />
-                  <path d="M13 7 19 13 13 19 7 13Z" fill="#FBFBF8" />
+                  <path d="M13 1 25 13 13 25 1 13Z" class="fill-ink" />
+                  <path d="M13 7 19 13 13 19 7 13Z" class="fill-cotton" />
                 </svg>
                 <span>
                   <strong class="font-semibold">{fet}</strong> {resten}

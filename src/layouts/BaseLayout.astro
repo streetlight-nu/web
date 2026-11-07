@@ -1,6 +1,6 @@
 ---
 import "@/styles/global.css";
-import SiteHeader from "@/components/SiteHeader.astro";
+import SiteHeader, { type AktuellSida } from "@/components/SiteHeader.astro";
 import SiteFooter from "@/components/SiteFooter.astro";
 import { href } from "@/lib/utils";
 
@@ -15,7 +15,7 @@ export interface Delningsbild {
 interface Props {
   title: string;
   description: string;
-  current?: "nyheter" | "om" | "historia" | "julklapp" | "fragor" | "stod";
+  current?: AktuellSida;
   /** Open Graph's type: an inlägg is an "article", every other page a "website". */
   ogType?: "website" | "article";
   delningsbild?: Delningsbild;

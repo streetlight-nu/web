@@ -4,6 +4,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import ExampleChip from "@/components/ExampleChip.astro";
 import FyllsI from "@/components/FyllsI.astro";
 import LightBand from "@/components/LightBand.astro";
+import Pil from "@/components/Pil.astro";
 import Placeholder from "@/components/Placeholder.astro";
 import Repejo from "@/components/Repejo.astro";
 import Steps from "@/components/Steps.astro";
@@ -38,7 +39,6 @@ const mark = markOnLight
 const section = "py-[clamp(64px,9vw,120px)]";
 const h2 = "text-headline";
 const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]";
-const arrow = `<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h11M10 4.5 14.5 9 10 13.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
 ---
 
 <BaseLayout
@@ -63,7 +63,7 @@ const arrow = `<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h11M10 4
         Du väljer ett belopp, skriver ett julkort och vi skickar det i ditt namn på julaftonsmorgonen.
       </p>
       <div class="mt-[30px] flex flex-wrap gap-3.5">
-        <a class={buttonVariants()} href="#ge">Ge en julklapp <Fragment set:html={arrow} /></a>
+        <a class={buttonVariants()} href="#ge">Ge en julklapp <Pil /></a>
         <a class={buttonVariants({ variant: "line" })} href="#sa-gar-det-till">Så går det till</a>
       </div>
       <p class="mt-6 text-mint">
@@ -197,7 +197,7 @@ const arrow = `<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h11M10 4
       >
         En julklapp till barnen. Ett <span class="text-gold">ljus</span> till någon du tycker om.
       </h2>
-      <a class={buttonVariants()} href="#ge">Ge en julklapp <Fragment set:html={arrow} /></a>
+      <a class={buttonVariants()} href="#ge">Ge en julklapp <Pil /></a>
     </div>
   </section>
 </BaseLayout>

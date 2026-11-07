@@ -71,13 +71,13 @@ Webbläsartesterna bygger sajten en tredje gång till `dist-av/`, som produktion
 
 ## Julkampanjen och Repejo
 
-Sidan ”Ge en julklapp” (`src/pages/[julklapp].astro`, `/julklapp`) bäddar in Repejos checkout och insamlingsmätare via `src/components/Repejo.astro`. Värd, organisations-id och kampanjens kortkod finns i `src/lib/repejo.ts`. Under checkouten och mätaren finns alltid en länk till Repejos kampanjsida, så att besökaren kan ge även om Repejo inte fungerar. Kampanjens egna uppgifter (sista dagen, vad julklappen gör och en e-post för frågor) finns i `src/data/julkampanj.json` och fylls i i Pages CMS under Julkampanjen. Webbläsartesterna stubbar Repejo och läser kampanjens uppgifter från `tests/fixtures/julkampanj-ifylld.json` och `julkampanj-tom.json` (via `JULKAMPANJ_FIL`).
+Sidan ”Ge en julklapp” (`src/pages/[julklapp].astro`, `/julklapp`) bäddar in Repejos checkout och insamlingsmätare via `src/components/Repejo.astro`. Värd, organisations-id och kampanjens kortkod finns i `src/lib/repejo.ts`. Under checkouten och mätaren finns en länk till Repejos kampanjsida, så att besökaren kan ge även om Repejo inte fungerar. Bara på Stöd oss saknas länken under checkouten (`utanReserv`), som i sidans design. Kampanjens egna uppgifter (sista dagen, vad julklappen gör och en e-post för frågor) finns i `src/data/julkampanj.json` och fylls i i Pages CMS under Julkampanjen. Webbläsartesterna stubbar Repejo och läser kampanjens uppgifter från `tests/fixtures/julkampanj-ifylld.json` och `julkampanj-tom.json` (via `JULKAMPANJ_FIL`).
 
 Kampanjen är säsongsbunden. Efter jul kan sidan tas bort, eller kortkoden bytas, utan att något annat ändras.
 
 ## Bli fadder
 
-Formuläret i ”Bli fadder” är Repejos checkout (`<repejo-checkout>`) med kortkoden `FADDER_KORTKOD` i `src/lib/repejo.ts`. Startsidan laddar Repejos skript, och under formuläret finns en länk till kampanjens egen sida hos Repejo. Det besökaren fyller i går till Repejo.
+Formuläret för att bli fadder ligger på Stöd oss (`src/pages/stod-oss.astro`, `/stod-oss`) och är Repejos checkout (`<repejo-checkout>`) med kortkoden `FADDER_KORTKOD` i `src/lib/repejo.ts`. Stöd oss laddar Repejos skript, och formuläret visas utan reservlänk under sig (`utanReserv`). Startsidan laddar inte Repejo: dess fält ”Bli fadder” länkar till Stöd oss. Det besökaren fyller i går till Repejo.
 
 ## Publicering
 

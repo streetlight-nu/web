@@ -6,29 +6,15 @@ import BliFadder from "@/components/BliFadder.astro";
 import Insyn from "@/components/Insyn.astro";
 import JulkampanjPaStartsidan from "@/components/JulkampanjPaStartsidan.astro";
 import LightBand from "@/components/LightBand.astro";
+import Pil from "@/components/Pil.astro";
 import SenasteNytt from "@/components/SenasteNytt.astro";
-import Ledger,{ type LedgerItem } from "@/components/Ledger.astro";
+import Ledger from "@/components/Ledger.astro";
 import Thread from "@/components/Thread.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
+import { STODET } from "@/lib/stodet";
 import { href } from "@/lib/utils";
 import { fragaId } from "@/lib/vanliga-fragor";
-
-const support: LedgerItem[] = [
-  {
-    title: "Skolavgifter",
-    text: "Barnet får en plats i skolan och kan stanna kvar där, utan att familjen behöver välja mellan mat och avgift.",
-  },
-  { title: "Skoluniform", text: "En egen uniform gör att barnet kan gå till skolan som alla andra." },
-  {
-    title: "Skolmaterial",
-    text: "Böcker, skrivhäften och pennor, så att barnet kan följa undervisningen och göra läxorna.",
-  },
-  {
-    title: "Vård när barnet blir sjukt",
-    text: "Vi betalar eventuella medicinska kostnader, så att en sjukdom inte blir slutet på skolgången.",
-  },
-];
 
 const familySteps = [
   "Föräldern får stöd att starta en egen verksamhet som ger inkomst.",
@@ -71,15 +57,7 @@ const lede = "max-w-[58ch] text-lede";
       <div class="mt-[34px] flex flex-wrap gap-3.5 pb-3 max-[520px]:mt-[26px] min-[901px]:pb-[clamp(40px,6vw,76px)]">
         <a class={buttonVariants()} href={href("/stod-oss")} data-huvudknapp>
           Bli fadder
-          <svg viewBox="0 0 18 18" aria-hidden="true"
-              ><path
-                d="M3 9h11M10 4.5 14.5 9 10 13.5"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path></svg
-            >
+          <Pil />
         </a>
         <a class={buttonVariants({ variant: "line" })} href={href("/#stod")}>Vad stödet går till</a>
       </div>
@@ -115,7 +93,7 @@ const lede = "max-w-[58ch] text-lede";
           Därför står vi för det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
         </p>
       </div>
-      <div class="min-w-0"><Ledger items={support} /></div>
+      <div class="min-w-0"><Ledger items={STODET} /></div>
     </div>
   </section>
 

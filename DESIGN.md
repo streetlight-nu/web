@@ -265,7 +265,7 @@ Varma och stadiga, med stora tryckytor som är lätta att träffa.
 - **Error:** kanten blir `thread-red` (`aria-invalid`) och meddelandet står i `error`.
 
 ### Navigation
-- **Style:** ligger på grönt sidhuvud, med logotypen till vänster och länkarna i etikettstorlek i bomull. ”Bli fadder” är en liten guldknapp. På en sida vars eget huvudsteg är guld, som julkampanjens ”Ge en julklapp”, blir den en linjeknapp (The Ett ljus Rule).
+- **Style:** ligger på grönt sidhuvud, med logotypen till vänster och länkarna i etikettstorlek i bomull. ”Bli fadder” är en liten guldknapp. På en sida vars eget huvudsteg är guld, som julkampanjens ”Ge en julklapp”, blir den en linjeknapp (The Ett ljus Rule). På Stöd oss, dit knappen leder, är den också en linjeknapp och markeras som aktuell sida.
 - **Säsong:** medan julkampanjen pågår finns länken ”Julklapp” sist i menyn. Föreningen slår på och av den i Pages CMS.
 - **States:** hovring ger understrykning. Aktuell sida markeras med `aria-current`.
 - **Mobile:** under 900 px fälls länkarna ihop bakom knappen ”Meny”. Escape stänger och lämnar fokus tillbaka på knappen.

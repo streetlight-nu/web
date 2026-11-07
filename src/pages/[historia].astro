@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FyllsI from "@/components/FyllsI.astro";
+import HoppaTill from "@/components/HoppaTill.astro";
 import LightBand from "@/components/LightBand.astro";
 import Foto from "@/components/Foto.astro";
 import TibebBand from "@/components/TibebBand.astro";
@@ -48,19 +49,11 @@ const beskrivning =
     <p class="mt-[18px] max-w-[56ch] text-lede text-mint">
       {ingress ?? <FyllsI>ingress fylls i</FyllsI>}
     </p>
-    <nav aria-label="Hoppa till en period" class="mt-8">
-      <ul class="m-0 flex list-none flex-wrap gap-3 p-0">
-        {
-          perioder.map((period) => (
-            <li>
-              <a class="jump" href={`#${periodId(period.rubrik)}`}>
-                {period.rubrik}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+    <HoppaTill
+      etikett="Hoppa till en period"
+      lankar={perioder.map(({ rubrik }) => ({ namn: rubrik, id: periodId(rubrik) }))}
+      class="mt-8"
+    />
   </div>
   <TibebBand slot="header-after" variant="thin" />
 
@@ -153,23 +146,6 @@ const beskrivning =
 </BaseLayout>
 
 <style>
-  .jump {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 18px;
-    border: 2px solid rgb(251 251 248 / 0.45);
-    border-radius: var(--radius-pill);
-    color: var(--color-cotton);
-    font-size: var(--text-label);
-    font-weight: 600;
-    text-decoration: none;
-    transition: border-color 0.3s var(--ease-light);
-  }
-  .jump:hover {
-    border-color: var(--color-gold);
-  }
-
   /* The gold thread down the left of each period, with a diamond for each event. */
   .thread {
     position: relative;

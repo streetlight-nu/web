@@ -259,6 +259,8 @@ test.describe("frågorna med testfrågorna och tom testfil", () => {
   });
 
   test("hopplänken Frågor leder till avsnittet, som slutar med länken till alla vanliga frågor", async ({ page }) => {
+    // Mjuk rullning hinner inte klart på CI-körarna och gör testet ostabilt; hoppet testas utan den.
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(sida);
     const hopp = page.getByRole("navigation", { name: "Hoppa till ett avsnitt" }).getByRole("link", { name: "Frågor" });
     await expect(hopp).toHaveAttribute("href", "#fragor");
@@ -340,6 +342,8 @@ test("Få nyheterna med e-post leder till formuläret på Nyheter", async ({ pag
 });
 
 test("hopplänken Fler sätt att stödja leder till avsnittet, sist på sidan", async ({ page }) => {
+  // Mjuk rullning hinner inte klart på CI-körarna och gör testet ostabilt; hoppet testas utan den.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(sida);
   const hopp = page
     .getByRole("navigation", { name: "Hoppa till ett avsnitt" })

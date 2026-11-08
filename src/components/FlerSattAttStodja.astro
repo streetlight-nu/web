@@ -1,0 +1,118 @@
+---
+/**
+ * The deep green field "Fler sätt att stödja oss." (#fler), last on Stöd oss after a thin tibeb band: a Ledger on
+ * green with two rows. "Swisha en gåva" shows the Swish number from the föreningsuppgifter in large display type,
+ * or the chip "nummer fylls i"; "Följ och berätta" leads to the form Nyheter med e-post on Nyheter.
+ */
+import FyllsI from "@/components/FyllsI.astro";
+import Pil from "@/components/Pil.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { href } from "@/lib/utils";
+
+const { swish } = hamtaForeningsuppgifter();
+---
+
+<TibebBand variant="thin" />
+
+<section
+  id="fler"
+  aria-labelledby="fler-rubrik"
+  class="on-green bg-green-deep py-[clamp(64px,9vw,120px)] text-cotton"
+>
+  <div class="band-inner">
+    <h2 id="fler-rubrik" class="max-w-[18ch] text-headline">Fler sätt att stödja oss.</h2>
+    <ul class="fler">
+      <li>
+        <span class="mark" aria-hidden="true"></span>
+        <div class="rad">
+          <div class="min-w-0">
+            <h3 class="text-title tracking-[-0.015em]">Swisha en gåva</h3>
+            <p class="mt-2 max-w-[44ch] text-mint">Vill du hellre ge en gång? Swisha en gåva till föreningen.</p>
+          </div>
+          <dl class="min-w-0">
+            <dt class="text-label font-semibold text-mint">Swishnummer</dt>
+            <dd class="mt-1.5">
+              {swish ? <span class="swish">{swish}</span> : <FyllsI>nummer fylls i</FyllsI>}
+            </dd>
+          </dl>
+        </div>
+      </li>
+      <li>
+        <span class="mark mark--cobalt" aria-hidden="true"></span>
+        <div class="rad">
+          <div class="min-w-0">
+            <h3 class="text-title tracking-[-0.015em]">Följ och berätta</h3>
+            <p class="mt-2 max-w-[44ch] text-mint">
+              Få föreningens nyheter med e-post: rapporter från skolan, berättelser från familjerna och vad som händer i
+              föreningen. Berätta om Streetlight för någon du känner.
+            </p>
+          </div>
+          <div class="min-w-0">
+            <a class={buttonVariants({ variant: "line" })} href={href("/nyheter#nyheter-med-epost")}>
+              Få nyheterna med e-post
+              <Pil />
+            </a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Ledger on green: cotton rules top and bottom, mint rules between the rows. */
+  .fler {
+    list-style: none;
+    margin: clamp(40px, 5vw, 56px) 0 0;
+    padding: 0;
+    border-top: 3px solid var(--color-cotton);
+  }
+  li {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 20px;
+    padding-block: 32px;
+    border-bottom: 1.5px solid color-mix(in srgb, var(--color-mint) 30%, transparent);
+  }
+  li:last-child {
+    border-bottom: 3px solid var(--color-cotton);
+  }
+  .rad {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 20px clamp(32px, 5vw, 72px);
+  }
+  @media (max-width: 900px) {
+    .rad {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  /* The woven rhombus marker, as in Ledger. */
+  .mark {
+    width: 28px;
+    height: 28px;
+    margin: 6px 0 0 6px;
+    transform: rotate(45deg);
+    background: var(--color-gold);
+    box-shadow:
+      inset 0 0 0 7px var(--color-gold),
+      inset 0 0 0 14px var(--color-thread-red);
+  }
+  .mark--cobalt {
+    box-shadow:
+      inset 0 0 0 7px var(--color-gold),
+      inset 0 0 0 14px var(--color-thread-cobalt);
+  }
+  .swish {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-headline);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+</style>

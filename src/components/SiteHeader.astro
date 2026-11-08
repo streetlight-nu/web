@@ -1,27 +1,49 @@
 ---
 import Logo from "@/components/Logo.astro";
 import MainNav, { type NavLink } from "@/components/MainNav";
+import { hamtaFunktioner } from "@/lib/funktioner";
+import { hamtaJulkampanj } from "@/lib/julkampanj";
 import { href } from "@/lib/utils";
 
+/** The page the visitor is on, when it has its own place in the main menu or is where "Bli fadder" leads. */
+export type AktuellSida = "nyheter" | "om" | "historia" | "julklapp" | "fragor" | "stod";
+
 interface Props {
-  current?: "nyheter" | "historia";
+  current?: AktuellSida;
 }
 const { current } = Astro.props;
+const { visasPaStartsidan } = hamtaJulkampanj();
+const { julklapp } = hamtaFunktioner();
 
 const links: NavLink[] = [
   { label: "Vårt stöd", href: href("/#stod") },
   { label: "Familjerna", href: href("/#familjer") },
   { label: "Så arbetar vi", href: href("/#sa-arbetar-vi") },
-  { label: "Vår historia", href: href("/historia"), current: current === "historia" },
+  // Vår historia is reached from Om föreningen and the footer.
+  { label: "Om föreningen", href: href("/om-foreningen"), current: current === "om" },
   { label: "Nyheter", href: href("/nyheter"), current: current === "nyheter" },
+  { label: "Frågor", href: href("/vanliga-fragor"), current: current === "fragor" },
+  // Seasonal: the association turns the campaign on and off in Pages CMS (src/data/julkampanj.json). The flag
+  // `julklapp` (src/data/funktioner.json) removes the page and every link to it.
+  ...(julklapp && (visasPaStartsidan || current === "julklapp")
+    ? [{ label: "Julklapp", href: href("/julklapp"), current: current === "julklapp" }]
+    : []),
 ];
+// The Ett ljus rule: on the campaign page "Ge en julklapp" is the gold button, so "Bli fadder" steps back to a line.
+// On Stöd oss the visitor is already where "Bli fadder" leads, so it is a line marked as the current page.
+const sponsor = current === "stod" ? "current" : current === "julklapp" ? "line" : "gold";
 ---
 
 <header class="on-green bg-green text-cotton">
   <div class="band-inner">
-    <nav aria-label="Huvudmeny" class="flex flex-wrap items-center justify-between gap-3 py-[22px] min-[901px]:flex-nowrap min-[901px]:gap-6 max-[520px]:gap-2">
+    <nav aria-label="Huvudmeny" class="flex flex-wrap items-center justify-between gap-3 py-[22px] min-[901px]:flex-nowrap min-[901px]:gap-[clamp(16px,2vw,24px)] max-[520px]:gap-2">
       <Logo on="green" href={href("/")} />
-      <MainNav client:load links={links} sponsorHref={href("/#bli-fadder")} />
+      <MainNav
+        client:load
+        links={links}
+        sponsorHref={href("/stod-oss")}
+        sponsor={sponsor}
+      />
     </nav>
     <slot />
   </div>

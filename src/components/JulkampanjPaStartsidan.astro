@@ -1,0 +1,376 @@
+---
+/**
+ * The Christmas campaign on the home page (#julklapp), right under the light band: a compact row on
+ * green-deep that continues the band's line "20 barn, 20 ljus." into "Håll ljusen tända i jul".
+ *
+ * It must not compete with "Bli fadder": that stays the one gold button on the page (the Ett ljus rule),
+ * so the campaign gets a line button and a smaller heading than the page's sections. Fadder is the regular
+ * support, the julklapp a gift at Christmas.
+ *
+ * Julkänsla: an adventsljusstake whose foot is a woven tibeb band, where Swedish Advent meets the shemma cloth.
+ * "Ljus" is both light and candle: as many candles burn as there have been Advent Sundays (none before the first),
+ * and pointing at "Ge en julklapp" lights the rest. The flames are drawn in the lamp's three hard gold steps.
+ *
+ * Seasonal: shown only while `visasPaStartsidan` is ticked in Pages CMS (src/data/julkampanj.json) and the flag
+ * `julklapp` is on (src/data/funktioner.json).
+ * It only links to /julklapp and never loads Repejo (ADR 0003).
+ */
+import Pil from "@/components/Pil.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { hamtaFunktioner } from "@/lib/funktioner";
+import { hamtaJulkampanj } from "@/lib/julkampanj";
+import { cn, href } from "@/lib/utils";
+
+const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
+const { julklapp } = hamtaFunktioner();
+
+/** The four candles' centres, and the gold diamonds woven into the candlestick's tibeb foot. */
+const LJUS = [30, 70, 110, 150];
+const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4-4z`).join("");
+---
+
+{
+  julklapp && visasPaStartsidan && (
+    <section id="julklapp" aria-labelledby="julklapp-rubrik" class="on-green bg-green-deep text-cotton">
+      <div class="band-inner">
+        <div class="rad">
+          {/* Adventsljusstaken: four candles on a woven tibeb foot. Lit by default (no JS, reduced motion);
+              the script lights as many as there have been Advent Sundays, and the rest on hover over "Ge en julklapp". */}
+          <div class="stake">
+            <svg class="adventsljus" viewBox="0 0 180 104" aria-hidden="true" data-adventsljus>
+              {
+                LJUS.map((x) => (
+                  <g class="ljus" transform={`translate(${x} 0)`}>
+                    <rect x="-7" y="44" width="14" height="46" rx="1.5" fill="#FBFBF8" />
+                    <path d="M0 44v-6" stroke="#CFE3D8" stroke-width="2" stroke-linecap="round" />
+                    <g class="laga">
+                      <circle cy="30" r="19" fill="#F4B400" opacity="0.12" />
+                      <circle cy="30" r="12.5" fill="#FFCF45" opacity="0.16" />
+                      <path d="M0 12C5 20 8 26 8 31a8 8 0 0 1-16 0c0-5 3-11 8-19Z" fill="#F4B400" />
+                      <path d="M0 20C3.5 25 5.5 29 5.5 32a5.5 5.5 0 0 1-11 0c0-3 2-7 5.5-12Z" fill="#FFCF45" />
+                      <path d="M0 27C2 30 3 32 3 34a3 3 0 0 1-6 0c0-2 1-4 3-7Z" fill="#FFDB73" />
+                    </g>
+                  </g>
+                ))
+              }
+              <rect x="2" y="88" width="176" height="16" fill="#0E4A38" />
+              <path d="M2 89.5h176M2 102.5h176" stroke="#D64527" stroke-width="3" />
+              <path d={ROMBER} fill="#F4B400" />
+            </svg>
+            <div class="tid">
+              <p class="nedrakning" data-nedrakning hidden>
+                <span class="siffra" aria-hidden="true" data-siffra></span>
+                <span class="enhet" aria-hidden="true" data-enhet></span>
+                <span class="sr-only" data-nedrakning-text></span>
+              </p>
+              <span class="advent text-label text-mint" data-advent hidden></span>
+            </div>
+          </div>
+          <h2 id="julklapp-rubrik" class="rubrik text-title tracking-[-0.015em]">Håll ljusen tända i jul</h2>
+          <p class="ingress max-w-[60ch] text-mint">
+            Ge en julklapp till barnen i Addis Abeba och glädj samtidigt någon du tycker om. Vi skickar ditt julkort i
+            ditt namn på julaftonsmorgonen.
+          </p>
+          <div class="handling">
+            <a class={cn(buttonVariants({ variant: "line" }), "whitespace-nowrap")} href={href("/julklapp")}>
+              Ge en julklapp
+              <Pil />
+            </a>
+            {sistaDag && (
+              <p class="text-mint">
+                Sista dagen med kort: <strong class="font-semibold text-cotton">{sistaDag}</strong>
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  // Advent: as many candles burn as there have been Advent Sundays, as in a Swedish home. Before the first Advent none burn;
+  // after julafton all four do.
+  // The markup is fully lit; only the script puts candles out, and lights the lit ones one by one when they come into view.
+  // Under the candles the days to julafton count down from 1 November, to the morning the julkort arrives.
+  // A page left open moves on to the next day at midnight.
+  const stake = document.querySelector<SVGElement>("[data-adventsljus]");
+  const DAG = 864e5;
+  const ORDNING = ["Första", "Andra", "Tredje", "Fjärde"];
+  const TANDA = ["ett ljus är tänt", "två ljus är tända", "tre ljus är tända", "fyra ljus är tända"];
+
+  /** Whole days from a to b, counted on the calendar: a 23- or 25-hour day at a clock change is still one day. */
+  const dagar = (a: Date, b: Date) => Math.round((b.getTime() - a.getTime()) / DAG);
+
+  /** The candles that burn, whether it is Advent, and the days left to julafton (undefined outside 1 Nov–24 Dec). */
+  function kalender(nu: Date) {
+    const ar = nu.getFullYear();
+    const dag = new Date(ar, nu.getMonth(), nu.getDate());
+    const julafton = new Date(ar, 11, 24);
+    // The fourth Advent Sunday is the last Sunday before Christmas Day; the first is three weeks earlier.
+    const fjarde = new Date(ar, 11, 25 - (new Date(ar, 11, 25).getDay() || 7));
+    const forsta = new Date(ar, 11, fjarde.getDate() - 21);
+    const under = dag >= forsta && dag <= julafton;
+    // Before the first Advent Sunday the candlestick stands dark; once Christmas has come, all four burn.
+    const tanda = under ? Math.min(4, 1 + Math.floor(dagar(forsta, dag) / 7)) : dag < forsta ? 0 : 4;
+    const kvar = dag >= new Date(ar, 10, 1) && dag <= julafton ? dagar(dag, julafton) : undefined;
+    return { under, tanda, kvar };
+  }
+
+  /** The running count-down, so that a new one (or a new day) stops it instead of the two writing over each other. */
+  let vandning: ReturnType<typeof setTimeout> | undefined;
+
+  /** Counts the number down the last few days to today's, slowing as it lands, like a calendar being turned. */
+  function vand(siffra: HTMLElement, kvar: number) {
+    let tal = kvar + 9;
+    let vanta = 40;
+    siffra.textContent = String(tal);
+    const steg = () => {
+      siffra.textContent = String(--tal);
+      vanta *= 1.22;
+      vandning = tal > kvar ? setTimeout(steg, vanta) : undefined;
+    };
+    vandning = setTimeout(steg, vanta);
+  }
+
+  /** Shows today: which candles burn, the Advent label and the countdown ("God jul!" on julafton). */
+  function visa(rulla: boolean) {
+    clearTimeout(vandning);
+    const { under, tanda, kvar } = kalender(new Date());
+    stake!.querySelectorAll(".ljus").forEach((el, i) => el.classList.toggle("slackt", i >= tanda));
+
+    const etikett = document.querySelector<HTMLElement>("[data-advent]")!;
+    etikett.hidden = !under || kvar === 0;
+    etikett.textContent = etikett.hidden ? "" : `${ORDNING[tanda - 1]} advent, ${TANDA[tanda - 1]}.`;
+
+    const ruta = document.querySelector<HTMLElement>("[data-nedrakning]")!;
+    const siffra = ruta.querySelector<HTMLElement>("[data-siffra]")!;
+    const enhet = ruta.querySelector<HTMLElement>("[data-enhet]")!;
+    const text = ruta.querySelector<HTMLElement>("[data-nedrakning-text]")!;
+    ruta.hidden = kvar === undefined;
+    if (kvar === undefined) return;
+    if (kvar === 0) {
+      siffra.textContent = "God jul!";
+      enhet.textContent = "I dag är det julafton.";
+      text.textContent = "God jul! I dag är det julafton.";
+      return;
+    }
+    const ord = kvar === 1 ? "dag kvar till julafton" : "dagar kvar till julafton";
+    enhet.textContent = ord;
+    text.textContent = `${kvar} ${ord}.`;
+    siffra.textContent = String(kvar);
+    if (rulla) vand(siffra, kvar);
+  }
+
+  if (stake) {
+    visa(false);
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+      const brinner = [...stake.querySelectorAll(".ljus:not(.slackt)")];
+      brinner.forEach((el) => el.classList.add("vantar"));
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((e) => e.isIntersecting)) return;
+          io.disconnect();
+          brinner.forEach((el, i) => setTimeout(() => el.classList.replace("vantar", "tands"), 300 + i * 420));
+          visa(true);
+        },
+        { threshold: 0.8 },
+      );
+      io.observe(stake);
+      // Never leave a candle out that should burn.
+      setTimeout(() => brinner.forEach((el) => el.classList.remove("vantar")), 6000);
+    }
+    // A new day: at midnight on a page left open (worked out afresh each day, so clock changes do not drift),
+    // and when a tab that slept in the background, or a page restored from the back-forward cache, is shown again.
+    const nyDag = () => {
+      const nu = new Date();
+      const tillMidnatt = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate() + 1).getTime() - nu.getTime();
+      setTimeout(() => {
+        visa(false);
+        nyDag();
+      }, tillMidnatt + 1000);
+    };
+    nyDag();
+    document.addEventListener("visibilitychange", () => document.visibilityState === "visible" && visa(false));
+    window.addEventListener("pageshow", (e) => e.persisted && visa(false));
+  }
+</script>
+
+<style>
+  /* One row on wide screens: the candles, the text, the action. The rule above ties it to the light band's line. */
+  .rad {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "ljus rubrik handling"
+      "ljus ingress handling";
+    align-items: center;
+    column-gap: clamp(24px, 3vw, 40px);
+    border-top: 1.5px solid rgba(207, 227, 216, 0.25);
+    padding-block: clamp(28px, 3.5vw, 40px) clamp(32px, 4vw, 48px);
+  }
+  .stake {
+    grid-area: ljus;
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    width: 176px;
+  }
+  .adventsljus {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  /* The countdown: the number in the display face, the unit as a label, centred under the candles. */
+  .nedrakning {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 2px 8px;
+    margin-top: 6px;
+    text-align: center;
+  }
+  .siffra {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-headline);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-cotton);
+  }
+  .enhet {
+    font-size: var(--text-label);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-mint);
+    text-wrap: balance;
+  }
+  .advent {
+    font-weight: 600;
+    text-align: center;
+    text-wrap: balance;
+  }
+  .laga {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    transition:
+      opacity 0.5s var(--ease-light),
+      transform 0.5s var(--ease-light);
+  }
+  /* A candle that is out shows only its wick. Pointing at "Ge en julklapp" lights the rest: a julklapp keeps the lights on. */
+  .slackt .laga,
+  .vantar .laga {
+    opacity: 0;
+    transform: scale(0.4, 0.1);
+  }
+  .vantar .laga {
+    transition: none;
+  }
+  .rad:has(.handling a:hover, .handling a:focus-visible) .slackt .laga {
+    opacity: 1;
+    transform: none;
+  }
+  /* The flame catches: a flicker, then it stands, like the lamp at dusk. */
+  @keyframes tands {
+    0% {
+      opacity: 0;
+      transform: scale(0.4, 0.1);
+    }
+    25% {
+      opacity: 1;
+      transform: scale(0.7, 0.6);
+    }
+    40% {
+      opacity: 0.35;
+      transform: scale(0.6, 0.4);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Not on a candle put out since (at midnight a new Advent Sunday can leave fewer burning). */
+  .tands:not(.slackt) .laga {
+    animation: tands 0.9s var(--ease-light) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .laga {
+      transition: none;
+    }
+  }
+  .rubrik {
+    grid-area: rubrik;
+    align-self: end;
+  }
+  .ingress {
+    grid-area: ingress;
+    align-self: start;
+    margin-top: 6px;
+  }
+  /* Capped, so a long "sista dag" from the editor wraps under the button instead of squeezing the text. */
+  .handling {
+    grid-area: handling;
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+    max-width: 18rem;
+  }
+  .handling p {
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+  .tid {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+  }
+  /* Narrow: the candles and the countdown side by side on their own row, then the heading, the text and the button. */
+  @media (max-width: 900px) {
+    .rad {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "ljus"
+        "rubrik"
+        "ingress"
+        "handling";
+    }
+    .stake {
+      width: auto;
+      grid-template-columns: 132px minmax(0, 1fr);
+      justify-items: start;
+      align-items: center;
+      column-gap: 20px;
+      margin-bottom: 26px;
+    }
+    .tid {
+      justify-items: start;
+    }
+    .nedrakning {
+      justify-content: flex-start;
+      text-align: left;
+      margin-top: 0;
+    }
+    .advent {
+      text-align: left;
+    }
+    .ingress {
+      margin-top: 12px;
+    }
+    .handling {
+      max-width: none;
+      margin-top: 22px;
+    }
+  }
+  @media (max-width: 520px) {
+    .stake {
+      grid-template-columns: 112px minmax(0, 1fr);
+      column-gap: 16px;
+    }
+    .handling,
+    .handling a {
+      width: 100%;
+    }
+  }
+</style>

@@ -21,7 +21,7 @@ test("hopplänken leder till innehållet", async ({ page }) => {
   await expect(page.locator("main#main")).toBeFocused();
 });
 
-test("huvudmenyn länkar till startsidans avsnitt, historien och nyheterna", async ({ page, isMobile }) => {
+test("huvudmenyn länkar till startsidans avsnitt, Om föreningen och nyheterna", async ({ page, isMobile }) => {
   await page.goto("./");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
@@ -29,23 +29,12 @@ test("huvudmenyn länkar till startsidans avsnitt, historien och nyheterna", asy
     ["Vårt stöd", "#stod"],
     ["Familjerna", "#familjer"],
     ["Så arbetar vi", "#sa-arbetar-vi"],
-    ["Vår historia", "historia"],
+    ["Om föreningen", "om-foreningen"],
     ["Nyheter", "nyheter"],
   ]) {
     await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", new RegExp(`${path}$`));
   }
-  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /#bli-fadder$/);
-});
-
-test("sidan hämtar inget från tredje part", async ({ page, baseURL }) => {
-  const origin = new URL(baseURL!).origin;
-  const external: string[] = [];
-  page.on("request", (request) => {
-    if (!request.url().startsWith(origin) && !request.url().startsWith("data:")) external.push(request.url());
-  });
-  await page.goto("./");
-  await page.waitForLoadState("networkidle");
-  expect(external).toEqual([]);
+  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
 });
 
 test.describe("mobilmenyn", () => {
@@ -138,7 +127,8 @@ test.describe("startsidans berättelse", () => {
   });
 
   test("texterna följer ordlistan och hittar inte på några siffror", async ({ page }) => {
-    await page.goto("./");
+    // On the build with empty test files: the föreningsuppgifter the association fills in have figures of their own.
+    await page.goto(process.env.E2E_TOM_URL!);
     const text = (await page.getByRole("banner").innerText()) + (await page.locator("main").innerText());
     // "Senaste nytt" shows the newest inlägg's date, which comes from the inlägg, not from the page.
     const utanNyheter = await page.locator("main").evaluate((main) => {

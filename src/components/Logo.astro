@@ -23,7 +23,7 @@ const mark = (on === "green" ? markOnGreen : markOnLight)
   href={href}
   aria-label="Streetlight, till startsidan"
   class={cn(
-    "inline-flex min-h-11 items-center gap-3 font-display text-title font-extrabold tracking-[-0.02em] no-underline [&_svg]:size-10 [&_svg]:flex-none max-[400px]:gap-2 max-[400px]:text-[1.35rem] max-[400px]:[&_svg]:size-[34px]",
+    "inline-flex min-h-11 flex-none items-center gap-3 whitespace-nowrap font-display text-title font-extrabold tracking-[-0.02em] no-underline [&_svg]:size-10 [&_svg]:flex-none max-[400px]:gap-2 max-[400px]:text-[1.35rem] max-[400px]:[&_svg]:size-[34px]",
     on === "green" ? "text-cotton" : "text-ink",
     className,
   )}

@@ -3,6 +3,7 @@ import { z } from "astro/zod";
 import data from "@/data/historia.json";
 
 import { valfri } from "./falt";
+import { valfriSidbild } from "./sidbild";
 
 /**
  * Vår historia: the timeline from 1995 until today, on the page /historia.
@@ -29,12 +30,16 @@ export const periodSchema = z.strictObject({
   rubrik: z.string().trim().min(1, "varje period behöver en rubrik, till exempel 1995–1999"),
   namn: text,
   sammanfattning: text,
+  /** A photo from the period, shown under the summary. */
+  bild: valfriSidbild,
   handelser: z.array(handelseSchema),
 });
 
 export const historiaSchema = z.strictObject({
   ingress: text,
   perioder: z.array(periodSchema).min(1, "historien behöver minst en period"),
+  /** A photo for Idag, at the end of the timeline. */
+  idagBild: valfriSidbild,
 });
 
 export type Handelse = z.infer<typeof handelseSchema>;

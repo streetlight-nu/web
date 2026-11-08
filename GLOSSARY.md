@@ -29,13 +29,22 @@ _Undvik_: sponsor, givare, donator
 En variant av fadderskap där faddern följer ett av fadderbarnen. En fadder för ett barn är fortfarande en fadder.
 _Undvik_: personlig fadder, barnfadder
 
-**Intresseanmälan**:
-Det första steget mot att bli fadder: en person anmäler intresse och föreningen hör av sig.
-_Undvik_: ansökan, registrering
-
 **Föreningsuppgifter**:
 De offentliga uppgifter som visar vem föreningen är och hur man ger: organisationsnummer, 90-konto, Swish-nummer, kontaktperson och årsredovisning.
 _Undvik_: kontaktinfo, betalinfo
+
+## Julkampanjen
+
+**Julklapp**:
+En gåva i julkampanjen ”Ge en julklapp” till barnen i Addis Abeba, där personen själv väljer belopp. Ges via Repejo.
+_Undvik_: donation, julgåva
+
+**Julkort**:
+Kortet som följer med en julklapp: personen skriver en hälsning, och föreningen skickar kortet i personens namn på julaftonsmorgonen till någon hen tycker om.
+_Undvik_: gåvobevis, e-kort
+
+**Repejo**:
+Föreningens insamlingstjänst, som sköter betalningen, julkampanjens checkout och insamlingsmätaren. Den externa tjänst som julkampanjens sida och Stöd oss anropar. Repejos skript hämtar i sin tur andra tjänster (ADR 0003).
 
 ## Nyheter
 

@@ -1,0 +1,47 @@
+{
+  "ingress": "Streetlight är en ideell förening som stöttar 20 fadderbarn och deras familjer i Addis Abeba. Vi hjälper barnen att gå i skolan och familjerna att klara sig själva. Allt började 1995, när en liten flicka tog en svensk mans hand.",
+  "vision": "Vi vill sprida hopp om en ljus framtid till våra fadderbarn och deras familjer.",
+  "visionText": "Ett barn som får gå klart skolan kan välja sitt eget liv. Och den som har fått hjälp vill ofta hjälpa andra. Det har vi redan sett hända.",
+  "tror": [
+    {
+      "rubrik": "Skolan öppnar vägen.",
+      "text": "Vi tror på utbildning som en väg ut ur fattigdom. I Etiopien börjar de flesta barn skolan, men bara ungefär hälften går klart årskurs åtta. Därför betalar vi skolavgifter, skoluniform och skolmaterial. Blir ett barn sjukt betalar vi läkarvården."
+    },
+    {
+      "rubrik": "Fattigdom har flera sidor.",
+      "text": "Det handlar om att sakna pengar, mat och ett tryggt hem. Men fattigdom kan också göra att man inte vågar drömma. Och den kan göra att andra behandlar en sämre, till exempel i sjukvården. Vi vill bryta alla sidorna, ett barn i taget."
+    },
+    {
+      "rubrik": "Hela familjen behöver stå stadigt.",
+      "text": "Ett barn som går i skolan behöver ett hem som klarar sig. Därför kan föräldrarna få stöd och ekonomisk hjälp att starta en egen verksamhet som ger inkomst. En pappa i föreningen började tillverka skor och har nu anställt andra."
+    },
+    {
+      "rubrik": "Det man får kan man ge vidare.",
+      "text": "Merry fick hjälp att gå i skolan och blev läkare. Hon drömmer om att en dag starta ett sjukhus i Etiopien. Barnen säger samma sak: de vill hjälpa andra barn som har det svårt. Som ringar på vattnet."
+    },
+    {
+      "rubrik": "Vi lär oss av varandra.",
+      "text": "Familjerna i Addis Abeba har visat oss att glädje och gemenskap inte hänger på pengar. Hos dem blir en gäst snabbt en del av familjen. Här i Sverige har vi ofta mer saker men mindre tid för varandra. När vi ger vidare känner vi oss också behövda."
+    }
+  ],
+  "borjan": "1995 var Tryggve Nandorf i Addis Abeba för att hälsa på familjen till sin adopterade son. En dag kom en liten flicka fram till honom och ville leka. Hon hette Merry. De förstod inte varandras språk, men hon tog hans hand och ledde honom hem till sina föräldrar.\n\nTryggve lärde känna familjen. Han såg att Merry, hennes syster och ett barn till behövde hjälp för att kunna gå i skolan. När han kom hem till Sverige letade han upp faddrar. Så började Streetlight.",
+  "foreningar": "Streetlight är två ideella föreningar med var sin styrelse. Streetlight Sverige samlar in pengar från faddrar och stöttar arbetet ekonomiskt. Streetlight Etiopien arbetar på plats i Addis Abeba och känner varje familj.\n\nBarnen väljs ut tillsammans med de lokala myndigheterna i Addis Abeba. De hjälper oss att hitta barn från utsatta familjer som behöver extra stöd. Så blir vi en del av det sociala skyddsnätet i Etiopien.\n\nEn söndag i månaden träffas barnen och föräldrarna. De leker, pratar och lär sig om saker som är viktiga just då. Volontärer hjälper till, bland annat studenter i socialt arbete från universitetet. För barnen och föräldrarna har Streetlight blivit som en andra familj.",
+  "grund": {
+    "text": "Streetlight började med att Tryggve och Merrys familj bad tillsammans i deras hem. Vi tror att alla människor hör ihop, som delarna i en kropp. Vi talar inte samma språk, men vi är en del av samma familj.",
+    "citat": "Om en kroppsdel lider, så lider alla de andra delarna med den. Och om en kroppsdel blir ärad, gläder sig alla de andra delarna med den.",
+    "kalla": "1 Kor 12:26"
+  },
+  "styrelser": [
+    {
+      "forening": "Streetlight Sverige",
+      "personer": [
+        { "namn": "Joel Nandorf", "roll": "Ordförande" },
+        { "namn": "", "roll": "" }
+      ]
+    },
+    {
+      "forening": "Streetlight Etiopien",
+      "personer": [{ "namn": "", "roll": "" }]
+    }
+  ]
+}

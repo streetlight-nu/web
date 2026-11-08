@@ -3,8 +3,9 @@ import { describe, expect, test } from "vitest";
 import { hamtaForeningsuppgifter, tolkaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 
 describe("föreningsuppgifterna", () => {
-  test("datafilen i repot har inga ifyllda uppgifter, eftersom föreningen inte har lämnat några", () => {
-    expect(hamtaForeningsuppgifter()).toEqual({});
+  // Only the schema: the association fills the file in through Pages CMS, so its values are not the tests' business.
+  test("datafilen i repot klarar schemat", () => {
+    expect(() => hamtaForeningsuppgifter()).not.toThrow();
   });
 
   test("tomma och saknade fält räknas som inte ifyllda", () => {

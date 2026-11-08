@@ -1,0 +1,107 @@
+---
+import { getCollection } from "astro:content";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Fraga from "@/components/Fraga.astro";
+import FyllsI from "@/components/FyllsI.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { perGrupp } from "@/lib/vanliga-fragor";
+import { href } from "@/lib/utils";
+
+/**
+ * Vanliga frågor: questions a future fadder asks, in groups. The association writes them in Pages CMS,
+ * one Markdown file per question in src/content/fragor. Each question is the shared Fraga component, with an id
+ * (#fraga-<file name>), so another page can link straight to one answer and it opens.
+ */
+const uppgifter = hamtaForeningsuppgifter();
+const { kontaktperson, epost } = uppgifter;
+const grupper = perGrupp(await getCollection("fragor"));
+const ingress = "Om hur det fungerar att vara fadder, hur barnen väljs ut och hur föreningen arbetar.";
+const lank = "font-semibold underline decoration-gold decoration-2 underline-offset-[0.22em]";
+---
+
+<BaseLayout title="Vanliga frågor" description={ingress} current="fragor">
+  <div slot="header" class="pt-[clamp(28px,5vw,56px)] pb-[clamp(36px,5vw,60px)]">
+    <nav aria-label="Du är här" class="mb-[18px] flex flex-wrap items-center gap-2.5 text-label font-semibold text-mint">
+      <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page" class="text-cotton">Vanliga frågor</span>
+    </nav>
+    <h1 class="text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[0.98] tracking-[-0.035em]">
+      Vanliga <span class="text-gold">frågor.</span>
+    </h1>
+    <p class="mt-[18px] max-w-[56ch] text-lede text-mint">{ingress}</p>
+  </div>
+  <TibebBand slot="header-after" variant="thin" />
+
+  <div class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="band-inner faq">
+      {
+        grupper.map((grupp) => (
+          <section aria-labelledby={`grupp-${grupp.namn}`}>
+            <h2 id={`grupp-${grupp.namn}`}>{grupp.rubrik}</h2>
+            {grupp.fragor.map((fraga) => (
+              <Fraga fraga={fraga} uppgifter={uppgifter} medId />
+            ))}
+          </section>
+        ))
+      }
+
+      <section aria-labelledby="mer" class="mer">
+        <h2 id="mer">Hittade du inte svaret?</h2>
+        <p>
+          Kontakta {kontaktperson ?? <FyllsI>namn fylls i</FyllsI>} på{" "}
+          {epost ? <a class={lank} href={`mailto:${epost}`}>{epost}</a> : <FyllsI>e-post fylls i</FyllsI>}.
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <TibebBand variant="thin" />
+
+  <section aria-labelledby="fadder-rubrik" class="bg-gold py-[clamp(48px,7vw,80px)] text-ink">
+    <div class="band-inner flex flex-wrap items-end justify-between gap-x-14 gap-y-8">
+      <div class="min-w-0 flex-[999_1_480px]">
+        <h2 id="fadder-rubrik" class="text-headline">Hjälp oss hålla ljusen tända.</h2>
+        <p class="mt-[18px] max-w-[52ch] text-lede">Som fadder stöttar du barnens skolgång i Addis Abeba.</p>
+      </div>
+      <a class={buttonVariants({ variant: "ink" })} href={href("/stod-oss")}>Bli fadder</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // A link to one question (#fraga-…) opens it. On arrival the browser already starts keyboard navigation
+  // at the question; a link within the page also moves focus there.
+  function oppnaFragan(flyttaFokus: boolean) {
+    const fraga = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (!(fraga instanceof HTMLDetailsElement)) return;
+    fraga.open = true;
+    fraga.scrollIntoView({ block: "start" });
+    if (flyttaFokus) fraga.querySelector("summary")?.focus({ preventScroll: true });
+  }
+  oppnaFragan(false);
+  window.addEventListener("hashchange", () => oppnaFragan(true));
+</script>
+
+<style>
+  .faq {
+    max-width: calc(46rem + 32px);
+    display: grid;
+    gap: clamp(40px, 6vw, 64px);
+  }
+  .faq h2 {
+    margin-bottom: 14px;
+    font-size: var(--text-title);
+    letter-spacing: -0.015em;
+  }
+  .mer {
+    border-top: 3px solid var(--color-ink);
+    padding-top: 22px;
+  }
+  .mer p {
+    max-width: 62ch;
+  }
+</style>

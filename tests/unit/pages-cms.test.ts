@@ -22,7 +22,7 @@ interface Falt {
   label: string;
   type: string;
   required?: boolean;
-  options?: { values?: { name: string; label: string }[]; format?: string };
+  options?: { values?: { name: string; label: string }[]; format?: string; media?: string };
 }
 
 interface Samling {
@@ -36,10 +36,12 @@ interface Samling {
 }
 
 const konfiguration = parse(readFileSync(path.join(rot, ".pages.yml"), "utf8")) as {
-  media: { input: string; output: string };
+  media: { name: string; input: string; output: string }[];
   content: Samling[];
 };
 const nyheter = konfiguration.content.find((samling) => samling.name === "nyheter")!;
+// The first media folder is Pages CMS's default, which the images in an inlägg's body use.
+const media = konfiguration.media[0];
 
 describe("ett inlägg sparat i Pages CMS", () => {
   test("klarar schemat när alla fält är ifyllda, med bild, barn och samtycke", () => {
@@ -112,17 +114,23 @@ describe("samlingen Nyheter i .pages.yml", () => {
 
 describe("bilder från Pages CMS", () => {
   test("laddas upp under src/, där bygget optimerar dem, inte i public/", () => {
-    expect(konfiguration.media.input).toMatch(/^src\/assets\//);
+    for (const mapp of konfiguration.media) expect(mapp.input).toMatch(/^src\/assets\//);
+  });
+
+  test("hamnar i Nyheters mapp, både bilden och bilderna i brödtexten", () => {
+    expect(media.name).toBe("nyheter");
+    const bild = nyheter.fields.find((falt) => falt.name === "image")!;
+    expect(bild.options).toMatchObject({ media: "nyheter" });
   });
 
   test("skrivs med en sökväg som från inläggets mapp leder till uppladdningsmappen", () => {
     const fran = path.join(rot, nyheter.path);
-    expect(path.resolve(fran, konfiguration.media.output)).toBe(path.resolve(rot, konfiguration.media.input));
+    expect(path.resolve(fran, media.output)).toBe(path.resolve(rot, media.input));
   });
 
   test("i fixturen pekar på uppladdningsmappen, både bilden och bilden i brödtexten", () => {
     const { data, brodtext } = lasInlagg("berattelse-med-barnfoto.md");
-    expect(data.image.startsWith(`${konfiguration.media.output}/`)).toBe(true);
-    expect(brodtext).toContain(`](${konfiguration.media.output}/`);
+    expect(data.image.startsWith(`${media.output}/`)).toBe(true);
+    expect(brodtext).toContain(`](${media.output}/`);
   });
 });

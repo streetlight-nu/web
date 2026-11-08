@@ -1,0 +1,446 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FyllsI from "@/components/FyllsI.astro";
+import HoppaTill from "@/components/HoppaTill.astro";
+import Ledger from "@/components/Ledger.astro";
+import Foto from "@/components/Foto.astro";
+import Pil from "@/components/Pil.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { hamtaFunktioner } from "@/lib/funktioner";
+import { hamtaOmForeningen, stycken, visaGrund } from "@/lib/om-foreningen";
+import { href } from "@/lib/utils";
+
+/**
+ * Om föreningen: who we are and why we do this. The vision, what we believe in, how it began, the two
+ * associations, Vår grund, the boards and Kontakt (#kontakt). The texts come from src/data/om-foreningen.json
+ * (Pages CMS) and the contact details from the föreningsuppgifter; every empty field shows the chip "fylls i".
+ * The fields alternate cotton and green, and only the final field is gold (The Ett ljus rule).
+ */
+const om = hamtaOmForeningen();
+const { historia } = hamtaFunktioner();
+const { kontaktperson, epost, swish, nittiokonto, organisationsnummer, arsredovisning } = hamtaForeningsuppgifter();
+const beskrivning =
+  om.ingress ?? "Vilka vi är, vad vi tror på och hur Streetlight började. Och hur du når föreningen.";
+const grund = visaGrund(om.grund) ? om.grund : undefined;
+
+// The vision's key words are marked with the soft gold, as on the home page.
+const NYCKELORD = "ljus framtid";
+const [fore, efter] = om.vision?.includes(NYCKELORD) ? om.vision.split(NYCKELORD, 2) : [om.vision, undefined];
+
+const section = "py-[clamp(64px,9vw,120px)]";
+const split =
+  "band-inner grid grid-cols-1 items-start gap-[clamp(28px,6vw,96px)] min-[901px]:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]";
+const lank = "font-semibold underline decoration-gold decoration-2 underline-offset-[0.22em]";
+const hopp = [
+  { namn: "Det här tror vi på", id: "tror" },
+  { namn: "Så började det", id: "borjan" },
+  { namn: "Vilka vi är", id: "vilka" },
+  { namn: "Kontakt", id: "kontakt" },
+];
+---
+
+<BaseLayout title="Om föreningen" description={beskrivning} current="om">
+  <div slot="header" class="pt-[clamp(28px,5vw,56px)] pb-[clamp(36px,5vw,60px)]">
+    <nav aria-label="Du är här" class="mb-[18px] flex flex-wrap items-center gap-2.5 text-label font-semibold text-mint">
+      <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page" class="text-cotton">Om föreningen</span>
+    </nav>
+    <h1 class="text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[0.98] tracking-[-0.035em]">
+      Om <span class="text-gold">föreningen.</span>
+    </h1>
+    <p class="mt-[18px] max-w-[58ch] text-lede text-mint">{om.ingress ?? <FyllsI>ingress fylls i</FyllsI>}</p>
+    <HoppaTill etikett="Hoppa till ett avsnitt" lankar={hopp} class="mt-8" />
+  </div>
+  <TibebBand slot="header-after" variant="thin" />
+
+  <!-- Vår vision, then what we believe in: one cotton field. -->
+  <div class={`bg-cotton text-ink ${section}`}>
+    <section aria-labelledby="vision-rubrik" class="band-inner">
+      <h2 id="vision-rubrik" class="sr-only">Vår vision</h2>
+      <figure>
+        <blockquote
+          class="max-w-[19ch] font-display text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[1.02] font-extrabold tracking-[-0.03em] text-balance"
+        >
+          {
+            om.vision ? (
+              efter !== undefined ? (
+                <>
+                  {fore}
+                  <span class="highlight">{NYCKELORD}</span>
+                  {efter}
+                </>
+              ) : (
+                fore
+              )
+            ) : (
+              <FyllsI>visionen fylls i</FyllsI>
+            )
+          }
+        </blockquote>
+        <figcaption class="mt-7 font-medium text-ink-soft">Streetlights vision</figcaption>
+      </figure>
+      {
+        om.visionText && (
+          <p class="vision-text mt-[clamp(32px,4vw,48px)] max-w-[52ch] text-lede">{om.visionText}</p>
+        )
+      }
+    </section>
+
+    <section id="tror" aria-labelledby="tror-rubrik" class={`${split} mt-[clamp(72px,10vw,128px)] scroll-mt-4`}>
+      <div class="min-w-0 min-[901px]:sticky min-[901px]:top-8">
+        <h2 id="tror-rubrik" class="text-headline">Det här tror vi på.</h2>
+        <p class="mt-[22px] max-w-[40ch] text-lede text-ink-soft">
+          Det som styr hur vi arbetar med barnen och familjerna i Addis Abeba.
+        </p>
+      </div>
+      <div class="min-w-0">
+        {
+          om.tror.length > 0 ? (
+            <Ledger items={om.tror.map((tanke) => ({ title: tanke.rubrik, text: tanke.text }))} />
+          ) : (
+            <FyllsI>det vi tror på fylls i</FyllsI>
+          )
+        }
+      </div>
+    </section>
+  </div>
+
+  <section id="borjan" aria-labelledby="borjan-rubrik" class={`on-green bg-green text-cotton ${section} scroll-mt-0`}>
+    <div class={split}>
+      <div class="min-w-0">
+        <h2 id="borjan-rubrik" class="text-headline">Så började det.</h2>
+        <p class="ar" aria-hidden="true">1995</p>
+        <Foto
+          class="mt-[clamp(28px,4vw,48px)] aspect-[4/3] max-w-[440px]"
+          bild={om.borjanBild}
+          forslag="Foto: Merry som liten med sin familj, eller Tryggve hemma hos dem i Addis Abeba"
+        />
+      </div>
+      <div class="min-w-0">
+        {
+          stycken(om.borjan).length > 0 ? (
+            <div class="stycken max-w-[60ch]">
+              {stycken(om.borjan).map((stycke, i) => (
+                <p class:list={[i === 0 ? "text-lede text-cotton" : "text-mint"]}>{stycke}</p>
+              ))}
+            </div>
+          ) : (
+            <FyllsI>berättelsen fylls i</FyllsI>
+          )
+        }
+        {
+          historia && (
+            <a class:list={[buttonVariants({ variant: "line" }), "mt-9"]} href={href("/historia")}>
+              Läs hela vår historia
+              <Pil />
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="foreningar-rubrik" class={`bg-cotton text-ink ${section}`}>
+    <div class={split}>
+      <div class="min-w-0">
+        <h2 id="foreningar-rubrik" class="text-headline">Två föreningar, ett arbete.</h2>
+        <Foto
+          class="mt-[clamp(28px,4vw,48px)] aspect-[4/3] max-w-[440px]"
+          bild={om.foreningarBild}
+          forslag="Foto: en söndagsträff med barn, föräldrar och volontärer, med familjernas samtycke"
+        />
+      </div>
+      <div class="min-w-0">
+        {
+          stycken(om.foreningar).length > 0 ? (
+            <div class="stycken max-w-[60ch]">
+              {stycken(om.foreningar).map((stycke, i) => (
+                <p class:list={[i === 0 && "text-lede"]}>{stycke}</p>
+              ))}
+            </div>
+          ) : (
+            <FyllsI>texten fylls i</FyllsI>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    grund ? (
+      <>
+        <TibebBand />
+        <section aria-labelledby="grund-rubrik" class={`on-green bg-green-deep text-cotton ${section}`}>
+          <div class={split}>
+            <div class="min-w-0">
+              <h2 id="grund-rubrik" class="text-headline">
+                Vår grund.
+              </h2>
+            </div>
+            {grund.text && <p class="min-w-0 max-w-[56ch] text-lede text-mint">{grund.text}</p>}
+          </div>
+          {grund.citat && (
+            <div class="band-inner mt-[clamp(40px,6vw,72px)]">
+              <figure class="min-w-0">
+                <blockquote class="vers">
+                  <p>”{grund.citat}”</p>
+                </blockquote>
+                {grund.kalla && <figcaption class="mt-6 text-label font-semibold text-mint">{grund.kalla}</figcaption>}
+              </figure>
+            </div>
+          )}
+        </section>
+        <TibebBand />
+      </>
+    ) : (
+      <TibebBand variant="thin" />
+    )
+  }
+
+  <section id="vilka" aria-labelledby="vilka-rubrik" class={`bg-cotton text-ink ${section} scroll-mt-0`}>
+    <div class={split}>
+      <div class="min-w-0">
+        <h2 id="vilka-rubrik" class="text-headline">Vilka vi är.</h2>
+        <p class="mt-[22px] max-w-[40ch] text-lede text-ink-soft">
+          Streetlight Sverige och Streetlight Etiopien har var sin styrelse.
+        </p>
+        <Foto
+          class="mt-[clamp(28px,4vw,48px)] aspect-[4/3] max-w-[440px]"
+          bild={om.vilkaBild}
+          forslag="Foto: styrelserna i Sverige och Etiopien, gärna tillsammans"
+        />
+      </div>
+      <div class="styrelser min-w-0">
+        {
+          om.styrelser.map((styrelse) => (
+            <section aria-label={`Styrelsen i ${styrelse.forening}`}>
+              <h3 class="text-title tracking-[-0.015em]">{styrelse.forening}</h3>
+              {styrelse.personer.length > 0 ? (
+                <ul>
+                  {styrelse.personer.map((person) => (
+                    <li>
+                      {person.namn ? (
+                        <span class="font-semibold">{person.namn}</span>
+                      ) : (
+                        <FyllsI>{person.roll ? "namn fylls i" : "namn och roll fylls i"}</FyllsI>
+                      )}
+                      {person.roll && <span class="text-label font-semibold text-ink-soft">{person.roll}</span>}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p class="mt-4">
+                  <FyllsI>styrelsen fylls i</FyllsI>
+                </p>
+              )}
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt" aria-labelledby="kontakt-rubrik" class={`on-green bg-green text-cotton ${section} scroll-mt-0`}>
+    <div class={split}>
+      <div class="min-w-0">
+        <h2 id="kontakt-rubrik" class="text-headline">Kontakt.</h2>
+        <p class="mt-[22px] max-w-[40ch] text-lede text-mint">
+          Har du frågor om att bli fadder eller om föreningen? Hör av dig till oss.
+        </p>
+      </div>
+      <div class="min-w-0">
+        <div class="epost">
+          <p class="text-label font-semibold text-mint">E-post</p>
+          {
+            epost ? (
+              <a class="epost-lank" href={`mailto:${epost}`}>
+                {epost}
+              </a>
+            ) : (
+              <p class="mt-2">
+                <FyllsI>e-post fylls i</FyllsI>
+              </p>
+            )
+          }
+          <p class="mt-3 text-mint">
+            Kontaktperson: <span class="text-cotton">{kontaktperson ?? <FyllsI>namn fylls i</FyllsI>}</span>
+          </p>
+        </div>
+        <dl class="uppgifter">
+          <div>
+            <dt>Swish för gåvor</dt>
+            <dd>{swish ?? <FyllsI>nummer fylls i</FyllsI>}</dd>
+          </div>
+          <div>
+            <dt>90-konto</dt>
+            <dd>{nittiokonto ?? <FyllsI>nummer fylls i</FyllsI>}</dd>
+          </div>
+          <div>
+            <dt>Organisationsnummer</dt>
+            <dd>{organisationsnummer ?? <FyllsI>nummer fylls i</FyllsI>}</dd>
+          </div>
+          <div>
+            <dt>Senaste årsredovisning</dt>
+            <dd>
+              {
+                arsredovisning ? (
+                  <a class="inline-flex min-h-11 items-center font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4" href={arsredovisning}>
+                    Läs årsredovisningen
+                  </a>
+                ) : (
+                  <FyllsI>länk fylls i</FyllsI>
+                )
+              }
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <TibebBand variant="thin" />
+
+  <section aria-labelledby="avslutning-rubrik" class={`bg-gold text-ink ${section}`}>
+    <div class="band-inner flex flex-wrap items-end justify-between gap-x-14 gap-y-8">
+      <div class="min-w-0 flex-[999_1_480px]">
+        <h2 id="avslutning-rubrik" class="text-headline">Var med och håll ljusen tända.</h2>
+        <p class="mt-[22px] max-w-[52ch] text-lede">
+          Som fadder stöttar du alla 20 fadderbarnen tillsammans. Du kan också bli fadder för ett barn. Första steget är en
+          intresseanmälan, sedan hör vi av oss.
+        </p>
+        <p class="mt-5">
+          Har du frågor? <a class={lank} href={href("/vanliga-fragor")}>Läs Vanliga frågor</a>
+        </p>
+      </div>
+      <a class={buttonVariants({ variant: "ink" })} href={href("/stod-oss")}>Bli fadder</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .highlight {
+    background-image: linear-gradient(
+      transparent 62%,
+      var(--color-gold-soft) 62%,
+      var(--color-gold-soft) 92%,
+      transparent 92%
+    );
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* The vision's own words under the quote, set off by a thick rule, never a card. */
+  .vision-text {
+    padding-top: 18px;
+    border-top: 3px solid var(--color-ink);
+  }
+
+  .stycken {
+    display: grid;
+    gap: 18px;
+  }
+
+  /* The year it began, as a large stamp under the heading: the light on this field. */
+  .ar {
+    margin-top: clamp(20px, 3vw, 36px);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-display);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--color-gold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 1 Kor 12:26, the size of a heading, with a gold rule as its thread. */
+  .vers {
+    margin: 0;
+    padding-top: 22px;
+    border-top: 3px solid var(--color-gold);
+    font-family: var(--font-display);
+    max-width: 30ch;
+    font-weight: 800;
+    font-size: var(--text-headline);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .styrelser {
+    display: grid;
+    gap: clamp(36px, 5vw, 56px);
+  }
+  .styrelser ul {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+    border-top: 3px solid var(--color-ink);
+  }
+  .styrelser li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4px 24px;
+    padding-block: 16px;
+    border-bottom: 1.5px solid rgba(11, 46, 36, 0.18);
+  }
+  .styrelser li:last-child {
+    border-bottom: 3px solid var(--color-ink);
+  }
+
+  .epost {
+    padding-bottom: 28px;
+    border-bottom: 1.5px solid rgba(207, 227, 216, 0.3);
+  }
+  .epost-lank {
+    display: inline-block;
+    margin-top: 6px;
+    padding-block: 4px;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-title);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-cotton);
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 0.18em;
+    overflow-wrap: anywhere;
+  }
+  .epost-lank:hover {
+    text-decoration-thickness: 5px;
+  }
+  .uppgifter {
+    margin: 28px 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 32px;
+  }
+  .uppgifter > div {
+    min-width: 0;
+    border-top: 1.5px solid rgba(207, 227, 216, 0.3);
+    padding-top: 12px;
+  }
+  .uppgifter dt {
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: 600;
+    color: var(--color-mint);
+  }
+  .uppgifter dd {
+    margin: 6px 0 0;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 600px) {
+    .uppgifter {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+</style>

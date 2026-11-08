@@ -11,13 +11,18 @@ export interface NavLink {
 interface Props {
   links: NavLink[];
   sponsorHref: string;
+  /**
+   * How "Bli fadder" shows: "gold" on most pages; "line" on a page whose own main action is gold (the campaign page);
+   * "current" on the page it leads to (Stöd oss), a line marked as the current page.
+   */
+  sponsor?: "gold" | "line" | "current";
 }
 
 /**
  * The main menu. On wide screens the links sit in a row; under 900 px they fold
  * into a disclosure opened by the "Meny" button. Escape closes it and returns focus.
  */
-export default function MainNav({ links, sponsorHref }: Props) {
+export default function MainNav({ links, sponsorHref, sponsor = "gold" }: Props) {
   const [open, setOpen] = useState(false);
   const listId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -38,7 +43,7 @@ export default function MainNav({ links, sponsorHref }: Props) {
     <>
       <ul
         id={listId}
-        className={`order-3 m-0 w-full list-none flex-col p-0 font-medium min-[901px]:order-none min-[901px]:flex min-[901px]:w-auto min-[901px]:flex-row min-[901px]:gap-7 ${open ? "flex" : "hidden"}`}
+        className={`order-3 m-0 w-full list-none flex-col p-0 font-medium min-[901px]:order-none min-[901px]:flex min-[901px]:w-auto min-[901px]:min-w-0 min-[901px]:flex-row min-[901px]:flex-wrap min-[901px]:justify-center min-[901px]:gap-x-[clamp(14px,1.6vw,28px)] min-[901px]:gap-y-1 min-[901px]:whitespace-nowrap ${open ? "flex" : "hidden"}`}
       >
         {links.map((link) => (
           <li key={link.href}>
@@ -54,8 +59,10 @@ export default function MainNav({ links, sponsorHref }: Props) {
         ))}
       </ul>
       <div className="ml-auto flex items-center gap-2.5 max-[400px]:gap-2">
-        <Button asChild size="small" className="max-[520px]:px-4 max-[400px]:px-3.5">
-          <a href={sponsorHref}>Bli fadder</a>
+        <Button asChild variant={sponsor === "gold" ? "gold" : "line"} size="small" className="whitespace-nowrap max-[520px]:px-4 max-[400px]:px-3.5">
+          <a href={sponsorHref} aria-current={sponsor === "current" ? "page" : undefined}>
+            Bli fadder
+          </a>
         </Button>
         <button
           ref={toggleRef}

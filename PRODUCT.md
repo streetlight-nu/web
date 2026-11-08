@@ -21,7 +21,7 @@ I andra hand kommer befintliga faddrar och medlemmar, som läser nyheter, följe
 
 Webbplatsen ska få nya faddrar och berätta om arbetet. Streetlight Sverige är en ideell förening som samlar in pengar och stöttar arbetet i Etiopien. Streetlight Etiopien är en fristående ideell förening med egen styrelse som bär arbetet med barnen och familjerna på plats i Addis Abeba. Tillsammans stöttar de 20 fadderbarns skolgång och deras familjer.
 
-Webbplatsen gör sitt jobb när en besökare som funderar på att bli fadder skickar en intresseanmälan, och när faddrar och medlemmar litar på att de vet vad som händer.
+Webbplatsen gör sitt jobb när en besökare som funderar på att bli fadder blir fadder, och när faddrar och medlemmar litar på att de vet vad som händer.
 
 ## Positioning
 
@@ -30,14 +30,15 @@ Små med flit. Det är 20 barn och 20 ljus, inte tusentals. Föreningen känner 
 ## Operating Context
 
 - En fadder stöttar normalt alla 20 fadderbarnen tillsammans. Varianten ”fadder för ett barn” finns också.
-- Första steget är en intresseanmälan, och sedan hör föreningen av sig.
+- Man blir fadder genom Repejos formulär, och sedan hör föreningen av sig.
 - Redaktörer i föreningen skriver nyheter i Pages CMS utan att kunna programmera (se `docs/redaktorer.md`). Det de sparar committas direkt till `master`.
 - Föreningsuppgifterna (organisationsnummer, 90-konto, Swish, kontaktperson, e-post, årsredovisning) fylls i av föreningen i `src/data/foreningsuppgifter.json` och skrivs aldrig in av komponenter.
 
 ## Capabilities and Constraints
 
 - Statisk sajt byggd med Astro, React-öar, shadcn/ui och Tailwind v4 (ADR 0001).
-- Inga anrop till tredje part. Typsnitten ligger på egen server via Fontsource (GDPR), och ett test kontrollerar det.
+- Sidor får anropa externa tjänster när en funktion kräver det, till exempel Repejo för insamling, betalning och insamlingsmål (`checkout.js`, `<repejo-checkout>` och `<repejo-progress-bar>`). Välj tjänster som tar GDPR på allvar, och berätta i integritetstexten vilka tjänster sidan använder.
+- Typsnitten ligger kvar på egen server via Fontsource (GDPR) och hämtas aldrig från Google Fonts.
 - Nyheter har exakt fyra ämnen: Rapport från Addis Abeba, Nyhet från föreningen, Berättelse från en familj och Tack till faddrarna.
 - Ett formulär som inte är kopplat ska säga det, även i tackmeddelandet.
 - Begrepp och ord som ska undvikas står i `GLOSSARY.md`.

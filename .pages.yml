@@ -4,10 +4,19 @@
 # The fields of Nyheter must match the schema in src/lib/nyheter-schema.ts; tests/unit/pages-cms.test.ts checks it.
 
 # Images are uploaded under src/assets, where Astro finds and optimises them at build time.
-# `output` is the path written into an inlägg, relative to the inlägg's folder (src/content/nyheter).
+# nyheter (the default, first): `output` is the path written into an inlägg, relative to the inlägg's
+# folder (src/content/nyheter).
+# sidor: the photos on Om föreningen and Vår historia. The path is written from the site's root,
+# `/src/assets/sidor/<file>`, which src/lib/sidbild.ts checks and the component Foto finds.
 media:
-  input: src/assets/nyheter
-  output: ../../assets/nyheter
+  - name: nyheter
+    label: Nyheter
+    input: src/assets/nyheter
+    output: ../../assets/nyheter
+  - name: sidor
+    label: Om föreningen och Vår historia
+    input: src/assets/sidor
+    output: /src/assets/sidor
 
 content:
   - name: foreningsuppgifter
@@ -47,6 +56,107 @@ content:
           regex: "^$|^https?://\\S+$"
           message: Skriv en hel webbadress som börjar med https://.
 
+  - name: julkampanj
+    label: Julkampanjen
+    type: file
+    path: src/data/julkampanj.json
+    format: json
+    # The fields must match the schema in src/lib/julkampanj.ts; tests/unit/julkampanj.test.ts checks it.
+    # Amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
+    fields:
+      - name: sistaDag
+        label: Sista dagen att ge en julklapp med kort
+        type: string
+        description: Skriv som du vill att det ska stå, till exempel ”20 december”. Visas överst på sidan Ge en julklapp. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: vadJulklappenGor
+        label: Det här gör julklappen
+        type: text
+        description: En eller två meningar om vad pengarna från julklapparna går till. Visas under ”Vart julklappen går”. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: epost
+        label: E-post för frågor om julkampanjen
+        type: string
+        description: Lämna tomt för att använda föreningens kontakt-e-post.
+        pattern:
+          regex: "^$|^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+          message: Skriv en e-postadress, till exempel namn@exempel.se.
+      - name: visasPaStartsidan
+        label: Visa julkampanjen på startsidan och i menyn
+        type: boolean
+        description: Bocka i när kampanjen pågår. Bocka ur efter jul, så försvinner den från startsidan och menyn. Sidan Ge en julklapp finns kvar.
+
+  - name: funktioner
+    label: Funktioner
+    type: file
+    path: src/data/funktioner.json
+    format: json
+    # The fields must match the flags in src/lib/funktioner.ts; tests/unit/funktioner.test.ts checks it.
+    # A change takes effect when the site is built and published again, which takes a few minutes.
+    fields:
+      - name: julklapp
+        label: Ge en julklapp (sidan, länken i menyn och rutan på startsidan)
+        type: select
+        required: true
+        default: pa
+        options:
+          values:
+            - { value: pa, label: På, visas överallt }
+            - { value: av, label: Av, visas ingenstans }
+            - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
+      - name: historia
+        label: Vår historia (sidan och länkarna till den)
+        type: select
+        required: true
+        default: pa
+        options:
+          values:
+            - { value: pa, label: På, visas överallt }
+            - { value: av, label: Av, visas ingenstans }
+            - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
+
+  - name: vanligaFragor
+    label: Vanliga frågor
+    type: collection
+    path: src/content/fragor
+    # The file name becomes the question's anchor: /vanliga-fragor#fraga-<question as a slug>. It does not
+    # change when the question is reworded. The fields must match the schema in src/lib/vanliga-fragor.ts;
+    # tests/unit/vanliga-fragor.test.ts checks it.
+    filename: "{primary}.md"
+    view:
+      fields: [fraga, grupp, ordning]
+      primary: fraga
+      sort: [grupp, ordning]
+      default:
+        sort: ordning
+        order: asc
+    fields:
+      - name: fraga
+        label: Fråga
+        type: string
+        required: true
+        description: Som en besökare skulle fråga, till exempel ”Hur väljs barnen ut?”.
+      - name: grupp
+        label: Grupp
+        type: select
+        required: true
+        options:
+          values:
+            - name: fadder
+              label: Att vara fadder
+            - name: barnen
+              label: Barnen och familjerna
+            - name: foreningen
+              label: Föreningen
+      - name: ordning
+        label: Ordning
+        type: number
+        description: Lägre tal visas först i gruppen, till exempel 1, 2, 3. Får lämnas tomt, så hamnar frågan sist.
+      - name: body
+        label: Svar
+        type: rich-text
+        description: "Lämna tomt tills svaret finns, så visas ”fylls i av föreningen”. Skriv {swish}, {epost}, {kontaktperson}, {organisationsnummer}, {nittiokonto} eller {arsredovisning} för att visa uppgiften från Föreningsuppgifter."
+        options:
+          format: markdown
+
   - name: historia
     label: Vår historia
     type: file
@@ -77,6 +187,29 @@ content:
             label: Sammanfattning
             type: text
             description: En mening om vad som hände under perioden.
+          - name: bild
+            label: Foto från perioden
+            type: object
+            description: Visas under sammanfattningen.
+            fields:
+              - name: src
+                label: Foto
+                type: image
+                description: Ladda upp fotot i full storlek. Webbplatsen gör själv mindre versioner. Lämna tomt, så visas ett förslag på vilket foto som passar här.
+                options:
+                  media: sidor
+              - name: alt
+                label: Alt-text
+                type: string
+                description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
+              - name: visarFamilj
+                label: Fotot visar ett barn eller en familj
+                type: boolean
+                description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
+              - name: samtycke
+                label: Familjen har gett sitt samtycke
+                type: boolean
+                description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
           - name: handelser
             label: Händelser
             type: object
@@ -99,6 +232,181 @@ content:
                 label: Att prata om tillsammans
                 type: string
                 description: En fråga som en förälder kan prata om med sitt barn efteråt, till exempel ”Vad behöver du för att kunna gå till skolan?”. Får lämnas tomt.
+      - name: idagBild
+        label: Foto till Idag
+        type: object
+        description: Visas sist i tidslinjen, under rubriken Idag.
+        fields:
+          - name: src
+            label: Foto
+            type: image
+            description: Ladda upp fotot i full storlek. Webbplatsen gör själv mindre versioner. Lämna tomt, så visas ett förslag på vilket foto som passar här.
+            options:
+              media: sidor
+          - name: alt
+            label: Alt-text
+            type: string
+            description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
+          - name: visarFamilj
+            label: Fotot visar ett barn eller en familj
+            type: boolean
+            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
+          - name: samtycke
+            label: Familjen har gett sitt samtycke
+            type: boolean
+            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
+
+  - name: omForeningen
+    label: Om föreningen
+    type: file
+    path: src/data/om-foreningen.json
+    format: json
+    # The fields must match the schema in src/lib/om-foreningen.ts; tests/unit/om-foreningen.test.ts checks it.
+    # The headings are the page's own. Kontakt comes from Föreningsuppgifter.
+    fields:
+      - name: ingress
+        label: Ingress
+        type: text
+        description: Ett par meningar överst på sidan om vilka vi är. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: vision
+        label: Vår vision
+        type: text
+        description: Visionen i en mening. Visas med stor text. Orden ”ljus framtid” markeras med guld.
+      - name: visionText
+        label: Text under visionen
+        type: text
+        description: Två eller tre korta meningar om vad visionen betyder. Får lämnas tomt.
+      - name: tror
+        label: Det här tror vi på
+        type: object
+        list: true
+        description: Det som styr arbetet, en tanke i taget. Visas som en lista.
+        fields:
+          - name: rubrik
+            label: Rubrik
+            type: string
+            description: En kort mening som bär tanken, till exempel ”Skolan öppnar vägen.”.
+          - name: text
+            label: Text
+            type: text
+            description: Tre eller fyra korta meningar.
+      - name: borjan
+        label: Så började det
+        type: text
+        description: Berättelsen om hur Streetlight började. Lämna en tom rad mellan styckena.
+      - name: borjanBild
+        label: Foto till Så började det
+        type: object
+        description: Visas under årtalet 1995.
+        fields:
+          - name: src
+            label: Foto
+            type: image
+            description: Ladda upp fotot i full storlek. Webbplatsen gör själv mindre versioner. Lämna tomt, så visas ett förslag på vilket foto som passar här.
+            options:
+              media: sidor
+          - name: alt
+            label: Alt-text
+            type: string
+            description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
+          - name: visarFamilj
+            label: Fotot visar ett barn eller en familj
+            type: boolean
+            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
+          - name: samtycke
+            label: Familjen har gett sitt samtycke
+            type: boolean
+            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
+      - name: foreningar
+        label: Två föreningar, ett arbete
+        type: text
+        description: Om Streetlight Sverige, Streetlight Etiopien och hur barnen väljs ut. Lämna en tom rad mellan styckena.
+      - name: foreningarBild
+        label: Foto till Två föreningar, ett arbete
+        type: object
+        description: Visas under rubriken.
+        fields:
+          - name: src
+            label: Foto
+            type: image
+            description: Ladda upp fotot i full storlek. Webbplatsen gör själv mindre versioner. Lämna tomt, så visas ett förslag på vilket foto som passar här.
+            options:
+              media: sidor
+          - name: alt
+            label: Alt-text
+            type: string
+            description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
+          - name: visarFamilj
+            label: Fotot visar ett barn eller en familj
+            type: boolean
+            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
+          - name: samtycke
+            label: Familjen har gett sitt samtycke
+            type: boolean
+            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
+      - name: grund
+        label: Vår grund
+        type: object
+        description: Töm alla fälten för att ta bort avsnittet från sidan.
+        fields:
+          - name: text
+            label: Text
+            type: text
+          - name: citat
+            label: Citat
+            type: text
+            description: Skriv utan citattecken; sidan sätter dem.
+          - name: kalla
+            label: Källa
+            type: string
+            description: Till exempel 1 Kor 12:26.
+      - name: styrelser
+        label: Vilka vi är
+        type: object
+        list: true
+        description: Styrelserna i de två föreningarna.
+        fields:
+          - name: forening
+            label: Förening
+            type: string
+            required: true
+            description: Till exempel Streetlight Sverige.
+          - name: personer
+            label: Personer i styrelsen
+            type: object
+            list: true
+            description: Ett tomt namn visas som ”fylls i”.
+            fields:
+              - name: namn
+                label: Namn
+                type: string
+              - name: roll
+                label: Roll
+                type: string
+                description: Till exempel Ordförande, Kassör eller Ledamot.
+      - name: vilkaBild
+        label: Foto till Vilka vi är
+        type: object
+        description: Visas under rubriken, till exempel ett foto av styrelserna.
+        fields:
+          - name: src
+            label: Foto
+            type: image
+            description: Ladda upp fotot i full storlek. Webbplatsen gör själv mindre versioner. Lämna tomt, så visas ett förslag på vilket foto som passar här.
+            options:
+              media: sidor
+          - name: alt
+            label: Alt-text
+            type: string
+            description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
+          - name: visarFamilj
+            label: Fotot visar ett barn eller en familj
+            type: boolean
+            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
+          - name: samtycke
+            label: Familjen har gett sitt samtycke
+            type: boolean
+            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
 
   - name: nyheter
     label: Nyheter
@@ -153,6 +461,8 @@ content:
         label: Bild
         type: image
         description: Ladda upp bilden i full storlek. Webbplatsen gör själv mindre versioner.
+        options:
+          media: nyheter
       - name: imageAlt
         label: Alt-text
         type: string

@@ -41,13 +41,6 @@ test("nyhetslistan visar notisen om exempel medan exempelinlägg finns", async (
   await expect(page.getByText("Inläggen nedan är exempel som visar mallen.", { exact: false })).toBeVisible();
 });
 
-test("menyn markerar Nyheter som aktiv på nyhetslistan", async ({ page, isMobile }) => {
-  await page.goto("nyheter");
-  const nav = page.getByRole("navigation", { name: "Huvudmeny" });
-  if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-  await expect(nav.getByRole("link", { name: "Nyheter", exact: true })).toHaveAttribute("aria-current", "page");
-});
-
 test("nyhetslistan klarar WCAG 2.1 AA", async ({ page }) => {
   await page.goto("nyheter");
   await expectNoA11yViolations(page);

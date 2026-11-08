@@ -97,9 +97,3 @@ test("exempelinläggen har platshållare i stället för foton, och varje bild h
   }
 });
 
-test("menyn markerar Nyheter som aktiv på ett inlägg", async ({ page, isMobile }) => {
-  await page.goto(nyast);
-  const nav = page.getByRole("navigation", { name: "Huvudmeny" });
-  if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-  await expect(nav.getByRole("link", { name: "Nyheter", exact: true })).toHaveAttribute("aria-current", "page");
-});

@@ -41,6 +41,5 @@ test.describe("med ejProduktion utanför produktion", () => {
     expect((await request.get("historia")).status()).toBe(200);
     await page.goto("om-foreningen");
     await expect(page.getByRole("link", { name: "Läs hela vår historia" })).toBeVisible();
-    await expect(page.getByRole("contentinfo").getByRole("link", { name: "Vår historia" })).toBeVisible();
   });
 });

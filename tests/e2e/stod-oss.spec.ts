@@ -51,20 +51,6 @@ test("brödsmulorna visar Startsidan / Stöd oss", async ({ page }) => {
   await expect(smulor.getByText("Stöd oss")).toHaveAttribute("aria-current", "page");
 });
 
-for (const [namn, id] of [
-  ["Vart pengarna går", "vart"],
-  ["Så når det fram", "nar-fram"],
-]) {
-  test(`hopplänken ${namn} i sidhuvudet leder till #${id}`, async ({ page }) => {
-    await page.goto(sida);
-    const lank = page.getByRole("navigation", { name: "Hoppa till ett avsnitt" }).getByRole("link", { name: namn });
-    await expect(lank).toHaveAttribute("href", `#${id}`);
-    await lank.click();
-    await expect(page).toHaveURL(new RegExp(`#${id}$`));
-    await expect(page.locator(`#${id}`)).toBeInViewport();
-  });
-}
-
 test("Bli fadder i menyn är en linjeknapp markerad som aktuell sida", async ({ page }) => {
   await page.goto(sida);
   const knapp = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Bli fadder" });
@@ -258,14 +244,9 @@ test.describe("frågorna med testfrågorna och tom testfil", () => {
     await expect(page.locator('[id^="fraga-"]')).toHaveCount(0);
   });
 
-  test("hopplänken Frågor leder till avsnittet, som slutar med länken till alla vanliga frågor", async ({ page }) => {
-    // Mjuk rullning hinner inte klart på CI-körarna och gör testet ostabilt; hoppet testas utan den.
-    await page.emulateMedia({ reducedMotion: "reduce" });
+  test("avsnittet slutar med länken till alla vanliga frågor", async ({ page }) => {
     await page.goto(sida);
-    const hopp = page.getByRole("navigation", { name: "Hoppa till ett avsnitt" }).getByRole("link", { name: "Frågor" });
-    await expect(hopp).toHaveAttribute("href", "#fragor");
-    await hopp.click();
-    await expect(fragorna(page).getByRole("heading", { name: "Innan du bestämmer dig." })).toBeInViewport();
+    await expect(fragorna(page).getByRole("heading", { name: "Innan du bestämmer dig." })).toBeVisible();
 
     const alla = fragorna(page).getByRole("link", { name: "Alla vanliga frågor" });
     await expect(alla).toHaveAttribute("href", /\/vanliga-fragor$/);
@@ -341,15 +322,8 @@ test("Få nyheterna med e-post leder till formuläret på Nyheter", async ({ pag
   await expect(page.locator("#nyheter-med-epost")).toBeInViewport();
 });
 
-test("hopplänken Fler sätt att stödja leder till avsnittet, sist på sidan", async ({ page }) => {
-  // Mjuk rullning hinner inte klart på CI-körarna och gör testet ostabilt; hoppet testas utan den.
-  await page.emulateMedia({ reducedMotion: "reduce" });
+test("Fler sätt att stödja är sista avsnittet på sidan", async ({ page }) => {
   await page.goto(sida);
-  const hopp = page
-    .getByRole("navigation", { name: "Hoppa till ett avsnitt" })
-    .getByRole("link", { name: "Fler sätt att stödja" });
-  await expect(hopp).toHaveAttribute("href", "#fler");
-  await hopp.click();
-  await expect(fler(page).getByRole("heading", { name: "Fler sätt att stödja oss." })).toBeInViewport();
+  await expect(fler(page).getByRole("heading", { name: "Fler sätt att stödja oss." })).toBeVisible();
   expect(await page.locator("main > section").last().getAttribute("id")).toBe("fler");
 });

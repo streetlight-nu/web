@@ -216,7 +216,7 @@ test("menyn markerar Julklapp som aktuell sida, även när kampanjen inte visas 
   await page.goto(`${process.env.E2E_TOM_URL}${sida}`);
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-  await expect(nav.getByRole("link", { name: "Julklapp", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(nav.getByRole("link", { name: "Ge en julklapp", exact: true })).toHaveAttribute("aria-current", "page");
 });
 
 test.describe("julkampanjen på startsidan", () => {
@@ -349,7 +349,7 @@ test.describe("julkampanjen på startsidan", () => {
       await page.goto("./");
       const nav = page.getByRole("navigation", { name: "Huvudmeny" });
       if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-      await expect(nav.getByRole("link", { name: "Julklapp", exact: true })).toHaveAttribute("href", /\/julklapp$/);
+      await expect(nav.getByRole("link", { name: "Ge en julklapp", exact: true })).toHaveAttribute("href", /\/julklapp$/);
     });
 
     test("menyn ryms på en rad vid 901 px", async ({ page, isMobile }) => {
@@ -357,7 +357,7 @@ test.describe("julkampanjen på startsidan", () => {
       await page.setViewportSize({ width: 901, height: 800 });
       await page.goto("./");
       const nav = page.getByRole("navigation", { name: "Huvudmeny" });
-      const hojd = (await nav.getByRole("link", { name: "Julklapp", exact: true }).boundingBox())!.height;
+      const hojd = (await nav.getByRole("link", { name: "Ge en julklapp", exact: true }).boundingBox())!.height;
       expect(hojd).toBeLessThan(40);
       const logga = (await nav.getByRole("link").first().boundingBox())!;
       const knapp = (await nav.getByRole("link", { name: "Bli fadder" }).boundingBox())!;
@@ -371,7 +371,7 @@ test.describe("julkampanjen på startsidan", () => {
     test("syns varken avsnittet eller länken i menyn", async ({ page }) => {
       await page.goto("./");
       await expect(page.locator("#julklapp")).toHaveCount(0);
-      await expect(page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Julklapp" })).toHaveCount(0);
+      await expect(page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Ge en julklapp" })).toHaveCount(0);
     });
   });
 });

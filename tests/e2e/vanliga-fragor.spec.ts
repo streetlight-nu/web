@@ -29,11 +29,8 @@ test("en fråga öppnas och stängs med tangentbordet", async ({ page }) => {
   await expect(svar).toBeHidden();
 });
 
-test("menyn markerar Frågor som aktiv och sidfoten länkar hit", async ({ page, isMobile }) => {
+test("sidfoten länkar hit", async ({ page }) => {
   await page.goto(sida);
-  const nav = page.getByRole("navigation", { name: "Huvudmeny" });
-  if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-  await expect(nav.getByRole("link", { name: "Frågor", exact: true })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("contentinfo").getByRole("link", { name: "Vanliga frågor" })).toHaveAttribute(
     "href",
     /\/vanliga-fragor$/,

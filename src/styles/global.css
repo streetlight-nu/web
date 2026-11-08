@@ -208,6 +208,38 @@
     background: transparent;
     color: var(--color-cotton);
   }
+  /* "Ge en julklapp" in the main menu: a line pill that fills with cotton on hover and when it is the current page. */
+  .nav-gift {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 1px 14px;
+    border: 2px solid var(--color-cotton);
+    border-radius: 999px;
+    background: linear-gradient(var(--color-cotton), var(--color-cotton)) no-repeat 0 0 / 0% 100%;
+    font-weight: 600;
+    transition:
+      background-size 450ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .nav-gift-arrow {
+    flex: none;
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  a:is(:hover, :focus-visible) > .nav-gift,
+  a[aria-current="page"] > .nav-gift {
+    background-size: 100% 100%;
+    color: var(--color-ink);
+  }
+  a:is(:hover, :focus-visible) > .nav-gift > .nav-gift-arrow {
+    transform: translateX(3px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-gift,
+    .nav-gift-arrow {
+      transition: color 150ms linear;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

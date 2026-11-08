@@ -53,7 +53,16 @@ export default function MainNav({ links, sponsorHref, sponsor = "gold" }: Props)
               onClick={() => setOpen(false)}
               className="block border-t border-mint/20 py-3 text-cotton no-underline hover:underline hover:decoration-gold aria-[current=page]:underline aria-[current=page]:decoration-gold aria-[current=page]:decoration-[3px] min-[901px]:border-0 min-[901px]:py-0 min-[901px]:opacity-90 min-[901px]:hover:opacity-100 min-[901px]:aria-[current=page]:opacity-100"
             >
-              {link.label}
+              {link.href.endsWith("/julklapp") ? (
+                <span className="nav-gift">
+                  <span>{link.label}</span>
+                  <svg className="nav-gift-arrow" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                    <path d="M2 8 H13 M9 4 L13 8 L9 12" />
+                  </svg>
+                </span>
+              ) : (
+                link.label
+              )}
             </a>
           </li>
         ))}

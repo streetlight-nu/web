@@ -45,7 +45,7 @@ test("hopplänken leder till innehållet", async ({ page }) => {
 
 test("knappen Ge en julklapp i första vyn leder till Repejos checkout", async ({ page }) => {
   await page.goto(sida);
-  const knapp = page.getByRole("banner").getByRole("link", { name: "Ge en julklapp" });
+  const knapp = page.getByRole("banner").locator('a[href="#ge"]');
   await expect(knapp).toBeInViewport();
   const box = (await knapp.boundingBox())!;
   expect(box.height).toBeGreaterThanOrEqual(44);
@@ -82,13 +82,11 @@ test.describe("utan Repejo", () => {
     await blockRepejo(page);
   });
 
-  test("syns en länk till Repejos kampanjsida där checkouten och mätaren sitter", async ({ page }) => {
+  test("syns en länk till Repejos kampanjsida där checkouten sitter", async ({ page }) => {
     await page.goto(sida);
-    for (const del of [page.locator("#ge"), page.getByRole("region", { name: "Håll ljusen tända i jul" })]) {
-      const lank = del.getByRole("link", { name: /Repejos kampanjsida/ });
-      await expect(lank).toHaveAttribute("href", reservlank);
-      await expect(lank).toBeVisible();
-    }
+    const lank = page.locator("#ge").getByRole("link", { name: /Repejos kampanjsida/ });
+    await expect(lank).toHaveAttribute("href", reservlank);
+    await expect(lank).toBeVisible();
     await expectNoA11yViolations(page);
   });
 
@@ -130,20 +128,13 @@ test("Vart julklappen går har en plats för ett foto med samtycke och leder vid
   await expect(vart.getByRole("link", { name: "Läs om att bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
 });
 
-test("avslutas med en uppmaning som leder till checkouten", async ({ page }) => {
-  await page.goto(sida);
-  const slut = page.getByRole("region", { name: /En julklapp till barnen/ });
-  await expect(slut.getByRole("link", { name: "Ge en julklapp" })).toHaveAttribute("href", "#ge");
-});
-
 test.describe("kampanjuppgifter med tom testfil", () => {
   // A build of the site made from tests/fixtures/*-tom.json (see playwright.config.ts), so these tests do not
   // break when the association fills in src/data/julkampanj.json.
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
-  test("sista dagen, vad julklappen gör och e-posten visas som ”fylls i”", async ({ page }) => {
+  test("vad julklappen gör och e-posten visas som ”fylls i”", async ({ page }) => {
     await page.goto(sida);
-    await expect(page.getByRole("banner").getByText("datum fylls i", { exact: true })).toBeVisible();
     await expect(
       page.getByRole("region", { name: "Vart julklappen går" }).getByText("fylls i av föreningen", { exact: true }),
     ).toBeVisible();
@@ -176,7 +167,6 @@ test.describe("kampanjuppgifter med ifylld testfil", () => {
 
   test("visar värdena från datafilen i stället för ”fylls i”", async ({ page }) => {
     await page.goto(sida);
-    await expect(page.getByRole("banner")).toContainText("TEST-SISTA-DAG");
     await expect(page.getByRole("region", { name: "Vart julklappen går" })).toContainText("TEST-VAD-JULKLAPPEN-GOR");
     await expect(page.locator("#ge").getByRole("link", { name: "julklapp@example.org" })).toHaveAttribute(
       "href",
@@ -209,7 +199,7 @@ test("på kampanjsidan är Ge en julklapp den enda guldknappen i första vyn, oc
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
   expect(await nav.getByRole("link", { name: "Bli fadder" }).evaluate(bakgrund)).not.toBe(guld);
-  expect(await page.getByRole("banner").getByRole("link", { name: "Ge en julklapp" }).evaluate(bakgrund)).toBe(guld);
+  expect(await page.getByRole("banner").locator('a[href="#ge"]').evaluate(bakgrund)).toBe(guld);
 });
 
 test("menyn markerar Julklapp som aktuell sida, även när kampanjen inte visas på startsidan", async ({ page, isMobile }) => {

@@ -4,7 +4,6 @@ import { getEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FlerSattAttStodja from "@/components/FlerSattAttStodja.astro";
 import Fraga from "@/components/Fraga.astro";
-import HoppaTill from "@/components/HoppaTill.astro";
 import Insyn from "@/components/Insyn.astro";
 import Ledger, { type LedgerItem } from "@/components/Ledger.astro";
 import Repejo from "@/components/Repejo.astro";
@@ -30,14 +29,6 @@ const fakta = [
   },
   { fet: "Barnen väljs ut tillsammans med de lokala myndigheterna", resten: "i Addis Abeba." },
   { fet: "Pengarna går via den svenska föreningen", resten: "till arbetet i Etiopien." },
-];
-
-/** The jump links to the page's sections, in the header. */
-const hopp = [
-  { namn: "Vart pengarna går", id: "vart" },
-  { namn: "Så når det fram", id: "nar-fram" },
-  { namn: "Frågor", id: "fragor" },
-  { namn: "Fler sätt att stödja", id: "fler" },
 ];
 
 /**
@@ -90,7 +81,6 @@ const vagen = [
       <span aria-hidden="true">/</span>
       <span aria-current="page" class="text-cotton">Stöd oss</span>
     </nav>
-    <HoppaTill etikett="Hoppa till ett avsnitt" lankar={hopp} />
   </div>
   <TibebBand slot="header-after" variant="thin" />
 

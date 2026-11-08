@@ -21,16 +21,12 @@ test("hopplänken leder till innehållet", async ({ page }) => {
   await expect(page.locator("main#main")).toBeFocused();
 });
 
-test("huvudmenyn länkar till startsidans avsnitt, Om föreningen och nyheterna", async ({ page, isMobile }) => {
+test("huvudmenyn länkar till startsidans avsnitt, Om oss", async ({ page, isMobile }) => {
   await page.goto("./");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
   for (const [name, path] of [
-    ["Vårt stöd", "#stod"],
-    ["Familjerna", "#familjer"],
-    ["Så arbetar vi", "#sa-arbetar-vi"],
-    ["Om föreningen", "om-foreningen"],
-    ["Nyheter", "nyheter"],
+    ["Om oss", "om-foreningen"],
   ]) {
     await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", new RegExp(`${path}$`));
   }
@@ -43,7 +39,7 @@ test.describe("mobilmenyn", () => {
   test("öppnas och stängs med tangentbordet", async ({ page }) => {
     await page.goto("./");
     const toggle = page.getByRole("button", { name: "Meny" });
-    const firstLink = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Vårt stöd", exact: true });
+    const firstLink = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Om oss", exact: true });
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
     await expect(firstLink).toBeHidden();
 
@@ -64,21 +60,6 @@ test.describe("mobilmenyn", () => {
 });
 
 test.describe("startsidans berättelse", () => {
-  test("avsnitten Vårt stöd, Familjerna och Så arbetar vi nås från menyn", async ({ page, isMobile }) => {
-    await page.goto("./");
-    const nav = page.getByRole("navigation", { name: "Huvudmeny" });
-    for (const [name, anchor, heading] of [
-      ["Vårt stöd", "stod", "Utbildning är vägen ut ur fattigdom."],
-      ["Familjerna", "familjer", "Ljuset ska nå hela familjen."],
-      ["Så arbetar vi", "sa-arbetar-vi", "Två föreningar. Två styrelser. Ett arbete."],
-    ]) {
-      if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-      await nav.getByRole("link", { name, exact: true }).click();
-      await expect(page).toHaveURL(new RegExp(`#${anchor}$`));
-      await expect(page.locator(`#${anchor}`).getByRole("heading", { level: 2, name: heading })).toBeInViewport();
-    }
-  });
-
   test("bandet under toppen har exakt 20 ljus, ett per fadderbarn", async ({ page }) => {
     await page.goto("./");
     const band = page.getByTestId("ljusbandet");

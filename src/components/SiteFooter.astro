@@ -1,10 +1,13 @@
 ---
 import Logo from "@/components/Logo.astro";
+import FyllsI from "@/components/FyllsI.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
+import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 import { href } from "@/lib/utils";
 
 const year = new Date().getFullYear();
+const { organisationsnummer } = hamtaForeningsuppgifter();
 
 // Footer links: a full 44 px row each, underline in soft gold on hover (the design system's link hover).
 const link =
@@ -49,6 +52,7 @@ const link =
   <div class="band-inner">
     <div class="flex flex-wrap justify-between gap-4 border-t border-mint/20 pt-6 pb-8 text-label">
       <p>© {year} Streetlight Sverige</p>
+      <p data-testid="sidfot-orgnr">Org.nr {organisationsnummer ?? <FyllsI>nummer fylls i</FyllsI>}</p>
     </div>
   </div>
 </footer>

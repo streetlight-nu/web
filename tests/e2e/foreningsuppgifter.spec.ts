@@ -105,3 +105,17 @@ function contrastAgainstBackground(el: Element) {
     border: ratio(rgba(style.borderTopColor).slice(0, 3), surface),
   };
 }
+
+test.describe("organisationsnumret i sidfoten", () => {
+  test("visar numret från den ifyllda testfilen", async ({ page }) => {
+    await page.goto(process.env.E2E_IFYLLD_URL!);
+    await expect(page.getByRole("contentinfo").getByTestId("sidfot-orgnr")).toHaveText("Org.nr TEST-ORGNR");
+  });
+
+  test("visar ”nummer fylls i” när numret saknas", async ({ page }) => {
+    await page.goto(process.env.E2E_TOM_URL!);
+    const rad = page.getByRole("contentinfo").getByTestId("sidfot-orgnr");
+    await expect(rad).toHaveText("Org.nr nummer fylls i");
+    await expect(rad.getByText("nummer fylls i", { exact: true })).toBeVisible();
+  });
+});

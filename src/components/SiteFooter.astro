@@ -3,11 +3,16 @@ import FyllsI from "@/components/FyllsI.astro";
 import Ikon from "@/components/Ikon.astro";
 import Logo from "@/components/Logo.astro";
 import TibebBand from "@/components/TibebBand.astro";
+import { buttonVariants } from "@/components/ui/button";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 import { href } from "@/lib/utils";
 
 const year = new Date().getFullYear();
-const { facebook, instagram } = hamtaForeningsuppgifter();
+const { organisationsnummer, facebook, instagram } = hamtaForeningsuppgifter();
+
+// Footer links: a full 44 px row each, underline in soft gold on hover (the design system's link hover).
+const link =
+  "flex min-h-11 w-fit items-center decoration-gold-soft underline-offset-[0.22em] hover:text-cotton hover:underline";
 
 /** Where the association can be followed. A link that is not filled in yet shows "fylls i" (see foreningsuppgifter). */
 const sociala = [
@@ -16,38 +21,47 @@ const sociala = [
 ] as const;
 ---
 
-<footer class="on-green bg-green-deep text-base text-mint">
+<footer class="on-green bg-green-deep text-body text-mint">
   <TibebBand />
-  <div class="band-inner grid grid-cols-1 gap-10 pt-14 pb-10 min-[521px]:grid-cols-2 min-[901px]:grid-cols-[minmax(0,1.3fr)_repeat(2,minmax(0,1fr))]">
+  <div
+    class="band-inner grid grid-cols-1 gap-y-12 pt-14 pb-12 min-[521px]:grid-cols-2 min-[521px]:gap-x-10 min-[901px]:grid-cols-[minmax(0,1.3fr)_repeat(2,minmax(0,1fr))] min-[901px]:gap-x-14"
+  >
     <div class="min-w-0 min-[521px]:col-span-2 min-[901px]:col-span-1">
-      <Logo on="green" href={href("/")} class="mb-3.5" />
-      <p>Ideell förening i Sverige och Etiopien som stöttar 20 fadderbarns skolgång och deras familjer i Addis Abeba.</p>
-      <p class="mt-3 text-label">
+      <Logo on="green" href={href("/")} class="-mt-1.5 mb-4" />
+      <p class="max-w-[46ch]">
+        Ideell förening i Sverige och Etiopien som stöttar 20 fadderbarns skolgång och deras familjer i Addis Abeba.
+      </p>
+      <p class="mt-6 text-label">
         <span class="block text-[2.2rem] leading-tight text-gold" lang="am">ብርሃን</span>
         ”ljus” på amhariska, uttalas birhan
       </p>
     </div>
-    <div class="min-w-0">
-      <h2 class="mb-3 text-[1.1rem] tracking-[-0.01em] text-cotton">Webbplatsen</h2>
-      <ul class="m-0 list-none p-0">
-        <li><a class="inline-block py-2" href={href("/om-foreningen")}>Om oss</a></li>
-        <li><a class="inline-block py-2" href={href("/om-foreningen#kontakt")}>Kontakt</a></li>
-        <li><a class="inline-block py-2" href={href("/nyheter")}>Nyheter</a></li>
-        <li><a class="inline-block py-2" href={href("/vanliga-fragor")}>Vanliga frågor</a></li>
-      </ul>
-    </div>
+
     <div class="min-w-0">
       <h2 class="mb-3 text-[1.1rem] tracking-[-0.01em] text-cotton">Stöd oss</h2>
-      <p>Som fadder stöttar du alla 20 fadderbarnen tillsammans.</p>
-      <ul class="m-0 mt-2 list-none p-0">
-        <li><a class="inline-block py-2 font-semibold text-cotton" href={href("/stod-oss")}>Bli fadder</a></li>
-        <li><a class="inline-block py-2" href={href("/stod-oss#fler")}>Swisha en gåva</a></li>
-      </ul>
+      <p class="max-w-[30ch]">Som fadder stöttar du alla 20 fadderbarnen tillsammans.</p>
+      <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
+        <a class={buttonVariants({ variant: "line", size: "small" })} href={href("/stod-oss")}>Bli fadder</a>
+        <a class={link} href={href("/stod-oss#fler")}>Swisha en gåva</a>
+      </div>
     </div>
+
+    <nav class="min-w-0" aria-labelledby="sidfot-webbplatsen">
+      <h2 id="sidfot-webbplatsen" class="mb-1 text-[1.1rem] tracking-[-0.01em] text-cotton">Webbplatsen</h2>
+      <ul class="m-0 list-none p-0">
+        <li><a class={link} href={href("/om-foreningen")}>Om oss</a></li>
+        <li><a class={link} href={href("/om-foreningen#kontakt")}>Kontakt</a></li>
+        <li><a class={link} href={href("/nyheter")}>Nyheter</a></li>
+        <li><a class={link} href={href("/vanliga-fragor")}>Vanliga frågor</a></li>
+      </ul>
+    </nav>
   </div>
   <div class="band-inner">
     <div class="flex flex-wrap items-center justify-between gap-x-10 gap-y-2 border-t border-mint/20 pt-3 pb-5 text-label">
-      <p class="py-2.5">© {year} Streetlight Sverige</p>
+      <div class="flex flex-wrap gap-x-6">
+        <p class="py-2.5">Streetlight {year}</p>
+        <p class="py-2.5" data-testid="sidfot-orgnr">Org.nr {organisationsnummer ?? <FyllsI>nummer fylls i</FyllsI>}</p>
+      </div>
       <div class="flex flex-wrap items-center gap-x-6 gap-y-1">
         <h2 id="folj-oss" class="text-label text-cotton">Följ oss</h2>
         <ul aria-labelledby="folj-oss" class="m-0 flex list-none flex-wrap gap-x-6 gap-y-1 p-0">

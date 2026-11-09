@@ -1,14 +1,18 @@
 ---
 /**
  * The deep green field "Fler sätt att stödja oss." (#fler), last on Stöd oss after a thin tibeb band: a Ledger on
- * green with two rows. "Swisha en gåva" shows the Swish number from the föreningsuppgifter in large display type,
- * or the chip "nummer fylls i"; "Följ och berätta" leads to the form Nyheter med e-post on Nyheter.
+ * green with two rows. "Swisha en gåva" holds Repejo's Swish checkout (ADR 0003) in the right column; the left
+ * column has the text and, under it, the Swish number from the föreningsuppgifter for those who swish from the app
+ * (or the chip "nummer fylls i"). Under 900 px the checkout comes after the number. "Följ och berätta" leads to the
+ * form Nyheter med e-post on Nyheter.
  */
 import FyllsI from "@/components/FyllsI.astro";
 import Pil from "@/components/Pil.astro";
+import Repejo from "@/components/Repejo.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { SWISH_KORTKOD } from "@/lib/repejo";
 import { href } from "@/lib/utils";
 
 const { swish } = hamtaForeningsuppgifter();
@@ -26,17 +30,25 @@ const { swish } = hamtaForeningsuppgifter();
     <ul class="fler">
       <li>
         <span class="mark" aria-hidden="true"></span>
-        <div class="rad">
+        <div class="rad rad--formular">
           <div class="min-w-0">
             <h3 class="text-title tracking-[-0.015em]">Swisha en gåva</h3>
             <p class="mt-2 max-w-[44ch] text-mint">Vill du hellre ge en gång? Swisha en gåva till föreningen.</p>
+            <dl class="nummer">
+              <dt class="text-label font-semibold text-mint">Eller swisha direkt till</dt>
+              <dd class="mt-1.5">
+                {swish ? <span class="swish">{swish}</span> : <FyllsI>nummer fylls i</FyllsI>}
+              </dd>
+            </dl>
           </div>
-          <dl class="min-w-0">
-            <dt class="text-label font-semibold text-mint">Swishnummer</dt>
-            <dd class="mt-1.5">
-              {swish ? <span class="swish">{swish}</span> : <FyllsI>nummer fylls i</FyllsI>}
-            </dd>
-          </dl>
+          <div class="formular">
+            <Repejo
+              del="checkout"
+              kortkod={SWISH_KORTKOD}
+              vantar="Här visas Repejos formulär för att swisha en gåva."
+              utanReserv
+            />
+          </div>
         </div>
       </li>
       <li>
@@ -85,9 +97,31 @@ const { swish } = hamtaForeningsuppgifter();
     align-items: end;
     gap: 20px clamp(32px, 5vw, 72px);
   }
+  /* Swisha en gåva: the text and the number stand at the top, beside the checkout. */
+  .rad--formular {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+  }
+  .nummer {
+    margin: clamp(28px, 4vw, 40px) 0 0;
+    padding-top: 20px;
+    border-top: 1.5px solid color-mix(in srgb, var(--color-mint) 30%, transparent);
+  }
+  .formular {
+    min-width: 0;
+    max-width: 520px;
+  }
+  /* Repejo's Swish card is shorter than a checkout with card fields: reserve about its first step. */
+  .formular :global(repejo-checkout) {
+    min-height: 380px;
+  }
   @media (max-width: 900px) {
     .rad {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .formular {
+      max-width: none;
+      margin-top: 12px;
     }
   }
   /* The woven rhombus marker, as in Ledger. */

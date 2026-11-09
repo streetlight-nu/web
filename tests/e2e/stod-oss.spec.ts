@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { FADDER_KORTKOD } from "../../src/lib/repejo";
+import { FADDER_KORTKOD, SWISH_KORTKOD } from "../../src/lib/repejo";
 import { blockRepejo, expectNoA11yViolations, stubRepejo } from "./helpers";
 
 const sida = "stod-oss";
@@ -311,6 +311,27 @@ test.describe("Fler sätt att stödja oss med tom testfil", () => {
     await expect(swish.getByText("nummer fylls i")).toBeVisible();
     await expectNoA11yViolations(page);
   });
+});
+
+test("Swisha en gåva har Repejos Swish-checkout bredvid texten på dator och efter numret på mobil", async ({
+  page,
+  isMobile,
+}) => {
+  await stubRepejo(page);
+  await page.goto(sida);
+  const rad = fler(page).getByRole("listitem").filter({ hasText: "Swisha en gåva" });
+  const checkout = rad.locator("repejo-checkout");
+  await expect(checkout).toHaveAttribute("short_code", SWISH_KORTKOD);
+  await expect(rad.getByText("Repejos checkout (stubb)")).toBeVisible();
+  const text = (await rad.getByText("Vill du hellre ge en gång?").boundingBox())!;
+  const nummer = (await rad.getByText("Eller swisha direkt till").boundingBox())!;
+  const formular = (await checkout.boundingBox())!;
+  if (isMobile) {
+    expect(formular.y).toBeGreaterThan(nummer.y + nummer.height);
+  } else {
+    expect(formular.x).toBeGreaterThan(text.x + text.width);
+    expect(formular.y).toBeLessThan(nummer.y);
+  }
 });
 
 test("Få nyheterna med e-post leder till formuläret på Nyheter", async ({ page }) => {

@@ -19,12 +19,24 @@ export interface Foreningsuppgifter {
   epost?: string;
   /** Link to the latest annual report (årsredovisning). */
   arsredovisning?: string;
+  /** The association's page on Facebook (https://www.facebook.com/…). */
+  facebook?: string;
+  /** The association's account on Instagram (https://www.instagram.com/…). */
+  instagram?: string;
 }
 
 /** The data file. FORENINGSUPPGIFTER_FIL points elsewhere, so the browser tests can build with a filled-in test file. */
 export const DATAFIL = "src/data/foreningsuppgifter.json";
 
 const ifylldText = z.string().trim();
+
+/** A link to the association's own page on one social network: https, on that network's domain. */
+function profillank(falt: string, doman: string) {
+  const meddelande = `${falt} måste vara en länk till ${doman} (https://www.${doman}/…)`;
+  return ifylldText.pipe(
+    z.url({ protocol: /^https$/, hostname: new RegExp(`^(www\\.)?${doman.replace(".", "\\.")}$`), message: meddelande }),
+  );
+}
 
 const foreningsuppgifterSchema = z.strictObject({
   organisationsnummer: valfri(ifylldText),
@@ -35,6 +47,8 @@ const foreningsuppgifterSchema = z.strictObject({
   arsredovisning: valfri(
     ifylldText.pipe(z.url({ protocol: /^https?$/, message: "arsredovisning måste vara en länk (https://…)" })),
   ),
+  facebook: valfri(profillank("facebook", "facebook.com")),
+  instagram: valfri(profillank("instagram", "instagram.com")),
 });
 
 /** Checks the contents of the data file. Unknown fields and malformed values fail the build. */

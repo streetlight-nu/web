@@ -55,6 +55,20 @@ content:
         pattern:
           regex: "^$|^https?://\\S+$"
           message: Skriv en hel webbadress som börjar med https://.
+      - name: facebook
+        label: Facebook-sida
+        type: string
+        description: Hela adressen till föreningens sida, till exempel https://www.facebook.com/föreningens-namn. Visas i sidfoten. Lämna tomt tills det finns, så visas ”fylls i”.
+        pattern:
+          regex: "^$|^https://(www\\.)?facebook\\.com/\\S+$"
+          message: Skriv hela adressen till sidan, som börjar med https://www.facebook.com/.
+      - name: instagram
+        label: Instagram-konto
+        type: string
+        description: Hela adressen till föreningens konto, till exempel https://www.instagram.com/föreningens-namn. Visas i sidfoten. Lämna tomt tills det finns, så visas ”fylls i”.
+        pattern:
+          regex: "^$|^https://(www\\.)?instagram\\.com/\\S+$"
+          message: Skriv hela adressen till kontot, som börjar med https://www.instagram.com/.
 
   - name: julkampanj
     label: Julkampanjen

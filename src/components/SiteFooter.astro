@@ -1,9 +1,19 @@
 ---
+import FyllsI from "@/components/FyllsI.astro";
+import Ikon from "@/components/Ikon.astro";
 import Logo from "@/components/Logo.astro";
 import TibebBand from "@/components/TibebBand.astro";
+import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 import { href } from "@/lib/utils";
 
 const year = new Date().getFullYear();
+const { facebook, instagram } = hamtaForeningsuppgifter();
+
+/** Where the association can be followed. A link that is not filled in yet shows "fylls i" (see foreningsuppgifter). */
+const sociala = [
+  { namn: "Facebook", ikon: "facebook", lank: facebook },
+  { namn: "Instagram", ikon: "instagram", lank: instagram },
+] as const;
 ---
 
 <footer class="on-green bg-green-deep text-base text-mint">
@@ -36,8 +46,34 @@ const year = new Date().getFullYear();
     </div>
   </div>
   <div class="band-inner">
-    <div class="flex flex-wrap justify-between gap-4 border-t border-mint/20 pt-[22px] pb-[30px] text-label">
-      <p>© {year} Streetlight Sverige</p>
+    <div class="flex flex-wrap items-center justify-between gap-x-10 gap-y-2 border-t border-mint/20 pt-3 pb-5 text-label">
+      <p class="py-2.5">© {year} Streetlight Sverige</p>
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-1">
+        <h2 id="folj-oss" class="text-label text-cotton">Följ oss</h2>
+        <ul aria-labelledby="folj-oss" class="m-0 flex list-none flex-wrap gap-x-6 gap-y-1 p-0">
+          {
+            sociala.map(({ namn, ikon, lank }) => (
+              <li>
+                {lank ? (
+                  <a
+                    class="inline-flex min-h-11 items-center gap-2 decoration-gold-soft decoration-2 hover:text-cotton hover:underline"
+                    href={lank}
+                  >
+                    <Ikon namn={ikon} />
+                    {namn}
+                  </a>
+                ) : (
+                  <span class="inline-flex min-h-11 items-center gap-2">
+                    <Ikon namn={ikon} />
+                    {namn}
+                    <FyllsI>länk fylls i</FyllsI>
+                  </span>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </div>
 </footer>

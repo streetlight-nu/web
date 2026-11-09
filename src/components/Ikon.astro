@@ -1,0 +1,42 @@
+---
+/**
+ * The few drawn icons on the site (design system: no emoji, no icon set). Line icons on a 20 × 20 grid
+ * with the same stroke as Pil. Decorative: the link or label next to them carries the name, and they
+ * take the text colour.
+ */
+interface Props {
+  namn: "facebook" | "instagram";
+  class?: string;
+}
+
+const { namn, class: klass } = Astro.props;
+---
+
+<svg
+  class:list={["size-5 shrink-0", klass]}
+  viewBox="0 0 20 20"
+  aria-hidden="true"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  {
+    namn === "facebook" && (
+      <>
+        <circle cx="10" cy="10" r="8.1" />
+        <path d="M12.6 6.4h-1.2a2 2 0 0 0-2 2v9.6M7.4 10.8h4.6" />
+      </>
+    )
+  }
+  {
+    namn === "instagram" && (
+      <>
+        <rect x="2" y="2" width="16" height="16" rx="4.6" />
+        <circle cx="10" cy="10" r="3.6" />
+        <circle cx="14.7" cy="5.3" r="0.4" fill="currentColor" />
+      </>
+    )
+  }
+</svg>

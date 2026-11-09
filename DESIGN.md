@@ -251,6 +251,7 @@ Varma och stadiga, med stora tryckytor som är lätta att träffa.
 - **Line-ink:** genomskinlig med bläckkant. Den används för sekundära val på ljust.
 - **Small:** 12 × 20 px padding med etikettstorlek, till exempel ”Bli fadder” i menyn.
 - **Hover / Focus:** guld och bläck lyfter 2 px under 300 ms med `cubic-bezier(0.16, 1, 0.3, 1)`. Line-varianterna fyller i en svag ton i stället. Fokus är en ring på 3 px med 3 px luft: bläck på ljusa ytor och guld på grönt.
+- **Pil:** en knapp som leder vidare kan ha en ritad pil efter texten (18 px, linje 2 px med runda ändar, i textens färg). Den är dekorativ och döljs för skärmläsare.
 
 ### Chips
 - **”Fylls i” (`sl-todo`):** en streckad bläckkant på 2 px, 3 px hörn och vit bomull på 45 %. På grönt är kanten mint och texten bomull. Chipet markerar ett faktum föreningen inte har gett än, i stället för att något hittas på. Skriv vad som saknas, till exempel ”nummer fylls i”.
@@ -266,9 +267,24 @@ Varma och stadiga, med stora tryckytor som är lätta att träffa.
 
 ### Navigation
 - **Style:** ligger på grönt sidhuvud, med logotypen till vänster och länkarna i etikettstorlek i bomull. ”Bli fadder” är en liten guldknapp. På en sida vars eget huvudsteg är guld, som julkampanjens ”Ge en julklapp”, blir den en linjeknapp (The Ett ljus Rule). På Stöd oss, dit knappen leder, är den också en linjeknapp och markeras som aktuell sida.
-- **Säsong:** medan julkampanjen pågår finns länken ”Julklapp” sist i menyn. Föreningen slår på och av den i Pages CMS.
+- **Säsong:** medan julkampanjen pågår finns länken ”Julklapp” sist i menyn, som en smal pill med 2 px bomullskant och en liten pil. Vid hovring, fokus och på kampanjsidan fylls pillen med bomull från vänster under 450 ms och texten blir bläck, och pilen flyttar sig 3 px åt höger. Med reducerad rörelse byter bara färgen. Föreningen slår på och av länken i Pages CMS.
 - **States:** hovring ger understrykning. Aktuell sida markeras med `aria-current`.
 - **Mobile:** under 900 px fälls länkarna ihop bakom knappen ”Meny”. Escape stänger och lämnar fokus tillbaka på knappen.
+
+### Sidfot
+Sidfoten ligger på djupgrönt under det fulla tibeb-bandet, med brödtext i 18 px och `mint`. Ordningen är densamma i alla bredder: loggan med en mening om föreningen och ብርሃን, sedan ”Stöd oss”, sedan ”Webbplatsen”. Fadderskapet kommer före webbplatslänkarna eftersom det är sidans viktigaste väg.
+- **Stöd oss:** en mening och därefter ”Bli fadder” som liten linjeknapp, med textlänken ”Swisha en gåva” bredvid. Knappen är aldrig guld i sidfoten (The Ett ljus Rule).
+- **Webbplatsen:** en egen navigering med etikett. Varje länk är en hel rad på 44 px.
+- **Länkar:** `mint` i vila. Vid hovring blir texten bomull och får en understrykning i `gold-soft`.
+- **Rubriker:** bomull, 1,1rem Bricolage ExtraBold, 12 px ovanför sitt innehåll.
+- **Luft:** 56 px under bandet och 48 px mellan grupperna. ብርሃን står 24 px under beskrivningen.
+- **Nederkant:** en tunn mintlinje (20 %) och en rad i etikettstorlek med copyright till vänster och organisationsnumret till höger. Numret kommer från föreningsuppgifterna, och saknas det står chipet ”nummer fylls i”.
+
+### Bli fadder-dockan
+På 900 px och smalare ligger en guldknapp ”Bli fadder” i full bredd fast längst ner på startsidan, inom räckhåll för tummen. Dockan är grön med en 3 px guldlinje upptill och följer telefonens säkra zon. Den glider upp (350 ms, `cubic-bezier(0.16, 1, 0.3, 1)`) bara när toppens huvudknapp har rullat ur bild och det gula fadderfältet ännu inte syns, så att det aldrig finns två guldknappar i samma vy. När den är dold ligger den utanför tabbordningen, och utan JavaScript syns den inte alls.
+
+### Repejos ram
+Repejos formulär och insamlingsmätare ritas av Repejos eget skript. Vi reserverar platsen i förväg (480 px för formuläret och 56 px för mätaren) så att sidan inte hoppar. Tills skriptet har laddat visar ytan en streckad kant på 2 px i textens färg, 6 px hörn och en text om vad som ska synas där. Under formuläret finns en reservlänk på 44 px, ”Fungerar inte betalningen?”, i halvfet understruken text.
 
 ### Tibeb-band (signatur)
 Den vävda bården är sidans fog och går alltid i full bredd. Det fulla bandet (46 px) har röda och vita kanter och guldromber med röd kärna på grönt. Det markerar stora skiften och sitter ovanför sidfoten. Det tunna bandet (22 px) har guldkant och röda romber och markerar mindre skiften, till exempel in i det gula fadderfältet.
@@ -293,6 +309,7 @@ Märket är en gatlykta ritad med en enda linje på ett rutnät om 80 × 80, med
 - **Do** rita ljussken i tre hårda steg: `light-high`, `light-mid`, `gold`.
 - **Do** håll brödtexten på minst 18 px, kontrasten på minst 4,5:1 och tryckytorna på minst 44 px.
 - **Do** använd fokusringen bläck på bomull och guld, och guld på grönt.
+- **Do** tema webbläsarens egna ytor: markerad text är guld med bläck, rullningslisten grön på bomull och markören i textfält röd tråd.
 - **Do** markera det som saknas med chipet ”fylls i” eller fotoplatshållaren.
 - **Do** visa allt i färdigt läge med reducerad rörelse. Rörelse förklarar och dekorerar inte.
 

@@ -61,6 +61,8 @@ test.describe("Kontakt med tom testfil", () => {
     await expect(kontakt.getByText("namn fylls i")).toBeVisible();
     await expect(uppgift(page, "Swish för gåvor")).toHaveText("nummer fylls i");
     await expect(uppgift(page, "Senaste årsredovisning")).toHaveText("länk fylls i");
+    await expect(uppgift(page, "Facebook")).toHaveText("länk fylls i");
+    await expect(uppgift(page, "Instagram")).toHaveText("länk fylls i");
     await expect(kontakt.getByRole("link")).toHaveCount(0);
   });
 });
@@ -82,6 +84,14 @@ test.describe("Kontakt med ifylld testfil", () => {
     await expect(kontakt.getByRole("link", { name: "Läs årsredovisningen" })).toHaveAttribute(
       "href",
       "https://example.org/test-arsredovisning.pdf",
+    );
+    await expect(kontakt.getByRole("link", { name: "Följ oss på Facebook" })).toHaveAttribute(
+      "href",
+      "https://www.facebook.com/test-streetlight",
+    );
+    await expect(kontakt.getByRole("link", { name: "Följ oss på Instagram" })).toHaveAttribute(
+      "href",
+      "https://www.instagram.com/test-streetlight",
     );
   });
 });

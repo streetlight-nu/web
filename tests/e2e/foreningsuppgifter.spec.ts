@@ -71,6 +71,35 @@ test.describe("föreningsuppgifter med ifylld testfil", () => {
   });
 });
 
+/** The list "Följ oss" at the bottom of the footer. */
+function foljOss(page: Page) {
+  return page.getByRole("contentinfo").getByRole("list", { name: "Följ oss" });
+}
+
+test.describe("Följ oss i sidfoten", () => {
+  test("med tom testfil visar Facebook och Instagram ”länk fylls i” och inga länkar", async ({ page }) => {
+    await page.goto(`${process.env.E2E_TOM_URL}`);
+    for (const namn of ["Facebook", "Instagram"]) {
+      await expect(foljOss(page).getByRole("listitem").filter({ hasText: namn })).toHaveText(`${namn}länk fylls i`);
+    }
+    await expect(foljOss(page).getByRole("link")).toHaveCount(0);
+  });
+
+  test("med ifylld testfil länkar Facebook och Instagram till föreningens sidor", async ({ page }) => {
+    await page.goto(`${process.env.E2E_IFYLLD_URL}`);
+    await expect(foljOss(page).getByRole("link", { name: "Facebook" })).toHaveAttribute(
+      "href",
+      "https://www.facebook.com/test-streetlight",
+    );
+    await expect(foljOss(page).getByRole("link", { name: "Instagram" })).toHaveAttribute(
+      "href",
+      "https://www.instagram.com/test-streetlight",
+    );
+    await expect(foljOss(page).getByText(/fylls i/)).toHaveCount(0);
+    await expectNoA11yViolations(page);
+  });
+});
+
 /** Runs in the page: contrast of an element's text and border against the surface behind it. */
 function contrastAgainstBackground(el: Element) {
   const rgba = (c: string) => c.match(/[\d.]+/g)!.map(Number);

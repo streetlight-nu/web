@@ -214,7 +214,7 @@ Innehållet ligger i en centrerad spalt som är högst 1180 px bred (`band-inner
 
 Ett avsnitt har `clamp(64px, 9vw, 120px)` luft upptill och nedtill. Inom ett avsnitt används en 4-baserad skala: 4, 8, 12, 16, 24, 32 och 56 px. Det är tätt inom en grupp (8–16 px mellan etikett och fält eller rubrik och ingress) och generöst mellan grupper (32–56 px).
 
-Den viktigaste brytpunkten är 901 px. Över den lägger sig avsnitt i två spalter (`minmax(0,0.9fr) minmax(0,1.1fr)`) och menyn ligger i en rad. Under 900 px staplas spalterna och menyn fälls ihop bakom knappen ”Meny”. Mindre justeringar sker vid 520 och 400 px, där logotypen krymper och mellanrummen stramas åt. Sidfoten har en spalt på mobil, två från 521 px och tre från 901 px.
+Den viktigaste brytpunkten är 901 px. Över den lägger sig avsnitt i två spalter (`minmax(0,0.9fr) minmax(0,1.1fr)`) och menyn ligger i en rad. Under 900 px staplas spalterna och menyn fälls ihop bakom knappen ”Meny”. Mindre justeringar sker vid 520 och 400 px, där logotypen krymper och mellanrummen stramas åt. Sidfoten har en spalt på mobil, två från 521 px och tre från 901 px. Under spalterna ligger en rad med copyright och organisationsnummer till vänster och ”Följ oss” med Facebook och Instagram till höger. Länkarna har ritade linjeikoner i textens färg, aldrig i guld eftersom ብርሃን är sidfotens ljus. Samma länkar står som ”Följ oss på Facebook” och ”Följ oss på Instagram” sist i uppgifterna under Kontakt på Om föreningen. Adresserna fylls i bland föreningsuppgifterna, och saknas en visas ”länk fylls i”.
 
 ### Named Rules
 **The Listor, inte kort Rule.** Det som något består av visas som en lista mellan tjocka bläcklinjer (Ledger), inte som ett rutnät av likadana kort.
@@ -278,7 +278,7 @@ Sidfoten ligger på djupgrönt under det fulla tibeb-bandet, med brödtext i 18 
 - **Länkar:** `mint` i vila. Vid hovring blir texten bomull och får en understrykning i `gold-soft`.
 - **Rubriker:** bomull, 1,1rem Bricolage ExtraBold, 12 px ovanför sitt innehåll.
 - **Luft:** 56 px under bandet och 48 px mellan grupperna. ብርሃን står 24 px under beskrivningen.
-- **Nederkant:** en tunn mintlinje (20 %) och en rad i etikettstorlek med copyright till vänster och organisationsnumret till höger. Numret kommer från föreningsuppgifterna, och saknas det står chipet ”nummer fylls i”.
+- **Nederkant:** en tunn mintlinje (20 %) och en rad i etikettstorlek. Till vänster står copyright och organisationsnumret, till höger ”Följ oss” med Facebook och Instagram (se Layout). Numret kommer från föreningsuppgifterna, och saknas det står chipet ”nummer fylls i”.
 
 ### Bli fadder-dockan
 På 900 px och smalare ligger en guldknapp ”Bli fadder” i full bredd fast längst ner på startsidan, inom räckhåll för tummen. Dockan är grön med en 3 px guldlinje upptill och följer telefonens säkra zon. Den glider upp (350 ms, `cubic-bezier(0.16, 1, 0.3, 1)`) bara när toppens huvudknapp har rullat ur bild och det gula fadderfältet ännu inte syns, så att det aldrig finns två guldknappar i samma vy. När den är dold ligger den utanför tabbordningen, och utan JavaScript syns den inte alls.

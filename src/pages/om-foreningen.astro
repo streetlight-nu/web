@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FyllsI from "@/components/FyllsI.astro";
 import HoppaTill from "@/components/HoppaTill.astro";
+import Ikon from "@/components/Ikon.astro";
 import Ledger from "@/components/Ledger.astro";
 import Foto from "@/components/Foto.astro";
 import Pil from "@/components/Pil.astro";
@@ -20,7 +21,12 @@ import { href } from "@/lib/utils";
  */
 const om = hamtaOmForeningen();
 const { historia } = hamtaFunktioner();
-const { kontaktperson, epost, swish, nittiokonto, organisationsnummer, arsredovisning } = hamtaForeningsuppgifter();
+const { kontaktperson, epost, swish, nittiokonto, organisationsnummer, arsredovisning, facebook, instagram } =
+  hamtaForeningsuppgifter();
+const sociala = [
+  { namn: "Facebook", ikon: "facebook", lank: facebook },
+  { namn: "Instagram", ikon: "instagram", lank: instagram },
+] as const;
 const beskrivning =
   om.ingress ?? "Vilka vi är, vad vi tror på och hur Streetlight började. Och hur du når föreningen.";
 const grund = visaGrund(om.grund) ? om.grund : undefined;
@@ -296,6 +302,23 @@ const hopp = [
               }
             </dd>
           </div>
+          {
+            sociala.map(({ namn, ikon, lank }) => (
+              <div>
+                <dt>{namn}</dt>
+                <dd>
+                  {lank ? (
+                    <a class="-mt-1.5 inline-flex min-h-11 items-center gap-2 font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4" href={lank}>
+                      <Ikon namn={ikon} />
+                      Följ oss på {namn}
+                    </a>
+                  ) : (
+                    <FyllsI>länk fylls i</FyllsI>
+                  )}
+                </dd>
+              </div>
+            ))
+          }
         </dl>
       </div>
     </div>

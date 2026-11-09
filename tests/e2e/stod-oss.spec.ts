@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { FADDER_KORTKOD } from "../../src/lib/repejo";
+import { FADDER_KORTKOD, SWISH_KORTKOD } from "../../src/lib/repejo";
 import { blockRepejo, expectNoA11yViolations, stubRepejo } from "./helpers";
 
 const sida = "stod-oss";
@@ -320,6 +320,18 @@ test("Få nyheterna med e-post leder till formuläret på Nyheter", async ({ pag
   await knapp.click();
   await expect(page).toHaveURL(/\/nyheter#nyheter-med-epost$/);
   await expect(page.locator("#nyheter-med-epost")).toBeInViewport();
+});
+
+test("Swisha en gåva har Repejos Swish-checkout med reservlänk", async ({ page }) => {
+  await stubRepejo(page);
+  await page.goto(sida);
+  const swish = fler(page).getByRole("listitem").filter({ hasText: "Swisha en gåva" });
+  await expect(swish.getByText("Repejos checkout (stubb)")).toBeVisible();
+  await expect(swish.locator("repejo-checkout")).toHaveAttribute("short_code", SWISH_KORTKOD);
+  await expect(swish.getByRole("link", { name: "Swisha via Repejos sida" })).toHaveAttribute(
+    "href",
+    `https://app.repejo.se/s/${SWISH_KORTKOD}`,
+  );
 });
 
 test("Fler sätt att stödja är sista avsnittet på sidan", async ({ page }) => {

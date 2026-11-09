@@ -15,6 +15,9 @@ export const JULKAMPANJ_KORTKOD = "TSpuB";
 /** The short code of the checkout for becoming a fadder (the gold field "Bli fadder" on Stöd oss). */
 export const FADDER_KORTKOD = "7r3dB";
 
+/** The short code of the Swish checkout for a one-off gift ("Swisha en gåva" in Fler sätt att stödja oss on Stöd oss). */
+export const SWISH_KORTKOD = "pUnFu";
+
 /** Repejo's own page for a campaign: the fallback when its script does not load. */
 export function kampanjsida(kortkod: string): string {
   return `${REPEJO_HOST}/s/${kortkod}`;

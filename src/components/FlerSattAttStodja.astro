@@ -2,13 +2,15 @@
 /**
  * The deep green field "Fler sätt att stödja oss." (#fler), last on Stöd oss after a thin tibeb band: a Ledger on
  * green with two rows. "Swisha en gåva" shows the Swish number from the föreningsuppgifter in large display type,
- * or the chip "nummer fylls i"; "Följ och berätta" leads to the form Nyheter med e-post on Nyheter.
+ * or the chip "nummer fylls i", and under it Repejo's Swish checkout (ADR 0003) on a white panel; "Följ och berätta" leads to the form Nyheter med e-post on Nyheter.
  */
 import FyllsI from "@/components/FyllsI.astro";
 import Pil from "@/components/Pil.astro";
+import Repejo from "@/components/Repejo.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { SWISH_KORTKOD } from "@/lib/repejo";
 import { href } from "@/lib/utils";
 
 const { swish } = hamtaForeningsuppgifter();
@@ -37,6 +39,14 @@ const { swish } = hamtaForeningsuppgifter();
               {swish ? <span class="swish">{swish}</span> : <FyllsI>nummer fylls i</FyllsI>}
             </dd>
           </dl>
+          <div class="swish-form on-light">
+            <Repejo
+              del="checkout"
+              kortkod={SWISH_KORTKOD}
+              vantar="Här visas Repejos formulär för att swisha en gåva."
+              reservtext="Swisha via Repejos sida"
+            />
+          </div>
         </div>
       </li>
       <li>
@@ -89,6 +99,16 @@ const { swish } = hamtaForeningsuppgifter();
     .rad {
       grid-template-columns: minmax(0, 1fr);
     }
+  }
+  /* Repejo's Swish checkout spans the row on a white panel, so its form reads as on a light page. */
+  .swish-form {
+    grid-column: 1 / -1;
+    min-width: 0;
+    max-width: 720px;
+    padding: clamp(16px, 3vw, 28px);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    color: var(--color-ink);
   }
   /* The woven rhombus marker, as in Ledger. */
   .mark {

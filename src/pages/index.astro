@@ -1,20 +1,15 @@
 ---
-import { getEntry } from "astro:content";
-
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BliFadder from "@/components/BliFadder.astro";
-import Insyn from "@/components/Insyn.astro";
 import JulkampanjPaStartsidan from "@/components/JulkampanjPaStartsidan.astro";
 import LightBand from "@/components/LightBand.astro";
 import Pil from "@/components/Pil.astro";
 import SenasteNytt from "@/components/SenasteNytt.astro";
-import Ledger from "@/components/Ledger.astro";
 import Thread from "@/components/Thread.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
-import { STODET } from "@/lib/stodet";
+import { hamtaOmForeningen, stycken } from "@/lib/om-foreningen";
 import { href } from "@/lib/utils";
-import { fragaId } from "@/lib/vanliga-fragor";
 
 const familySteps = [
   "Föräldern får stöd att starta en egen verksamhet som ger inkomst.",
@@ -22,18 +17,28 @@ const familySteps = [
   "Barnet kan fortsätta gå i skolan, med en ljusare framtid framför sig.",
 ];
 
-// Under Insyn: a link straight to the answer, as long as the association keeps the question.
-const narFram = await getEntry("fragor", "hur-vet-jag-att-pengarna-nar-fram");
+/**
+ * The start page tells why and who; the proof (what the support pays for, how the money reaches the children, Insyn)
+ * has its one home on Stöd oss, and the whole story on Om föreningen. Så började det and the vision come from
+ * src/data/om-foreningen.json, the same texts Om föreningen shows.
+ */
+const om = hamtaOmForeningen();
+const borjan = stycken(om.borjan)[0];
+const NYCKELORD = "ljus framtid";
+const [visionFore, visionEfter] = om.vision?.includes(NYCKELORD) ? om.vision.split(NYCKELORD, 2) : [om.vision, undefined];
 
 const section = "py-[clamp(64px,9vw,120px)]";
 const field = `on-green bg-green text-cotton ${section}`;
 const split = "grid grid-cols-1 items-start gap-[clamp(32px,6vw,96px)] min-[901px]:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]";
 const h2 = "text-headline";
 const lede = "max-w-[58ch] text-lede";
+const lankInk = "inline-flex min-h-11 items-center font-semibold underline decoration-gold decoration-2 underline-offset-[0.22em]";
+const lankGron = "inline-flex min-h-11 items-center font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4";
 ---
 
 <BaseLayout
   title="Streetlight"
+  current="start"
   description="Streetlight är en ideell förening i Sverige och Etiopien som stöttar 20 fadderbarns skolgång och deras familjer i Addis Abeba."
 >
   <!-- Motion is an addition: without JS or with reduced motion the lamp is simply lit. -->
@@ -55,7 +60,7 @@ const lede = "max-w-[58ch] text-lede";
         deras föräldrar att bygga en egen inkomst.
       </p>
       <div class="mt-[34px] flex flex-wrap gap-3.5 pb-3 max-[520px]:mt-[26px] min-[901px]:pb-[clamp(40px,6vw,76px)]">
-        <a class={buttonVariants()} href={href("/stod-oss")} data-huvudknapp>
+        <a class={buttonVariants()} href={href("/bli-fadder")} data-huvudknapp>
           Bli fadder
           <Pil />
         </a>
@@ -85,17 +90,35 @@ const lede = "max-w-[58ch] text-lede";
 
   <JulkampanjPaStartsidan />
 
-  <section id="stod" class={`bg-cotton text-ink ${section}`}>
-    <div class={`band-inner ${split}`}>
-      <div class="min-w-0">
-        <h2 class={h2}>Utbildning är vägen ut ur fattigdom.</h2>
-        <p class={`mt-[22px] ${lede}`}>
-          Därför står vi för det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
-        </p>
+  <!-- Så började det, then what the support is for: one cotton field. -->
+  <div class={`bg-cotton text-ink ${section}`}>
+    {
+      borjan && (
+        <section id="borjan" aria-labelledby="borjan-rubrik" class={`band-inner mb-[clamp(56px,7vw,96px)] ${split}`}>
+          <h2 id="borjan-rubrik" class={`min-w-0 ${h2}`}>Så började det.</h2>
+          <div class="min-w-0">
+            <p class={lede}>{borjan}</p>
+            <p class="mt-4">
+              <a class={lankInk} href={href("/om-foreningen#borjan")}>Läs hela berättelsen om föreningen</a>
+            </p>
+          </div>
+        </section>
+      )
+    }
+    <section id="stod" aria-labelledby="stod-rubrik" class="band-inner">
+      <div class:list={[split, borjan && "border-t-[3px] border-ink pt-[clamp(40px,5vw,64px)]"]}>
+        <h2 id="stod-rubrik" class={`min-w-0 ${h2}`}>Utbildning är vägen ut ur fattigdom.</h2>
+        <div class="min-w-0">
+          <p class={lede}>
+            Därför står vi för det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
+          </p>
+          <p class="mt-4">
+            <a class={lankInk} href={href("/bli-fadder#vart")}>Se vart ditt bidrag går</a>
+          </p>
+        </div>
       </div>
-      <div class="min-w-0"><Ledger items={STODET} /></div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <TibebBand variant="thin" />
 
@@ -112,16 +135,26 @@ const lede = "max-w-[58ch] text-lede";
     </div>
   </section>
 
-  <section class="vision bg-cotton py-[clamp(72px,10vw,140px)] text-ink">
-    <figure class="band-inner">
-      <blockquote
-        class="max-w-[17ch] font-display text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[1.02] font-extrabold tracking-[-0.03em] text-balance"
-      >
-        Vi vill sprida hopp om en <span class="highlight">ljus framtid</span> till våra barn och deras familjer.
-      </blockquote>
-      <figcaption class="mt-7 font-medium text-ink-soft">Streetlights vision</figcaption>
-    </figure>
-  </section>
+  {
+    om.vision && (
+      <section class="vision bg-cotton py-[clamp(72px,10vw,140px)] text-ink">
+        <figure class="band-inner">
+          <blockquote class="max-w-[17ch] font-display text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[1.02] font-extrabold tracking-[-0.03em] text-balance">
+            {visionEfter !== undefined ? (
+              <>
+                {visionFore}
+                <span class="highlight">{NYCKELORD}</span>
+                {visionEfter}
+              </>
+            ) : (
+              om.vision
+            )}
+          </blockquote>
+          <figcaption class="mt-7 font-medium text-ink-soft">Streetlights vision</figcaption>
+        </figure>
+      </section>
+    )
+  }
 
   <TibebBand />
 
@@ -155,29 +188,10 @@ const lede = "max-w-[58ch] text-lede";
           <ul><li>Fadderbarnen och deras familjer</li><li>Egen styrelse i Etiopien</li></ul>
         </article>
       </div>
-      <div class="mt-14 grid grid-cols-[auto_minmax(0,1fr)] items-start gap-6 border-t-[1.5px] border-mint/30 pt-9">
-        <svg viewBox="0 0 52 52" aria-hidden="true" class="size-[52px]"
-          ><path d="M26 3 49 26 26 49 3 26Z" fill="none" stroke="#F4B400" stroke-width="3"></path><path
-            d="M26 15 37 26 26 37 15 26Z"
-            fill="#F4B400"></path></svg
-        >
-        <p class="max-w-[58ch] text-[clamp(1.15rem,1.6vw,1.35rem)] leading-normal text-mint">
-          <strong class="font-semibold text-cotton">Barnen väljs ut tillsammans med de lokala myndigheterna i Addis Abeba.</strong
-          >{" "}De hjälper oss att hitta barn från utsatta familjer som behöver extra stöd. På så sätt är Streetlight en del av
-          det sociala skyddsnätet i Etiopien.
-        </p>
-      </div>
-      <Insyn />
-      {
-        narFram && (
-          <p class="mt-6">
-            <a
-              class="inline-block py-2.5 font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4"
-              href={href(`/vanliga-fragor#${fragaId(narFram.id)}`)}>{narFram.data.fraga}</a
-            >
-          </p>
-        )
-      }
+      <p class="mt-14 border-t-[1.5px] border-mint/30 pt-6 text-mint">
+        Hur väljs barnen ut, och hur når pengarna fram?{" "}
+        <a class={lankGron} href={href("/bli-fadder#nar-fram")}>Så når stödet fram</a>
+      </p>
     </div>
   </section>
 

@@ -21,16 +21,22 @@ test("hopplänken leder till innehållet", async ({ page }) => {
   await expect(page.locator("main#main")).toBeFocused();
 });
 
-test("huvudmenyn länkar till startsidans avsnitt, Om oss", async ({ page, isMobile }) => {
+test("huvudmenyn länkar till Om oss, Nyheter och Frågor", async ({ page, isMobile }) => {
   await page.goto("./");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
   for (const [name, path] of [
     ["Om oss", "om-foreningen"],
+    ["Nyheter", "nyheter"],
+    ["Frågor", "vanliga-fragor"],
   ]) {
     await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", new RegExp(`${path}$`));
   }
-  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
+  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/bli-fadder$/);
+  // The Ett ljus rule: the hero's "Bli fadder" is the start page's gold button, so the header's is a line.
+  expect(await nav.getByRole("link", { name: "Bli fadder" }).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+    "rgba(0, 0, 0, 0)",
+  );
 });
 
 test.describe("mobilmenyn", () => {
@@ -81,12 +87,21 @@ test.describe("startsidans berättelse", () => {
     expect(p.y).toBeGreaterThanOrEqual(w.y + w.height - 1);
   });
 
-  test("berättar vad stödet går till, hur familjerna får stöd och hur föreningarna arbetar", async ({ page }) => {
+  test("berättar hur det började, vad stödet är till för, hur familjerna får stöd och hur föreningarna arbetar", async ({
+    page,
+  }) => {
     await page.goto("./");
+    const borjan = page.locator("#borjan");
+    await expect(borjan.getByRole("heading", { level: 2, name: "Så började det." })).toBeVisible();
+    await expect(borjan).toContainText("Merry");
+    await expect(borjan.getByRole("link", { name: "Läs hela berättelsen om föreningen" })).toHaveAttribute(
+      "href",
+      /\/om-foreningen#borjan$/,
+    );
+    // What the support pays for, and the proof, have their one home on Stöd oss.
     const stod = page.locator("#stod");
-    for (const name of ["Skolavgifter", "Skoluniform", "Skolmaterial", "Vård när barnet blir sjukt"]) {
-      await expect(stod.getByRole("heading", { level: 3, name })).toBeVisible();
-    }
+    await expect(stod.getByRole("heading", { level: 2, name: "Utbildning är vägen ut ur fattigdom." })).toBeVisible();
+    await expect(stod.getByRole("link", { name: "Se vart ditt bidrag går" })).toHaveAttribute("href", /\/bli-fadder#vart$/);
     const familjer = page.locator("#familjer");
     for (const step of [
       "Föräldern får stöd att starta en egen verksamhet som ger inkomst.",
@@ -96,27 +111,27 @@ test.describe("startsidans berättelse", () => {
       await expect(familjer.getByText(step)).toBeVisible();
     }
     await expect(
-      page.getByText("Vi vill sprida hopp om en ljus framtid till våra barn och deras familjer."),
+      page.getByText("Vi vill sprida hopp om en ljus framtid till våra fadderbarn och deras familjer."),
     ).toBeVisible();
     await expect(page.getByText("Streetlights vision")).toBeVisible();
     const arbete = page.locator("#sa-arbetar-vi");
     await expect(arbete.getByRole("heading", { level: 3, name: "Streetlight Sverige" })).toBeVisible();
     await expect(arbete.getByRole("heading", { level: 3, name: "Streetlight Etiopien" })).toBeVisible();
-    await expect(
-      arbete.getByText("Barnen väljs ut tillsammans med de lokala myndigheterna i Addis Abeba."),
-    ).toBeVisible();
+    await expect(arbete.getByRole("link", { name: "Så når stödet fram" })).toHaveAttribute("href", /\/bli-fadder#nar-fram$/);
+    await expect(arbete.getByRole("region", { name: "Insyn" })).toHaveCount(0);
   });
 
   test("texterna följer ordlistan och hittar inte på några siffror", async ({ page }) => {
     // On the build with empty test files: the föreningsuppgifter the association fills in have figures of their own.
     await page.goto(process.env.E2E_TOM_URL!);
     const text = (await page.getByRole("banner").innerText()) + (await page.locator("main").innerText());
-    // "Senaste nytt" shows the newest inlägg's date, which comes from the inlägg, not from the page.
+    // "Senaste nytt" shows the newest inlägg's date, which comes from the inlägg, not from the page, and Så började
+    // det tells the year from the association's own text (src/data/om-foreningen.json).
     const utanNyheter = await page.locator("main").evaluate((main) => {
-      const senaste = main.querySelector<HTMLElement>("#senaste")!;
-      senaste.style.display = "none";
+      const dolda = ["#senaste", "#borjan"].map((id) => main.querySelector<HTMLElement>(id)!);
+      for (const el of dolda) el.style.display = "none";
       const synligText = (main as HTMLElement).innerText;
-      senaste.style.display = "";
+      for (const el of dolda) el.style.display = "";
       return synligText;
     });
     const siffror = (await page.getByRole("banner").innerText()) + utanNyheter;

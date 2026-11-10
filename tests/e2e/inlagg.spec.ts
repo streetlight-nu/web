@@ -83,7 +83,7 @@ test("inlägget leder tillbaka till alla nyheter och till Bli fadder", async ({ 
   await page.goto(nyast);
   await expect(page.getByRole("link", { name: "Alla nyheter" })).toHaveAttribute("href", /\/nyheter$/);
   await expect(page.getByRole("heading", { level: 2, name: "Hjälp oss hålla ljusen tända." })).toBeVisible();
-  await expect(page.getByRole("main").getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
+  await expect(page.getByRole("main").getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/bli-fadder$/);
 });
 
 test("exempelinläggen har platshållare i stället för foton, och varje bild har alt-text", async ({ page }) => {

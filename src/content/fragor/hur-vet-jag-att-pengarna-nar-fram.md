@@ -9,4 +9,4 @@ Pengarna går via den svenska föreningen till arbetet i Etiopien, och barnen v�
 - 90-konto: {nittiokonto}
 - Senaste årsredovisning: {arsredovisning}
 
-Läs mer under [Så arbetar vi](/#sa-arbetar-vi).
+Läs mer under [Små med flit, så att det når fram](/bli-fadder#nar-fram).

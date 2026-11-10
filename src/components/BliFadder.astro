@@ -1,7 +1,7 @@
 ---
 /**
  * The home page's short gold field "Bli fadder" (#bli-fadder), last in the content: the heading, the lede, a link to
- * the other ways to support us (/stod-oss#fler) and an ink button to Stöd oss, where the visitor signs up. The mobile
+ * the other ways to support us (/bli-fadder#fler) and an ink button to Stöd oss, where the visitor signs up. The mobile
  * dock goes with it and hides while the field shows.
  */
 import BliFadderDocka from "@/components/BliFadderDocka.astro";
@@ -24,11 +24,11 @@ import { href } from "@/lib/utils";
       <p class="mt-5">
         Hellre en engångsgåva? <a
           class="inline-flex min-h-11 items-center font-semibold underline decoration-2 underline-offset-[0.22em]"
-          href={href("/stod-oss#fler")}>Fler sätt att stödja oss</a
+          href={href("/bli-fadder#fler")}>Fler sätt att stödja oss</a
         >
       </p>
     </div>
-    <a class={buttonVariants({ variant: "ink" })} href={href("/stod-oss")}>
+    <a class={buttonVariants({ variant: "ink" })} href={href("/bli-fadder")}>
       Bli fadder
       <Pil />
     </a>

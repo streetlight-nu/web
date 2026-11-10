@@ -7,7 +7,7 @@
 import FyllsI from "@/components/FyllsI.astro";
 import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 
-const { organisationsnummer, arsredovisning, nittiokonto } = hamtaForeningsuppgifter();
+const { organisationsnummer, nittiokonto } = hamtaForeningsuppgifter();
 ---
 
 <section class="insyn" aria-labelledby="insyn-rubrik">
@@ -18,24 +18,7 @@ const { organisationsnummer, arsredovisning, nittiokonto } = hamtaForeningsuppgi
       <dd>{organisationsnummer ?? <FyllsI />}</dd>
     </div>
     <div>
-      <dt>Senaste årsredovisning</dt>
-      <dd>
-        {
-          arsredovisning ? (
-            <a
-              class="inline-flex min-h-11 items-center font-semibold text-cotton underline underline-offset-4"
-              href={arsredovisning}
-            >
-              Läs årsredovisningen
-            </a>
-          ) : (
-            <FyllsI>länk fylls i</FyllsI>
-          )
-        }
-      </dd>
-    </div>
-    <div>
-      <dt>90-konto</dt>
+      <dt>Bankgiro</dt>
       <dd>{nittiokonto ?? <FyllsI />}</dd>
     </div>
   </dl>
@@ -52,7 +35,7 @@ const { organisationsnummer, arsredovisning, nittiokonto } = hamtaForeningsuppgi
   dl {
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px 32px;
   }
   dl > div {

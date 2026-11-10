@@ -6,7 +6,7 @@ import { hamtaJulkampanj } from "@/lib/julkampanj";
 import { href } from "@/lib/utils";
 
 /** The page the visitor is on, when it has its own place in the main menu or is where "Bli fadder" leads. */
-export type AktuellSida = "nyheter" | "om" | "historia" | "julklapp" | "fragor" | "stod";
+export type AktuellSida = "start" | "nyheter" | "om" | "historia" | "julklapp" | "fragor" | "stod";
 
 interface Props {
   current?: AktuellSida;
@@ -16,17 +16,20 @@ const { visasPaStartsidan } = hamtaJulkampanj();
 const { julklapp } = hamtaFunktioner();
 
 const links: NavLink[] = [
-  // Vår historia is reached from Om föreningen and the footer.
-  { label: "Om oss", href: href("/om-foreningen"), current: current === "om" },
+  // Vår historia is reached from Om föreningen (Så började det).
+  { label: "Om oss", href: href("/om-foreningen"), current: current === "om" || current === "historia" },
+  { label: "Nyheter", href: href("/nyheter"), current: current === "nyheter" },
+  { label: "Frågor", href: href("/vanliga-fragor"), current: current === "fragor" },
   // Seasonal: the association turns the campaign on and off in Pages CMS (src/data/julkampanj.json). The flag
   // `julklapp` (src/data/funktioner.json) removes the page and every link to it.
   ...(julklapp && (visasPaStartsidan || current === "julklapp")
     ? [{ label: "Ge en julklapp", href: href("/julklapp"), current: current === "julklapp" }]
     : []),
 ];
-// The Ett ljus rule: on the campaign page "Ge en julklapp" is the gold button, so "Bli fadder" steps back to a line.
+// The Ett ljus rule: on the campaign page "Ge en julklapp" is the gold button, and on the start page the hero's own
+// "Bli fadder" is, so the header's "Bli fadder" steps back to a line on both.
 // On Stöd oss the visitor is already where "Bli fadder" leads, so it is a line marked as the current page.
-const sponsor = current === "stod" ? "current" : current === "julklapp" ? "line" : "gold";
+const sponsor = current === "stod" ? "current" : current === "julklapp" || current === "start" ? "line" : "gold";
 ---
 
 <header class="on-green bg-green text-cotton">
@@ -36,7 +39,7 @@ const sponsor = current === "stod" ? "current" : current === "julklapp" ? "line"
       <MainNav
         client:load
         links={links}
-        sponsorHref={href("/stod-oss")}
+        sponsorHref={href("/bli-fadder")}
         sponsor={sponsor}
       />
     </nav>

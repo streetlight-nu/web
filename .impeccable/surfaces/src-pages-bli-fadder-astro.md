@@ -1,13 +1,13 @@
 ---
 version: 1
-slug: "src-pages-stod-oss-astro"
-primary_target: "src/pages/stod-oss.astro"
+slug: "src-pages-bli-fadder-astro"
+primary_target: "src/pages/bli-fadder.astro"
 related_targets: []
 ---
 
 # Stöd oss
 
-Scope: ny sida /stod-oss (först som artboard på designcanvasen, inte i koden). Mode: Persuade.
+Scope: ny sida /bli-fadder (först /stod-oss) (först som artboard på designcanvasen, inte i koden). Mode: Persuade.
 
 Audience: en svensk som funderar på att bli fadder, ofta äldre läsare eller en förälder som läser med sitt barn. Job: bestämma sig och anmäla intresse. Action: Repejos fadderformulär. Proof: vart pengarna går (Ledger), hur barnen väljs, två föreningar, Insyn, svar ur Vanliga frågor. Constraints: inga belopp eller löften som föreningen inte gett; saknat visas som "fylls i". Fler sätt: Swisha en gåva, följ och berätta (nyheter med e-post, dela).
 

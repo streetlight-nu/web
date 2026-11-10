@@ -19,7 +19,7 @@ test.describe("föreningsuppgifter med tom testfil", () => {
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
   test("Insyn visar ”fylls i” för organisationsnummer, årsredovisning och 90-konto", async ({ page }) => {
-    await page.goto("stod-oss");
+    await page.goto("bli-fadder");
     await expect(insyn(page).getByRole("heading", { name: "Insyn" })).toBeVisible();
     for (const [label, chip] of [
       ["Organisationsnummer", "fylls i"],
@@ -33,7 +33,7 @@ test.describe("föreningsuppgifter med tom testfil", () => {
   });
 
   test("chipet ”fylls i” syns både på green och på cotton", async ({ page }) => {
-    await page.goto("stod-oss");
+    await page.goto("bli-fadder");
     const chip = uppgift(page, "Organisationsnummer").getByText("fylls i", { exact: true });
     // Insyn sits on green. Place the same chip on the cotton section Vart ditt bidrag går as well.
     await chip.evaluate((el) => {
@@ -59,7 +59,7 @@ test.describe("föreningsuppgifter med ifylld testfil", () => {
   test.use({ baseURL: process.env.E2E_IFYLLD_URL });
 
   test("Insyn visar värdena från datafilen i stället för ”fylls i”", async ({ page }) => {
-    await page.goto("stod-oss");
+    await page.goto("bli-fadder");
     await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");
     await expect(uppgift(page, "90-konto")).toHaveText("TEST-90-KONTO");
     await expect(uppgift(page, "Senaste årsredovisning").getByRole("link", { name: "Läs årsredovisningen" })).toHaveAttribute(

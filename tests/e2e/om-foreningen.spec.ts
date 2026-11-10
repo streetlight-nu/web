@@ -25,7 +25,7 @@ test("Om föreningen har en h1 och avsnitten i ordning, med Bli fadder sist", as
   ]);
   await expect(page.getByRole("main").getByRole("link", { name: "Bli fadder" })).toHaveAttribute(
     "href",
-    /\/stod-oss$/,
+    /\/bli-fadder$/,
   );
 });
 

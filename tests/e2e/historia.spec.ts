@@ -43,7 +43,7 @@ test("historien leder vidare till Bli fadder", async ({ page }) => {
   await page.goto("historia");
   await expect(page.getByRole("main").getByRole("link", { name: "Bli fadder" })).toHaveAttribute(
     "href",
-    /\/stod-oss$/,
+    /\/bli-fadder$/,
   );
 });
 

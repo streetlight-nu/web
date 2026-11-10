@@ -1,21 +1,16 @@
 ---
 /**
  * The deep green field "Fler sätt att stödja oss." (#fler), last on Stöd oss after a thin tibeb band: a Ledger on
- * green with two rows. "Swisha en gåva" holds Repejo's Swish checkout (ADR 0003) in the right column; the left
- * column has the text and, under it, the Swish number from the föreningsuppgifter for those who swish from the app
- * (or the chip "nummer fylls i"). Under 900 px the checkout comes after the number. "Följ och berätta" leads to the
- * form Nyheter med e-post on Nyheter.
+ * green with two rows. "Swisha en gåva" holds Repejo's Swish checkout (ADR 0003) in the right column and the text in
+ * the left one. Under 900 px the checkout comes after the text. "Följ och berätta" leads to the form Nyheter med
+ * e-post on Nyheter.
  */
-import FyllsI from "@/components/FyllsI.astro";
 import Pil from "@/components/Pil.astro";
 import Repejo from "@/components/Repejo.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
-import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
 import { SWISH_KORTKOD } from "@/lib/repejo";
 import { href } from "@/lib/utils";
-
-const { swish } = hamtaForeningsuppgifter();
 ---
 
 <TibebBand variant="thin" />
@@ -34,12 +29,6 @@ const { swish } = hamtaForeningsuppgifter();
           <div class="min-w-0">
             <h3 class="text-title tracking-[-0.015em]">Swisha en gåva</h3>
             <p class="mt-2 max-w-[44ch] text-mint">Vill du hellre ge en gång? Swisha en gåva till föreningen.</p>
-            <dl class="nummer">
-              <dt class="text-label font-semibold text-mint">Eller swisha direkt till</dt>
-              <dd class="mt-1.5">
-                {swish ? <span class="swish">{swish}</span> : <FyllsI>nummer fylls i</FyllsI>}
-              </dd>
-            </dl>
           </div>
           <div class="formular">
             <Repejo
@@ -97,15 +86,10 @@ const { swish } = hamtaForeningsuppgifter();
     align-items: end;
     gap: 20px clamp(32px, 5vw, 72px);
   }
-  /* Swisha en gåva: the text and the number stand at the top, beside the checkout. */
+  /* Swisha en gåva: the text stands at the top, beside the checkout. */
   .rad--formular {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     align-items: start;
-  }
-  .nummer {
-    margin: clamp(28px, 4vw, 40px) 0 0;
-    padding-top: 20px;
-    border-top: 1.5px solid color-mix(in srgb, var(--color-mint) 30%, transparent);
   }
   .formular {
     min-width: 0;
@@ -139,14 +123,5 @@ const { swish } = hamtaForeningsuppgifter();
     box-shadow:
       inset 0 0 0 7px var(--color-gold),
       inset 0 0 0 14px var(--color-thread-cobalt);
-  }
-  .swish {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: var(--text-headline);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums;
-    overflow-wrap: anywhere;
   }
 </style>

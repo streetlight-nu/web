@@ -32,7 +32,7 @@ test("huvudmenyn länkar till Om oss, Nyheter och Frågor", async ({ page, isMob
   ]) {
     await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", new RegExp(`${path}$`));
   }
-  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/stod-oss$/);
+  await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/bli-fadder$/);
   // The Ett ljus rule: the hero's "Bli fadder" is the start page's gold button, so the header's is a line.
   expect(await nav.getByRole("link", { name: "Bli fadder" }).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
     "rgba(0, 0, 0, 0)",
@@ -101,7 +101,7 @@ test.describe("startsidans berättelse", () => {
     // What the support pays for, and the proof, have their one home on Stöd oss.
     const stod = page.locator("#stod");
     await expect(stod.getByRole("heading", { level: 2, name: "Utbildning är vägen ut ur fattigdom." })).toBeVisible();
-    await expect(stod.getByRole("link", { name: "Se vart ditt bidrag går" })).toHaveAttribute("href", /\/stod-oss#vart$/);
+    await expect(stod.getByRole("link", { name: "Se vart ditt bidrag går" })).toHaveAttribute("href", /\/bli-fadder#vart$/);
     const familjer = page.locator("#familjer");
     for (const step of [
       "Föräldern får stöd att starta en egen verksamhet som ger inkomst.",
@@ -117,7 +117,7 @@ test.describe("startsidans berättelse", () => {
     const arbete = page.locator("#sa-arbetar-vi");
     await expect(arbete.getByRole("heading", { level: 3, name: "Streetlight Sverige" })).toBeVisible();
     await expect(arbete.getByRole("heading", { level: 3, name: "Streetlight Etiopien" })).toBeVisible();
-    await expect(arbete.getByRole("link", { name: "Så når stödet fram" })).toHaveAttribute("href", /\/stod-oss#nar-fram$/);
+    await expect(arbete.getByRole("link", { name: "Så når stödet fram" })).toHaveAttribute("href", /\/bli-fadder#nar-fram$/);
     await expect(arbete.getByRole("region", { name: "Insyn" })).toHaveCount(0);
   });
 

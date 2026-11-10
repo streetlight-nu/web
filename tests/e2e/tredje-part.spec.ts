@@ -26,7 +26,7 @@ test("Stöd oss hämtar Repejos skript från Repejo, en gång", async ({ page })
   page.on("request", (request) => {
     if (request.url().startsWith(`${REPEJO_HOST}/`)) skript.push(request.url());
   });
-  await page.goto("stod-oss");
+  await page.goto("bli-fadder");
   await page.waitForLoadState("networkidle");
   expect(skript).toEqual([`${REPEJO_HOST}/assets/checkout.js`]);
 });

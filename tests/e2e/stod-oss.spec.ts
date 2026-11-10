@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { FADDER_KORTKOD, SWISH_KORTKOD, kampanjsida } from "../../src/lib/repejo";
 import { blockRepejo, expectNoA11yViolations, stubRepejo } from "./helpers";
 
-const sida = "stod-oss";
+const sida = "bli-fadder";
 
 /** The gold field "Bli fadder" (#bli-fadder) at the top of Stöd oss. */
 function guldfaltet(page: Page) {
@@ -22,7 +22,7 @@ function uppgift(page: Page, label: string) {
 test("Stöd oss har titel, en h1 och klarar WCAG 2.1 AA", async ({ page }) => {
   await stubRepejo(page);
   await page.goto(sida);
-  await expect(page).toHaveTitle("Stöd oss | Streetlight");
+  await expect(page).toHaveTitle("Bli fadder | Streetlight");
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Bli fadder och håll ljusen tända.");
   await expectNoA11yViolations(page);
@@ -44,11 +44,11 @@ test("staplas utan sidledsskroll", async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 });
 
-test("brödsmulorna visar Startsidan / Stöd oss", async ({ page }) => {
+test("brödsmulorna visar Startsidan / Bli fadder", async ({ page }) => {
   await page.goto(sida);
   const smulor = page.getByRole("navigation", { name: "Du är här" });
   await expect(smulor.getByRole("link", { name: "Startsidan" })).toHaveAttribute("href", /\/$/);
-  await expect(smulor.getByText("Stöd oss")).toHaveAttribute("aria-current", "page");
+  await expect(smulor.getByText("Bli fadder")).toHaveAttribute("aria-current", "page");
 });
 
 test("Bli fadder i menyn är en linjeknapp markerad som aktuell sida", async ({ page }) => {
@@ -300,7 +300,7 @@ function fler(page: Page) {
 test.describe("Fler sätt att stödja oss med ifylld testfil", () => {
   test.use({ baseURL: process.env.E2E_IFYLLD_URL });
 
-  test("visar raderna Swisha en gåva och Följ och berätta, med Swishnumret", async ({ page }) => {
+  test("visar raderna Swisha en gåva och Följ och berätta", async ({ page }) => {
     await stubRepejo(page);
     await page.goto(sida);
     const s = fler(page);
@@ -309,25 +309,14 @@ test.describe("Fler sätt att stödja oss med ifylld testfil", () => {
     await expect(rader).toHaveCount(2);
     await expect(rader.nth(0).getByRole("heading", { level: 3 })).toHaveText("Swisha en gåva");
     await expect(rader.nth(0)).toContainText("Vill du hellre ge en gång? Swisha en gåva till föreningen.");
-    await expect(rader.nth(0).getByText("TEST-SWISH", { exact: true })).toBeVisible();
+    // The Swish number itself is not shown here: the visitor swishes through Repejo's checkout.
+    await expect(rader.nth(0).getByText("TEST-SWISH", { exact: true })).toHaveCount(0);
     await expect(rader.nth(1).getByRole("heading", { level: 3 })).toHaveText("Följ och berätta");
     await expectNoA11yViolations(page);
   });
 });
 
-test.describe("Fler sätt att stödja oss med tom testfil", () => {
-  test.use({ baseURL: process.env.E2E_TOM_URL });
-
-  test("ett saknat Swishnummer visas som ”nummer fylls i”", async ({ page }) => {
-    await stubRepejo(page);
-    await page.goto(sida);
-    const swish = fler(page).getByRole("listitem").filter({ hasText: "Swisha en gåva" });
-    await expect(swish.getByText("nummer fylls i")).toBeVisible();
-    await expectNoA11yViolations(page);
-  });
-});
-
-test("Swisha en gåva har Repejos Swish-checkout bredvid texten på dator och efter numret på mobil", async ({
+test("Swisha en gåva har Repejos Swish-checkout bredvid texten på dator och efter texten på mobil", async ({
   page,
   isMobile,
 }) => {
@@ -338,13 +327,11 @@ test("Swisha en gåva har Repejos Swish-checkout bredvid texten på dator och ef
   await expect(checkout).toHaveAttribute("short_code", SWISH_KORTKOD);
   await expect(rad.getByText("Repejos checkout (stubb)")).toBeVisible();
   const text = (await rad.getByText("Vill du hellre ge en gång?").boundingBox())!;
-  const nummer = (await rad.getByText("Eller swisha direkt till").boundingBox())!;
   const formular = (await checkout.boundingBox())!;
   if (isMobile) {
-    expect(formular.y).toBeGreaterThan(nummer.y + nummer.height);
+    expect(formular.y).toBeGreaterThan(text.y + text.height);
   } else {
     expect(formular.x).toBeGreaterThan(text.x + text.width);
-    expect(formular.y).toBeLessThan(nummer.y);
   }
 });
 

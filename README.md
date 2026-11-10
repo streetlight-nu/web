@@ -77,7 +77,7 @@ Kampanjen är säsongsbunden. Efter jul kan sidan tas bort, eller kortkoden byta
 
 ## Bli fadder
 
-Formuläret för att bli fadder ligger på Stöd oss (`src/pages/stod-oss.astro`, `/stod-oss`) och är Repejos checkout (`<repejo-checkout>`) med kortkoden `FADDER_KORTKOD` i `src/lib/repejo.ts`. Stöd oss laddar Repejos skript, och formuläret visas utan reservlänk under sig (`utanReserv`). Startsidan laddar inte Repejo: dess fält ”Bli fadder” länkar till Stöd oss. Det besökaren fyller i går till Repejo.
+Formuläret för att bli fadder ligger på Bli fadder (`src/pages/bli-fadder.astro`, `/bli-fadder`) och är Repejos checkout (`<repejo-checkout>`) med kortkoden `FADDER_KORTKOD` i `src/lib/repejo.ts`. Blir fadder laddar Repejos skript, och formuläret visas utan reservlänk under sig (`utanReserv`). Startsidan laddar inte Repejo: dess fält ”Bli fadder” länkar till Stöd oss. Det besökaren fyller i går till Repejo.
 
 ## Publicering
 

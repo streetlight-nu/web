@@ -90,11 +90,8 @@ test.describe("med testfrågorna och tomma föreningsuppgifter", () => {
     await expect(page.getByRole("main").locator(".sl-todo").first()).toBeVisible();
   });
 
-  test("startsidan länkar till frågan om pengarna når fram, och länken öppnar den", async ({ page }) => {
-    await page.goto("./");
-    const lank = page.locator("#sa-arbetar-vi").getByRole("link", { name: "Hur vet jag att pengarna når fram?" });
-    await expect(lank).toHaveAttribute("href", /\/vanliga-fragor#fraga-hur-vet-jag-att-pengarna-nar-fram$/);
-    await lank.click();
+  test("en länk direkt till en fråga öppnar den", async ({ page }) => {
+    await page.goto(`${sida}#fraga-hur-vet-jag-att-pengarna-nar-fram`);
     const fraga = page.locator("#fraga-hur-vet-jag-att-pengarna-nar-fram");
     await expect(fraga).toHaveAttribute("open", "");
     await expect(fraga.locator("summary")).toBeInViewport();

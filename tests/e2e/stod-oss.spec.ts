@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { FADDER_KORTKOD, SWISH_KORTKOD } from "../../src/lib/repejo";
+import { FADDER_KORTKOD, SWISH_KORTKOD, kampanjsida } from "../../src/lib/repejo";
 import { blockRepejo, expectNoA11yViolations, stubRepejo } from "./helpers";
 
 const sida = "stod-oss";
@@ -82,14 +82,25 @@ test("guldfältet visar rubriken, ingressen, de tre fakta och de tre stegen", as
   await expect(s.getByText("Frågor?")).toHaveCount(0);
 });
 
-test("Repejos checkout har fadderkortkoden och ingen reservlänk under sig", async ({ page }) => {
+test("Repejos checkout har fadderkortkoden och en reservlänk under sig", async ({ page }) => {
   await stubRepejo(page);
   await page.goto(sida);
   const s = guldfaltet(page);
   await expect(s.getByText("Repejos checkout (stubb)")).toBeVisible();
   await expect(s.locator("repejo-checkout")).toHaveAttribute("short_code", FADDER_KORTKOD);
-  await expect(s.getByRole("link")).toHaveCount(0);
-  await expect(s.getByText("Fungerar inte betalningen?")).toHaveCount(0);
+  await expect(s.getByText("Fungerar inte betalningen?")).toBeVisible();
+  await expect(s.getByRole("link", { name: "Ge via Repejos kampanjsida" })).toHaveAttribute(
+    "href",
+    kampanjsida(FADDER_KORTKOD),
+  );
+});
+
+test("fadder för ett barn: mejlet i fakta är en länk till föreningen", async ({ page }) => {
+  await page.goto(sida);
+  await expect(guldfaltet(page).getByRole("link", { name: "mejl till oss" })).toHaveAttribute(
+    "href",
+    /^mailto:.+@.+/,
+  );
 });
 
 test("när Repejo inte kan nås syns ramen med väntetexten", async ({ page }) => {
@@ -184,10 +195,13 @@ test.describe("Stöd oss med tom testfil", () => {
 
   test("brödtexten är minst 18 px", async ({ page }) => {
     await page.goto(sida);
+    // Repejo draws its own forms (ADR 0003), some of them in a shadow root; their text is outside the page's control.
     const sizes = await page
       .locator("main p, main li")
       .evaluateAll((els) =>
-        els.map((el) => ({ text: el.textContent!.trim().slice(0, 40), px: parseFloat(getComputedStyle(el).fontSize) })),
+        els
+          .filter((el) => el.getRootNode() === document && !el.closest("repejo-checkout, repejo-progress-bar"))
+          .map((el) => ({ text: el.textContent!.trim().slice(0, 40), px: parseFloat(getComputedStyle(el).fontSize) })),
       );
     expect(sizes.length).toBeGreaterThan(5);
     expect(sizes.filter((s) => s.px < 18)).toEqual([]);

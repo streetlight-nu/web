@@ -22,10 +22,13 @@ import { href } from "@/lib/utils";
  * text stands in the left column and the checkout in the right, full height; under 900 px the checkout comes
  * right after the heading and the lede, before the facts and the steps.
  */
-const fakta = [
+const uppgifter = hamtaForeningsuppgifter();
+const { epost } = uppgifter;
+const fakta: { fet: string; resten: string; mejl?: boolean }[] = [
   {
     fet: "Alla 20 barnen tillsammans.",
-    resten: "Vill du hellre följa ett av barnen? Det går också. Skriv det i ett mejl till oss, så ordnar vi det.",
+    resten: "Vill du hellre följa ett av barnen? Det går också.",
+    mejl: true,
   },
   { fet: "Barnen väljs ut tillsammans med de lokala myndigheterna", resten: "i Addis Abeba." },
   { fet: "Pengarna går via den svenska föreningen", resten: "till arbetet i Etiopien." },
@@ -35,7 +38,6 @@ const fakta = [
  * The questions future fadder tend to ask (#fragor), from Vanliga frågor in this order. A question the association
  * has removed in Pages CMS is skipped. They are shown without the anchors #fraga-<id>, which belong to Vanliga frågor.
  */
-const uppgifter = hamtaForeningsuppgifter();
 const fragor = (
   await Promise.all(
     [
@@ -106,7 +108,7 @@ const vagen = [
       <div class="fadder-rest">
         <ul class="mt-7 grid list-none gap-4 border-t-[3px] border-ink p-0 pt-5">
           {
-            fakta.map(({ fet, resten }) => (
+            fakta.map(({ fet, resten, mejl }) => (
               <li class="grid grid-cols-[26px_minmax(0,1fr)] items-start gap-3.5">
                 <svg viewBox="0 0 26 26" aria-hidden="true" class="mt-0.5 size-[26px]">
                   <path d="M13 1 25 13 13 25 1 13Z" class="fill-ink" />
@@ -114,6 +116,19 @@ const vagen = [
                 </svg>
                 <span>
                   <strong class="font-semibold">{fet}</strong> {resten}
+                  {mejl && (
+                    <>
+                      {" "}Skriv det i ett{" "}
+                      {epost ? (
+                        <a class="font-semibold underline decoration-2 underline-offset-[0.22em]" href={`mailto:${epost}`}>
+                          mejl till oss
+                        </a>
+                      ) : (
+                        "mejl till oss"
+                      )}
+                      , så ordnar vi det.
+                    </>
+                  )}
                 </span>
               </li>
             ))
@@ -133,7 +148,6 @@ const vagen = [
           del="checkout"
           kortkod={FADDER_KORTKOD}
           vantar="Här visas Repejos formulär för att bli fadder."
-          utanReserv
         />
       </div>
     </div>

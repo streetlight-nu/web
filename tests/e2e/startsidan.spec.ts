@@ -31,6 +31,25 @@ test("huvudmenyn länkar till Om oss, Nyheter och Frågor", LAYOUT, async ({ pag
 test.describe("mobilmenyn", LAYOUT, () => {
   test.skip(({ isMobile }) => !isMobile, "Menyknappen finns bara på smal skärm");
 
+  test("loggan, Bli fadder och Meny ryms på en rad även vid 320 px", async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    for (const sida of ["./", "bli-fadder"]) {
+      await page.goto(sida);
+      const nav = page.getByRole("navigation", { name: "Huvudmeny" });
+      const delar = [
+        nav.getByRole("link", { name: "Streetlight, till startsidan" }),
+        nav.getByRole("link", { name: "Bli fadder" }),
+        nav.getByRole("button", { name: "Meny" }),
+      ];
+      const rutor = await Promise.all(delar.map(async (del) => (await del.boundingBox())!));
+      for (const ruta of rutor) {
+        expect(ruta.y).toBeLessThan(rutor[0].y + rutor[0].height);
+        expect(ruta.height).toBeGreaterThanOrEqual(44);
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
+    }
+  });
+
   test("öppnas och stängs med tangentbordet", async ({ page }) => {
     await page.goto("./");
     const toggle = page.getByRole("button", { name: "Meny" });

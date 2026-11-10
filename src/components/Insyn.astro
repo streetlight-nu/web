@@ -56,9 +56,10 @@ const rader = (["organisationsnummer", "nittiokonto"] as const).map((namn) => ({
       grid-template-columns: 1fr;
       gap: 14px;
     }
+    /* The two short values stand side by side as long as the longest label fits, otherwise stacked. */
     dl {
-      grid-template-columns: 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.75rem), 1fr));
+      gap: 12px 20px;
     }
   }
 </style>

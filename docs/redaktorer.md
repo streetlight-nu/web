@@ -139,10 +139,12 @@ Några svar saknas än och visas som ”fylls i av föreningen”: vad det kosta
 | `{epost}` | Kontakt-e-posten, som en länk |
 | `{kontaktperson}` | Kontaktpersonen |
 | `{organisationsnummer}` | Organisationsnumret |
-| `{nittiokonto}` | 90-kontot |
+| `{nittiokonto}` | Bankgirot |
 | `{arsredovisning}` | Länken ”Läs årsredovisningen” |
+| `{facebook}` | Länken till Facebook-sidan |
+| `{instagram}` | Länken till Instagram-kontot |
 
-Ett felstavat namn, till exempel `{bankgiro}`, stoppar sidan. Då fortsätter webbplatsen att visa det som fanns innan (se avsnitt 5). Rätta stavningen och spara igen.
+Ett felstavat namn, till exempel `{swihs}`, stoppar sidan. Bankgirot skrivs `{nittiokonto}`. Då fortsätter webbplatsen att visa det som fanns innan (se avsnitt 5). Rätta stavningen och spara igen.
 
 **Startsidan** länkar till frågan ”Hur vet jag att pengarna når fram?” under Insyn. Tar du bort den frågan försvinner länken.
 

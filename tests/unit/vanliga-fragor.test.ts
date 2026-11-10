@@ -81,7 +81,7 @@ describe("föreningsuppgifter i ett svar", () => {
   test("visas som ”fylls i” när uppgiften saknas", () => {
     expect(fyllIUppgifter("<p>{swish}, {epost}, {organisationsnummer}, {arsredovisning}</p>", {})).toBe(
       '<p><span class="sl-todo">nummer fylls i</span>, <span class="sl-todo">e-post fylls i</span>, ' +
-        '<span class="sl-todo">fylls i</span>, <span class="sl-todo">länk fylls i</span></p>',
+        '<span class="sl-todo">nummer fylls i</span>, <span class="sl-todo">länk fylls i</span></p>',
     );
   });
 
@@ -91,7 +91,7 @@ describe("föreningsuppgifter i ett svar", () => {
   });
 
   test("stoppar bygget vid en okänd uppgift, så att ett stavfel inte syns på sidan", () => {
-    expect(() => fyllIUppgifter("<p>{bankgiro}</p>", ifyllda)).toThrow(/\{bankgiro\}/);
+    expect(() => fyllIUppgifter("<p>{swihs}</p>", ifyllda)).toThrow(/\{swihs\}/);
   });
 
   test("tål mellanslag och stor bokstav inom klamrarna", () => {

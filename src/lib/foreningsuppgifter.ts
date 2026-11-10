@@ -1,6 +1,6 @@
 import { z } from "astro/zod";
 
-import { lasDatafil } from "./datafil";
+import { datafil } from "./datafil";
 import { arEpostadress, valfri } from "./falt";
 
 /**
@@ -8,11 +8,15 @@ import { arEpostadress, valfri } from "./falt";
  *
  * They live in one data file, `src/data/foreningsuppgifter.json`, which the association fills in
  * through Pages CMS (see `.pages.yml`). Components get them only from here and never write a value
- * themselves. A field that is missing or empty is `undefined`, and is shown as the chip "fylls i".
+ * themselves. A field that is missing or empty is `undefined`.
+ *
+ * How each uppgift is shown is decided here too, with `visaUppgift()`: its label (as in GLOSSARY.md), the text
+ * and link when it is filled in, and the chip that says what is missing when it is not. The component Uppgift and
+ * the answers in Vanliga frågor show the uppgifter through it, so every page names and links them the same way.
  */
 export interface Foreningsuppgifter {
   organisationsnummer?: string;
-  /** The 90-konto for gifts. */
+  /** The bankgiro for gifts (the field is still named after the 90-konto it once was). */
   nittiokonto?: string;
   swish?: string;
   kontaktperson?: string;
@@ -24,9 +28,6 @@ export interface Foreningsuppgifter {
   /** The association's account on Instagram (https://www.instagram.com/…). */
   instagram?: string;
 }
-
-/** The data file. FORENINGSUPPGIFTER_FIL points elsewhere, so the browser tests can build with a filled-in test file. */
-export const DATAFIL = "src/data/foreningsuppgifter.json";
 
 const ifylldText = z.string().trim();
 
@@ -51,16 +52,71 @@ const foreningsuppgifterSchema = z.strictObject({
   instagram: valfri(profillank("instagram", "instagram.com")),
 });
 
+/** The data file. FORENINGSUPPGIFTER_FIL points elsewhere, so the browser tests can build with a test file. */
+export const FORENINGSUPPGIFTER_DATAFIL = datafil({
+  fil: "src/data/foreningsuppgifter.json",
+  miljovariabel: "FORENINGSUPPGIFTER_FIL",
+  cmsNamn: "foreningsuppgifter",
+  schema: foreningsuppgifterSchema,
+  fel: "Föreningsuppgifterna är felaktiga",
+});
+
 /** Checks the contents of the data file. Unknown fields and malformed values fail the build. */
-export function tolkaForeningsuppgifter(data: unknown): Foreningsuppgifter {
-  const resultat = foreningsuppgifterSchema.safeParse(data);
-  if (!resultat.success) {
-    throw new Error(`Föreningsuppgifterna är felaktiga:\n${z.prettifyError(resultat.error)}`);
-  }
-  return resultat.data;
-}
+export const tolkaForeningsuppgifter: (data: unknown) => Foreningsuppgifter = FORENINGSUPPGIFTER_DATAFIL.tolka;
 
 /** Reads the föreningsuppgifter from the data file, once per build. */
 export function hamtaForeningsuppgifter(): Foreningsuppgifter {
-  return lasDatafil(process.env.FORENINGSUPPGIFTER_FIL || DATAFIL, tolkaForeningsuppgifter);
+  return FORENINGSUPPGIFTER_DATAFIL.hamta();
+}
+
+/** Every uppgift, in the order the pages list them. */
+export const UPPGIFTER = [
+  "organisationsnummer",
+  "nittiokonto",
+  "swish",
+  "kontaktperson",
+  "epost",
+  "arsredovisning",
+  "facebook",
+  "instagram",
+] as const satisfies readonly (keyof Foreningsuppgifter)[];
+export type Uppgift = (typeof UPPGIFTER)[number];
+
+/** The social networks where the association can be followed, in the order the pages show them. */
+export const SOCIALA = ["facebook", "instagram"] as const satisfies readonly Uppgift[];
+
+/** One uppgift as the pages show it. */
+export interface VisadUppgift {
+  /** The label, as in GLOSSARY.md, e.g. "Bankgiro". */
+  etikett: string;
+  /** The text to show, or `undefined` while the association has not filled it in. */
+  text?: string;
+  /** Where the text links, when the uppgift is a link (mailto: or https:), and it is filled in. */
+  lank?: string;
+  /** The chip's text while the uppgift is missing: what is missing, e.g. "nummer fylls i". */
+  saknas: string;
+}
+
+const VISNING: Record<Uppgift, { etikett: string; saknas: string; lank?: (varde: string) => string; text?: string }> = {
+  organisationsnummer: { etikett: "Organisationsnummer", saknas: "nummer fylls i" },
+  nittiokonto: { etikett: "Bankgiro", saknas: "nummer fylls i" },
+  swish: { etikett: "Swish för gåvor", saknas: "nummer fylls i" },
+  kontaktperson: { etikett: "Kontaktperson", saknas: "namn fylls i" },
+  epost: { etikett: "E-post", saknas: "e-post fylls i", lank: (varde) => `mailto:${varde}` },
+  arsredovisning: {
+    etikett: "Senaste årsredovisning",
+    saknas: "länk fylls i",
+    lank: (varde) => varde,
+    text: "Läs årsredovisningen",
+  },
+  facebook: { etikett: "Facebook", saknas: "länk fylls i", lank: (varde) => varde, text: "Facebook" },
+  instagram: { etikett: "Instagram", saknas: "länk fylls i", lank: (varde) => varde, text: "Instagram" },
+};
+
+/** How one uppgift is shown: from the data file, or from `uppgifter` when given (the tests, Vanliga frågor). */
+export function visaUppgift(namn: Uppgift, uppgifter: Foreningsuppgifter = hamtaForeningsuppgifter()): VisadUppgift {
+  const { etikett, saknas, lank, text } = VISNING[namn];
+  const varde = uppgifter[namn];
+  if (varde === undefined) return { etikett, saknas };
+  return { etikett, saknas, text: text ?? varde, lank: lank?.(varde) };
 }

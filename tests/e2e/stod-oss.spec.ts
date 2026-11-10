@@ -163,8 +163,8 @@ test.describe("Stöd oss med tom testfil", () => {
 
   test("Insyn visar ”fylls i” för det som saknas", async ({ page }) => {
     await page.goto(sida);
-    await expect(uppgift(page, "Organisationsnummer")).toHaveText("fylls i");
-    await expect(uppgift(page, "Bankgiro")).toHaveText("fylls i");
+    await expect(uppgift(page, "Organisationsnummer")).toHaveText("nummer fylls i");
+    await expect(uppgift(page, "Bankgiro")).toHaveText("nummer fylls i");
   });
 
   test("brödtexten är minst 18 px", async ({ page }) => {

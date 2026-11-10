@@ -79,7 +79,7 @@ test.describe("Kontakt med ifylld testfil", () => {
     );
     await expect(kontakt).toContainText("Testperson");
     await expect(uppgift(page, "Swish för gåvor")).toHaveText("TEST-SWISH");
-    await expect(uppgift(page, "90-konto")).toHaveText("TEST-90-KONTO");
+    await expect(uppgift(page, "Bankgiro")).toHaveText("TEST-90-KONTO");
     await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");
     await expect(kontakt.getByRole("link", { name: "Läs årsredovisningen" })).toHaveAttribute(
       "href",

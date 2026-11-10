@@ -22,8 +22,8 @@ test.describe("föreningsuppgifter med tom testfil", () => {
     await page.goto("bli-fadder");
     await expect(insyn(page).getByRole("heading", { name: "Insyn" })).toBeVisible();
     for (const [label, chip] of [
-      ["Organisationsnummer", "fylls i"],
-      ["Bankgiro", "fylls i"],
+      ["Organisationsnummer", "nummer fylls i"],
+      ["Bankgiro", "nummer fylls i"],
     ]) {
       await expect(uppgift(page, label)).toHaveText(chip);
       await expect(uppgift(page, label).getByText(chip, { exact: true })).toBeVisible();
@@ -33,7 +33,7 @@ test.describe("föreningsuppgifter med tom testfil", () => {
 
   test("chipet ”fylls i” syns både på green och på cotton", async ({ page }) => {
     await page.goto("bli-fadder");
-    const chip = uppgift(page, "Organisationsnummer").getByText("fylls i", { exact: true });
+    const chip = uppgift(page, "Organisationsnummer").getByText("nummer fylls i", { exact: true });
     // Insyn sits on green. Place the same chip on the cotton section Vart ditt bidrag går as well.
     await chip.evaluate((el) => {
       const copy = el.cloneNode(true) as HTMLElement;

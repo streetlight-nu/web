@@ -30,7 +30,7 @@ En variant av fadderskap där faddern följer ett av fadderbarnen. En fadder fö
 _Undvik_: personlig fadder, barnfadder
 
 **Föreningsuppgifter**:
-De offentliga uppgifter som visar vem föreningen är och hur man ger: organisationsnummer, 90-konto, Swish-nummer, kontaktperson och årsredovisning.
+De offentliga uppgifter som visar vem föreningen är och hur man ger: organisationsnummer, bankgiro, Swish-nummer, kontaktperson, e-post, årsredovisning och sidorna på Facebook och Instagram. Hur varje uppgift heter och visas på sajten bestäms på ett ställe, i `src/lib/foreningsuppgifter.ts`.
 _Undvik_: kontaktinfo, betalinfo
 
 ## Julkampanjen

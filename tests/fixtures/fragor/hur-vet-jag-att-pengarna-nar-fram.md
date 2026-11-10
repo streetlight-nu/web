@@ -4,5 +4,5 @@ grupp: foreningen
 ordning: 1
 ---
 - Organisationsnummer: {organisationsnummer}
-- 90-konto: {nittiokonto}
+- Bankgiro: {nittiokonto}
 - Senaste årsredovisning: {arsredovisning}

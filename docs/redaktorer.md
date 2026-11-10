@@ -21,16 +21,14 @@ Verktyget heter **Pages CMS**. Det är på engelska, så knapparnas engelska nam
 
 | Fält | Vad du skriver |
 | --- | --- |
-| **Titel** | Inläggets rubrik. Måste fyllas i. Titeln blir också inläggets adress, till exempel `/nyheter/skolstart-i-addis-abeba`. Adressen ändras inte om du byter titel senare. |
+| **Titel** | Inläggets rubrik. Måste fyllas i. Titeln blir också inläggets adress, till exempel `/nyheter/arsmote-25-april-valkommen-att-vara-med-och-forma-streetlight`. Adressen ändras inte om du byter titel senare. |
 | **Datum** | Dagen inlägget gäller. Måste fyllas i. Det nyaste inlägget visas först. |
 | **Ämne** | Välj ett av de fyra: Rapport från Addis Abeba, Nyhet från föreningen, Berättelse från en familj eller Tack till faddrarna. |
 | **Plats** | Var det hände, till exempel Addis Abeba. Får lämnas tomt. |
 | **Ingress** | Ett par meningar som sammanfattar inlägget. Måste fyllas i. Den visas i nyhetslistan och när någon delar länken. |
 | **Bild** | En bild överst i inlägget. Får lämnas tom. Ladda upp bilden i full storlek; webbplatsen gör själv mindre versioner. |
 | **Alt-text** | Måste fyllas i när det finns en bild. Se avsnitt 4. |
-| **Bilden visar barn** | Kryssa i om något barn syns på bilden. |
-| **Familjen har gett sitt samtycke** | Se avsnitt 3. |
-| **Exempelinlägg** | Lämna tomt. Det används bara för de påhittade exempelinläggen. |
+| **Exempelinlägg** | Lämna tomt. Det används bara för de påhittade inlägg som webbplatsens tester använder. |
 | **Brödtext** | Själva texten. Du kan göra rubriker, fet stil, listor och länkar med knapparna ovanför textrutan, och lägga in fler bilder. |
 
 4. Klicka på spara (Save). Inlägget publiceras på webbplatsen inom några minuter.
@@ -41,12 +39,7 @@ Vill du ändra ett inlägg öppnar du det under Nyheter, ändrar och sparar igen
 
 Utan familjens samtycke publicerar vi ingenting som visar ett fadderbarn eller en familj.
 
-- Kryssa i **Familjen har gett sitt samtycke** bara när familjen faktiskt har sagt ja till att just den här bilden eller berättelsen publiceras.
-- Webbplatsen **stoppar** ett inlägg som saknar samtycke om
-  - ämnet är *Berättelse från en familj*, eller
-  - **Bilden visar barn** är ikryssad, eller
-  - det finns bilder i brödtexten.
-- Webbplatsen kan inte se vad bilderna i brödtexten visar. Därför kräver varje inlägg med bilder i brödtexten samtycke, även om ingen familj syns. Kryssa i samtycket bara när familjen har sagt ja till bilderna.
+- Webbplatsen kontrollerar inte samtycket. Det är du och föreningen som ser till att familjen har sagt ja till att just den här bilden eller berättelsen publiceras, innan du sparar.
 - Skriv aldrig barnens efternamn, adress eller annat som gör att någon kan hitta familjen.
 
 ## 4. Alt-text
@@ -59,26 +52,9 @@ Alt-texten läses upp för den som inte kan se bilden, till exempel med skärml�
 
 ## 5. Om ett inlägg inte syns
 
-Om ett inlägg bryter mot reglerna ovan, till exempel saknar alt-text eller samtycke, publiceras det inte, och webbplatsen fortsätter att visa det som fanns innan. Ingenting går sönder. Öppna inlägget, rätta det och spara igen. Syns det fortfarande inte efter en kvart, hör av dig till den som administrerar webbplatsen.
+Om ett inlägg bryter mot reglerna ovan, till exempel saknar alt-text, publiceras det inte, och webbplatsen fortsätter att visa det som fanns innan. Ingenting går sönder. Öppna inlägget, rätta det och spara igen. Syns det fortfarande inte efter en kvart, hör av dig till den som administrerar webbplatsen.
 
-## 6. Ta bort exempelinläggen
-
-Webbplatsen har fyra påhittade exempelinlägg som visar hur ett inlägg kan se ut. De är märkta "Exempel":
-
-- Skolstart i Addis Abeba
-- En verksamhet som bär familjen
-- Välkommen till årsmötet
-- Tack för ett år i skolan
-
-När föreningens egna inlägg finns tar du bort dem:
-
-1. Klicka på **Nyheter**.
-2. Öppna menyn vid exempelinlägget och välj ta bort (Delete). Bekräfta.
-3. Gör likadant med de andra.
-
-När inget exempelinlägg finns kvar försvinner också notisen om exempel från nyhetslistan.
-
-## 7. Fyll i Vår historia
+## 6. Fyll i Vår historia
 
 Sidan **Vår historia** är en tidslinje från 1995 till idag. Allt som inte är ifyllt visas som ”fylls i”, så sidan går att publicera innan texterna är klara.
 
@@ -97,12 +73,11 @@ Där det ännu inte finns något foto visar sidan en mörkgrön ruta med ett fö
 1. Öppna **Vår historia** eller **Om föreningen** och leta upp fältet, till exempel **Foto från perioden** under en period eller **Foto till Så började det**.
 2. Ladda upp fotot under **Foto**, i full storlek. Webbplatsen gör själv mindre versioner.
 3. Skriv en **Alt-text** (se avsnitt 4).
-4. Kryssa i **Fotot visar ett barn eller en familj** om ett barn eller en familj syns på fotot. Kryssa då också i **Familjen har gett sitt samtycke**, men bara när familjen har sagt ja till just det här fotot.
-5. Spara. Fotot ersätter rutan inom några minuter.
+4. Spara. Fotot ersätter rutan inom några minuter.
 
-Samma regler gäller som för inläggen: ett foto utan alt-text, eller ett foto av ett barn eller en familj utan samtycke, publiceras inte (se avsnitt 5). Vill du ta bort ett foto tömmer du fältet **Foto**, så visas förslaget igen.
+Samma regler gäller som för inläggen: ett foto utan alt-text publiceras inte (se avsnitt 5), och syns ett barn eller en familj ska familjen ha sagt ja till just det här fotot (se avsnitt 3). Vill du ta bort ett foto tömmer du fältet **Foto**, så visas förslaget igen.
 
-## 8. Fyll i julkampanjen
+## 7. Fyll i julkampanjen
 
 Sidan **Ge en julklapp** (`/julklapp`) är föreningens julkampanj. Belopp, insamlingsmål och betalning sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas som ”fylls i” tills det finns.
 
@@ -112,7 +87,7 @@ Sidan **Ge en julklapp** (`/julklapp`) är föreningens julkampanj. Belopp, insa
 4. Fältet **E-post för frågor om julkampanjen** är frivilligt. Lämnar du det tomt visas föreningens kontakt-e-post.
 5. Bocka i **Visa julkampanjen på startsidan och i menyn** när kampanjen pågår. Då syns ett kort avsnitt om julklappen direkt under de 20 ljusen på startsidan, och länken **Julklapp** i menyn. Bocka ur rutan efter jul, så försvinner båda. Sidan Ge en julklapp finns kvar för den som har en länk.
 
-## 9. Skriv Vanliga frågor
+## 8. Skriv Vanliga frågor
 
 Sidan **Vanliga frågor** (`/vanliga-fragor`) svarar på det som blivande faddrar brukar undra. Varje fråga är en egen post, precis som ett inlägg i Nyheter.
 

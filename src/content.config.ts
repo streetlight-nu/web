@@ -5,11 +5,12 @@ import { inlaggSchema } from "@/lib/nyheter-schema";
 import { fragaSchema } from "@/lib/vanliga-fragor";
 
 // Nyheter: one Markdown file per inlägg. The slug in /nyheter/<slug> is the file name.
-// An inlägg that breaks the schema stops the build.
+// An inlägg that breaks the schema stops the build. NYHETER_MAPP points elsewhere, so the browser
+// tests can build with the Exempelinlägg in tests/fixtures/nyheter.
 const nyheter = defineCollection({
   loader: glob({
     pattern: "**/*.md",
-    base: "./src/content/nyheter",
+    base: process.env.NYHETER_MAPP || "./src/content/nyheter",
     generateId: ({ entry }) => entry.replace(/\.md$/, ""),
   }),
   schema: ({ image }) => inlaggSchema(image()),

@@ -104,8 +104,10 @@ test.describe("dockan Bli fadder", LAYOUT, () => {
 });
 
 test.describe("Bli fadder på hela sajten", () => {
+  const ETT_INLAGG = "nyheter/arsmote-25-april-valkommen-att-vara-med-och-forma-streetlight";
+
   test("ingen länk pekar längre till startsidans guldfält", async ({ page }) => {
-    const sidor = ["./", "bli-fadder", "om-foreningen", "vanliga-fragor", "nyheter", "nyheter/skolstart-i-addis-abeba"];
+    const sidor = ["./", "bli-fadder", "om-foreningen", "vanliga-fragor", "nyheter", ETT_INLAGG];
     if (funktionPa("historia")) sidor.push("historia");
     if (funktionPa("julklapp")) sidor.push("julklapp");
     for (const sida of sidor) {
@@ -124,7 +126,7 @@ test.describe("Bli fadder på hela sajten", () => {
   });
 
   test("sidfoten har länken Swisha en gåva till Fler sätt att stödja oss på alla sidor", async ({ page }) => {
-    const sidor = ["./", "bli-fadder", "om-foreningen", "vanliga-fragor", "nyheter", "nyheter/skolstart-i-addis-abeba"];
+    const sidor = ["./", "bli-fadder", "om-foreningen", "vanliga-fragor", "nyheter", ETT_INLAGG];
     if (funktionPa("historia")) sidor.push("historia");
     if (funktionPa("julklapp")) sidor.push("julklapp");
     for (const sida of sidor) {

@@ -216,14 +216,6 @@ content:
                 label: Alt-text
                 type: string
                 description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
-              - name: visarFamilj
-                label: Fotot visar ett barn eller en familj
-                type: boolean
-                description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
-              - name: samtycke
-                label: Familjen har gett sitt samtycke
-                type: boolean
-                description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
           - name: handelser
             label: Händelser
             type: object
@@ -261,14 +253,6 @@ content:
             label: Alt-text
             type: string
             description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
-          - name: visarFamilj
-            label: Fotot visar ett barn eller en familj
-            type: boolean
-            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
-          - name: samtycke
-            label: Familjen har gett sitt samtycke
-            type: boolean
-            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
 
   - name: omForeningen
     label: Om föreningen
@@ -323,14 +307,6 @@ content:
             label: Alt-text
             type: string
             description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
-          - name: visarFamilj
-            label: Fotot visar ett barn eller en familj
-            type: boolean
-            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
-          - name: samtycke
-            label: Familjen har gett sitt samtycke
-            type: boolean
-            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
       - name: foreningar
         label: Två föreningar, ett arbete
         type: text
@@ -350,14 +326,6 @@ content:
             label: Alt-text
             type: string
             description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
-          - name: visarFamilj
-            label: Fotot visar ett barn eller en familj
-            type: boolean
-            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
-          - name: samtycke
-            label: Familjen har gett sitt samtycke
-            type: boolean
-            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
       - name: grund
         label: Vår grund
         type: object
@@ -413,14 +381,6 @@ content:
             label: Alt-text
             type: string
             description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
-          - name: visarFamilj
-            label: Fotot visar ett barn eller en familj
-            type: boolean
-            description: Kryssa i om ett fadderbarn, ett annat barn eller en familj syns på fotot. Då krävs samtycke.
-          - name: samtycke
-            label: Familjen har gett sitt samtycke
-            type: boolean
-            description: Kryssa i bara när familjen har sagt ja till att just det här fotot publiceras.
 
   - name: nyheter
     label: Nyheter
@@ -481,14 +441,6 @@ content:
         label: Alt-text
         type: string
         description: Krävs när det finns en bild. Beskriv kort vad bilden visar.
-      - name: showsChildren
-        label: Bilden visar barn
-        type: boolean
-        description: Kryssa i om något barn syns på bilden. Då krävs samtycke.
-      - name: consent
-        label: Familjen har gett sitt samtycke
-        type: boolean
-        description: Krävs för en Berättelse från en familj, för en bild där barn syns och när brödtexten har bilder.
       - name: example
         label: Exempelinlägg
         type: boolean

@@ -27,16 +27,13 @@ describe("schemat för inlägg", () => {
     expect(godtas({ ...giltigt, image: "./skolgarden.jpg", imageAlt: "Skolgården i Addis Abeba" })).toBe(true);
   });
 
-  test("avvisar en Berättelse från en familj utan samtycke", () => {
-    expect(godtas({ ...giltigt, topic: "familj" })).toBe(false);
-    expect(godtas({ ...giltigt, topic: "familj", consent: false })).toBe(false);
-    expect(godtas({ ...giltigt, topic: "familj", consent: true })).toBe(true);
+  test("godtar en Berättelse från en familj och en bild med barn, eftersom föreningen själv ansvarar för samtycket", () => {
+    expect(godtas({ ...giltigt, topic: "familj" })).toBe(true);
+    expect(godtas({ ...giltigt, image: "./klassrummet.jpg", imageAlt: "Barn i klassrummet" })).toBe(true);
   });
 
-  test("avvisar en bild där barn visas utan samtycke", () => {
-    const barnfoto = { ...giltigt, image: "./klassrummet.jpg", imageAlt: "Barn i klassrummet", showsChildren: true };
-    expect(godtas(barnfoto)).toBe(false);
-    expect(godtas({ ...barnfoto, consent: true })).toBe(true);
+  test("godtar ett inlägg som har kvar de gamla kryssrutorna för barn och samtycke", () => {
+    expect(godtas({ ...giltigt, topic: "familj", showsChildren: true, consent: false })).toBe(true);
   });
 
   test("avvisar ett inlägg utan datum", () => {
@@ -52,11 +49,5 @@ describe("schemat för inlägg", () => {
     expect(resultat.success).toBe(true);
     expect(resultat.data?.example).toBe(true);
     expect(inlaggSchema().parse(giltigt).example).toBe(false);
-  });
-
-  test("godtar ett exempelinlägg utan samtycke, eftersom det inte handlar om någon verklig familj", () => {
-    expect(godtas({ ...giltigt, topic: "familj", example: true })).toBe(true);
-    const barnfoto = { ...giltigt, image: "./klassrummet.jpg", imageAlt: "Barn i klassrummet", showsChildren: true };
-    expect(godtas({ ...barnfoto, example: true })).toBe(true);
   });
 });

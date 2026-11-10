@@ -47,24 +47,34 @@ const { items } = Astro.props;
   li:last-child {
     border-bottom: 3px solid var(--color-ink);
   }
+  /* The woven marker: a gold rhombus with a core of red, cobalt or green thread, in turn. */
   .mark {
-    width: 28px;
-    height: 28px;
+    --storlek: 28px;
+    --karna: var(--color-thread-red);
+    width: var(--storlek);
+    height: var(--storlek);
     margin: 6px 0 0 6px;
     transform: rotate(45deg);
     background: var(--color-gold);
     box-shadow:
-      inset 0 0 0 7px var(--color-gold),
-      inset 0 0 0 14px var(--color-thread-red);
+      inset 0 0 0 calc(var(--storlek) / 4) var(--color-gold),
+      inset 0 0 0 calc(var(--storlek) / 2) var(--karna);
   }
   li:nth-child(3n + 2) .mark {
-    box-shadow:
-      inset 0 0 0 7px var(--color-gold),
-      inset 0 0 0 14px var(--color-thread-cobalt);
+    --karna: var(--color-thread-cobalt);
   }
   li:nth-child(3n) .mark {
-    box-shadow:
-      inset 0 0 0 7px var(--color-gold),
-      inset 0 0 0 14px var(--color-green);
+    --karna: var(--color-green);
+  }
+  /* On a phone the marker and its column shrink, so the text gets the width. */
+  @media (max-width: 520px) {
+    li {
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 14px;
+    }
+    .mark {
+      --storlek: 20px;
+      margin: 6px 0 0 5px;
+    }
   }
 </style>

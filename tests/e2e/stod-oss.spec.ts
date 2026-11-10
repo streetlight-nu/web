@@ -278,6 +278,39 @@ test("Swisha en gåva har Repejos Swish-checkout bredvid texten på dator och ef
   }
 });
 
+test.describe("på mobil", LAYOUT, () => {
+  test.skip(({ isMobile }) => !isMobile, "gäller telefonbredd");
+
+  test("Swish-formuläret går i radens hela bredd, ut under markören", async ({ page }) => {
+    await stubRepejo(page);
+    await page.goto(sida);
+    const rad = fler(page).getByRole("listitem").filter({ hasText: "Swisha en gåva" });
+    const radRuta = (await rad.boundingBox())!;
+    const formular = (await rad.locator("repejo-checkout").boundingBox())!;
+    expect(Math.round(formular.x)).toBe(Math.round(radRuta.x));
+    expect(Math.round(formular.width)).toBe(Math.round(radRuta.width));
+  });
+
+  test("Ledgerns text börjar högst 44 px in från linjen", async ({ page }) => {
+    await page.goto(sida);
+    const rad = page.locator("#vart").getByRole("listitem").first();
+    const radRuta = (await rad.boundingBox())!;
+    const rubrik = (await rad.getByRole("heading", { level: 3 }).boundingBox())!;
+    expect(rubrik.x - radRuta.x).toBeLessThanOrEqual(44);
+  });
+
+  test("Insyn visar organisationsnumret och bankgirot bredvid varandra", async ({ page }) => {
+    await page.goto(sida);
+    const rader = page.locator("#nar-fram").getByRole("region", { name: "Insyn" }).locator("dl > div");
+    await expect(rader).toHaveCount(2);
+    // Whether the label fits depends on the real typeface, not the wider fallback shown while it loads.
+    await page.evaluate(() => document.fonts.ready);
+    const [forsta, andra] = [(await rader.nth(0).boundingBox())!, (await rader.nth(1).boundingBox())!];
+    expect(andra.y).toBe(forsta.y);
+    expect(andra.x).toBeGreaterThan(forsta.x + forsta.width);
+  });
+});
+
 test("Få nyheterna med e-post leder till formuläret på Nyheter", async ({ page }) => {
   await page.goto(sida);
   const knapp = fler(page).getByRole("link", { name: "Få nyheterna med e-post" });

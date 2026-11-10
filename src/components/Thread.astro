@@ -43,6 +43,12 @@ const { steps } = Astro.props;
     transform: scaleY(var(--p, 0));
     display: none;
   }
+  /* On a phone the thread runs a shorter way past the first and the last step. */
+  @media (max-width: 520px) {
+    .thread {
+      padding-block: 20px;
+    }
+  }
   .step {
     position: relative;
     color: var(--color-cotton);

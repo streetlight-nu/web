@@ -27,6 +27,9 @@ test("Om föreningen har en h1 och avsnitten i ordning, med Bli fadder sist", as
     "href",
     /\/bli-fadder$/,
   );
+  await expect(page.getByRole("region", { name: "Var med och håll ljusen tända." })).toContainText(
+    "Du blir fadder i formuläret på sidan Bli fadder, och sedan hör någon i föreningen av sig.",
+  );
 });
 
 test("menyn markerar Om föreningen som aktiv", LAYOUT, async ({ page, isMobile }) => {

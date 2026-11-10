@@ -44,7 +44,7 @@ Kortet som följer med en julklapp: personen skriver en hälsning, och förening
 _Undvik_: gåvobevis, e-kort
 
 **Repejo**:
-Föreningens insamlingstjänst, som sköter betalningen, julkampanjens checkout och insamlingsmätaren. Den externa tjänst som julkampanjens sida och Stöd oss anropar. Repejos skript hämtar i sin tur andra tjänster (ADR 0003).
+Föreningens insamlingstjänst, som sköter betalningen, julkampanjens checkout och insamlingsmätaren. Den externa tjänst som julkampanjens sida och sidan Bli fadder anropar. Repejos skript hämtar i sin tur andra tjänster (ADR 0003).
 
 ## Nyheter
 

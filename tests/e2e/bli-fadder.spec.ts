@@ -8,7 +8,7 @@ function sektion(page: Page) {
 }
 
 test.describe("guldfältet Bli fadder på startsidan", () => {
-  test("visar rubriken, ingressen och en Bli fadder-knapp till Stöd oss", async ({ page }) => {
+  test("visar rubriken, ingressen och en Bli fadder-knapp till sidan Bli fadder", async ({ page }) => {
     await page.goto("./");
     const s = sektion(page);
     await expect(s.getByRole("heading", { level: 2, name: "Bli fadder och håll ljusen tända." })).toBeVisible();
@@ -46,7 +46,7 @@ test.describe("guldfältet Bli fadder på startsidan", () => {
     await expect(page.locator("repejo-checkout")).toHaveCount(0);
   });
 
-  test("huvudknappen Bli fadder i toppen leder till Stöd oss", async ({ page }) => {
+  test("huvudknappen Bli fadder i toppen leder till sidan Bli fadder", async ({ page }) => {
     await page.goto("./");
     await expect(page.locator("[data-huvudknapp]")).toHaveAccessibleName("Bli fadder");
     await expect(page.locator("[data-huvudknapp]")).toHaveAttribute("href", /\/bli-fadder$/);
@@ -59,7 +59,7 @@ test.describe("dockan Bli fadder", LAYOUT, () => {
     return page.locator("[data-docka]").getByRole("link", { name: "Bli fadder" });
   }
 
-  test("på smal skärm visas dockan bara när huvudknappen inte syns, och den leder till Stöd oss", async ({
+  test("på smal skärm visas dockan bara när huvudknappen inte syns, och den leder till sidan Bli fadder", async ({
     page,
     isMobile,
   }) => {
@@ -116,7 +116,7 @@ test.describe("Bli fadder på hela sajten", () => {
     }
   });
 
-  test("sidfoten har kolumnen Stöd oss med länken Bli fadder till Stöd oss", async ({ page }) => {
+  test("sidfoten har kolumnen Stöd oss med länken Bli fadder till sidan Bli fadder", async ({ page }) => {
     await page.goto("./");
     const fot = page.getByRole("contentinfo");
     await expect(fot.getByRole("heading", { level: 2, name: "Stöd oss" })).toBeVisible();

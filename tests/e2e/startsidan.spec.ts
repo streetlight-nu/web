@@ -108,7 +108,7 @@ test.describe("startsidans berättelse", () => {
       "href",
       /\/om-foreningen#borjan$/,
     );
-    // What the support pays for, and the proof, have their one home on Stöd oss.
+    // What the support pays for, and the proof, have their one home on the page Bli fadder.
     const stod = page.locator("#stod");
     await expect(stod.getByRole("heading", { level: 2, name: "Utbildning är vägen ut ur fattigdom." })).toBeVisible();
     await expect(stod.getByRole("link", { name: "Se vart ditt bidrag går" })).toHaveAttribute("href", /\/bli-fadder#vart$/);

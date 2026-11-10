@@ -4,7 +4,7 @@ import { REPEJO_HOST } from "../../src/lib/repejo";
 import { funktionPa, stubRepejo } from "./helpers";
 
 /**
- * Stöd oss and the campaign page load Repejo's script (ADR 0003); the home page does not. Repejo is stubbed with a script that loads nothing, so
+ * The page Bli fadder and the campaign page load Repejo's script (ADR 0003); the home page does not. Repejo is stubbed with a script that loads nothing, so
  * these tests check only our own code, not what Repejo's real checkout.js loads on /julklapp (fonts, Stripe,
  * Adyen and possibly a Meta pixel): see ADR 0003.
  */
@@ -20,7 +20,7 @@ test("julklapp hämtar Repejos skript från Repejo, en gång", async ({ page }) 
   expect(skript).toEqual([`${REPEJO_HOST}/assets/checkout.js`]);
 });
 
-test("Stöd oss hämtar Repejos skript från Repejo, en gång", async ({ page }) => {
+test("Sidan Bli fadder hämtar Repejos skript från Repejo, en gång", async ({ page }) => {
   await stubRepejo(page);
   const skript: string[] = [];
   page.on("request", (request) => {

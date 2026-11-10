@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { expectNoA11yViolations } from "./helpers";
 
-/** The Insyn row in Så når det fram on Stöd oss: a heading followed by a list of föreningsuppgifter. */
+/** The Insyn row in Så når det fram on the page Bli fadder: a heading followed by a list of föreningsuppgifter. */
 function insyn(page: Page) {
   return page.locator("#nar-fram").getByRole("region", { name: "Insyn" });
 }

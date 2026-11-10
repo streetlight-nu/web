@@ -12,7 +12,7 @@ export const REPEJO_ORGANISATION = "org_2ipufW9fncbNaQ5aFFYTLH";
 /** The short code of the Christmas campaign "Ge en julklapp som sprider hopp". */
 export const JULKAMPANJ_KORTKOD = "TSpuB";
 
-/** The short code of the checkout for becoming a fadder (the gold field "Bli fadder" on Stöd oss). */
+/** The short code of the checkout for becoming a fadder (the gold field "Bli fadder" on the page Bli fadder). */
 export const FADDER_KORTKOD = "7r3dB";
 
 /** The short code of the Swish checkout for a one-off gift (the row "Swisha en gåva" under Fler sätt att stödja oss). */

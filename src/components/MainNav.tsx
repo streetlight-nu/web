@@ -67,8 +67,8 @@ export default function MainNav({ links, sponsorHref, sponsor = "gold" }: Props)
           </li>
         ))}
       </ul>
-      <div className="ml-auto flex items-center gap-2.5 max-[400px]:gap-2">
-        <Button asChild variant={sponsor === "gold" ? "gold" : "line"} size="small" className="whitespace-nowrap max-[520px]:px-4 max-[400px]:px-3.5">
+      <div className="ml-auto flex items-center gap-2.5 max-[400px]:gap-2 max-[359px]:gap-1.5">
+        <Button asChild variant={sponsor === "gold" ? "gold" : "line"} size="small" className="whitespace-nowrap max-[520px]:px-4 max-[400px]:px-3.5 max-[359px]:px-3">
           <a href={sponsorHref} aria-current={sponsor === "current" ? "page" : undefined}>
             Bli fadder
           </a>

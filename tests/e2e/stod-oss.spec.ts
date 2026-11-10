@@ -176,10 +176,7 @@ test.describe("Stöd oss med ifylld testfil", () => {
   test("Insyn visar föreningsuppgifterna från datafilen", async ({ page }) => {
     await page.goto(sida);
     await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");
-    await expect(uppgift(page, "90-konto")).toHaveText("TEST-90-KONTO");
-    await expect(
-      uppgift(page, "Senaste årsredovisning").getByRole("link", { name: "Läs årsredovisningen" }),
-    ).toHaveAttribute("href", "https://example.org/test-arsredovisning.pdf");
+    await expect(uppgift(page, "Bankgiro")).toHaveText("TEST-90-KONTO");
   });
 });
 
@@ -189,8 +186,7 @@ test.describe("Stöd oss med tom testfil", () => {
   test("Insyn visar ”fylls i” för det som saknas", async ({ page }) => {
     await page.goto(sida);
     await expect(uppgift(page, "Organisationsnummer")).toHaveText("fylls i");
-    await expect(uppgift(page, "Senaste årsredovisning")).toHaveText("länk fylls i");
-    await expect(uppgift(page, "90-konto")).toHaveText("fylls i");
+    await expect(uppgift(page, "Bankgiro")).toHaveText("fylls i");
   });
 
   test("brödtexten är minst 18 px", async ({ page }) => {

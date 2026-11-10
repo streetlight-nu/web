@@ -18,13 +18,12 @@ test.describe("föreningsuppgifter med tom testfil", () => {
   // A build of the site made from tests/fixtures/*-tom.json (see playwright.config.ts).
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
-  test("Insyn visar ”fylls i” för organisationsnummer, årsredovisning och 90-konto", async ({ page }) => {
+  test("Insyn visar ”fylls i” för organisationsnummer och bankgiro", async ({ page }) => {
     await page.goto("bli-fadder");
     await expect(insyn(page).getByRole("heading", { name: "Insyn" })).toBeVisible();
     for (const [label, chip] of [
       ["Organisationsnummer", "fylls i"],
-      ["Senaste årsredovisning", "länk fylls i"],
-      ["90-konto", "fylls i"],
+      ["Bankgiro", "fylls i"],
     ]) {
       await expect(uppgift(page, label)).toHaveText(chip);
       await expect(uppgift(page, label).getByText(chip, { exact: true })).toBeVisible();
@@ -61,11 +60,9 @@ test.describe("föreningsuppgifter med ifylld testfil", () => {
   test("Insyn visar värdena från datafilen i stället för ”fylls i”", async ({ page }) => {
     await page.goto("bli-fadder");
     await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");
-    await expect(uppgift(page, "90-konto")).toHaveText("TEST-90-KONTO");
-    await expect(uppgift(page, "Senaste årsredovisning").getByRole("link", { name: "Läs årsredovisningen" })).toHaveAttribute(
-      "href",
-      "https://example.org/test-arsredovisning.pdf",
-    );
+    // The 90-konto from the data file is shown as Bankgiro; the annual report is not part of Insyn.
+    await expect(uppgift(page, "Bankgiro")).toHaveText("TEST-90-KONTO");
+    await expect(insyn(page).getByRole("link")).toHaveCount(0);
     await expect(insyn(page).getByText(/fylls i/)).toHaveCount(0);
     await expectNoA11yViolations(page);
   });

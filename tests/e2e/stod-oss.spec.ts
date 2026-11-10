@@ -5,7 +5,7 @@ import { blockRepejo, expectNoA11yViolations, farg, LAYOUT, stubRepejo } from ".
 
 const sida = "bli-fadder";
 
-/** The gold field "Bli fadder" (#bli-fadder) at the top of Stöd oss. */
+/** The gold field "Bli fadder" (#bli-fadder) at the top of the page Bli fadder. */
 function guldfaltet(page: Page) {
   return page.locator("#bli-fadder");
 }
@@ -131,7 +131,7 @@ test("länken i Så når det fram leder till Om föreningen", async ({ page }) =
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Om föreningen.");
 });
 
-test.describe("Stöd oss med ifylld testfil", () => {
+test.describe("Sidan Bli fadder med ifylld testfil", () => {
   test.use({ baseURL: process.env.E2E_IFYLLD_URL });
 
   test("Insyn visar föreningsuppgifterna från datafilen", async ({ page }) => {
@@ -141,7 +141,7 @@ test.describe("Stöd oss med ifylld testfil", () => {
   });
 });
 
-test.describe("Stöd oss med tom testfil", () => {
+test.describe("Sidan Bli fadder med tom testfil", () => {
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
   test("Insyn visar ”fylls i” för det som saknas", async ({ page }) => {

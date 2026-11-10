@@ -1,5 +1,5 @@
 /**
- * What the support pays for, as Ledger rows: the start page's #stod shows these four, and Stöd oss (#vart) shows them
+ * What the support pays for, as Ledger rows: the start page's #stod shows these four, and the page Bli fadder (#vart) shows them
  * followed by the family's own income.
  */
 export const STODET: { title: string; text: string }[] = [

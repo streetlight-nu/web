@@ -13,7 +13,7 @@ interface Props {
   sponsorHref: string;
   /**
    * How "Bli fadder" shows: "gold" on most pages; "line" on a page whose own main action is gold (the campaign page);
-   * "current" on the page it leads to (Stöd oss), a line marked as the current page.
+   * "current" on the page it leads to (the page Bli fadder), a line marked as the current page.
    */
   sponsor?: "gold" | "line" | "current";
 }

@@ -1,27 +1,16 @@
 import { expect, test } from "@playwright/test";
 
-import { expectNoA11yViolations } from "./helpers";
+import { expectNoA11yViolations, farg, LAYOUT } from "./helpers";
 
-test("startsidan har en h1 och klarar WCAG 2.1 AA", async ({ page }) => {
+// The rules every page keeps (h1, WCAG, skip link, 18 px, the glossary) are in hela-sajten.spec.ts.
+
+test("startsidan har titeln Streetlight och rubriken Ett ljus på vägen till skolan", async ({ page }) => {
   await page.goto("./");
   await expect(page).toHaveTitle("Streetlight");
-  await expect(page.locator("html")).toHaveAttribute("lang", "sv");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Ett ljus på vägen till skolan.");
-  await expectNoA11yViolations(page);
 });
 
-test("hopplänken leder till innehållet", async ({ page }) => {
-  await page.goto("./");
-  await page.keyboard.press("Tab");
-  const skip = page.getByRole("link", { name: "Hoppa till innehållet" });
-  await expect(skip).toBeFocused();
-  await expect(skip).toBeInViewport();
-  await page.keyboard.press("Enter");
-  await expect(page.locator("main#main")).toBeFocused();
-});
-
-test("huvudmenyn länkar till Om oss, Nyheter och Frågor", async ({ page, isMobile }) => {
+test("huvudmenyn länkar till Om oss, Nyheter och Frågor", LAYOUT, async ({ page, isMobile }) => {
   await page.goto("./");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
@@ -39,7 +28,7 @@ test("huvudmenyn länkar till Om oss, Nyheter och Frågor", async ({ page, isMob
   );
 });
 
-test.describe("mobilmenyn", () => {
+test.describe("mobilmenyn", LAYOUT, () => {
   test.skip(({ isMobile }) => !isMobile, "Menyknappen finns bara på smal skärm");
 
   test("öppnas och stängs med tangentbordet", async ({ page }) => {
@@ -75,12 +64,12 @@ test.describe("startsidans berättelse", () => {
     await expect(page.getByText("20 barn, 20 ljus.")).toBeVisible();
   });
 
-  test("ብርሃን i toppen är amhariska, i guld och med uttalet under", async ({ page }) => {
+  test("ብርሃን i toppen är amhariska, i guld och med uttalet under", LAYOUT, async ({ page }) => {
     await page.goto("./");
     const word = page.getByRole("banner").getByText("ብርሃን", { exact: true });
     await expect(word).toBeVisible();
     await expect(word).toHaveAttribute("lang", "am");
-    await expect(word).toHaveCSS("color", "rgb(244, 180, 0)");
+    await expect(word).toHaveCSS("color", farg("gold"));
     const pronunciation = page.getByRole("banner").getByText("”ljus” på amhariska, uttalas birhan");
     await expect(pronunciation).toBeVisible();
     const [w, p] = [(await word.boundingBox())!, (await pronunciation.boundingBox())!];
@@ -123,7 +112,7 @@ test.describe("startsidans berättelse", () => {
     await expect(arbete.getByRole("region", { name: "Insyn" })).toHaveCount(0);
   });
 
-  test("texterna följer ordlistan och hittar inte på några siffror", async ({ page }) => {
+  test("texterna talar om fadderbarn och hittar inte på några siffror", async ({ page }) => {
     // On the build with empty test files: the föreningsuppgifter the association fills in have figures of their own.
     await page.goto(process.env.E2E_TOM_URL!);
     const text = (await page.getByRole("banner").innerText()) + (await page.locator("main").innerText());
@@ -140,17 +129,5 @@ test.describe("startsidans berättelse", () => {
     // "90-konto" is the name of a kind of account, not a figure.
     expect(new Set(siffror.replaceAll("90-konto", "").match(/\d+/g))).toEqual(new Set(["20"]));
     expect(text).toContain("fadderbarn");
-    expect(text).not.toMatch(/blogg|sponsor|donator|mottagare/i);
-  });
-
-  test("brödtexten är minst 18 px", async ({ page }) => {
-    await page.goto("./");
-    const sizes = await page
-      .locator("main p, main li, main blockquote, main figcaption")
-      .evaluateAll((els) =>
-        els.map((el) => ({ text: el.textContent!.trim().slice(0, 40), px: parseFloat(getComputedStyle(el).fontSize) })),
-      );
-    expect(sizes.length).toBeGreaterThan(10);
-    expect(sizes.filter((s) => s.px < 18)).toEqual([]);
   });
 });

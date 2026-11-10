@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { FADDER_KORTKOD, SWISH_KORTKOD } from "../../src/lib/repejo";
-import { blockRepejo, expectNoA11yViolations, stubRepejo } from "./helpers";
+import { blockRepejo, expectNoA11yViolations, farg, LAYOUT, stubRepejo } from "./helpers";
 
 const sida = "bli-fadder";
 
@@ -19,29 +19,12 @@ function uppgift(page: Page, label: string) {
     .filter({ has: page.locator(`xpath=preceding-sibling::dt[normalize-space()="${label}"]`) });
 }
 
-test("Stöd oss har titel, en h1 och klarar WCAG 2.1 AA", async ({ page }) => {
-  await stubRepejo(page);
+// The rules every page keeps (h1, WCAG, skip link, 18 px, no sideways scroll, the glossary) are in hela-sajten.spec.ts.
+
+test("Bli fadder har titeln och rubriken", async ({ page }) => {
   await page.goto(sida);
   await expect(page).toHaveTitle("Bli fadder | Streetlight");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Bli fadder och håll ljusen tända.");
-  await expectNoA11yViolations(page);
-});
-
-test("hopplänken leder till innehållet", async ({ page }) => {
-  await page.goto(sida);
-  await page.keyboard.press("Tab");
-  const skip = page.getByRole("link", { name: "Hoppa till innehållet" });
-  await expect(skip).toBeFocused();
-  await page.keyboard.press("Enter");
-  await expect(page.locator("main#main")).toBeFocused();
-});
-
-test("staplas utan sidledsskroll", async ({ page }) => {
-  await stubRepejo(page);
-  await page.goto(sida);
-  await page.waitForLoadState("networkidle");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 });
 
 test("brödsmulorna visar Startsidan / Bli fadder", async ({ page }) => {
@@ -55,7 +38,7 @@ test("Bli fadder i menyn är en linjeknapp markerad som aktuell sida", async ({ 
   await page.goto(sida);
   const knapp = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Bli fadder" });
   await expect(knapp).toHaveAttribute("aria-current", "page");
-  expect(await knapp.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe("rgb(244, 180, 0)");
+  expect(await knapp.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe(farg("gold"));
 });
 
 test("guldfältet visar bara det som behövs för att bli fadder: rubriken, ingressen och vad som händer sen", async ({
@@ -93,7 +76,7 @@ test("när Repejo inte kan nås syns ramen med väntetexten", async ({ page }) =
   expect(await ram.evaluate((el) => getComputedStyle(el).borderStyle)).toBe("dashed");
 });
 
-test("på dator står formuläret bredvid texten, på mobil direkt efter ingressen och före vad som händer sen", async ({
+test("på dator står formuläret bredvid texten, på mobil direkt efter ingressen och före vad som händer sen", LAYOUT, async ({
   page,
   isMobile,
 }) => {
@@ -165,20 +148,6 @@ test.describe("Stöd oss med tom testfil", () => {
     await page.goto(sida);
     await expect(uppgift(page, "Organisationsnummer")).toHaveText("nummer fylls i");
     await expect(uppgift(page, "Bankgiro")).toHaveText("nummer fylls i");
-  });
-
-  test("brödtexten är minst 18 px", async ({ page }) => {
-    await page.goto(sida);
-    // Repejo draws its own forms (ADR 0003), some of them in a shadow root; their text is outside the page's control.
-    const sizes = await page
-      .locator("main p, main li")
-      .evaluateAll((els) =>
-        els
-          .filter((el) => el.getRootNode() === document && !el.closest("repejo-checkout, repejo-progress-bar"))
-          .map((el) => ({ text: el.textContent!.trim().slice(0, 40), px: parseFloat(getComputedStyle(el).fontSize) })),
-      );
-    expect(sizes.length).toBeGreaterThan(5);
-    expect(sizes.filter((s) => s.px < 18)).toEqual([]);
   });
 });
 
@@ -290,7 +259,7 @@ test.describe("Fler sätt att stödja oss med ifylld testfil", () => {
   });
 });
 
-test("Swisha en gåva har Repejos Swish-checkout bredvid texten på dator och efter texten på mobil", async ({
+test("Swisha en gåva har Repejos Swish-checkout bredvid texten på dator och efter texten på mobil", LAYOUT, async ({
   page,
   isMobile,
 }) => {

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { expectNoA11yViolations } from "./helpers";
+import { expectNoA11yViolations, LAYOUT } from "./helpers";
 
 const sida = "vanliga-fragor";
 
@@ -37,10 +37,11 @@ test("sidfoten länkar hit", async ({ page }) => {
   );
 });
 
-test("leder vidare till Bli fadder och klarar WCAG 2.1 AA, även med alla frågor öppna", async ({ page }) => {
+// The rules every page keeps (h1, WCAG, skip link, 18 px, the glossary) are in hela-sajten.spec.ts; with every
+// question closed, that is.
+test("leder vidare till Bli fadder och klarar WCAG 2.1 AA med alla frågor öppna", LAYOUT, async ({ page }) => {
   await page.goto(sida);
   await expect(page.getByRole("main").getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/bli-fadder$/);
-  await expectNoA11yViolations(page);
   await oppnaAlla(page);
   await expectNoA11yViolations(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);

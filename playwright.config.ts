@@ -29,7 +29,10 @@ export default defineConfig({
   use: { baseURL: `http://localhost:${port}${base}`, trace: "retain-on-failure" },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
-    { name: "mobil", use: { ...devices["Pixel 7"] } },
+    // Most tests check content and behaviour that are the same at every width, so they run once, on desktop. A test
+    // whose outcome depends on the width (layout, tap areas, the folded menu) is tagged @layout (LAYOUT in
+    // tests/e2e/helpers.ts) and runs on the phone as well.
+    { name: "mobil", use: { ...devices["Pixel 7"] }, grep: /@layout/ },
   ],
   webServer: [
     {

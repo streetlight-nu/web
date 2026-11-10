@@ -284,7 +284,7 @@ Sidfoten ligger på djupgrönt under det fulla tibeb-bandet, med brödtext i 18 
 På 900 px och smalare ligger en guldknapp ”Bli fadder” i full bredd fast längst ner på startsidan, inom räckhåll för tummen. Dockan är grön med en 3 px guldlinje upptill och följer telefonens säkra zon. Den glider upp (350 ms, `cubic-bezier(0.16, 1, 0.3, 1)`) bara när toppens huvudknapp har rullat ur bild och det gula fadderfältet ännu inte syns, så att det aldrig finns två guldknappar i samma vy. När den är dold ligger den utanför tabbordningen, och utan JavaScript syns den inte alls.
 
 ### Repejos ram
-Repejos formulär och insamlingsmätare ritas av Repejos eget skript. Vi reserverar platsen i förväg (480 px för formuläret och 56 px för mätaren) så att sidan inte hoppar. Tills skriptet har laddat visar ytan en streckad kant på 2 px i textens färg, 6 px hörn och en text om vad som ska synas där. Under formuläret finns en reservlänk på 44 px, ”Fungerar inte betalningen?”, i halvfet understruken text.
+Repejos formulär och insamlingsmätare ritas av Repejos eget skript. Vi reserverar platsen i förväg (480 px för formuläret och 56 px för mätaren) så att sidan inte hoppar. Tills skriptet har laddat visar ytan en streckad kant på 2 px i textens färg, 6 px hörn och en text om vad som ska synas där. Det finns ingen reservlänk under formuläret.
 
 ### Tibeb-band (signatur)
 Den vävda bården är sidans fog och går alltid i full bredd. Det fulla bandet (46 px) har röda och vita kanter och guldromber med röd kärna på grönt. Det markerar stora skiften och sitter ovanför sidfoten. Det tunna bandet (22 px) har guldkant och röda romber och markerar mindre skiften, till exempel in i det gula fadderfältet.

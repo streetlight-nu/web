@@ -1,12 +1,10 @@
 import { expect, test } from "@playwright/test";
 
-import { JULKAMPANJ_KORTKOD, kampanjsida } from "../../src/lib/repejo";
 import { blockRepejo, expectNoA11yViolations, funktionPa, stubRepejo } from "./helpers";
 
 test.skip(!funktionPa("julklapp"), "julklapp är avstängd i funktioner.json");
 
 const sida = "julklapp";
-const reservlank = kampanjsida(JULKAMPANJ_KORTKOD);
 
 test.beforeEach(async ({ page }) => {
   await stubRepejo(page);
@@ -57,15 +55,11 @@ test("knappen Ge en julklapp i första vyn leder till Repejos checkout", async (
   await expect(ge.getByText("Repejo sköter betalningen", { exact: false })).toBeVisible();
 });
 
-test("länken till Repejos kampanjsida syns under checkouten även när Repejo har laddats", async ({ page }) => {
-  // Repejo can define its elements and still fail later, so the way out is always there.
+test("under checkouten finns ingen reservlänk", async ({ page }) => {
   await page.goto(sida);
   const ge = page.locator("#ge");
   await expect(ge.getByText("Repejos checkout (stubb)")).toBeVisible();
-  const lank = ge.getByRole("link", { name: "Ge via Repejos kampanjsida" });
-  await expect(lank).toBeVisible();
-  await expect(lank).toHaveAttribute("href", reservlank);
-  await expect(ge).toContainText("Fungerar inte betalningen?");
+  await expect(ge.getByText("Fungerar inte betalningen?")).toHaveCount(0);
 });
 
 test("insamlingsmätaren finns i avsnittet om insamlingsmålet", async ({ page }) => {
@@ -80,14 +74,6 @@ test.describe("utan Repejo", () => {
   test.beforeEach(async ({ page }) => {
     await page.unrouteAll();
     await blockRepejo(page);
-  });
-
-  test("syns en länk till Repejos kampanjsida där checkouten sitter", async ({ page }) => {
-    await page.goto(sida);
-    const lank = page.locator("#ge").getByRole("link", { name: /Repejos kampanjsida/ });
-    await expect(lank).toHaveAttribute("href", reservlank);
-    await expect(lank).toBeVisible();
-    await expectNoA11yViolations(page);
   });
 
   test("har checkouten och mätaren sin plats reserverad, så att sidan inte hoppar när Repejo ritar dem", async ({

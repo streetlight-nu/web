@@ -3,6 +3,10 @@ import { expect, test } from "@playwright/test";
 // What a shared link shows: Open Graph's type and image.
 const inlagg = "nyheter/valkommen-till-arsmotet";
 
+// The Exempelinlägg exist only in the test build (tests/fixtures/nyheter), so the tests never depend on what the
+// association has written.
+test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
 /** The PNG's width and height, read from its IHDR chunk. */
 function pngStorlek(png: Buffer) {
   expect(png.subarray(1, 4).toString("ascii")).toBe("PNG");

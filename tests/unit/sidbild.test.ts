@@ -40,35 +40,27 @@ describe("ett foto på Om föreningen och Vår historia", () => {
   test("får saknas, även som Pages CMS sparar ett tomt foto", () => {
     expect(valfriSidbild.parse(undefined)).toBeUndefined();
     expect(valfriSidbild.parse(null)).toBeUndefined();
-    expect(sidbildSchema.parse({ src: "", alt: "", visarFamilj: false, samtycke: false })).toEqual({
-      visarFamilj: false,
-      samtycke: false,
-    });
+    expect(sidbildSchema.parse({ src: "", alt: "" })).toEqual({});
   });
 
-  test("klarar schemat med alt-text, och med samtycke när en familj syns", () => {
+  test("klarar schemat med alt-text", () => {
     expect(sidbildSchema.safeParse(foto).success).toBe(true);
-    expect(sidbildSchema.safeParse({ ...foto, visarFamilj: true, samtycke: true }).success).toBe(true);
   });
 
   test("stoppar bygget utan alt-text", () => {
     expect(() => sidbildSchema.parse({ ...foto, alt: " " })).toThrow(/alt-text/);
   });
 
-  test("stoppar bygget när ett barn eller en familj syns utan samtycke", () => {
-    expect(() => sidbildSchema.parse({ ...foto, visarFamilj: true })).toThrow(/samtycke/);
-  });
-
   test("stoppar bygget när fotot ligger utanför sidornas mapp", () => {
     expect(() => sidbildSchema.parse({ ...foto, src: "../../assets/nyheter/merry.jpg" })).toThrow(/mappen/);
   });
 
-  test("går igenom datafilerna, så att ett foto utan samtycke stoppar sidan", () => {
-    const utanSamtycke = { ...foto, visarFamilj: true };
-    expect(() => tolkaHistoria({ perioder: [{ rubrik: "1995", handelser: [], bild: utanSamtycke }] })).toThrow();
-    expect(() => tolkaHistoria({ perioder: [{ rubrik: "1995", handelser: [] }], idagBild: utanSamtycke })).toThrow();
+  test("går igenom datafilerna, så att ett foto utan alt-text stoppar sidan", () => {
+    const utanAlt = { ...foto, alt: "" };
+    expect(() => tolkaHistoria({ perioder: [{ rubrik: "1995", handelser: [], bild: utanAlt }] })).toThrow();
+    expect(() => tolkaHistoria({ perioder: [{ rubrik: "1995", handelser: [] }], idagBild: utanAlt })).toThrow();
     for (const namn of ["borjanBild", "foreningarBild", "vilkaBild"]) {
-      expect(() => tolkaOmForeningen({ tror: [], styrelser: [], [namn]: utanSamtycke })).toThrow();
+      expect(() => tolkaOmForeningen({ tror: [], styrelser: [], [namn]: utanAlt })).toThrow();
     }
   });
 });
@@ -84,8 +76,6 @@ describe("fotofälten i .pages.yml", () => {
     expect(bild.type).toBe("object");
     expect(bild.fields!.map((f) => f.name).sort()).toEqual(Object.keys(sidbildSchema.shape).sort());
     expect(falt(bild.fields!, "src")).toMatchObject({ type: "image", options: { media: "sidor" } });
-    expect(falt(bild.fields!, "visarFamilj").type).toBe("boolean");
-    expect(falt(bild.fields!, "samtycke").type).toBe("boolean");
   });
 
   test("har samma etiketter och hjälptexter i alla fotofält", () => {

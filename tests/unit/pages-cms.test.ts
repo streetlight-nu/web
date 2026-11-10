@@ -44,7 +44,7 @@ const nyheter = konfiguration.content.find((samling) => samling.name === "nyhete
 const media = konfiguration.media[0];
 
 describe("ett inlägg sparat i Pages CMS", () => {
-  test("klarar schemat när alla fält är ifyllda, med bild, barn och samtycke", () => {
+  test("klarar schemat när alla fält är ifyllda, med bild och bilder i brödtexten", () => {
     const { data } = lasInlagg("berattelse-med-barnfoto.md");
     const resultat = inlaggSchema().safeParse(data);
     expect(resultat.error?.issues).toBeUndefined();

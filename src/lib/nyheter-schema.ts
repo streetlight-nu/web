@@ -24,30 +24,12 @@ export function inlaggSchema<Bild extends z.ZodType = z.ZodString>(image?: Bild)
       lede: ifylldText,
       image: valfri((image ?? z.string()) as Bild),
       imageAlt: valfri(ifylldText),
-      showsChildren: z.boolean().default(false),
-      consent: z.boolean().default(false),
       /** An Exempelinlägg: made up to show the template, marked "Exempel". */
       example: z.boolean().default(false),
     })
     .superRefine((inlagg, ctx) => {
       if (inlagg.image !== undefined && !inlagg.imageAlt) {
         ctx.addIssue({ code: "custom", path: ["imageAlt"], message: "En bild måste ha en alt-text (imageAlt)." });
-      }
-      // An Exempelinlägg is made up and shows no real family, so it needs no consent.
-      const kraverSamtycke = !inlagg.example && !inlagg.consent;
-      if (inlagg.topic === "familj" && kraverSamtycke) {
-        ctx.addIssue({
-          code: "custom",
-          path: ["consent"],
-          message: "En Berättelse från en familj kräver familjens samtycke (consent).",
-        });
-      }
-      if (inlagg.showsChildren && kraverSamtycke) {
-        ctx.addIssue({
-          code: "custom",
-          path: ["consent"],
-          message: "En bild där barn visas kräver familjens samtycke (consent).",
-        });
       }
     });
 }

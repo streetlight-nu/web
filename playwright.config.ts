@@ -4,7 +4,7 @@ const base = (process.env.BASE_PATH ?? "/").replace(/\/?$/, "/");
 // E2E_PORT lets several checkouts run their browser tests at the same time.
 const port = Number(process.env.E2E_PORT ?? 4321);
 
-// Two more builds of the site, with every data file (src/lib/datafiler.ts) and the questions in Vanliga frågor from
+// Two more builds of the site, with every data file (src/lib/datafiler.ts) the questions in Vanliga frågor and the inlägg in Nyheter from
 // test files instead of the files the association fills in through Pages CMS, so the tests never depend on what the
 // association has written:
 // - filled in (E2E_IFYLLD_URL, port E2E_PORT_IFYLLD, by default the one after E2E_PORT): real values.
@@ -48,7 +48,7 @@ export default defineConfig({
         " HISTORIA_FIL=tests/fixtures/historia-ifylld.json" +
         // Not production, even when CI sets MILJO on master, so that `ejProduktion` is on (tests/e2e/funktioner.spec.ts).
         " MILJO= FUNKTIONER_FIL=tests/fixtures/funktioner-ejproduktion.json" +
-        " FRAGOR_MAPP=tests/fixtures/fragor" +
+        " FRAGOR_MAPP=tests/fixtures/fragor NYHETER_MAPP=tests/fixtures/nyheter" +
         ` npm run build -- --outDir ${filledOutDir}` +
         ` && npm run preview -- --outDir ${filledOutDir} --port ${filledPort} --ignore-lock`,
       url: process.env.E2E_IFYLLD_URL,
@@ -61,7 +61,7 @@ export default defineConfig({
         " JULKAMPANJ_FIL=tests/fixtures/julkampanj-tom.json" +
         " OM_FORENINGEN_FIL=tests/fixtures/om-foreningen-tom.json" +
         " HISTORIA_FIL=tests/fixtures/historia-tom.json" +
-        " FRAGOR_MAPP=tests/fixtures/fragor" +
+        " FRAGOR_MAPP=tests/fixtures/fragor NYHETER_MAPP=tests/fixtures/nyheter" +
         ` npm run build -- --outDir ${emptyOutDir}` +
         ` && npm run preview -- --outDir ${emptyOutDir} --port ${emptyPort} --ignore-lock`,
       url: process.env.E2E_TOM_URL,

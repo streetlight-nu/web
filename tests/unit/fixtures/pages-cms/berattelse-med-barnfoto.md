@@ -6,8 +6,6 @@ place: Addis Abeba
 lede: Familjen berättar om hur skolstarten gick och vad stödet betyder för dem.
 image: ../../assets/nyheter/skolgarden.jpg
 imageAlt: Två barn i skoluniform på skolgården
-showsChildren: true
-consent: true
 example: false
 ---
 Familjen berättade för oss om **första skoldagen**.

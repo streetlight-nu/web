@@ -4,6 +4,10 @@ import { LAYOUT } from "./helpers";
 
 // The rules every page keeps (h1, WCAG, skip link, 18 px, the glossary) are in hela-sajten.spec.ts.
 
+// The Exempelinlägg exist only in the test build (tests/fixtures/nyheter), so the tests never depend on what the
+// association has written.
+test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
 // The four Exempelinlägg from the prototype, newest first.
 const nyastForst = [
   "Skolstart i Addis Abeba",

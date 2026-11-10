@@ -117,7 +117,7 @@ test.describe("startsidans berättelse", () => {
     const arbete = page.locator("#sa-arbetar-vi");
     await expect(arbete.getByRole("heading", { level: 3, name: "Streetlight Sverige" })).toBeVisible();
     await expect(arbete.getByRole("heading", { level: 3, name: "Streetlight Etiopien" })).toBeVisible();
-    await expect(arbete.getByRole("link", { name: "Så når stödet fram" })).toHaveAttribute("href", /\/bli-fadder#nar-fram$/);
+    await expect(arbete.getByRole("link", { name: "Läs hur barnen väljs ut och hur pengarna når fram" })).toHaveAttribute("href", /\/bli-fadder#nar-fram$/);
     await expect(arbete.getByRole("region", { name: "Insyn" })).toHaveCount(0);
   });
 

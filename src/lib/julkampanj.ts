@@ -1,6 +1,6 @@
 import { z } from "astro/zod";
 
-import { lasDatafil } from "./datafil";
+import { datafil } from "./datafil";
 import { arEpostadress, valfri } from "./falt";
 
 /**
@@ -22,9 +22,6 @@ export interface Julkampanj {
   visasPaStartsidan?: boolean;
 }
 
-/** The data file. JULKAMPANJ_FIL points elsewhere, so the browser tests can build with a filled-in test file. */
-export const DATAFIL = "src/data/julkampanj.json";
-
 const ifylldText = z.string().trim();
 
 export const julkampanjSchema = z.strictObject({
@@ -34,16 +31,19 @@ export const julkampanjSchema = z.strictObject({
   visasPaStartsidan: valfri(z.boolean({ error: "visasPaStartsidan måste vara ibockad eller inte (true eller false)" })),
 });
 
+/** The data file. JULKAMPANJ_FIL points elsewhere, so the browser tests can build with a test file. */
+export const JULKAMPANJ_DATAFIL = datafil({
+  fil: "src/data/julkampanj.json",
+  miljovariabel: "JULKAMPANJ_FIL",
+  cmsNamn: "julkampanj",
+  schema: julkampanjSchema,
+  fel: "Julkampanjens uppgifter är felaktiga",
+});
+
 /** Checks the contents of the data file. Unknown fields and malformed values fail the build. */
-export function tolkaJulkampanj(data: unknown): Julkampanj {
-  const resultat = julkampanjSchema.safeParse(data);
-  if (!resultat.success) {
-    throw new Error(`Julkampanjens uppgifter är felaktiga:\n${z.prettifyError(resultat.error)}`);
-  }
-  return resultat.data;
-}
+export const tolkaJulkampanj: (data: unknown) => Julkampanj = JULKAMPANJ_DATAFIL.tolka;
 
 /** Reads the campaign's facts from the data file, once per build. */
 export function hamtaJulkampanj(): Julkampanj {
-  return lasDatafil(process.env.JULKAMPANJ_FIL || DATAFIL, tolkaJulkampanj);
+  return JULKAMPANJ_DATAFIL.hamta();
 }

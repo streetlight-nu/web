@@ -1,0 +1,17 @@
+{
+  "ingress": "TEST-INGRESS om historien.",
+  "perioder": [
+    {
+      "rubrik": "1995–1999",
+      "namn": "TEST-PERIOD ett",
+      "sammanfattning": "TEST-SAMMANFATTNING ett.",
+      "handelser": [
+        { "ar": "1995", "rubrik": "TEST-HÄNDELSE med årtal", "text": "TEST-TEXT.", "fraga": "TEST-FRÅGA?" },
+        { "ar": "", "rubrik": "TEST-HÄNDELSE utan årtal", "text": "TEST-TEXT.", "fraga": "" }
+      ]
+    },
+    { "rubrik": "2000–2009", "namn": "TEST-PERIOD två", "sammanfattning": "", "handelser": [] },
+    { "rubrik": "2010–2019", "namn": "TEST-PERIOD tre", "sammanfattning": "", "handelser": [] },
+    { "rubrik": "2020–idag", "namn": "TEST-PERIOD fyra", "sammanfattning": "", "handelser": [] }
+  ]
+}

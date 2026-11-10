@@ -1,31 +1,12 @@
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { parse } from "yaml";
 
-import { DATAFIL, FUNKTIONER, LAGEN, arPa, funktionerSchema, hamtaFunktioner, tolkaFunktioner } from "@/lib/funktioner";
-
-interface Falt {
-  name: string;
-  label: string;
-  type: string;
-  options: { values: { value: string }[] };
-}
-
-const rot = path.resolve(import.meta.dirname, "../..");
-const konfiguration = parse(readFileSync(path.join(rot, ".pages.yml"), "utf8")) as {
-  content: { name: string; type: string; path: string; format: string; fields: Falt[] }[];
-};
-const funktioner = konfiguration.content.find((del) => del.name === "funktioner")!;
+import { arPa, hamtaFunktioner, tolkaFunktioner } from "@/lib/funktioner";
 
 describe("funktionsflaggorna i src/data/funktioner.json", () => {
-  test("datafilen i repot klarar schemat", () => {
-    const data = JSON.parse(readFileSync(path.join(rot, DATAFIL), "utf8"));
-    expect(() => tolkaFunktioner(data)).not.toThrow();
-  });
-
   test("en flagga som saknas, en okänd flagga och ett okänt läge stoppar bygget", () => {
     expect(() => tolkaFunktioner({ julklapp: "pa" })).toThrow(/historia/);
     expect(() => tolkaFunktioner({ julklapp: "pa", historia: "pa", nyFunktion: "pa" })).toThrow();
@@ -82,18 +63,3 @@ describe("hamtaFunktioner", () => {
   });
 });
 
-describe("formuläret Funktioner i .pages.yml", () => {
-  test("redigerar samma datafil som sajten läser", () => {
-    expect(funktioner).toMatchObject({ type: "file", path: DATAFIL, format: "json" });
-  });
-
-  test("har exakt flaggornas fält, med svenska etiketter och schemats lägen", () => {
-    expect(funktioner.fields.map((f) => f.name).sort()).toEqual(Object.keys(funktionerSchema.shape).sort());
-    expect(Object.keys(funktionerSchema.shape).sort()).toEqual([...FUNKTIONER].sort());
-    for (const falt of funktioner.fields) {
-      expect(falt.label).not.toBe(falt.name);
-      expect(falt.type).toBe("select");
-      expect(falt.options.values.map((v) => v.value).sort()).toEqual([...LAGEN].sort());
-    }
-  });
-});

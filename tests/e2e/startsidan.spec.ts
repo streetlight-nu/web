@@ -90,10 +90,12 @@ test.describe("startsidans berättelse", () => {
   test("berättar hur det började, vad stödet är till för, hur familjerna får stöd och hur föreningarna arbetar", async ({
     page,
   }) => {
-    await page.goto("./");
+    // On the build with filled-in test files: Så började det and the vision come from om-foreningen.json.
+    await page.goto(process.env.E2E_IFYLLD_URL!);
     const borjan = page.locator("#borjan");
     await expect(borjan.getByRole("heading", { level: 2, name: "Så började det." })).toBeVisible();
-    await expect(borjan).toContainText("Merry");
+    await expect(borjan).toContainText("TEST-BÖRJAN, första stycket.");
+    await expect(borjan).not.toContainText("andra stycket");
     await expect(borjan.getByRole("link", { name: "Läs hela berättelsen om föreningen" })).toHaveAttribute(
       "href",
       /\/om-foreningen#borjan$/,
@@ -111,7 +113,7 @@ test.describe("startsidans berättelse", () => {
       await expect(familjer.getByText(step)).toBeVisible();
     }
     await expect(
-      page.getByText("Vi vill sprida hopp om en ljus framtid till våra fadderbarn och deras familjer."),
+      page.getByText("TEST-VISION om en ljus framtid för barnen."),
     ).toBeVisible();
     await expect(page.getByText("Streetlights vision")).toBeVisible();
     const arbete = page.locator("#sa-arbetar-vi");
@@ -128,7 +130,7 @@ test.describe("startsidans berättelse", () => {
     // "Senaste nytt" shows the newest inlägg's date, which comes from the inlägg, not from the page, and Så började
     // det tells the year from the association's own text (src/data/om-foreningen.json).
     const utanNyheter = await page.locator("main").evaluate((main) => {
-      const dolda = ["#senaste", "#borjan"].map((id) => main.querySelector<HTMLElement>(id)!);
+      const dolda = ["#senaste", "#borjan"].flatMap((id) => main.querySelector<HTMLElement>(id) ?? []);
       for (const el of dolda) el.style.display = "none";
       const synligText = (main as HTMLElement).innerText;
       for (const el of dolda) el.style.display = "";

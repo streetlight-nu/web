@@ -1,43 +1,8 @@
-import { readFileSync } from "node:fs";
-import path from "node:path";
-
 import { describe, expect, test } from "vitest";
-import { parse } from "yaml";
 
-import data from "@/data/om-foreningen.json";
-import {
-  grundSchema,
-  omForeningenSchema,
-  personSchema,
-  styrelseSchema,
-  stycken,
-  tankeSchema,
-  tolkaOmForeningen,
-  visaGrund,
-} from "@/lib/om-foreningen";
-
-interface Falt {
-  name: string;
-  label: string;
-  type: string;
-  required?: boolean;
-  list?: boolean;
-  fields?: Falt[];
-}
-
-const rot = path.resolve(import.meta.dirname, "../..");
-const konfiguration = parse(readFileSync(path.join(rot, ".pages.yml"), "utf8")) as {
-  content: (Falt & { path: string; format: string })[];
-};
-const om = konfiguration.content.find((del) => del.name === "omForeningen")!;
-const namn = (falt: Falt[]) => falt.map((f) => f.name).sort();
-const falt = (lista: Falt[], name: string) => lista.find((f) => f.name === name)!;
+import { stycken, tolkaOmForeningen, visaGrund } from "@/lib/om-foreningen";
 
 describe("texterna i src/data/om-foreningen.json", () => {
-  test("klarar schemat", () => {
-    expect(() => tolkaOmForeningen(data)).not.toThrow();
-  });
-
   test("räknar tomma fält som saknade, så att sidan visar ”fylls i”", () => {
     const tolkad = tolkaOmForeningen({
       ingress: "",
@@ -68,33 +33,3 @@ describe("texterna i src/data/om-foreningen.json", () => {
   });
 });
 
-describe("formuläret Om föreningen i .pages.yml", () => {
-  test("redigerar samma datafil som sidan läser", () => {
-    expect(om).toMatchObject({ type: "file", path: "src/data/om-foreningen.json", format: "json" });
-  });
-
-  test("har exakt schemats fält på varje nivå", () => {
-    expect(namn(om.fields!)).toEqual(Object.keys(omForeningenSchema.shape).sort());
-    expect(falt(om.fields!, "tror")).toMatchObject({ type: "object", list: true });
-    expect(namn(falt(om.fields!, "tror").fields!)).toEqual(Object.keys(tankeSchema.shape).sort());
-    expect(falt(om.fields!, "grund")).toMatchObject({ type: "object" });
-    expect(falt(om.fields!, "grund").list).toBeUndefined();
-    expect(namn(falt(om.fields!, "grund").fields!)).toEqual(Object.keys(grundSchema.shape).sort());
-    const styrelser = falt(om.fields!, "styrelser");
-    expect(styrelser).toMatchObject({ type: "object", list: true });
-    expect(namn(styrelser.fields!)).toEqual(Object.keys(styrelseSchema.shape).sort());
-    const personer = falt(styrelser.fields!, "personer");
-    expect(personer).toMatchObject({ type: "object", list: true });
-    expect(namn(personer.fields!)).toEqual(Object.keys(personSchema.shape).sort());
-  });
-
-  test("kräver bara styrelsens förening, som schemat", () => {
-    const alla = (lista: Falt[]): Falt[] => lista.flatMap((f) => [f, ...alla(f.fields ?? [])]);
-    expect(alla(om.fields!).filter((f) => f.required).map((f) => f.name)).toEqual(["forening"]);
-  });
-
-  test("har bara svenska etiketter", () => {
-    const alla = (lista: Falt[]): Falt[] => lista.flatMap((f) => [f, ...alla(f.fields ?? [])]);
-    for (const f of alla(om.fields!)) expect(f.label).not.toBe(f.name);
-  });
-});

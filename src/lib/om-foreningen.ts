@@ -1,7 +1,6 @@
 import { z } from "astro/zod";
 
-import data from "@/data/om-foreningen.json";
-
+import { datafil } from "./datafil";
 import { valfri } from "./falt";
 import { valfriSidbild } from "./sidbild";
 
@@ -64,18 +63,21 @@ export type Tanke = z.infer<typeof tankeSchema>;
 export type Styrelse = z.infer<typeof styrelseSchema>;
 export type OmForeningen = z.infer<typeof omForeningenSchema>;
 
-/** Checks the contents of the data file. Unknown fields and a board without a name fail the build. */
-export function tolkaOmForeningen(innehall: unknown): OmForeningen {
-  const resultat = omForeningenSchema.safeParse(innehall);
-  if (!resultat.success) {
-    throw new Error(`Om föreningen är felaktig:\n${z.prettifyError(resultat.error)}`);
-  }
-  return resultat.data;
-}
+/** The data file. OM_FORENINGEN_FIL points elsewhere, so the browser tests can build with a test file. */
+export const OM_FORENINGEN_DATAFIL = datafil({
+  fil: "src/data/om-foreningen.json",
+  miljovariabel: "OM_FORENINGEN_FIL",
+  cmsNamn: "omForeningen",
+  schema: omForeningenSchema,
+  fel: "Om föreningen är felaktig",
+});
 
-/** The texts from the data file. */
+/** Checks the contents of the data file. Unknown fields and a board without a name fail the build. */
+export const tolkaOmForeningen: (data: unknown) => OmForeningen = OM_FORENINGEN_DATAFIL.tolka;
+
+/** The texts from the data file, read once per build. */
 export function hamtaOmForeningen(): OmForeningen {
-  return tolkaOmForeningen(data);
+  return OM_FORENINGEN_DATAFIL.hamta();
 }
 
 /** A text written in Pages CMS, split into paragraphs at each empty line. */

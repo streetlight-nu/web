@@ -1,8 +1,10 @@
 import { expect, test } from "@playwright/test";
 
-import { expectNoA11yViolations, funktionPa } from "./helpers";
+import { expectNoA11yViolations } from "./helpers";
 
-test.skip(!funktionPa("historia"), "historia är avstängd i funktioner.json");
+// On the build with filled-in test files (tests/fixtures/historia-ifylld.json, flags from
+// funktioner-ejproduktion.json), so the tests never depend on what the association has written or switched on.
+test.use({ baseURL: process.env.E2E_IFYLLD_URL });
 
 const perioder = ["1995–1999", "2000–2009", "2010–2019", "2020–idag"];
 

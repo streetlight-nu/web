@@ -1,6 +1,6 @@
 import { z } from "astro/zod";
 
-import { lasDatafil } from "./datafil";
+import { datafil } from "./datafil";
 
 /**
  * Funktionsflaggor: they decide whether a page or an element is shown, per build.
@@ -23,9 +23,6 @@ export type Funktion = (typeof FUNKTIONER)[number];
 export const LAGEN = ["pa", "av", "ejProduktion"] as const;
 export type Lage = (typeof LAGEN)[number];
 
-/** The data file. FUNKTIONER_FIL points elsewhere, so the browser tests can build with a test file. */
-export const DATAFIL = "src/data/funktioner.json";
-
 export const funktionerSchema = z.strictObject(
   Object.fromEntries(
     FUNKTIONER.map((funktion) => [
@@ -37,14 +34,17 @@ export const funktionerSchema = z.strictObject(
 
 export type Funktionslagen = Record<Funktion, Lage>;
 
+/** The data file. FUNKTIONER_FIL points elsewhere, so the browser tests can build with a test file. */
+export const FUNKTIONER_DATAFIL = datafil({
+  fil: "src/data/funktioner.json",
+  miljovariabel: "FUNKTIONER_FIL",
+  cmsNamn: "funktioner",
+  schema: funktionerSchema,
+  fel: "Funktionsflaggorna är felaktiga",
+});
+
 /** Checks the contents of the data file. A missing flag, an unknown flag or an unknown mode fails the build. */
-export function tolkaFunktioner(data: unknown): Funktionslagen {
-  const resultat = funktionerSchema.safeParse(data);
-  if (!resultat.success) {
-    throw new Error(`Funktionsflaggorna är felaktiga:\n${z.prettifyError(resultat.error)}`);
-  }
-  return resultat.data;
-}
+export const tolkaFunktioner: (data: unknown) => Funktionslagen = FUNKTIONER_DATAFIL.tolka;
 
 /** Whether a flag in this mode is on in this environment. */
 export function arPa(lage: Lage, produktion: boolean): boolean {
@@ -58,7 +58,7 @@ export function arProduktion(): boolean {
 
 /** Reads the flags from the data file, once per build, and says which are on. */
 export function hamtaFunktioner(): Record<Funktion, boolean> {
-  const lagen = lasDatafil(process.env.FUNKTIONER_FIL || DATAFIL, tolkaFunktioner);
+  const lagen = FUNKTIONER_DATAFIL.hamta();
   const produktion = arProduktion();
   return Object.fromEntries(FUNKTIONER.map((f) => [f, arPa(lagen[f], produktion)])) as Record<Funktion, boolean>;
 }

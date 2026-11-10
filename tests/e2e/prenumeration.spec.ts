@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { AMNEN as AMNESMODULEN } from "../../src/lib/amnen";
-import { expectNoA11yViolations } from "./helpers";
+import { expectNoA11yViolations, farg, LAYOUT } from "./helpers";
 
 /** The section "Följ arbetet i Addis Abeba." at the end of the Nyheter page. */
 function sektion(page: Page) {
@@ -27,7 +27,7 @@ test.describe("sektionen Få nyheterna med e-post", () => {
     await expect(page).toHaveURL(/\/nyheter\/?#alla-nyheter$/);
   });
 
-  test("rubriken och formuläret står bredvid varandra på bred skärm och under varandra på mobil", async ({
+  test("rubriken och formuläret står bredvid varandra på bred skärm och under varandra på mobil", LAYOUT, async ({
     page,
     isMobile,
   }) => {
@@ -38,17 +38,10 @@ test.describe("sektionen Få nyheterna med e-post", () => {
     else expect(panel.x).toBeGreaterThanOrEqual(rubrik.x + rubrik.width);
   });
 
-  test("brödtexten är minst 18 px och tryckytorna minst 44 px", async ({ page }) => {
+  // Body text of at least 18 px is checked for the whole Nyheter page in hela-sajten.spec.ts.
+  test("tryckytorna är minst 44 px", LAYOUT, async ({ page }) => {
     await page.goto("nyheter");
     const s = sektion(page);
-    const sizes = await s
-      .locator("p")
-      .evaluateAll((els) =>
-        els.map((el) => ({ text: el.textContent!.trim().slice(0, 40), px: parseFloat(getComputedStyle(el).fontSize) })),
-      );
-    expect(sizes.length).toBeGreaterThanOrEqual(3);
-    expect(sizes.filter((size) => size.px < 18)).toEqual([]);
-
     const f = formular(page);
     const ytor = [
       s.getByRole("link", { name: "Nyheter" }),
@@ -74,15 +67,15 @@ test.describe("sektionen Få nyheterna med e-post", () => {
     };
     // Cotton text, underlined in its own colour: not gold, which is kept for "Addis Abeba".
     expect(await lank.evaluate(stil)).toEqual({
-      color: "rgb(251, 251, 248)",
+      color: farg("cotton"),
       line: "underline",
-      decoration: "rgb(251, 251, 248)",
+      decoration: farg("cotton"),
     });
     await lank.hover();
     expect(await lank.evaluate(stil)).toEqual({
-      color: "rgb(251, 251, 248)",
+      color: farg("cotton"),
       line: "underline",
-      decoration: "rgb(255, 212, 92)",
+      decoration: farg("gold-soft"),
     });
   });
 
@@ -97,7 +90,7 @@ test.describe("sektionen Få nyheterna med e-post", () => {
 
     const lank = sektion(page).getByRole("link", { name: "Nyheter" });
     await lank.focus();
-    expect(await lank.evaluate(outline)).toEqual({ visible: true, color: "rgb(244, 180, 0)" });
+    expect(await lank.evaluate(outline)).toEqual({ visible: true, color: farg("gold") });
 
     const f = formular(page);
     await f.getByLabel("E-post", { exact: true }).focus();
@@ -109,12 +102,12 @@ test.describe("sektionen Få nyheterna med e-post", () => {
       const style = getComputedStyle(el.closest("label")!);
       return { style: style.outlineStyle, width: style.outlineWidth, color: style.outlineColor };
     });
-    expect(pillensRing).toEqual({ style: "solid", width: "3px", color: "rgb(11, 46, 36)" });
+    expect(pillensRing).toEqual({ style: "solid", width: "3px", color: farg("ink") });
 
     for (let i = 0; i < AMNEN.length; i++) await page.keyboard.press("Tab");
     const medgivande = f.getByRole("checkbox", { name: MEDGIVANDE });
     await expect(medgivande).toBeFocused();
-    expect(await medgivande.evaluate(outline)).toEqual({ visible: true, color: "rgb(11, 46, 36)" });
+    expect(await medgivande.evaluate(outline)).toEqual({ visible: true, color: farg("ink") });
   });
 });
 

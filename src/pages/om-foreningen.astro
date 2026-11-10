@@ -8,7 +8,8 @@ import Foto from "@/components/Foto.astro";
 import Pil from "@/components/Pil.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
-import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import Uppgift from "@/components/Uppgift.astro";
+import { SOCIALA, visaUppgift } from "@/lib/foreningsuppgifter";
 import { hamtaFunktioner } from "@/lib/funktioner";
 import { hamtaOmForeningen, stycken, visaGrund } from "@/lib/om-foreningen";
 import { href } from "@/lib/utils";
@@ -21,12 +22,12 @@ import { href } from "@/lib/utils";
  */
 const om = hamtaOmForeningen();
 const { historia } = hamtaFunktioner();
-const { kontaktperson, epost, swish, nittiokonto, organisationsnummer, arsredovisning, facebook, instagram } =
-  hamtaForeningsuppgifter();
-const sociala = [
-  { namn: "Facebook", ikon: "facebook", lank: facebook },
-  { namn: "Instagram", ikon: "instagram", lank: instagram },
-] as const;
+/** Kontakt's list: the uppgifter with their labels (see foreningsuppgifter.ts), then where to follow us. */
+const kontaktuppgifter = (["swish", "nittiokonto", "organisationsnummer", "arsredovisning"] as const).map((namn) => ({
+  namn,
+  ...visaUppgift(namn),
+}));
+const sociala = SOCIALA.map((namn) => ({ namn, ...visaUppgift(namn) }));
 const beskrivning =
   om.ingress ?? "Vilka vi är, vad vi tror på och hur Streetlight började. Och hur du når föreningen.";
 const grund = visaGrund(om.grund) ? om.grund : undefined;
@@ -259,62 +260,38 @@ const hopp = [
       </div>
       <div class="min-w-0">
         <div class="epost">
-          <p class="text-label font-semibold text-mint">E-post</p>
-          {
-            epost ? (
-              <a class="epost-lank" href={`mailto:${epost}`}>
-                {epost}
-              </a>
-            ) : (
-              <p class="mt-2">
-                <FyllsI>e-post fylls i</FyllsI>
-              </p>
-            )
-          }
+          <p class="text-label font-semibold text-mint">{visaUppgift("epost").etikett}</p>
+          <p class="mt-2">
+            <Uppgift namn="epost" lankklass="epost-lank" />
+          </p>
           <p class="mt-3 text-mint">
-            Kontaktperson: <span class="text-cotton">{kontaktperson ?? <FyllsI>namn fylls i</FyllsI>}</span>
+            {visaUppgift("kontaktperson").etikett}: <span class="text-cotton"><Uppgift namn="kontaktperson" /></span>
           </p>
         </div>
         <dl class="uppgifter">
-          <div>
-            <dt>Swish för gåvor</dt>
-            <dd>{swish ?? <FyllsI>nummer fylls i</FyllsI>}</dd>
-          </div>
-          <div>
-            <dt>90-konto</dt>
-            <dd>{nittiokonto ?? <FyllsI>nummer fylls i</FyllsI>}</dd>
-          </div>
-          <div>
-            <dt>Organisationsnummer</dt>
-            <dd>{organisationsnummer ?? <FyllsI>nummer fylls i</FyllsI>}</dd>
-          </div>
-          <div>
-            <dt>Senaste årsredovisning</dt>
-            <dd>
-              {
-                arsredovisning ? (
-                  <a class="inline-flex min-h-11 items-center font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4" href={arsredovisning}>
-                    Läs årsredovisningen
-                  </a>
-                ) : (
-                  <FyllsI>länk fylls i</FyllsI>
-                )
-              }
-            </dd>
-          </div>
           {
-            sociala.map(({ namn, ikon, lank }) => (
+            kontaktuppgifter.map(({ namn, etikett }) => (
               <div>
-                <dt>{namn}</dt>
+                <dt>{etikett}</dt>
                 <dd>
-                  {lank ? (
-                    <a class="-mt-1.5 inline-flex min-h-11 items-center gap-2 font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4" href={lank}>
-                      <Ikon namn={ikon} />
-                      Följ oss på {namn}
-                    </a>
-                  ) : (
-                    <FyllsI>länk fylls i</FyllsI>
-                  )}
+                  <Uppgift
+                    namn={namn}
+                    lankklass="inline-flex min-h-11 items-center font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4"
+                  />
+                </dd>
+              </div>
+            ))
+          }
+          {
+            sociala.map(({ namn, etikett }) => (
+              <div>
+                <dt>{etikett}</dt>
+                <dd>
+                  <Uppgift
+                    namn={namn}
+                    lanktext={`Följ oss på ${etikett}`}
+                    lankklass="-mt-1.5 inline-flex min-h-11 items-center gap-2 font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4"
+                  />
                 </dd>
               </div>
             ))
@@ -419,9 +396,9 @@ const hopp = [
     padding-bottom: 28px;
     border-bottom: 1.5px solid rgba(207, 227, 216, 0.3);
   }
-  .epost-lank {
+  /* The link is drawn by Uppgift, so the rule reaches it through :global. */
+  .epost :global(.epost-lank) {
     display: inline-block;
-    margin-top: 6px;
     padding-block: 4px;
     font-family: var(--font-display);
     font-weight: 800;
@@ -435,7 +412,7 @@ const hopp = [
     text-underline-offset: 0.18em;
     overflow-wrap: anywhere;
   }
-  .epost-lank:hover {
+  .epost :global(.epost-lank:hover) {
     text-decoration-thickness: 5px;
   }
   .uppgifter {

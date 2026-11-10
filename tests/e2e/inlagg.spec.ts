@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-import { expectNoA11yViolations } from "./helpers";
+import { farg } from "./helpers";
+
+// The rules every page keeps (h1, WCAG, skip link, 18 px, the glossary) are in hela-sajten.spec.ts.
 
 // The four Exempelinlägg from the prototype, newest first.
 const nyast = "nyheter/skolstart-i-addis-abeba";
@@ -8,13 +10,11 @@ const familj = "nyheter/en-verksamhet-som-bar-familjen";
 const arsmote = "nyheter/valkommen-till-arsmotet";
 const aldst = "nyheter/tack-for-ett-ar-i-skolan";
 
-test("ett exempelinlägg har en h1, chipet Exempel och klarar WCAG 2.1 AA", async ({ page }) => {
+test("ett exempelinlägg har sin titel som rubrik och chipet Exempel", async ({ page }) => {
   await page.goto(nyast);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Skolstart i Addis Abeba");
   await expect(page.getByText("Exempel", { exact: true })).toBeVisible();
   await expect(page.getByText("Det här är ett exempelinlägg som visar mallen.")).toBeVisible();
-  await expectNoA11yViolations(page);
 });
 
 test("inlägget visar ämne, datum och plats", async ({ page }) => {
@@ -28,16 +28,16 @@ test("inlägget visar ämne, datum och plats", async ({ page }) => {
 
 test("ämnets markör har ämnets färg", async ({ page }) => {
   // Red for a report, cobalt for association news, green for a family story, ink for a thank-you.
-  for (const [inlagg, farg] of [
-    [nyast, "rgb(214, 69, 39)"],
-    [arsmote, "rgb(31, 79, 168)"],
-    [familj, "rgb(14, 74, 56)"],
-    [aldst, "rgb(11, 46, 36)"],
+  for (const [inlagg, amnesfarg] of [
+    [nyast, farg("thread-red")],
+    [arsmote, farg("thread-cobalt")],
+    [familj, farg("green")],
+    [aldst, farg("ink")],
   ]) {
     await page.goto(inlagg);
     const markor = page.getByRole("banner").locator("[data-amne]");
     const karna = await markor.evaluate((el) => getComputedStyle(el, "::after").backgroundColor);
-    expect(karna, inlagg).toBe(farg);
+    expect(karna, inlagg).toBe(amnesfarg);
   }
 });
 

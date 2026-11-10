@@ -1,7 +1,6 @@
 import { z } from "astro/zod";
 
-import data from "@/data/historia.json";
-
+import { datafil } from "./datafil";
 import { valfri } from "./falt";
 import { valfriSidbild } from "./sidbild";
 
@@ -46,18 +45,21 @@ export type Handelse = z.infer<typeof handelseSchema>;
 export type Period = z.infer<typeof periodSchema>;
 export type Historia = z.infer<typeof historiaSchema>;
 
-/** Checks the contents of the data file. Unknown fields and a period without a heading fail the build. */
-export function tolkaHistoria(innehall: unknown): Historia {
-  const resultat = historiaSchema.safeParse(innehall);
-  if (!resultat.success) {
-    throw new Error(`Historien är felaktig:\n${z.prettifyError(resultat.error)}`);
-  }
-  return resultat.data;
-}
+/** The data file. HISTORIA_FIL points elsewhere, so the browser tests can build with a test file. */
+export const HISTORIA_DATAFIL = datafil({
+  fil: "src/data/historia.json",
+  miljovariabel: "HISTORIA_FIL",
+  cmsNamn: "historia",
+  schema: historiaSchema,
+  fel: "Historien är felaktig",
+});
 
-/** The timeline from the data file. */
+/** Checks the contents of the data file. Unknown fields and a period without a heading fail the build. */
+export const tolkaHistoria: (data: unknown) => Historia = HISTORIA_DATAFIL.tolka;
+
+/** The timeline from the data file, read once per build. */
 export function hamtaHistoria(): Historia {
-  return tolkaHistoria(data);
+  return HISTORIA_DATAFIL.hamta();
 }
 
 /** An id for a period's anchor, from its heading: "1995–1999" becomes "period-1995-1999". */

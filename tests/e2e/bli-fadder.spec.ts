@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { expectNoA11yViolations, funktionPa, stubRepejo } from "./helpers";
+import { expectNoA11yViolations, funktionPa, LAYOUT, stubRepejo } from "./helpers";
 
 /** The short gold field "Bli fadder" on the home page. */
 function sektion(page: Page) {
@@ -53,7 +53,7 @@ test.describe("guldfältet Bli fadder på startsidan", () => {
   });
 });
 
-test.describe("dockan Bli fadder", () => {
+test.describe("dockan Bli fadder", LAYOUT, () => {
   /** The dock's "Bli fadder" link. While the dock is hidden it is not in the accessibility tree at all. */
   function docka(page: Page) {
     return page.locator("[data-docka]").getByRole("link", { name: "Bli fadder" });

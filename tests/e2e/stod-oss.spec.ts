@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { FADDER_KORTKOD, SWISH_KORTKOD, kampanjsida } from "../../src/lib/repejo";
-import { blockRepejo, expectNoA11yViolations, stubRepejo } from "./helpers";
+import { FADDER_KORTKOD, SWISH_KORTKOD } from "../../src/lib/repejo";
+import { blockRepejo, expectNoA11yViolations, farg, LAYOUT, stubRepejo } from "./helpers";
 
 const sida = "bli-fadder";
 
@@ -19,29 +19,12 @@ function uppgift(page: Page, label: string) {
     .filter({ has: page.locator(`xpath=preceding-sibling::dt[normalize-space()="${label}"]`) });
 }
 
-test("Stöd oss har titel, en h1 och klarar WCAG 2.1 AA", async ({ page }) => {
-  await stubRepejo(page);
+// The rules every page keeps (h1, WCAG, skip link, 18 px, no sideways scroll, the glossary) are in hela-sajten.spec.ts.
+
+test("Bli fadder har titeln och rubriken", async ({ page }) => {
   await page.goto(sida);
   await expect(page).toHaveTitle("Bli fadder | Streetlight");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Bli fadder och håll ljusen tända.");
-  await expectNoA11yViolations(page);
-});
-
-test("hopplänken leder till innehållet", async ({ page }) => {
-  await page.goto(sida);
-  await page.keyboard.press("Tab");
-  const skip = page.getByRole("link", { name: "Hoppa till innehållet" });
-  await expect(skip).toBeFocused();
-  await page.keyboard.press("Enter");
-  await expect(page.locator("main#main")).toBeFocused();
-});
-
-test("staplas utan sidledsskroll", async ({ page }) => {
-  await stubRepejo(page);
-  await page.goto(sida);
-  await page.waitForLoadState("networkidle");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
 });
 
 test("brödsmulorna visar Startsidan / Bli fadder", async ({ page }) => {
@@ -55,52 +38,31 @@ test("Bli fadder i menyn är en linjeknapp markerad som aktuell sida", async ({ 
   await page.goto(sida);
   const knapp = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Bli fadder" });
   await expect(knapp).toHaveAttribute("aria-current", "page");
-  expect(await knapp.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe("rgb(244, 180, 0)");
+  expect(await knapp.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe(farg("gold"));
 });
 
-test("guldfältet visar rubriken, ingressen, de tre fakta och de tre stegen", async ({ page }) => {
+test("guldfältet visar bara det som behövs för att bli fadder: rubriken, ingressen och vad som händer sen", async ({
+  page,
+}) => {
   await page.goto(sida);
   const s = guldfaltet(page);
   await expect(s.getByRole("heading", { level: 1, name: "Bli fadder och håll ljusen tända." })).toBeVisible();
-  await expect(s.getByText("Som fadder stöttar du alla 20 fadderbarnen tillsammans.")).toBeVisible();
-
-  const fakta = s.getByRole("list").filter({ hasNotText: "Du väljer belopp" }).getByRole("listitem");
-  await expect(fakta).toHaveCount(3);
-  await expect(fakta.nth(0)).toContainText("Alla 20 barnen tillsammans.");
-  await expect(fakta.nth(0)).toContainText("Vill du hellre följa ett av barnen?");
-  await expect(fakta.nth(1)).toContainText("Barnen väljs ut tillsammans med de lokala myndigheterna i Addis Abeba.");
-  await expect(fakta.nth(2)).toContainText("Pengarna går via den svenska föreningen till arbetet i Etiopien.");
-
-  await expect(s.getByRole("heading", { name: "Så går det till" })).toBeVisible();
-  const steg = s.getByRole("list", { name: "Så går det till" }).getByRole("listitem");
-  await expect(steg).toHaveCount(3);
-  await expect(steg.nth(0)).toContainText("Du väljer belopp och betalsätt");
-  await expect(steg.nth(1)).toContainText("Betalningen går via Repejo");
-  await expect(steg.nth(2)).toContainText("Någon i föreningen hör av sig");
-
-  // The contact row was removed in the design.
+  await expect(s.getByText("Som fadder stöttar du alla 20 fadderbarnen och deras familjer tillsammans.")).toBeVisible();
+  await expect(s.getByText("Sedan hör någon i föreningen av sig och berättar mer om oss.")).toBeVisible();
+  await expect(s.getByText("Vill du hellre följa ett av barnen?")).toHaveCount(0);
+  // The proof (how the children are chosen, where the money goes) has its place further down the page.
+  await expect(s.getByRole("heading", { name: "Så går det till" })).toHaveCount(0);
+  await expect(s.getByText("lokala myndigheterna")).toHaveCount(0);
   await expect(s.getByText("Frågor?")).toHaveCount(0);
 });
 
-test("Repejos checkout har fadderkortkoden och en reservlänk under sig", async ({ page }) => {
+test("Repejos checkout har fadderkortkoden och ingen reservlänk under sig", async ({ page }) => {
   await stubRepejo(page);
   await page.goto(sida);
   const s = guldfaltet(page);
   await expect(s.getByText("Repejos checkout (stubb)")).toBeVisible();
   await expect(s.locator("repejo-checkout")).toHaveAttribute("short_code", FADDER_KORTKOD);
-  await expect(s.getByText("Fungerar inte betalningen?")).toBeVisible();
-  await expect(s.getByRole("link", { name: "Ge via Repejos kampanjsida" })).toHaveAttribute(
-    "href",
-    kampanjsida(FADDER_KORTKOD),
-  );
-});
-
-test("fadder för ett barn: mejlet i fakta är en länk till föreningen", async ({ page }) => {
-  await page.goto(sida);
-  await expect(guldfaltet(page).getByRole("link", { name: "mejl till oss" })).toHaveAttribute(
-    "href",
-    /^mailto:.+@.+/,
-  );
+  await expect(s.getByText("Fungerar inte betalningen?")).toHaveCount(0);
 });
 
 test("när Repejo inte kan nås syns ramen med väntetexten", async ({ page }) => {
@@ -114,23 +76,22 @@ test("när Repejo inte kan nås syns ramen med väntetexten", async ({ page }) =
   expect(await ram.evaluate((el) => getComputedStyle(el).borderStyle)).toBe("dashed");
 });
 
-test("på dator står formuläret bredvid texten, på mobil direkt efter ingressen och före stegen", async ({
+test("på dator står formuläret bredvid texten, på mobil direkt efter ingressen och före vad som händer sen", LAYOUT, async ({
   page,
   isMobile,
 }) => {
   await stubRepejo(page);
   await page.goto(sida);
   const s = guldfaltet(page);
-  const ingress = (await s.getByText("Som fadder stöttar du alla 20 fadderbarnen tillsammans.").boundingBox())!;
+  const ingress = (await s.getByText("Som fadder stöttar du alla 20 fadderbarnen och deras familjer tillsammans.").boundingBox())!;
   const formular = (await s.locator("repejo-checkout").boundingBox())!;
-  const steg = (await s.getByRole("list", { name: "Så går det till" }).boundingBox())!;
+  const sen = (await s.getByText("Sedan hör någon i föreningen av sig").boundingBox())!;
   if (isMobile) {
     expect(formular.y).toBeGreaterThan(ingress.y + ingress.height);
-    expect(formular.y + formular.height).toBeLessThanOrEqual(steg.y);
+    expect(formular.y + formular.height).toBeLessThanOrEqual(sen.y);
   } else {
     expect(formular.x).toBeGreaterThan(ingress.x + ingress.width);
-    expect(formular.x).toBeGreaterThan(steg.x + steg.width);
-    expect(formular.y).toBeLessThan(steg.y);
+    expect(formular.x).toBeGreaterThan(sen.x + sen.width);
   }
 });
 
@@ -185,22 +146,8 @@ test.describe("Stöd oss med tom testfil", () => {
 
   test("Insyn visar ”fylls i” för det som saknas", async ({ page }) => {
     await page.goto(sida);
-    await expect(uppgift(page, "Organisationsnummer")).toHaveText("fylls i");
-    await expect(uppgift(page, "Bankgiro")).toHaveText("fylls i");
-  });
-
-  test("brödtexten är minst 18 px", async ({ page }) => {
-    await page.goto(sida);
-    // Repejo draws its own forms (ADR 0003), some of them in a shadow root; their text is outside the page's control.
-    const sizes = await page
-      .locator("main p, main li")
-      .evaluateAll((els) =>
-        els
-          .filter((el) => el.getRootNode() === document && !el.closest("repejo-checkout, repejo-progress-bar"))
-          .map((el) => ({ text: el.textContent!.trim().slice(0, 40), px: parseFloat(getComputedStyle(el).fontSize) })),
-      );
-    expect(sizes.length).toBeGreaterThan(5);
-    expect(sizes.filter((s) => s.px < 18)).toEqual([]);
+    await expect(uppgift(page, "Organisationsnummer")).toHaveText("nummer fylls i");
+    await expect(uppgift(page, "Bankgiro")).toHaveText("nummer fylls i");
   });
 });
 
@@ -312,7 +259,7 @@ test.describe("Fler sätt att stödja oss med ifylld testfil", () => {
   });
 });
 
-test("Swisha en gåva har Repejos Swish-checkout bredvid texten på dator och efter texten på mobil", async ({
+test("Swisha en gåva har Repejos Swish-checkout bredvid texten på dator och efter texten på mobil", LAYOUT, async ({
   page,
   isMobile,
 }) => {

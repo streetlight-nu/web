@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-import { expectNoA11yViolations } from "./helpers";
+import { LAYOUT } from "./helpers";
+
+// The rules every page keeps (h1, WCAG, skip link, 18 px, the glossary) are in hela-sajten.spec.ts.
 
 // The four Exempelinlägg from the prototype, newest first.
 const nyastForst = [
@@ -10,9 +12,8 @@ const nyastForst = [
   "Tack för ett år i skolan",
 ];
 
-test("nyhetslistan har en h1 och visar inläggen med det nyaste först, grupperade per år", async ({ page }) => {
+test("nyhetslistan visar inläggen med det nyaste först, grupperade per år", async ({ page }) => {
   await page.goto("nyheter");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
 
   const listan = page.getByRole("region", { name: "Alla nyheter" });
   await expect(listan.getByRole("heading", { level: 2 })).toHaveText(["2026"]);
@@ -21,7 +22,7 @@ test("nyhetslistan har en h1 och visar inläggen med det nyaste först, gruppera
   expect(datum).toEqual(["2026-09-14", "2026-06-02", "2026-03-20", "2026-01-10"]);
 });
 
-test("hela inlägget i listan går att klicka, men har bara en länk", async ({ page }) => {
+test("hela inlägget i listan går att klicka, men har bara en länk", LAYOUT, async ({ page }) => {
   await page.goto("nyheter");
   const inlagget = page.getByRole("listitem").filter({ hasText: "Välkommen till årsmötet" });
   await expect(inlagget.getByRole("link")).toHaveCount(1);
@@ -41,11 +42,6 @@ test("nyhetslistan visar notisen om exempel medan exempelinlägg finns", async (
   await expect(page.getByText("Inläggen nedan är exempel som visar mallen.", { exact: false })).toBeVisible();
 });
 
-test("nyhetslistan klarar WCAG 2.1 AA", async ({ page }) => {
-  await page.goto("nyheter");
-  await expectNoA11yViolations(page);
-});
-
 test("Senaste nytt på startsidan visar det nyaste inlägget och länkar till alla nyheter", async ({ page }) => {
   await page.goto("");
   const senaste = page.locator("#senaste");
@@ -57,11 +53,4 @@ test("Senaste nytt på startsidan visar det nyaste inlägget och länkar till al
 
   await senaste.getByRole("link", { name: nyastForst[0] }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(nyastForst[0]);
-});
-
-test("ordet blogg förekommer inte på sajtens sidor", async ({ page }) => {
-  for (const sida of ["", "nyheter", "nyheter/skolstart-i-addis-abeba"]) {
-    await page.goto(sida);
-    expect(await page.content(), sida).not.toMatch(/blogg/i);
-  }
 });

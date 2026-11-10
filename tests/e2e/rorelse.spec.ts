@@ -1,10 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
 
-const GOLD = "rgb(244, 180, 0)";
-const COTTON = "rgb(251, 251, 248)";
-const GREEN = "rgb(14, 74, 56)";
-const GREEN_DEEP = "rgb(9, 52, 40)";
-const MINT = "rgb(207, 227, 216)";
+import { farg } from "./helpers";
+
+const GOLD = farg("gold");
+const COTTON = farg("cotton");
+const GREEN = farg("green");
+const GREEN_DEEP = farg("green-deep");
+const MINT = farg("mint");
 
 const lights = (page: Page) => page.getByTestId("ljusbandet").getByTestId("ljus");
 const steps = (page: Page) => page.locator("#familjer .step");

@@ -1,7 +1,7 @@
 import { z } from "astro/zod";
 
 import { valfri } from "./falt";
-import type { Foreningsuppgifter } from "./foreningsuppgifter";
+import { type Foreningsuppgifter, type Uppgift, UPPGIFTER, visaUppgift } from "./foreningsuppgifter";
 
 /**
  * Vanliga frågor: the questions on the page /vanliga-fragor.
@@ -59,19 +59,15 @@ const escapa = (text: string) =>
   text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const fyllsI = (text: string) => `<span class="sl-todo">${text}</span>`;
 
-/** How each föreningsuppgift is written into an answer, and the chip shown while it is missing. */
-const UPPGIFTER: Record<string, (u: Foreningsuppgifter) => string> = {
-  swish: (u) => (u.swish ? escapa(u.swish) : fyllsI("nummer fylls i")),
-  kontaktperson: (u) => (u.kontaktperson ? escapa(u.kontaktperson) : fyllsI("namn fylls i")),
-  epost: (u) => (u.epost ? `<a href="mailto:${escapa(u.epost)}">${escapa(u.epost)}</a>` : fyllsI("e-post fylls i")),
-  organisationsnummer: (u) => (u.organisationsnummer ? escapa(u.organisationsnummer) : fyllsI("fylls i")),
-  nittiokonto: (u) => (u.nittiokonto ? escapa(u.nittiokonto) : fyllsI("fylls i")),
-  arsredovisning: (u) =>
-    u.arsredovisning ? `<a href="${escapa(u.arsredovisning)}">Läs årsredovisningen</a>` : fyllsI("länk fylls i"),
-};
+/** One föreningsuppgift written into an answer as foreningsuppgifter.ts shows it, or its chip while it is missing. */
+function skrivUppgift(namn: Uppgift, uppgifter: Foreningsuppgifter): string {
+  const { text, lank, saknas } = visaUppgift(namn, uppgifter);
+  if (text === undefined) return fyllsI(saknas);
+  return lank ? `<a href="${escapa(lank)}">${escapa(text)}</a>` : escapa(text);
+}
 
-/** The names an answer can use in braces, e.g. {swish}. */
-export const UPPGIFTSNAMN = Object.keys(UPPGIFTER);
+/** The names an answer can use in braces, e.g. {swish}: every föreningsuppgift. */
+export const UPPGIFTSNAMN: readonly string[] = UPPGIFTER;
 
 /**
  * Fills the föreningsuppgifter into an answer's rendered HTML: `{swish}` becomes the Swish number, or the
@@ -95,13 +91,13 @@ export function fyllIUppgifter(html: string, uppgifter: Foreningsuppgifter): str
       }
       if (iKod > 0) return del;
       return del.replace(/\{\s*([^{}\s]+)\s*\}/g, (hela, namn: string) => {
-        const skriv = UPPGIFTER[namn.toLowerCase()];
-        if (!skriv) {
+        const uppgift = UPPGIFTER.find((u) => u.toLowerCase() === namn.toLowerCase());
+        if (!uppgift) {
           throw new Error(
             `Ett svar i Vanliga frågor nämner ${hela}, som inte finns. Använd en av: ${UPPGIFTSNAMN.map((n) => `{${n}}`).join(", ")}`,
           );
         }
-        return skriv(uppgifter);
+        return skrivUppgift(uppgift, uppgifter);
       });
     })
     .join("");

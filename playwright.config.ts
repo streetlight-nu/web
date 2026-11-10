@@ -4,8 +4,8 @@ const base = (process.env.BASE_PATH ?? "/").replace(/\/?$/, "/");
 // E2E_PORT lets several checkouts run their browser tests at the same time.
 const port = Number(process.env.E2E_PORT ?? 4321);
 
-// Two more builds of the site, with föreningsuppgifter, julkampanj and the questions in Vanliga frågor from test
-// files instead of the files the association fills in through Pages CMS, so the tests never depend on what the
+// Two more builds of the site, with every data file (src/lib/datafiler.ts) and the questions in Vanliga frågor from
+// test files instead of the files the association fills in through Pages CMS, so the tests never depend on what the
 // association has written:
 // - filled in (E2E_IFYLLD_URL, port E2E_PORT_IFYLLD, by default the one after E2E_PORT): real values.
 // - empty (E2E_TOM_URL, port E2E_PORT_TOM, by default two after E2E_PORT): the "fylls i" chips.
@@ -29,7 +29,10 @@ export default defineConfig({
   use: { baseURL: `http://localhost:${port}${base}`, trace: "retain-on-failure" },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
-    { name: "mobil", use: { ...devices["Pixel 7"] } },
+    // Most tests check content and behaviour that are the same at every width, so they run once, on desktop. A test
+    // whose outcome depends on the width (layout, tap areas, the folded menu) is tagged @layout (LAYOUT in
+    // tests/e2e/helpers.ts) and runs on the phone as well.
+    { name: "mobil", use: { ...devices["Pixel 7"] }, grep: /@layout/ },
   ],
   webServer: [
     {
@@ -41,6 +44,8 @@ export default defineConfig({
       command:
         "FORENINGSUPPGIFTER_FIL=tests/fixtures/foreningsuppgifter-ifylld.json" +
         " JULKAMPANJ_FIL=tests/fixtures/julkampanj-ifylld.json" +
+        " OM_FORENINGEN_FIL=tests/fixtures/om-foreningen-ifylld.json" +
+        " HISTORIA_FIL=tests/fixtures/historia-ifylld.json" +
         // Not production, even when CI sets MILJO on master, so that `ejProduktion` is on (tests/e2e/funktioner.spec.ts).
         " MILJO= FUNKTIONER_FIL=tests/fixtures/funktioner-ejproduktion.json" +
         " FRAGOR_MAPP=tests/fixtures/fragor" +
@@ -54,6 +59,8 @@ export default defineConfig({
       command:
         "FORENINGSUPPGIFTER_FIL=tests/fixtures/foreningsuppgifter-tom.json" +
         " JULKAMPANJ_FIL=tests/fixtures/julkampanj-tom.json" +
+        " OM_FORENINGEN_FIL=tests/fixtures/om-foreningen-tom.json" +
+        " HISTORIA_FIL=tests/fixtures/historia-tom.json" +
         " FRAGOR_MAPP=tests/fixtures/fragor" +
         ` npm run build -- --outDir ${emptyOutDir}` +
         ` && npm run preview -- --outDir ${emptyOutDir} --port ${emptyPort} --ignore-lock`,

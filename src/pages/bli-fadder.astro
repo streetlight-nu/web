@@ -7,7 +7,6 @@ import Fraga from "@/components/Fraga.astro";
 import Insyn from "@/components/Insyn.astro";
 import Ledger, { type LedgerItem } from "@/components/Ledger.astro";
 import Repejo from "@/components/Repejo.astro";
-import Steps from "@/components/Steps.astro";
 import Thread from "@/components/Thread.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import TjugoLjus from "@/components/TjugoLjus.astro";
@@ -17,22 +16,12 @@ import { STODET } from "@/lib/stodet";
 import { href } from "@/lib/utils";
 
 /**
- * Stöd oss: becoming a fadder comes first. The gold field #bli-fadder holds the heading, three facts, the
- * steps and Repejo's checkout (ADR 0003), so a visitor can become a fadder right away. On wide screens the
- * text stands in the left column and the checkout in the right, full height; under 900 px the checkout comes
- * right after the heading and the lede, before the facts and the steps.
+ * Bli fadder: becoming a fadder comes first. The gold field #bli-fadder holds only what it takes to sign up: the
+ * heading, one lede, Repejo's checkout (ADR 0003) and what happens next, so a visitor can become a fadder right
+ * away; the proof follows further down. On wide screens the text stands in the left column and the checkout in the
+ * right, full height; under 900 px the checkout comes right after the heading and the lede.
  */
 const uppgifter = hamtaForeningsuppgifter();
-const { epost } = uppgifter;
-const fakta: { fet: string; resten: string; mejl?: boolean }[] = [
-  {
-    fet: "Alla 20 barnen tillsammans.",
-    resten: "Vill du hellre följa ett av barnen? Det går också.",
-    mejl: true,
-  },
-  { fet: "Barnen väljs ut tillsammans med de lokala myndigheterna", resten: "i Addis Abeba." },
-  { fet: "Pengarna går via den svenska föreningen", resten: "till arbetet i Etiopien." },
-];
 
 /**
  * The questions future fadder tend to ask (#fragor), from Vanliga frågor in this order. A question the association
@@ -100,55 +89,17 @@ const vagen = [
           Bli fadder och håll ljusen tända.
         </h1>
         <p class="mt-[22px] max-w-[46ch] text-lede">
-          Som fadder stöttar du alla 20 fadderbarnen tillsammans. Ditt bidrag går till skolavgifter, uniform, skolmaterial
+          Som fadder stöttar du alla 20 fadderbarnen och deras familjer tillsammans. Ditt bidrag går till skolavgifter, uniform, skolmaterial
           och vård i Addis Abeba.
         </p>
       </div>
-
       <div class="fadder-rest">
-        <ul class="mt-7 grid list-none gap-4 border-t-[3px] border-ink p-0 pt-5">
-          {
-            fakta.map(({ fet, resten, mejl }) => (
-              <li class="grid grid-cols-[26px_minmax(0,1fr)] items-start gap-3.5">
-                <svg viewBox="0 0 26 26" aria-hidden="true" class="mt-0.5 size-[26px]">
-                  <path d="M13 1 25 13 13 25 1 13Z" class="fill-ink" />
-                  <path d="M13 7 19 13 13 19 7 13Z" class="fill-cotton" />
-                </svg>
-                <span>
-                  <strong class="font-semibold">{fet}</strong> {resten}
-                  {mejl && (
-                    <>
-                      {" "}Skriv det i ett{" "}
-                      {epost ? (
-                        <a class="font-semibold underline decoration-2 underline-offset-[0.22em]" href={`mailto:${epost}`}>
-                          mejl till oss
-                        </a>
-                      ) : (
-                        "mejl till oss"
-                      )}
-                      , så ordnar vi det.
-                    </>
-                  )}
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-
-        <h2 id="sa-gar-det-till" class="mt-9 mb-4 text-title tracking-[-0.015em]">Så går det till</h2>
-        <Steps aria-labelledby="sa-gar-det-till">
-          <li>Du väljer belopp och betalsätt i formuläret.</li>
-          <li>Betalningen går via Repejo, föreningens insamlingstjänst.</li>
-          <li>Någon i föreningen hör av sig och berättar mer om barnen.</li>
-        </Steps>
+        <div class="mt-7 max-w-[46ch] space-y-2.5 border-t-[3px] border-ink pt-5">
+          <p>Sedan hör någon i föreningen av sig och berättar mer om oss.</p>
+        </div>
       </div>
-
       <div class="fadder-form">
-        <Repejo
-          del="checkout"
-          kortkod={FADDER_KORTKOD}
-          vantar="Här visas Repejos formulär för att bli fadder."
-        />
+        <Repejo del="checkout" kortkod={FADDER_KORTKOD} vantar="Här visas Repejos formulär för att bli fadder." />
       </div>
     </div>
   </section>

@@ -3,22 +3,19 @@ import FyllsI from "@/components/FyllsI.astro";
 import Ikon from "@/components/Ikon.astro";
 import Logo from "@/components/Logo.astro";
 import TibebBand from "@/components/TibebBand.astro";
+import Uppgift from "@/components/Uppgift.astro";
 import { buttonVariants } from "@/components/ui/button";
-import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { SOCIALA, visaUppgift } from "@/lib/foreningsuppgifter";
 import { href } from "@/lib/utils";
 
 const year = new Date().getFullYear();
-const { organisationsnummer, facebook, instagram } = hamtaForeningsuppgifter();
 
 // Footer links: a full 44 px row each, underline in soft gold on hover (the design system's link hover).
 const link =
   "flex min-h-11 w-fit items-center decoration-gold-soft underline-offset-[0.22em] hover:text-cotton hover:underline";
 
-/** Where the association can be followed. A link that is not filled in yet shows "fylls i" (see foreningsuppgifter). */
-const sociala = [
-  { namn: "Facebook", ikon: "facebook", lank: facebook },
-  { namn: "Instagram", ikon: "instagram", lank: instagram },
-] as const;
+/** Where the association can be followed. A link that is not filled in yet shows its name and the chip. */
+const sociala = SOCIALA.map((namn) => ({ namn, ...visaUppgift(namn) }));
 ---
 
 <footer class="on-green bg-green-deep text-body text-mint">
@@ -60,27 +57,24 @@ const sociala = [
     <div class="flex flex-wrap items-center justify-between gap-x-10 gap-y-2 border-t border-mint/20 pt-3 pb-5 text-label">
       <div class="flex flex-wrap gap-x-6">
         <p class="py-2.5">Streetlight {year}</p>
-        <p class="py-2.5" data-testid="sidfot-orgnr">Org.nr {organisationsnummer ?? <FyllsI>nummer fylls i</FyllsI>}</p>
+        <p class="py-2.5" data-testid="sidfot-orgnr">Org.nr <Uppgift namn="organisationsnummer" /></p>
       </div>
       <div class="flex flex-wrap items-center gap-x-6 gap-y-1">
         <h2 id="folj-oss" class="text-label text-cotton">Följ oss</h2>
         <ul aria-labelledby="folj-oss" class="m-0 flex list-none flex-wrap gap-x-6 gap-y-1 p-0">
           {
-            sociala.map(({ namn, ikon, lank }) => (
+            sociala.map(({ namn, etikett, lank, saknas }) => (
               <li>
                 {lank ? (
-                  <a
-                    class="inline-flex min-h-11 items-center gap-2 decoration-gold-soft decoration-2 hover:text-cotton hover:underline"
-                    href={lank}
-                  >
-                    <Ikon namn={ikon} />
-                    {namn}
-                  </a>
+                  <Uppgift
+                    namn={namn}
+                    lankklass="inline-flex min-h-11 items-center gap-2 decoration-gold-soft decoration-2 hover:text-cotton hover:underline"
+                  />
                 ) : (
                   <span class="inline-flex min-h-11 items-center gap-2">
-                    <Ikon namn={ikon} />
-                    {namn}
-                    <FyllsI>länk fylls i</FyllsI>
+                    <Ikon namn={namn} />
+                    {etikett}
+                    <FyllsI>{saknas}</FyllsI>
                   </span>
                 )}
               </li>

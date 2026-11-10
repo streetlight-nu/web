@@ -1,0 +1,13 @@
+{
+  "ingress": "TEST-INGRESS om föreningen.",
+  "vision": "TEST-VISION om en ljus framtid för barnen.",
+  "visionText": "TEST-VISIONSTEXT.",
+  "tror": [{ "rubrik": "TEST-TRO.", "text": "TEST-TRO-TEXT." }],
+  "borjan": "TEST-BÖRJAN, första stycket.\n\nTEST-BÖRJAN, andra stycket.",
+  "foreningar": "TEST-FÖRENINGAR.",
+  "grund": { "text": "TEST-GRUND.", "citat": "TEST-CITAT.", "kalla": "TEST-KÄLLA" },
+  "styrelser": [
+    { "forening": "Streetlight Sverige", "personer": [{ "namn": "TEST-NAMN", "roll": "TEST-ROLL" }] },
+    { "forening": "Streetlight Etiopien", "personer": [] }
+  ]
+}

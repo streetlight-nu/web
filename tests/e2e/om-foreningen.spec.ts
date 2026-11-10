@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { expectNoA11yViolations, funktionPa } from "./helpers";
+import { funktionPa, LAYOUT } from "./helpers";
 
 /** The value shown for one föreningsuppgift under Kontakt, found by its label. */
 function uppgift(page: Page, label: string) {
@@ -29,7 +29,7 @@ test("Om föreningen har en h1 och avsnitten i ordning, med Bli fadder sist", as
   );
 });
 
-test("menyn markerar Om föreningen som aktiv", async ({ page, isMobile }) => {
+test("menyn markerar Om föreningen som aktiv", LAYOUT, async ({ page, isMobile }) => {
   await page.goto("om-foreningen");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
@@ -44,11 +44,6 @@ test("Så började det leder till Vår historia, och sidfoten till Kontakt", asy
   await page.getByRole("contentinfo").getByRole("link", { name: "Kontakt" }).click();
   await expect(page).toHaveURL(/\/om-foreningen#kontakt$/);
   await expect(page.getByRole("heading", { level: 2, name: "Kontakt." })).toBeInViewport();
-});
-
-test("Om föreningen klarar WCAG 2.1 AA", async ({ page }) => {
-  await page.goto("om-foreningen");
-  await expectNoA11yViolations(page);
 });
 
 test.describe("Kontakt med tom testfil", () => {
@@ -79,7 +74,7 @@ test.describe("Kontakt med ifylld testfil", () => {
     );
     await expect(kontakt).toContainText("Testperson");
     await expect(uppgift(page, "Swish för gåvor")).toHaveText("TEST-SWISH");
-    await expect(uppgift(page, "90-konto")).toHaveText("TEST-90-KONTO");
+    await expect(uppgift(page, "Bankgiro")).toHaveText("TEST-90-KONTO");
     await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");
     await expect(kontakt.getByRole("link", { name: "Läs årsredovisningen" })).toHaveAttribute(
       "href",

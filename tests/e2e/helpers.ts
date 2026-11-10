@@ -5,6 +5,36 @@ import { expect, type Page } from "@playwright/test";
 
 import { REPEJO_HOST } from "../../src/lib/repejo";
 
+/**
+ * Tag for a test whose outcome depends on the screen width (layout, tap areas, the folded menu). Only these
+ * run in the project "mobil" as well (see playwright.config.ts); every other test runs once, on desktop.
+ */
+export const LAYOUT = { tag: "@layout" };
+
+const tokens = JSON.parse(readFileSync("src/styles/tokens.json", "utf8")) as {
+  color: { tokens: { name: string; value: string }[] };
+  type: { groups: { styles: { name: string; fontSize: string }[] }[] };
+};
+
+/** A text style's size in px from the design system (src/styles/tokens.json), for example textstorlek("body") is 18. */
+export function textstorlek(namn: string): number {
+  const stil = tokens.type.groups.flatMap((g) => g.styles).find((s) => s.name === namn);
+  if (!stil) throw new Error(`Ingen textstil ${namn} i tokens.json`);
+  return parseFloat(stil.fontSize);
+}
+
+/**
+ * A colour from the design system (src/styles/tokens.json), written as getComputedStyle writes it, for example
+ * farg("gold") is "rgb(244, 180, 0)". Tests name the token, so a new value for a token does not break them.
+ */
+export function farg(namn: string): string {
+  const token = tokens.color.tokens.find((t) => t.name === namn);
+  if (!token) throw new Error(`Ingen färg ${namn} i tokens.json`);
+  const hex = token.value.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+  if (!hex) return token.value;
+  return `rgb(${hex.slice(1).map((h) => parseInt(h, 16)).join(", ")})`;
+}
+
 /** Fails if axe finds any WCAG 2.1 A or AA violation on the page. */
 export async function expectNoA11yViolations(page: Page) {
   const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();

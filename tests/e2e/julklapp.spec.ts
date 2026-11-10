@@ -1,24 +1,21 @@
 import { expect, test } from "@playwright/test";
 
-import { JULKAMPANJ_KORTKOD, kampanjsida } from "../../src/lib/repejo";
-import { blockRepejo, expectNoA11yViolations, funktionPa, stubRepejo } from "./helpers";
+import { blockRepejo, expectNoA11yViolations, farg, funktionPa, LAYOUT, stubRepejo } from "./helpers";
 
 test.skip(!funktionPa("julklapp"), "julklapp är avstängd i funktioner.json");
 
 const sida = "julklapp";
-const reservlank = kampanjsida(JULKAMPANJ_KORTKOD);
 
 test.beforeEach(async ({ page }) => {
   await stubRepejo(page);
 });
 
-test("julkampanjen har titel, en h1 med kampanjrubriken och klarar WCAG 2.1 AA", async ({ page }) => {
+// The rules every page keeps (h1, WCAG, skip link, 18 px, no sideways scroll, the glossary) are in hela-sajten.spec.ts.
+
+test("julkampanjen har titeln och kampanjrubriken", async ({ page }) => {
   await page.goto(sida);
   await expect(page).toHaveTitle("Ge en julklapp | Streetlight");
-  await expect(page.locator("html")).toHaveAttribute("lang", "sv");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Ge en julklapp som sprider hopp");
-  await expectNoA11yViolations(page);
 });
 
 test("delas med en egen titel och beskrivning", async ({ page }) => {
@@ -28,22 +25,7 @@ test("delas med en egen titel och beskrivning", async ({ page }) => {
   await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /julaftonsmorgonen/);
 });
 
-test("staplas utan sidledsskroll", async ({ page }) => {
-  await page.goto(sida);
-  await page.waitForLoadState("networkidle");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-});
-
-test("hopplänken leder till innehållet", async ({ page }) => {
-  await page.goto(sida);
-  await page.keyboard.press("Tab");
-  const skip = page.getByRole("link", { name: "Hoppa till innehållet" });
-  await expect(skip).toBeFocused();
-  await page.keyboard.press("Enter");
-  await expect(page.locator("main#main")).toBeFocused();
-});
-
-test("knappen Ge en julklapp i första vyn leder till Repejos checkout", async ({ page }) => {
+test("knappen Ge en julklapp i första vyn leder till Repejos checkout", LAYOUT, async ({ page }) => {
   await page.goto(sida);
   const knapp = page.getByRole("banner").locator('a[href="#ge"]');
   await expect(knapp).toBeInViewport();
@@ -57,15 +39,11 @@ test("knappen Ge en julklapp i första vyn leder till Repejos checkout", async (
   await expect(ge.getByText("Repejo sköter betalningen", { exact: false })).toBeVisible();
 });
 
-test("länken till Repejos kampanjsida syns under checkouten även när Repejo har laddats", async ({ page }) => {
-  // Repejo can define its elements and still fail later, so the way out is always there.
+test("under checkouten finns ingen reservlänk", async ({ page }) => {
   await page.goto(sida);
   const ge = page.locator("#ge");
   await expect(ge.getByText("Repejos checkout (stubb)")).toBeVisible();
-  const lank = ge.getByRole("link", { name: "Ge via Repejos kampanjsida" });
-  await expect(lank).toBeVisible();
-  await expect(lank).toHaveAttribute("href", reservlank);
-  await expect(ge).toContainText("Fungerar inte betalningen?");
+  await expect(ge.getByText("Fungerar inte betalningen?")).toHaveCount(0);
 });
 
 test("insamlingsmätaren finns i avsnittet om insamlingsmålet", async ({ page }) => {
@@ -76,18 +54,10 @@ test("insamlingsmätaren finns i avsnittet om insamlingsmålet", async ({ page }
   await expect(mal.getByText("Repejos insamlingsmätare (stubb)")).toBeVisible();
 });
 
-test.describe("utan Repejo", () => {
+test.describe("utan Repejo", LAYOUT, () => {
   test.beforeEach(async ({ page }) => {
     await page.unrouteAll();
     await blockRepejo(page);
-  });
-
-  test("syns en länk till Repejos kampanjsida där checkouten sitter", async ({ page }) => {
-    await page.goto(sida);
-    const lank = page.locator("#ge").getByRole("link", { name: /Repejos kampanjsida/ });
-    await expect(lank).toHaveAttribute("href", reservlank);
-    await expect(lank).toBeVisible();
-    await expectNoA11yViolations(page);
   });
 
   test("har checkouten och mätaren sin plats reserverad, så att sidan inte hoppar när Repejo ritar dem", async ({
@@ -99,7 +69,7 @@ test.describe("utan Repejo", () => {
   });
 });
 
-test("julkortsexemplet i första vyn är märkt Exempel", async ({ page }) => {
+test("julkortsexemplet i första vyn är märkt Exempel", LAYOUT, async ({ page }) => {
   await page.goto(sida);
   const kort = page.getByRole("figure", { name: /Exempel på ett julkort/ });
   await expect(kort).toBeInViewport({ ratio: 0.3 });
@@ -141,23 +111,11 @@ test.describe("kampanjuppgifter med tom testfil", () => {
     await expect(page.locator("#ge").getByText("e-post fylls i", { exact: true })).toBeVisible();
   });
 
-  test("texterna följer ordlistan och hittar inte på några siffror", async ({ page }) => {
+  test("texterna talar om fadder och hittar inte på några siffror", async ({ page }) => {
     await page.goto(sida);
     const text = (await page.getByRole("banner").innerText()) + (await page.getByRole("main").innerText());
     expect(new Set(text.match(/\d+/g))).toEqual(new Set(["20"]));
     expect(text).toContain("fadder");
-    expect(text).not.toMatch(/blogg|sponsor|givare|donator|mottagare/i);
-  });
-
-  test("brödtexten är minst 18 px", async ({ page }) => {
-    await page.goto(sida);
-    const sizes = await page
-      .locator("main p, main li, header p")
-      .evaluateAll((els) =>
-        els.map((el) => ({ text: el.textContent!.trim().slice(0, 40), px: parseFloat(getComputedStyle(el).fontSize) })),
-      );
-    expect(sizes.length).toBeGreaterThan(8);
-    expect(sizes.filter((s) => s.px < 18)).toEqual([]);
   });
 });
 
@@ -185,7 +143,7 @@ test.describe("med reducerad rörelse", () => {
     await page.goto(sida);
     const ljus = page.getByTestId("ljusbandet").getByTestId("ljus");
     expect(await ljus.evaluateAll((els) => els.map((el) => getComputedStyle(el).backgroundColor))).toEqual(
-      Array(20).fill("rgb(244, 180, 0)"),
+      Array(20).fill(farg("gold")),
     );
   });
 });
@@ -194,7 +152,7 @@ test("på kampanjsidan är Ge en julklapp den enda guldknappen i första vyn, oc
   page,
 }) => {
   await page.goto(sida);
-  const guld = "rgb(244, 180, 0)";
+  const guld = farg("gold");
   const bakgrund = (el: Element) => getComputedStyle(el).backgroundColor;
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/bli-fadder$/);
@@ -202,7 +160,7 @@ test("på kampanjsidan är Ge en julklapp den enda guldknappen i första vyn, oc
   expect(await page.getByRole("banner").locator('a[href="#ge"]').evaluate(bakgrund)).toBe(guld);
 });
 
-test("menyn markerar Julklapp som aktuell sida, även när kampanjen inte visas på startsidan", async ({ page, isMobile }) => {
+test("menyn markerar Julklapp som aktuell sida, även när kampanjen inte visas på startsidan", LAYOUT, async ({ page, isMobile }) => {
   await page.goto(`${process.env.E2E_TOM_URL}${sida}`);
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
@@ -213,7 +171,7 @@ test.describe("julkampanjen på startsidan", () => {
   test.describe("när föreningen har slagit på den", () => {
     test.use({ baseURL: process.env.E2E_IFYLLD_URL });
 
-    test("står direkt under ljusbandet och leder till kampanjsidan utan att konkurrera med Bli fadder", async ({
+    test("står direkt under ljusbandet och leder till kampanjsidan utan att konkurrera med Bli fadder", LAYOUT, async ({
       page,
     }) => {
       await page.goto("./");
@@ -229,7 +187,7 @@ test.describe("julkampanjen på startsidan", () => {
       expect(await lank.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgba(0, 0, 0, 0)");
       await expect(page.getByRole("banner").getByRole("link", { name: "Bli fadder" }).last()).toHaveCSS(
         "background-color",
-        "rgb(244, 180, 0)",
+        farg("gold"),
       );
       await expectNoA11yViolations(page);
     });
@@ -323,7 +281,7 @@ test.describe("julkampanjen på startsidan", () => {
       await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(4);
     });
 
-    test("ett långt ”sista dag” bryts under knappen och trycker inte ihop texten", async ({ page, isMobile }) => {
+    test("ett långt ”sista dag” bryts under knappen och trycker inte ihop texten", LAYOUT, async ({ page, isMobile }) => {
       await page.goto("./");
       const jul = page.locator("#julklapp");
       const ingress = (await jul.locator(".ingress").boundingBox())!;
@@ -335,7 +293,7 @@ test.describe("julkampanjen på startsidan", () => {
       expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
     });
 
-    test("har en länk i menyn", async ({ page, isMobile }) => {
+    test("har en länk i menyn", LAYOUT, async ({ page, isMobile }) => {
       await page.goto("./");
       const nav = page.getByRole("navigation", { name: "Huvudmeny" });
       if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();

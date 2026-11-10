@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { hamtaForeningsuppgifter, tolkaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { hamtaForeningsuppgifter, SOCIALA, tolkaForeningsuppgifter, UPPGIFTER, visaUppgift } from "@/lib/foreningsuppgifter";
 
 describe("föreningsuppgifterna", () => {
   // Only the schema: the association fills the file in through Pages CMS, so its values are not the tests' business.
@@ -41,5 +41,52 @@ describe("föreningsuppgifterna", () => {
     ["en Instagram-länk till Facebook", { instagram: "https://www.facebook.com/streetlight" }],
   ])("avvisar %s", (_, data) => {
     expect(() => tolkaForeningsuppgifter(data)).toThrow(/Föreningsuppgifterna är felaktiga/);
+  });
+});
+
+describe("hur en föreningsuppgift visas", () => {
+  const ifyllda = {
+    organisationsnummer: "802456-3531",
+    nittiokonto: "123-4567",
+    epost: "info@example.org",
+    arsredovisning: "https://example.org/arsredovisning.pdf",
+    facebook: "https://www.facebook.com/streetlight",
+  };
+
+  test("varje uppgift har en etikett och säger vad som saknas", () => {
+    for (const namn of UPPGIFTER) {
+      const { etikett, saknas, text, lank } = visaUppgift(namn, {});
+      expect(etikett, namn).not.toBe(namn);
+      expect(saknas, namn).toMatch(/^(nummer|namn|e-post|länk) fylls i$/);
+      expect(text).toBeUndefined();
+      expect(lank).toBeUndefined();
+    }
+  });
+
+  test("bankgirot heter Bankgiro, och nummer visas som de står", () => {
+    expect(visaUppgift("nittiokonto", ifyllda)).toEqual({
+      etikett: "Bankgiro",
+      saknas: "nummer fylls i",
+      text: "123-4567",
+      lank: undefined,
+    });
+    expect(visaUppgift("organisationsnummer", ifyllda).text).toBe("802456-3531");
+  });
+
+  test("e-post, årsredovisning och sociala medier blir länkar", () => {
+    expect(visaUppgift("epost", ifyllda)).toMatchObject({ text: "info@example.org", lank: "mailto:info@example.org" });
+    expect(visaUppgift("arsredovisning", ifyllda)).toMatchObject({
+      text: "Läs årsredovisningen",
+      lank: "https://example.org/arsredovisning.pdf",
+    });
+    expect(visaUppgift("facebook", ifyllda)).toMatchObject({
+      etikett: "Facebook",
+      text: "Facebook",
+      lank: "https://www.facebook.com/streetlight",
+    });
+  });
+
+  test("de sociala medierna är Facebook och Instagram, i den ordningen", () => {
+    expect(SOCIALA).toEqual(["facebook", "instagram"]);
   });
 });

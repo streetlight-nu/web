@@ -30,7 +30,7 @@ I `.astro`-filer används `buttonVariants()` direkt på `<a>`. React-komponenten
 
 En delad länk visar sajtens standardbild `public/delningsbild.png` (1200 × 630), eller inläggets egen bild. Standardbilden ritas av `node scripts/rita-delningsbild.mjs` från logotypen; kör skriptet igen om logotypen ändras.
 
-Typsnitten läggs på egen server via Fontsource, och sajtens egen kod hämtar dem aldrig från Google Fonts. En sida får anropa en extern tjänst ([ADR 0003](docs/adr/0003-externa-tjanster-som-repejo-far-anropas.md)). I dag gäller det bara julkampanjen, som använder Repejo. Repejos skript hämtar själv andra tjänster på `/julklapp`: typsnitt från Google, Stripe, Adyen, BankID och kanske Metas pixel. ADR 0003 listar dem.
+Typsnitten läggs på egen server via Fontsource, och sajtens egen kod hämtar dem aldrig från Google Fonts. En sida får anropa en extern tjänst ([ADR 0003](docs/adr/0003-externa-tjanster-som-repejo-far-anropas.md)). I dag använder julkampanjen, Bli fadder och Engagera dig Repejo. Repejos skript hämtar själv andra tjänster på `/julklapp`: typsnitt från Google, Stripe, Adyen, BankID och kanske Metas pixel. ADR 0003 listar dem.
 
 ## Föreningsuppgifter och Pages CMS
 
@@ -78,6 +78,8 @@ Kampanjen är säsongsbunden. Efter jul kan sidan tas bort, eller kortkoden byta
 ## Bli fadder
 
 Formuläret för att bli fadder ligger på Bli fadder (`src/pages/bli-fadder.astro`, `/bli-fadder`) och är Repejos checkout (`<repejo-checkout>`) med kortkoden `FADDER_KORTKOD` i `src/lib/repejo.ts`. Sidan laddar Repejos skript, och formuläret visas utan reservlänk under sig (`utanReserv`). Startsidan laddar inte Repejo: dess fält ”Bli fadder” länkar till sidan Bli fadder. Det besökaren fyller i går till Repejo.
+
+Sidan Engagera dig (`src/pages/engagera-dig.astro`, `/engagera-dig`) låter besökaren starta en egen insamling hos Repejo. Varje tillfälle (Födelsedag, Jubileum, Sportevent) har Repejos knapp `<repejo-p2p-create-button>` med sin kategori, som står i `INSAMLINGSKATEGORI` i `src/lib/repejo.ts`. En kategori som är `null` visar chipet ”knapp fylls i” i stället för en knapp. Kategorierna är `birthday`, `anniversary` och `sport_event`. Under Pågående insamlingar visas Repejos lista `<repejo-p2p-list>` med föreningens egna insamlingar. Materialet för att hitta nya faddrar (affisch, folder, bilder) visas med ”fylls i” tills föreningen har gett det.
 
 ## Publicering
 

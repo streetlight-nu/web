@@ -9,6 +9,8 @@
  * - `del="matare"`: `<repejo-progress-bar>`, the progress bar towards the goal, also with a reserved height.
  * - `del="skapa-insamling"`: `<repejo-p2p-create-button>`, Repejo's button for starting one's own fundraiser (p2p) in
  *   the `kategori` given (see `INSAMLINGSKATEGORI`).
+ * - `del="insamlingar"`: `<repejo-p2p-list>`, Repejo's list of the association's own fundraisers, with a reserved
+ *   minimum height.
  *
  * Until Repejo has defined an element (without JS, or when Repejo cannot be reached), the reserved space shows a
  * dashed frame saying what goes there. Repejo draws everything inside the elements: amounts, card fields and payment.
@@ -16,7 +18,7 @@
 import { JULKAMPANJ_KORTKOD, REPEJO_HOST, REPEJO_ORGANISATION } from "@/lib/repejo";
 
 interface Props {
-  del: "skript" | "checkout" | "matare" | "skapa-insamling";
+  del: "skript" | "checkout" | "matare" | "skapa-insamling" | "insamlingar";
   /** The campaign's short code at Repejo. */
   kortkod?: string;
   /** What the dashed frame says until Repejo has drawn the checkout. */
@@ -72,13 +74,26 @@ const {
   )
 }
 
+{
+  del === "insamlingar" && (
+    <div class="repejo">
+      <repejo-p2p-list
+        organisation_id={REPEJO_ORGANISATION}
+        host={REPEJO_HOST}
+        data-vantar="Här visas Repejos lista med insamlingar till Streetlight."
+      />
+    </div>
+  )
+}
+
 <style>
   .repejo {
     min-width: 0;
   }
   repejo-checkout,
   repejo-progress-bar,
-  repejo-p2p-create-button {
+  repejo-p2p-create-button,
+  repejo-p2p-list {
     display: block;
     min-width: 0;
   }
@@ -93,16 +108,21 @@ const {
   repejo-p2p-create-button {
     min-height: 44px;
   }
+  repejo-p2p-list {
+    min-height: 480px;
+  }
   repejo-checkout:not(:defined),
   repejo-progress-bar:not(:defined),
-  repejo-p2p-create-button:not(:defined) {
+  repejo-p2p-create-button:not(:defined),
+  repejo-p2p-list:not(:defined) {
     padding: 16px 20px;
     border: 2px dashed currentColor;
     border-radius: var(--radius-lg);
   }
   repejo-checkout:not(:defined)::before,
   repejo-progress-bar:not(:defined)::before,
-  repejo-p2p-create-button:not(:defined)::before {
+  repejo-p2p-create-button:not(:defined)::before,
+  repejo-p2p-list:not(:defined)::before {
     content: attr(data-vantar);
   }
 </style>

@@ -51,10 +51,12 @@ test.describe("Engagera dig", () => {
     });
   }
 
-  test("listan med pågående insamlingar visar fylls i tills föreningen har gett koden", async ({ page }) => {
-    const pagaende = page.locator("#pagaende");
-    await expect(pagaende.getByText("Här visas Repejos lista med insamlingar till Streetlight.")).toBeVisible();
-    await expect(pagaende.getByText("lista fylls i")).toBeVisible();
+  test("pågående insamlingar visar Repejos lista med föreningens insamlingar", async ({ page }) => {
+    const lista = page.locator("#pagaende repejo-p2p-list");
+    await expect(lista).toHaveAttribute("organisation_id", REPEJO_ORGANISATION);
+    await expect(lista).toHaveAttribute("host", REPEJO_HOST);
+    await expect(lista).toHaveText("Repejos lista med insamlingar (stubb)");
+    await expect(page.locator("#pagaende").getByText("fylls i")).toHaveCount(0);
   });
 
   test("materialet för att hitta faddrar leder till Bli fadder och visar fylls i för det som saknas", async ({
@@ -76,4 +78,11 @@ test("utan Repejo säger knappens plats vad som ska synas där", async ({ page }
   await expect(knapp).toHaveAttribute("data-vantar", "Här visas Repejos knapp för att starta en insamling.");
   const text = await knapp.evaluate((el) => getComputedStyle(el, "::before").content);
   expect(text).toContain("Här visas Repejos knapp");
+
+  // The list keeps its place, so the page does not jump when Repejo draws it.
+  const lista = page.locator("#pagaende repejo-p2p-list");
+  expect(await lista.evaluate((el) => getComputedStyle(el, "::before").content)).toContain(
+    "Här visas Repejos lista med insamlingar",
+  );
+  expect((await lista.boundingBox())!.height).toBeGreaterThanOrEqual(480);
 });

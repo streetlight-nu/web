@@ -55,6 +55,7 @@ export async function stubRepejo(page: Page) {
           ["repejo-checkout", "Repejos checkout (stubb)"],
           ["repejo-progress-bar", "Repejos insamlingsmätare (stubb)"],
           ["repejo-p2p-create-button", "Repejos knapp för egen insamling (stubb)"],
+          ["repejo-p2p-list", "Repejos lista med insamlingar (stubb)"],
         ]) {
           customElements.define(name, class extends HTMLElement {
             connectedCallback() { this.textContent = text; }

@@ -79,7 +79,7 @@ Kampanjen är säsongsbunden. Efter jul kan sidan tas bort, eller kortkoden byta
 
 Formuläret för att bli fadder ligger på Bli fadder (`src/pages/bli-fadder.astro`, `/bli-fadder`) och är Repejos checkout (`<repejo-checkout>`) med kortkoden `FADDER_KORTKOD` i `src/lib/repejo.ts`. Sidan laddar Repejos skript, och formuläret visas utan reservlänk under sig (`utanReserv`). Startsidan laddar inte Repejo: dess fält ”Bli fadder” länkar till sidan Bli fadder. Det besökaren fyller i går till Repejo.
 
-Sidan Engagera dig (`src/pages/engagera-dig.astro`, `/engagera-dig`) låter besökaren starta en egen insamling hos Repejo. Varje tillfälle (Födelsedag, Jubileum, Sportevent) har Repejos knapp `<repejo-p2p-create-button>` med sin kategori, som står i `INSAMLINGSKATEGORI` i `src/lib/repejo.ts`. En kategori som är `null` visar chipet ”knapp fylls i” i stället för en knapp. Kategorierna är `birthday`, `anniversary` och `sport_event`. Repejos lista med pågående insamlingar och materialet för att hitta nya faddrar (affisch, folder, bilder) visas med ”fylls i” tills föreningen har gett dem.
+Sidan Engagera dig (`src/pages/engagera-dig.astro`, `/engagera-dig`) låter besökaren starta en egen insamling hos Repejo. Varje tillfälle (Födelsedag, Jubileum, Sportevent) har Repejos knapp `<repejo-p2p-create-button>` med sin kategori, som står i `INSAMLINGSKATEGORI` i `src/lib/repejo.ts`. En kategori som är `null` visar chipet ”knapp fylls i” i stället för en knapp. Kategorierna är `birthday`, `anniversary` och `sport_event`. Under Pågående insamlingar visas Repejos lista `<repejo-p2p-list>` med föreningens egna insamlingar. Materialet för att hitta nya faddrar (affisch, folder, bilder) visas med ”fylls i” tills föreningen har gett det.
 
 ## Publicering
 

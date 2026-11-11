@@ -6,7 +6,7 @@
       "namn": "TEST-PERIOD ett",
       "sammanfattning": "TEST-SAMMANFATTNING ett.",
       "handelser": [
-        { "ar": "1995", "rubrik": "TEST-HÄNDELSE med årtal", "text": "TEST-TEXT.", "fraga": "TEST-FRÅGA?" },
+        { "ar": "1995", "rubrik": "TEST-HÄNDELSE med årtal", "text": "TEST-TEXT.", "citat": "TEST-CITAT.", "fraga": "TEST-FRÅGA?" },
         { "ar": "", "rubrik": "TEST-HÄNDELSE utan årtal", "text": "TEST-TEXT.", "fraga": "" }
       ]
     },

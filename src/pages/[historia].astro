@@ -23,15 +23,15 @@ export function getStaticPaths() {
 const { ingress, perioder, idagBild } = hamtaHistoria();
 // A suggested photo for each period, shown until the association uploads its own in Pages CMS.
 const BILDFORSLAG: Record<string, string> = {
-  "1995–1999": "Foto: Merry som liten, eller Tryggve hos Merrys familj",
-  "2000–2009": "Foto: barnen i skoluniform, eller Merry under studietiden",
-  "2010–2019": "Foto: Merry som nyexaminerad läkare, eller faddrarna med barnen på resan 2019",
-  "2020–idag": "Foto: Aklilu i skoverkstaden, eller barnen på sommarskolan",
+  "1995–1999": "Foto: Merry på sitt födelsedagskalas 1995, eller Tryggve hos familjen Balcha i Entoto",
+  "2000–2009": "Foto: barnen som sjunger i Kotobe-kyrkans trädgård 2007, eller Betty på sin examen 2008",
+  "2010–2016": "Foto: Merry som nyexaminerad läkare 2014, eller Dawit och Alemtsehay i Sverige 2013",
+  "2017–idag": "Foto: Aklilu i skoverkstaden, eller barnen på sommarskolan",
 };
 const bildforslag = (rubrik: string) => BILDFORSLAG[rubrik] ?? "Foto från perioden, med familjernas samtycke";
 
 const beskrivning =
-  ingress ?? "Hur Streetlight började 1995 och hur arbetet med fadderbarnen i Addis Abeba har vuxit fram sedan dess.";
+  ingress ?? "Hur Streetlight började som Deborahprojektet 1995 och hur arbetet med fadderbarnen i Addis Abeba har vuxit fram sedan dess.";
 ---
 
 <BaseLayout title="Vår historia" description={beskrivning} current="historia">
@@ -95,6 +95,7 @@ const beskrivning =
                     {handelse.rubrik ?? <FyllsI>rubrik fylls i</FyllsI>}
                   </h3>
                   <p class="mt-3 max-w-[60ch]">{handelse.text ?? <FyllsI>text fylls i</FyllsI>}</p>
+                  {handelse.citat && <blockquote class="citat">”{handelse.citat}”</blockquote>}
                   {handelse.fraga && (
                     <p class="fraga mt-4 max-w-[56ch]">
                       <strong class="block text-label font-semibold">Att prata om tillsammans</strong>
@@ -194,6 +195,24 @@ const beskrivning =
     box-shadow:
       0 0 0 5px var(--color-light-mid),
       0 0 0 10px var(--color-gold);
+  }
+
+  /* Words to remember: the page's loudest line, in the quote size; gold on the green fields. */
+  .citat {
+    margin: clamp(28px, 4vw, 44px) 0 0;
+    max-width: 17ch;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5.4vw, 4.6rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .on-green .citat {
+    color: var(--color-gold);
+  }
+  .citat + .fraga {
+    margin-top: clamp(28px, 4vw, 44px);
   }
 
   /* A question to talk about: set off by a thick rule on top, never a card. */

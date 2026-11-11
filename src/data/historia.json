@@ -1,27 +1,6 @@
 {
-  "ingress": "Streetlight började som Deborahprojektet. 1995 tog en liten flicka i Addis Abeba en svensk mans hand och ledde honom hem till sin familj. I över tjugo år hjälpte faddrar i Sverige barn att gå i skolan. 2017 tog Streetlight över arbetet, och det fortsätter idag.",
+  "ingress": "Streetlight började som Deborahprojektet. Familjen Nandorf i Sverige hade adopterat en son från Etiopien, och 1995 reste Tryggve Nandorf dit för att träffa sonens mamma. Där tog en liten flicka hans hand och ledde honom hem till sin familj. Sedan dess har faddrar i Sverige hjälpt barn i Addis Abeba att gå i skolan, först i Deborahprojektet och sedan 2017 i Streetlight.",
   "perioder": [
-    {
-      "rubrik": "Före 1995",
-      "namn": "Fröet som såddes",
-      "sammanfattning": "Långt innan Deborahprojektet fick familjen Nandorf ett band till Etiopien.",
-      "handelser": [
-        {
-          "ar": "1970-talet",
-          "rubrik": "En dröm om att hjälpa",
-          "text": "Tryggve Nandorf var pastor och drömde om att bli missionär. En äldre missionär, Arvid Svärd, sa åt honom att göra något åt saken. 1978 gick familjen en kurs i England för att översätta Bibeln, men uppgiften blev för stor för dem. Drömmen fick vänta i 17 år.",
-          "citat": "",
-          "fraga": "Har du någon gång fått vänta länge på något du drömde om?"
-        },
-        {
-          "ar": "1975",
-          "rubrik": "Mehari kommer till familjen",
-          "text": "Tryggve och Maud adopterade en pojke från Etiopien. Mehari var tre år när han kom. Han blev ett av de sista barnen som adopterades från Etiopien på den tiden. Tryggve har sagt att utan Mehari hade det aldrig blivit något Deborahprojekt.",
-          "citat": "",
-          "fraga": "Vilka människor har gjort att du är där du är idag?"
-        }
-      ]
-    },
     {
       "rubrik": "1995–1999",
       "namn": "Det började med en hand",
@@ -30,7 +9,7 @@
         {
           "ar": "1995",
           "rubrik": "Merry tar Tryggves hand",
-          "text": "Till påsk reste Tryggve till Addis Abeba för att träffa Meharis mamma. Han bodde i en gammal skola på en missionsstation i Entoto. En flicka som hette Merry, ungefär tre år, kom fram och pratade med honom. Han förstod inte ett ord, men hon tog hans hand och ledde honom till sina föräldrar, Dawit och Alemtsehay. De blev vänner för livet.",
+          "text": "Till påsk kom Tryggve till Addis Abeba. Han bodde i en gammal skola på en missionsstation i Entoto. En flicka som hette Merry, ungefär tre år, kom fram och pratade med honom. Han förstod inte ett ord, men hon tog hans hand och ledde honom till sina föräldrar, Dawit och Alemtsehay. De blev vänner för livet.",
           "citat": "",
           "fraga": "Hur kan man bli vänner fast man inte talar samma språk?"
         },

@@ -77,7 +77,7 @@ export async function blockRepejo(page: Page) {
  * element behind a flag skip themselves when it is off, instead of failing. The tests in funktioner.spec.ts use
  * their own builds from fixtures and do not need this.
  */
-export function funktionPa(funktion: "julklapp" | "historia"): boolean {
+export function funktionPa(funktion: "julklapp" | "historia" | "engagera"): boolean {
   const lagen = JSON.parse(readFileSync("src/data/funktioner.json", "utf8")) as Record<string, string>;
   const lage = lagen[funktion];
   return lage === "pa" || (lage === "ejProduktion" && process.env.MILJO !== "produktion");

@@ -17,7 +17,7 @@ import { datafil } from "./datafil";
  *
  * Read the flags in `.astro` files only, never in a React island: this module reads a file with node:fs.
  */
-export const FUNKTIONER = ["julklapp", "historia"] as const;
+export const FUNKTIONER = ["julklapp", "historia", "engagera"] as const;
 export type Funktion = (typeof FUNKTIONER)[number];
 
 export const LAGEN = ["pa", "av", "ejProduktion"] as const;

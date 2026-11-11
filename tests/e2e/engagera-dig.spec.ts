@@ -1,7 +1,9 @@
 import { expect, test } from "@playwright/test";
 
 import { REPEJO_HOST, REPEJO_ORGANISATION } from "../../src/lib/repejo";
-import { blockRepejo, LAYOUT, stubRepejo } from "./helpers";
+import { blockRepejo, funktionPa, LAYOUT, stubRepejo } from "./helpers";
+
+test.skip(!funktionPa("engagera"), "engagera är avstängd i funktioner.json");
 
 test.describe("Engagera dig", () => {
   test.beforeEach(async ({ page }) => {

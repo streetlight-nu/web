@@ -6,8 +6,14 @@ import Repejo from "@/components/Repejo.astro";
 import Steps from "@/components/Steps.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
+import { hamtaFunktioner } from "@/lib/funktioner";
 import { INSAMLINGSKATEGORI } from "@/lib/repejo";
 import { href } from "@/lib/utils";
+
+/** The page is built only when the flag `engagera` is on (src/data/funktioner.json); otherwise /engagera-dig is a 404. */
+export function getStaticPaths() {
+  return hamtaFunktioner().engagera ? [{ params: { engagera: "engagera-dig" } }] : [];
+}
 
 /**
  * Engagera dig: what members and others can do for Streetlight with their time. A green top with the three ways as

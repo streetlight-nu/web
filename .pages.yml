@@ -126,6 +126,16 @@ content:
             - { value: pa, label: På, visas överallt }
             - { value: av, label: Av, visas ingenstans }
             - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
+      - name: engagera
+        label: Engagera dig (sidan och länkarna till den)
+        type: select
+        required: true
+        default: pa
+        options:
+          values:
+            - { value: pa, label: På, visas överallt }
+            - { value: av, label: Av, visas ingenstans }
+            - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
 
   - name: vanligaFragor
     label: Vanliga frågor

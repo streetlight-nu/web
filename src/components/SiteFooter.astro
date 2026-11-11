@@ -6,9 +6,11 @@ import TibebBand from "@/components/TibebBand.astro";
 import Uppgift from "@/components/Uppgift.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { SOCIALA, visaUppgift } from "@/lib/foreningsuppgifter";
+import { hamtaFunktioner } from "@/lib/funktioner";
 import { href } from "@/lib/utils";
 
 const year = new Date().getFullYear();
+const { engagera } = hamtaFunktioner();
 
 // Footer links: a full 44 px row each, underline in soft gold on hover (the design system's link hover).
 const link =
@@ -49,7 +51,7 @@ const sociala = SOCIALA.map((namn) => ({ namn, ...visaUppgift(namn) }));
         <li><a class={link} href={href("/om-foreningen")}>Om oss</a></li>
         <li><a class={link} href={href("/om-foreningen#kontakt")}>Kontakt</a></li>
         <li><a class={link} href={href("/nyheter")}>Nyheter</a></li>
-        <li><a class={link} href={href("/engagera-dig")}>Engagera dig</a></li>
+        {engagera && <li><a class={link} href={href("/engagera-dig")}>Engagera dig</a></li>}
         <li><a class={link} href={href("/vanliga-fragor")}>Vanliga frågor</a></li>
       </ul>
     </nav>

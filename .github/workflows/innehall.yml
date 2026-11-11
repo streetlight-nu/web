@@ -1,0 +1,69 @@
+name: Innehåll och publicering
+
+# Fast track for what the association saves in Pages CMS (src/data, src/content, src/assets): it is committed straight
+# to master and only needs to be validated and published. The build checks every data file against its zod schema and
+# every inlägg and fråga against its content schema, so a bad save fails here. The slow checks (type check and the
+# browser tests) run in ci.yml, which skips pushes that touch nothing but these paths. A commit that also touches
+# anything else gets the full ci.yml instead.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "src/data/**"
+      - "src/content/**"
+      - "src/assets/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never cancel a run that is publishing; a newer save waits its turn.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  SITE_URL: ${{ vars.SITE_URL || 'https://streetlight-nu.github.io' }}
+  BASE_PATH: ${{ vars.BASE_PATH || '/web' }}
+  MILJO: produktion
+
+jobs:
+  bygg:
+    name: Bygg innehållet
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Fast: checks the CMS form against the schemas, with no browser.
+      - name: Enhetstester
+        run: npm test
+      # Validates the content itself (data files, Nyheter, Vanliga frågor, image paths).
+      - name: Bygg
+        run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Publicera på GitHub Pages
+    needs: bygg
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    # Shared with the deploy job in ci.yml so two publications never run at once.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

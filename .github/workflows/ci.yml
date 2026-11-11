@@ -3,6 +3,11 @@ name: CI och deploy
 on:
   push:
     branches: ["**"]
+    # Content saved in Pages CMS gets the fast track in innehall.yml. A push that touches anything else runs this.
+    paths-ignore:
+      - "src/data/**"
+      - "src/content/**"
+      - "src/assets/**"
   pull_request:
   workflow_dispatch:
 
@@ -60,6 +65,10 @@ jobs:
     needs: test
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    # Shared with innehall.yml so two publications never run at once.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     permissions:
       pages: write
       id-token: write

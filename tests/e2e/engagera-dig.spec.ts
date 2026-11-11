@@ -34,23 +34,22 @@ test.describe("Engagera dig", () => {
     );
   });
 
-  test("födelsedag har Repejos knapp för egen insamling i kategorin birthday", async ({ page }) => {
-    const rad = page.locator('[data-kategori="Födelsedag"]');
-    await expect(rad.getByRole("heading", { name: "Födelsedag" })).toBeVisible();
-    const knapp = rad.locator("repejo-p2p-create-button");
-    await expect(knapp).toHaveAttribute("category", "birthday");
-    await expect(knapp).toHaveAttribute("organisation_id", REPEJO_ORGANISATION);
-    await expect(knapp).toHaveAttribute("host", REPEJO_HOST);
-    await expect(knapp).toHaveText("Repejos knapp för egen insamling (stubb)");
-  });
-
-  test("jubileum och sportevent visar fylls i tills föreningen har gett koden", async ({ page }) => {
-    for (const kategori of ["Jubileum", "Sportevent"]) {
+  for (const [kategori, varde] of [
+    ["Födelsedag", "birthday"],
+    ["Jubileum", "anniversary"],
+    ["Sportevent", "sport_event"],
+  ]) {
+    test(`${kategori} har Repejos knapp för egen insamling i kategorin ${varde}`, async ({ page }) => {
       const rad = page.locator(`[data-kategori="${kategori}"]`);
-      await expect(rad.getByText("knapp fylls i")).toBeVisible();
-      await expect(rad.locator("repejo-p2p-create-button")).toHaveCount(0);
-    }
-  });
+      await expect(rad.getByRole("heading", { name: kategori })).toBeVisible();
+      const knapp = rad.locator("repejo-p2p-create-button");
+      await expect(knapp).toHaveAttribute("category", varde);
+      await expect(knapp).toHaveAttribute("organisation_id", REPEJO_ORGANISATION);
+      await expect(knapp).toHaveAttribute("host", REPEJO_HOST);
+      await expect(knapp).toHaveText("Repejos knapp för egen insamling (stubb)");
+      await expect(rad.getByText("knapp fylls i")).toHaveCount(0);
+    });
+  }
 
   test("listan med pågående insamlingar visar fylls i tills föreningen har gett koden", async ({ page }) => {
     const pagaende = page.locator("#pagaende");

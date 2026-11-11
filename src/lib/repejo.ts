@@ -30,6 +30,6 @@ export function kampanjsida(kortkod: string): string {
  */
 export const INSAMLINGSKATEGORI = {
   fodelsedag: "birthday",
-  jubileum: null,
-  sportevent: null,
+  jubileum: "anniversary",
+  sportevent: "sport_event",
 } as const satisfies Record<string, string | null>;

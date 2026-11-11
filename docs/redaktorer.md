@@ -62,7 +62,8 @@ Sidan **Vår historia** är en tidslinje från 1995 till idag. Allt som inte är
 2. Skriv en **Ingress**: ett par meningar om hur allt började.
 3. Under **Perioder** finns en rad per period, äldst först. Varje period har ett årtal, till exempel 1995–1999, ett kort namn och en sammanfattning.
 4. Under varje period finns **Händelser**. Fyll i år, rubrik och text. Lägg till fler händelser med knappen för att lägga till (Add an entry).
-5. Fältet **Att prata om tillsammans** är frivilligt. Där kan du skriva en fråga som en förälder kan prata om med sitt barn efteråt, till exempel ”Vad behöver du för att kunna gå till skolan?”.
+5. Fältet **Citat** är frivilligt. Där kan du skriva några ord som någon verkligen har sagt eller skrivit, till exempel ”Det räcker med en.”. De visas stort efter texten. Skriv dem utan citattecken, så sätter sidan dit dem. Använd fältet sparsamt, högst någon gång per period, så att citatet sticker ut.
+6. Fältet **Att prata om tillsammans** är frivilligt. Där kan du skriva en fråga som en förälder kan prata om med sitt barn efteråt, till exempel ”Vad behöver du för att kunna gå till skolan?”.
 
 Många läser sidan tillsammans med sina barn. Skriv därför med enkla ord och korta meningar, och gärna något konkret: en skola, en uniform, en vanlig dag. Berätta om barnen och familjerna med värdighet, och bara det de har gett sitt samtycke till.
 

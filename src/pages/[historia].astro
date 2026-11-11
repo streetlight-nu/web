@@ -96,6 +96,7 @@ const beskrivning =
                     {handelse.rubrik ?? <FyllsI>rubrik fylls i</FyllsI>}
                   </h3>
                   <p class="mt-3 max-w-[60ch]">{handelse.text ?? <FyllsI>text fylls i</FyllsI>}</p>
+                  {handelse.citat && <blockquote class="citat">”{handelse.citat}”</blockquote>}
                   {handelse.fraga && (
                     <p class="fraga mt-4 max-w-[56ch]">
                       <strong class="block text-label font-semibold">Att prata om tillsammans</strong>
@@ -195,6 +196,24 @@ const beskrivning =
     box-shadow:
       0 0 0 5px var(--color-light-mid),
       0 0 0 10px var(--color-gold);
+  }
+
+  /* Words to remember: the page's loudest line, in the quote size; gold on the green fields. */
+  .citat {
+    margin: clamp(28px, 4vw, 44px) 0 0;
+    max-width: 17ch;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5.4vw, 4.6rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .on-green .citat {
+    color: var(--color-gold);
+  }
+  .citat + .fraga {
+    margin-top: clamp(28px, 4vw, 44px);
   }
 
   /* A question to talk about: set off by a thick rule on top, never a card. */

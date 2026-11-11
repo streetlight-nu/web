@@ -192,7 +192,7 @@ Alla tre typsnitten ligger på egen server via Fontsource. De laddas aldrig frå
 
 ### Hierarchy
 - **Display** (800, `clamp(3rem, 7.4vw, 6rem)`, 0,95): endast startsidans huvudrubrik.
-- **Quote** (800, `clamp(2.2rem, 5.4vw, 4.6rem)`, 1,02): visionscitatet, med rader på högst 17 tecken.
+- **Quote** (800, `clamp(2.2rem, 5.4vw, 4.6rem)`, 1,02): visionscitatet och citaten längs tidslinjen på Vår historia, med rader på högst 17 tecken.
 - **Headline** (800, `clamp(2.1rem, 4.6vw, 3.6rem)`, 1,02): avsnittsrubriker (h2) och undersidornas h1.
 - **Title** (800, 1,5rem, 1,15): kort- och listrubriker, formulärrubrik och ordmärket i menyn.
 - **Step** (600, 1,4rem, 1,3): stegen längs guldtråden.

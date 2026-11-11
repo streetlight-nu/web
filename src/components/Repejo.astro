@@ -7,6 +7,8 @@
  * - `del="checkout"`: `<repejo-checkout>`, with a reserved minimum height so the page does not jump.
  *   `vantar` says what the reserved space says (default: the julklapp's).
  * - `del="matare"`: `<repejo-progress-bar>`, the progress bar towards the goal, also with a reserved height.
+ * - `del="skapa-insamling"`: `<repejo-p2p-create-button>`, Repejo's button for starting one's own fundraiser (p2p) in
+ *   the `kategori` given (see `INSAMLINGSKATEGORI`).
  *
  * Until Repejo has defined an element (without JS, or when Repejo cannot be reached), the reserved space shows a
  * dashed frame saying what goes there. Repejo draws everything inside the elements: amounts, card fields and payment.
@@ -14,16 +16,19 @@
 import { JULKAMPANJ_KORTKOD, REPEJO_HOST, REPEJO_ORGANISATION } from "@/lib/repejo";
 
 interface Props {
-  del: "skript" | "checkout" | "matare";
+  del: "skript" | "checkout" | "matare" | "skapa-insamling";
   /** The campaign's short code at Repejo. */
   kortkod?: string;
   /** What the dashed frame says until Repejo has drawn the checkout. */
   vantar?: string;
+  /** Repejo's category for `del="skapa-insamling"`, for example "birthday". */
+  kategori?: string;
 }
 const {
   del,
   kortkod = JULKAMPANJ_KORTKOD,
   vantar = "Här visas Repejos formulär för julklappen.",
+  kategori,
 } = Astro.props;
 ---
 
@@ -54,12 +59,26 @@ const {
   )
 }
 
+{
+  del === "skapa-insamling" && (
+    <div class="repejo">
+      <repejo-p2p-create-button
+        organisation_id={REPEJO_ORGANISATION}
+        host={REPEJO_HOST}
+        category={kategori}
+        data-vantar="Här visas Repejos knapp för att starta en insamling."
+      />
+    </div>
+  )
+}
+
 <style>
   .repejo {
     min-width: 0;
   }
   repejo-checkout,
-  repejo-progress-bar {
+  repejo-progress-bar,
+  repejo-p2p-create-button {
     display: block;
     min-width: 0;
   }
@@ -71,14 +90,19 @@ const {
     min-height: 56px;
   }
   /* Until Repejo has defined an element, its reserved space says what goes there. */
+  repejo-p2p-create-button {
+    min-height: 44px;
+  }
   repejo-checkout:not(:defined),
-  repejo-progress-bar:not(:defined) {
+  repejo-progress-bar:not(:defined),
+  repejo-p2p-create-button:not(:defined) {
     padding: 16px 20px;
     border: 2px dashed currentColor;
     border-radius: var(--radius-lg);
   }
   repejo-checkout:not(:defined)::before,
-  repejo-progress-bar:not(:defined)::before {
+  repejo-progress-bar:not(:defined)::before,
+  repejo-p2p-create-button:not(:defined)::before {
     content: attr(data-vantar);
   }
 </style>

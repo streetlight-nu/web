@@ -6,6 +6,8 @@ Det finns inga särskilda gränser för vilka sidor som får anropa en extern tj
 
 Välj tjänster som tar GDPR på allvar. Det som besökaren fyller i Repejos formulär går till Repejo och aldrig till sajten.
 
+Sidan `/engagera-dig` (Engagera dig, tillagd i november 2026) laddar samma skript och bäddar in `<repejo-p2p-create-button>`, Repejos knapp för att starta en egen insamling (p2p).
+
 ## Vad Repejos skript själv hämtar
 
 Vi kan inte ändra Repejos skript. Den 3 november 2026 hämtade vi `https://app.repejo.se/assets/checkout.js` (cirka 1,5 MB) och sökte efter värdar. Utöver `app.repejo.se` kan skriptet hämta eller leda till:

@@ -22,3 +22,14 @@ export const SWISH_KORTKOD = "pUnFu";
 export function kampanjsida(kortkod: string): string {
   return `${REPEJO_HOST}/s/${kortkod}`;
 }
+
+/**
+ * Repejo's categories for the fundraisers a visitor starts themselves (p2p), behind `<repejo-p2p-create-button>` on
+ * Engagera dig. A category is Repejo's own value; `null` until the association has given it, and the page then shows
+ * the chip "fylls i" instead of a button.
+ */
+export const INSAMLINGSKATEGORI = {
+  fodelsedag: "birthday",
+  jubileum: null,
+  sportevent: null,
+} as const satisfies Record<string, string | null>;

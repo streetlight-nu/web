@@ -22,8 +22,6 @@ export const handelseSchema = z.strictObject({
   text: text,
   /** Words to remember, shown large after the text, e.g. "Det räcker med en." Without quotation marks. */
   citat: text,
-  /** A question a parent can talk about with their child after reading. */
-  fraga: text,
 });
 
 export const periodSchema = z.strictObject({

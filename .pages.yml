@@ -238,10 +238,6 @@ content:
                 label: Citat
                 type: string
                 description: Några ord att minnas, som visas stort efter texten, till exempel Det räcker med en. Skriv utan citattecken. Bara ord som någon verkligen har sagt eller skrivit. Får lämnas tomt.
-              - name: fraga
-                label: Att prata om tillsammans
-                type: string
-                description: En fråga som en förälder kan prata om med sitt barn efteråt, till exempel ”Vad behöver du för att kunna gå till skolan?”. Får lämnas tomt.
       - name: idagBild
         label: Foto till Idag
         type: object

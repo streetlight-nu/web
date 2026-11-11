@@ -96,12 +96,6 @@ const beskrivning =
                   </h3>
                   <p class="mt-3 max-w-[60ch]">{handelse.text ?? <FyllsI>text fylls i</FyllsI>}</p>
                   {handelse.citat && <blockquote class="citat">”{handelse.citat}”</blockquote>}
-                  {handelse.fraga && (
-                    <p class="fraga mt-4 max-w-[56ch]">
-                      <strong class="block text-label font-semibold">Att prata om tillsammans</strong>
-                      {handelse.fraga}
-                    </p>
-                  )}
                 </li>
               ))}
             </ol>
@@ -211,19 +205,6 @@ const beskrivning =
   .on-green .citat {
     color: var(--color-gold);
   }
-  .citat + .fraga {
-    margin-top: clamp(28px, 4vw, 44px);
-  }
-
-  /* A question to talk about: set off by a thick rule on top, never a card. */
-  .fraga {
-    padding-top: 14px;
-    border-top: 3px solid currentColor;
-  }
-  .on-green .fraga {
-    border-top-color: var(--color-gold);
-  }
-
   @media (max-width: 600px) {
     .thread {
       padding-left: 40px;

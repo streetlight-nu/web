@@ -9,7 +9,8 @@ const GREEN_DEEP = farg("green-deep");
 const MINT = farg("mint");
 
 const lights = (page: Page) => page.getByTestId("ljusbandet").getByTestId("ljus");
-const steps = (page: Page) => page.locator("#familjer .step");
+// The gold thread lives on Bli fadder, in Så når det fram.
+const steps = (page: Page) => page.locator("#nar-fram .step");
 const highlight = (page: Page) => page.locator(".vision blockquote span");
 const cone = (page: Page) => page.locator(".lamp .cone");
 const support = (page: Page) => page.locator("#sa-arbetar-vi .link");
@@ -22,12 +23,11 @@ const stepStates = (page: Page) =>
   );
 const highlightSize = (page: Page) => highlight(page).evaluate((el) => getComputedStyle(el).backgroundSize);
 
-/** Everything lit and finished: the lamp's cone, all 20 lights, the gold thread and the vision's highlight. */
+/** Everything lit and finished on the start page: the lamp's cone, all 20 lights and the vision's highlight. */
 async function expectFinished(page: Page) {
   await expect(cone(page)).toHaveCSS("animation-name", "none");
   await expect(cone(page)).toHaveCSS("opacity", "1");
   expect(await lightColors(page)).toEqual(Array(20).fill(GOLD));
-  expect(await stepStates(page)).toEqual(Array(3).fill({ color: COTTON, mark: GOLD }));
   expect(await highlightSize(page)).toBe("100% 100%");
   await expectSupportFinished(page);
 }
@@ -42,7 +42,7 @@ async function expectSupportFinished(page: Page) {
 test.describe("med reducerad rörelse", () => {
   test.use({ reducedMotion: "reduce" });
 
-  test("visas lyktan, alla 20 ljus, guldtråden och visionens markering tända och färdiga direkt", async ({ page }) => {
+  test("visas lyktan, alla 20 ljus och visionens markering tända och färdiga direkt", async ({ page }) => {
     await page.goto("./");
     await expectFinished(page);
     await page.locator(".vision").scrollIntoViewIfNeeded();
@@ -51,14 +51,24 @@ test.describe("med reducerad rörelse", () => {
     await expect(support(page)).not.toHaveClass(/\bflow\b/);
     await expectSupportFinished(page);
   });
+
+  test("visas guldtrådens steg tända direkt på Bli fadder", async ({ page }) => {
+    await page.goto("./bli-fadder");
+    expect(await stepStates(page)).toEqual(Array(3).fill({ color: COTTON, mark: GOLD }));
+  });
 });
 
 test.describe("utan JavaScript", () => {
   test.use({ javaScriptEnabled: false, reducedMotion: "no-preference" });
 
-  test("visas lyktan, alla 20 ljus, guldtråden och visionens markering tända och färdiga", async ({ page }) => {
+  test("visas lyktan, alla 20 ljus och visionens markering tända och färdiga", async ({ page }) => {
     await page.goto("./");
     await expectFinished(page);
+  });
+
+  test("visas guldtrådens steg tända på Bli fadder", async ({ page }) => {
+    await page.goto("./bli-fadder");
+    expect(await stepStates(page)).toEqual(Array(3).fill({ color: COTTON, mark: GOLD }));
   });
 });
 
@@ -93,11 +103,12 @@ test.describe("med rörelse", () => {
     expect([...seen].some((n) => n > 0 && n < 20)).toBe(true);
   });
 
-  test("lyser guldtrådens steg upp medan man läser", async ({ page }) => {
-    await page.goto("./");
+  test("lyser guldtrådens steg upp medan man läser på Bli fadder", async ({ page }) => {
+    await page.goto("./bli-fadder");
     expect(await stepStates(page)).toEqual(Array(3).fill({ color: MINT, mark: GREEN }));
 
-    await page.locator(".vision").scrollIntoViewIfNeeded();
+    // With the thread at the top of the viewport, every step is above the reading line.
+    await page.locator("#nar-fram [data-thread]").evaluate((el) => el.scrollIntoView({ block: "start" }));
     await expect.poll(() => stepStates(page)).toEqual(Array(3).fill({ color: COTTON, mark: GOLD }));
   });
 
@@ -125,7 +136,7 @@ test.describe("med rörelse", () => {
 
   test("ligger inte i någon React-ö", async ({ page }) => {
     await page.goto("./");
-    for (const el of [page.getByTestId("ljusbandet"), page.locator("#familjer .thread"), page.locator(".vision"), page.locator(".lamp"), support(page)]) {
+    for (const el of [page.getByTestId("ljusbandet"), page.locator(".vision"), page.locator(".lamp"), support(page)]) {
       expect(await el.evaluate((node) => node.closest("astro-island") === null)).toBe(true);
     }
   });

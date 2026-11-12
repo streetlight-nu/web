@@ -112,14 +112,13 @@ test.describe("startsidans berättelse", () => {
     const stod = page.locator("#stod");
     await expect(stod.getByRole("heading", { level: 2, name: "Utbildning är vägen ut ur fattigdom." })).toBeVisible();
     await expect(stod.getByRole("link", { name: "Se vart ditt bidrag går" })).toHaveAttribute("href", /\/bli-fadder#vart$/);
+    // What the support is for comes before Så började det.
+    const stodY = (await stod.boundingBox())!.y;
+    const borjanY = (await borjan.boundingBox())!.y;
+    expect(stodY).toBeLessThan(borjanY);
     const familjer = page.locator("#familjer");
-    for (const step of [
-      "Föräldern får stöd att starta en egen verksamhet som ger inkomst.",
-      "Familjen får en egen inkomst att bygga vidare på.",
-      "Barnet kan fortsätta gå i skolan, med en ljusare framtid framför sig.",
-    ]) {
-      await expect(familjer.getByText(step)).toBeVisible();
-    }
+    await expect(familjer.getByRole("heading", { level: 2, name: "Ljuset ska nå hela familjen." })).toBeVisible();
+    await expect(familjer).toContainText("Då får familjen en egen inkomst, och barnet kan fortsätta gå i skolan.");
     await expect(
       page.getByText("TEST-VISION om en ljus framtid för barnen."),
     ).toBeVisible();

@@ -5,17 +5,10 @@ import JulkampanjPaStartsidan from "@/components/JulkampanjPaStartsidan.astro";
 import LightBand from "@/components/LightBand.astro";
 import Pil from "@/components/Pil.astro";
 import SenasteNytt from "@/components/SenasteNytt.astro";
-import Thread from "@/components/Thread.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaOmForeningen, stycken } from "@/lib/om-foreningen";
 import { href } from "@/lib/utils";
-
-const familySteps = [
-  "Föräldern får stöd att starta en egen verksamhet som ger inkomst.",
-  "Familjen får en egen inkomst att bygga vidare på.",
-  "Barnet kan fortsätta gå i skolan, med en ljusare framtid framför sig.",
-];
 
 /**
  * The start page tells why and who; the proof (what the support pays for, how the money reaches the children, Insyn)
@@ -90,48 +83,45 @@ const lankGron = "inline-flex min-h-11 items-center font-semibold text-cotton un
 
   <JulkampanjPaStartsidan />
 
-  <!-- Så började det, then what the support is for: one cotton field. -->
+  <!-- What the support is for, then Så började det: one cotton field. -->
   <div class={`bg-cotton text-ink ${section}`}>
+    <section id="stod" aria-labelledby="stod-rubrik" class:list={["band-inner", split]}>
+      <h2 id="stod-rubrik" class={`min-w-0 ${h2}`}>Utbildning är vägen ut ur fattigdom.</h2>
+      <div class="min-w-0">
+        <p class={lede}>
+          Därför står vi för det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
+        </p>
+        <p class="mt-4">
+          <a class={lankInk} href={href("/bli-fadder#vart")}>Se vart ditt bidrag går</a>
+        </p>
+      </div>
+    </section>
     {
       borjan && (
-        <section id="borjan" aria-labelledby="borjan-rubrik" class={`band-inner mb-[clamp(56px,7vw,96px)] ${split}`}>
-          <h2 id="borjan-rubrik" class={`min-w-0 ${h2}`}>Så började det.</h2>
-          <div class="min-w-0">
-            <p class={lede}>{borjan}</p>
-            <p class="mt-4">
-              <a class={lankInk} href={href("/om-foreningen#borjan")}>Läs hela berättelsen om föreningen</a>
-            </p>
+        <section id="borjan" aria-labelledby="borjan-rubrik" class="band-inner mt-[clamp(56px,7vw,96px)]">
+          <div class={`border-t-[3px] border-ink pt-[clamp(40px,5vw,64px)] ${split}`}>
+            <h2 id="borjan-rubrik" class={`min-w-0 ${h2}`}>Så började det.</h2>
+            <div class="min-w-0">
+              <p class={lede}>{borjan}</p>
+              <p class="mt-4">
+                <a class={lankInk} href={href("/om-foreningen#borjan")}>Läs hela berättelsen om föreningen</a>
+              </p>
+            </div>
           </div>
         </section>
       )
     }
-    <section id="stod" aria-labelledby="stod-rubrik" class="band-inner">
-      <div class:list={[split, borjan && "border-t-[3px] border-ink pt-[clamp(40px,5vw,64px)]"]}>
-        <h2 id="stod-rubrik" class={`min-w-0 ${h2}`}>Utbildning är vägen ut ur fattigdom.</h2>
-        <div class="min-w-0">
-          <p class={lede}>
-            Därför står vi för det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
-          </p>
-          <p class="mt-4">
-            <a class={lankInk} href={href("/bli-fadder#vart")}>Se vart ditt bidrag går</a>
-          </p>
-        </div>
-      </div>
-    </section>
   </div>
 
   <TibebBand variant="thin" />
 
   <section id="familjer" class={field}>
-    <div class="band-inner grid grid-cols-1 items-center gap-[clamp(32px,6vw,96px)] min-[901px]:grid-cols-2">
-      <div class="min-w-0">
-        <h2 class={h2}>Ljuset ska nå hela <span class="text-gold">familjen.</span></h2>
-        <p class={`mt-[22px] text-mint ${lede}`}>
-          Ett barn som går i skolan behöver ett hem som klarar sig. Föräldrarna kan få stöd och ekonomisk hjälp att
-          starta en egen verksamhet som ger inkomst.
-        </p>
-      </div>
-      <div class="min-w-0"><Thread steps={familySteps} /></div>
+    <div class="band-inner">
+      <h2 class={h2}>Ljuset ska nå hela <span class="text-gold">familjen.</span></h2>
+      <p class={`mt-[22px] text-mint ${lede}`}>
+        Ett barn som går i skolan behöver ett hem som klarar sig. Därför kan föräldrarna få stöd och ekonomisk hjälp
+        att starta en egen verksamhet. Då får familjen en egen inkomst, och barnet kan fortsätta gå i skolan.
+      </p>
     </div>
   </section>
 

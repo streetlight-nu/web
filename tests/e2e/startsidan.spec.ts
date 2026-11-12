@@ -10,17 +10,18 @@ test("startsidan har titeln Streetlight och rubriken Ett ljus på vägen till sk
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Ett ljus på vägen till skolan.");
 });
 
-test("huvudmenyn länkar till Om oss, Nyheter och Frågor", LAYOUT, async ({ page, isMobile }) => {
+test("huvudmenyn länkar till Om oss och Nyheter", LAYOUT, async ({ page, isMobile }) => {
   await page.goto("./");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
   for (const [name, path] of [
     ["Om oss", "om-foreningen"],
     ["Nyheter", "nyheter"],
-    ["Frågor", "vanliga-fragor"],
   ]) {
     await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", new RegExp(`${path}$`));
   }
+  // Vanliga frågor is reached from the footer, not the header.
+  await expect(nav.getByRole("link", { name: "Frågor", exact: true })).toHaveCount(0);
   await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/bli-fadder$/);
   // The Ett ljus rule: the hero's "Bli fadder" is the start page's gold button, so the header's is a line.
   expect(await nav.getByRole("link", { name: "Bli fadder" }).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
@@ -112,14 +113,13 @@ test.describe("startsidans berättelse", () => {
     const stod = page.locator("#stod");
     await expect(stod.getByRole("heading", { level: 2, name: "Utbildning är vägen ut ur fattigdom." })).toBeVisible();
     await expect(stod.getByRole("link", { name: "Se vart ditt bidrag går" })).toHaveAttribute("href", /\/bli-fadder#vart$/);
+    // What the support is for comes before Så började det.
+    const stodY = (await stod.boundingBox())!.y;
+    const borjanY = (await borjan.boundingBox())!.y;
+    expect(stodY).toBeLessThan(borjanY);
     const familjer = page.locator("#familjer");
-    for (const step of [
-      "Föräldern får stöd att starta en egen verksamhet som ger inkomst.",
-      "Familjen får en egen inkomst att bygga vidare på.",
-      "Barnet kan fortsätta gå i skolan, med en ljusare framtid framför sig.",
-    ]) {
-      await expect(familjer.getByText(step)).toBeVisible();
-    }
+    await expect(familjer.getByRole("heading", { level: 2, name: "Ljuset ska nå hela familjen." })).toBeVisible();
+    await expect(familjer).toContainText("Då får familjen en egen inkomst, och barnet kan fortsätta gå i skolan.");
     await expect(
       page.getByText("TEST-VISION om en ljus framtid för barnen."),
     ).toBeVisible();

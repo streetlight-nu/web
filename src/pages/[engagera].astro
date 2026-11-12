@@ -1,13 +1,12 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FyllsI from "@/components/FyllsI.astro";
+import Kategoriikon from "@/components/Kategoriikon.astro";
 import Pil from "@/components/Pil.astro";
 import Repejo from "@/components/Repejo.astro";
-import Steps from "@/components/Steps.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { hamtaFunktioner } from "@/lib/funktioner";
-import { INSAMLINGSKATEGORI } from "@/lib/repejo";
 import { href } from "@/lib/utils";
 
 /** The page is built only when the flag `engagera` is on (src/data/funktioner.json); otherwise /engagera-dig is a 404. */
@@ -16,36 +15,34 @@ export function getStaticPaths() {
 }
 
 /**
- * Engagera dig: what members and others can do for Streetlight with their time. A green top with the three ways as
- * jump links, then one's own fundraiser through Repejo (ADR 0003): one row per category, each with Repejo's own
- * button `<repejo-p2p-create-button>`; then Repejo's list of ongoing fundraisers (`<repejo-p2p-list>`); last, tips and material for
- * finding new fadder. What the association has not given yet (a category's code, the printed material)
- * shows the chip "fylls i".
+ * Engagera dig: what members and others can do for Streetlight with their time. A green top with the two ways as
+ * jump links, then one's own fundraiser through Repejo (ADR 0003): the occasions with their icons and one Repejo button
+ * `<repejo-p2p-create-button>` without a category, so Repejo's own dialog asks which; last, tips and material for
+ * finding new fadder. The printed material the association has not given yet shows the chip "fylls i".
  */
 
-/** The three ways, in the order the sections come. */
+/** The two ways, in the order the sections come. */
 const vagar = [
   { id: "insamling", rubrik: "Starta en egen insamling", text: "För en födelsedag, ett jubileum eller ett sportevent." },
-  { id: "pagaende", rubrik: "Ge till en pågående insamling", text: "Heja på någon som redan samlar in till barnen." },
   { id: "faddrar", rubrik: "Hjälp oss hitta nya faddrar", text: "Tips och material för att berätta om Streetlight." },
 ];
 
-/** One row per category of Repejo's own fundraisers. */
-const kategorier: { rubrik: string; text: string; kategori: string | null }[] = [
+/** The occasions, each with an icon. Repejo's own dialog asks which one when the visitor starts a fundraiser. */
+const tillfallen: { rubrik: string; text: string; ikon: "tarta" | "hjarta" | "pokal" }[] = [
   {
     rubrik: "Födelsedag",
-    text: "Fyller du år? Be om en gåva till barnens skolgång i stället för en present.",
-    kategori: INSAMLINGSKATEGORI.fodelsedag,
+    text: "Fyller du år? Be om gåvor till barnens skolgång.",
+    ikon: "tarta",
   },
   {
     rubrik: "Jubileum",
-    text: "En bröllopsdag, ett företags eller en förenings jubileum. Fira med något som varar.",
-    kategori: INSAMLINGSKATEGORI.jubileum,
+    text: "En bröllopsdag, eller ett jubileum för ett företag eller en förening.",
+    ikon: "hjarta",
   },
   {
     rubrik: "Sportevent",
-    text: "Springer, cyklar eller simmar du? Be vänner och kollegor heja på dig med en gåva.",
-    kategori: INSAMLINGSKATEGORI.sportevent,
+    text: "Springer, cyklar eller simmar du? Låt vännerna heja med en gåva.",
+    ikon: "pokal",
   },
 ];
 
@@ -128,73 +125,33 @@ const markorer = ["", "mark--cobalt", "mark--gron"];
   <TibebBand variant="thin" />
 
   <section id="insamling" aria-labelledby="insamling-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
-    <div class="band-inner">
-      <h2 id="insamling-rubrik" class="text-headline">Starta en egen insamling.</h2>
-      <p class="mt-[22px] max-w-[58ch] text-lede text-ink-soft">
-        Önska dig gåvor till barnen i stället för presenter. Välj ett tillfälle, skriv några rader och sätt ett mål. Du
-        skapar insamlingen hos Repejo, föreningens insamlingstjänst, och gåvorna går till Streetlight.
-      </p>
-      <div class="split mt-[clamp(40px,5vw,56px)]">
-        <ul class="rader min-w-0" aria-label="Välj tillfälle">
-          {
-            kategorier.map((k, i) => (
-              <li data-kategori={k.rubrik}>
-                <span class:list={["mark", markorer[i % 3]]} aria-hidden="true" />
-                <div class="rad">
-                  <div class="min-w-0">
-                    <h3 class="text-title tracking-[-0.015em]">{k.rubrik}</h3>
-                    <p class="mt-1.5 max-w-[44ch] text-ink-soft">{k.text}</p>
-                  </div>
-                  <div class="handling">
-                    {k.kategori ? (
-                      <Repejo del="skapa-insamling" kategori={k.kategori} />
-                    ) : (
-                      <FyllsI>knapp fylls i</FyllsI>
-                    )}
-                  </div>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
-        <div class="min-w-0">
-          <h3 id="sa-gar-det-till" class="text-title tracking-[-0.015em]">Så går det till</h3>
-          <Steps aria-labelledby="sa-gar-det-till" class="mt-5">
-            <li>
-              Fyll i Repejos formulär: en titel, några rader, ett målbelopp och en omslagsbild. Det tar några minuter.
+    <div class="insamling band-inner">
+      <div class="insamling-text min-w-0">
+        <h2 id="insamling-rubrik" class="text-headline">Starta en egen insamling.</h2>
+        <p class="mt-[22px] max-w-[46ch] text-lede text-ink-soft">
+          Önska dig gåvor till barnen i stället för presenter. Skapa insamlingen och dela länken med vänner och familj. Det tar några minuter.
+        </p>
+      </div>
+      <ul class="tillfallen" aria-label="Tillfällen att samla in till">
+        {
+          tillfallen.map((t) => (
+            <li data-tillfalle={t.rubrik}>
+              <Kategoriikon namn={t.ikon} class="size-11 text-ink max-[520px]:size-[30px]" />
+              <div class="min-w-0">
+                <h3 class="text-title tracking-[-0.015em]">{t.rubrik}</h3>
+                <p class="mt-1.5 max-w-[44ch] text-ink-soft">{t.text}</p>
+              </div>
             </li>
-            <li>Dela länken med vänner och familj, i sociala medier eller som en QR-kod.</li>
-            <li>Följ hur gåvorna kommer in och hur nära målet du är.</li>
-          </Steps>
-          <p class="mt-7 max-w-[46ch] border-t-[3px] border-ink pt-5 text-ink-soft">
-            Vill du använda ett foto från Addis Abeba? Ta bara bilder som föreningen ger dig. Bilder på barnen och
-            familjerna kräver familjens samtycke.
-          </p>
-        </div>
+          ))
+        }
+      </ul>
+      <div class="insamling-knapp min-w-0">
+        <Repejo del="skapa-insamling" />
       </div>
     </div>
   </section>
 
-  <section
-    id="pagaende"
-    aria-labelledby="pagaende-rubrik"
-    class="on-green bg-green-deep py-[clamp(64px,9vw,120px)] text-cotton"
-  >
-    <div class="band-inner">
-      <div class="flex flex-wrap items-end justify-between gap-6">
-        <div class="min-w-0">
-          <h2 id="pagaende-rubrik" class="text-headline">Pågående insamlingar.</h2>
-          <p class="mt-[22px] max-w-[46ch] text-lede text-mint">
-            De här samlar in till barnen just nu. Ge en gåva till någon av dem, eller hämta idéer till din egen.
-          </p>
-        </div>
-        <a class={buttonVariants({ variant: "line" })} href="#insamling">Starta din egen</a>
-      </div>
-      <div class="lista mt-[clamp(32px,4vw,40px)]">
-        <Repejo del="insamlingar" />
-      </div>
-    </div>
-  </section>
+  <TibebBand variant="thin" />
 
   <section id="faddrar" aria-labelledby="faddrar-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
     <div class="split band-inner">
@@ -271,7 +228,7 @@ const markorer = ["", "mark--cobalt", "mark--gron"];
     }
   }
 
-  /* The three ways: a Ledger on green of jump links. */
+  /* The ways: a Ledger on green of jump links. */
   .vagar ul {
     list-style: none;
     margin: 0;
@@ -295,6 +252,62 @@ const markorer = ["", "mark--cobalt", "mark--gron"];
     text-decoration-color: var(--color-gold-soft);
     text-decoration-thickness: 2px;
     text-underline-offset: 6px;
+  }
+
+  /* Starta en egen insamling: the text and its steps, then the button, on the left; the occasions on the right.
+     Under 900 px the occasions come before the button, so the visitor has seen them when they start. */
+  .insamling {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    grid-template-areas:
+      "text tillfallen"
+      "knapp tillfallen";
+    /* The text row is as tall as the text, so the button sits right under the intro; the taller list on the right
+       takes its extra height from the button's row. */
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    column-gap: clamp(32px, 6vw, 96px);
+    row-gap: clamp(28px, 3vw, 36px);
+  }
+  .insamling-text {
+    grid-area: text;
+  }
+  .insamling-knapp {
+    grid-area: knapp;
+  }
+  @media (max-width: 900px) {
+    .insamling {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "text"
+        "tillfallen"
+        "knapp";
+      grid-template-rows: none;
+    }
+  }
+
+  /* The occasions: rows as in Ledger, between thick ink rules, with the icon in the marker column. */
+  .tillfallen {
+    grid-area: tillfallen;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-block: 3px solid var(--color-ink);
+  }
+  .tillfallen li {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 20px;
+    padding-block: 24px;
+  }
+  .tillfallen li + li {
+    border-top: 1.5px solid rgba(11, 46, 36, 0.18);
+  }
+  @media (max-width: 520px) {
+    .tillfallen li {
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 14px;
+    }
   }
 
   /* Rows as in Ledger: thick ink rules top and bottom, a woven marker, the text and an action. */
@@ -352,14 +365,6 @@ const markorer = ["", "mark--cobalt", "mark--gron"];
       --storlek: 20px;
       margin: 6px 0 0 5px;
     }
-  }
-
-  /* Repejo's list of fundraisers on a cotton panel, so it reads as it does on Repejo's own white page. */
-  .lista {
-    padding: clamp(16px, 3vw, 32px);
-    border-radius: var(--radius-lg);
-    background: var(--color-cotton);
-    color: var(--color-ink);
   }
 
   /* Så kan du berätta: gold rhombi on green, as the markers on the gold thread. */

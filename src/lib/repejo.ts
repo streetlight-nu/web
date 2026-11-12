@@ -24,9 +24,8 @@ export function kampanjsida(kortkod: string): string {
 }
 
 /**
- * Repejo's categories for the fundraisers a visitor starts themselves (p2p), behind `<repejo-p2p-create-button>` on
- * Engagera dig. A category is Repejo's own value; `null` until the association has given it, and the page then shows
- * the chip "fylls i" instead of a button.
+ * Repejo's categories for the fundraisers a visitor starts themselves (p2p). Engagera dig has one button without a
+ * category, so Repejo's own dialog asks which; `Repejo.astro` can still give a button one of these values.
  */
 export const INSAMLINGSKATEGORI = {
   fodelsedag: "birthday",

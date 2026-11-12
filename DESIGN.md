@@ -267,7 +267,7 @@ Varma och stadiga, med stora tryckytor som är lätta att träffa.
 - **Error:** kanten blir `thread-red` (`aria-invalid`) och meddelandet står i `error`.
 
 ### Navigation
-- **Style:** ligger på grönt sidhuvud, med logotypen till vänster och länkarna ”Om oss”, ”Nyheter” och ”Frågor” i etikettstorlek i bomull. ”Bli fadder” är en liten guldknapp. På en sida vars eget huvudsteg är guld blir den en linjeknapp (The Ett ljus Rule): på startsidan, där heron har sin guldknapp ”Bli fadder”, och på julkampanjens sida med ”Ge en julklapp”. På sidan Bli fadder (`/bli-fadder`), dit knappen leder, är den också en linjeknapp och markeras som aktuell sida.
+- **Style:** ligger på grönt sidhuvud, med logotypen till vänster och länkarna ”Om oss” och ”Nyheter” i etikettstorlek i bomull. ”Bli fadder” är en liten guldknapp. På en sida vars eget huvudsteg är guld blir den en linjeknapp (The Ett ljus Rule): på startsidan, där heron har sin guldknapp ”Bli fadder”, och på julkampanjens sida med ”Ge en julklapp”. På sidan Bli fadder (`/bli-fadder`), dit knappen leder, är den också en linjeknapp och markeras som aktuell sida.
 - **Säsong:** medan julkampanjen pågår finns länken ”Ge en julklapp” sist i menyn, som en smal pill med 2 px bomullskant och en liten pil. Vid hovring, fokus och på kampanjsidan fylls pillen med bomull från vänster under 450 ms och texten blir bläck, och pilen flyttar sig 3 px åt höger. Med reducerad rörelse byter bara färgen. Föreningen slår på och av länken i Pages CMS.
 - **States:** hovring ger understrykning. Aktuell sida markeras med `aria-current`.
 - **Mobile:** under 900 px fälls länkarna ihop bakom knappen ”Meny”. Escape stänger och lämnar fokus tillbaka på knappen.
@@ -321,6 +321,6 @@ Märket är en gatlykta ritad med en enda linje på ett rutnät om 80 × 80, med
 - **Don't** använd romben som logotyp eller fristående ikon. Den finns bara i vävningen.
 - **Don't** betona med kursiv.
 - **Don't** bygg sidor av rutnät med likadana kort. Använd Ledger, Steps eller guldtråden.
-- **Don't** använd emoji eller en ikonuppsättning. De få ikonerna ritas som SVG med samma linjetjocklek.
+- **Don't** använd emoji eller en ikonuppsättning. De få ikonerna ritas som SVG med samma linjetjocklek. Undantaget är de tre ikonerna på Engagera dig, ur Phosphor Icons i vikten Regular (MIT): en tårta, ett hjärta och en pokal. De står för samma saker som ikonerna i Repejos egen dialog för att starta en insamling, står som markör i en lista med tillfällena under Starta en egen insamling, bredvid en enda Repejo-knapp, och ligger i `Kategoriikon.astro`. Nya ikoner ur uppsättningen läggs bara till för något som saknar bra ord.
 - **Don't** ladda typsnitt från tredje part i vår egen kod, men en extern tjänst får anropas, som Repejo för julkampanjens betalning. Repejos skript kan själv hämta typsnitt och andra tjänster (ADR 0003).
 - **Don't** återinför varumärkesguidens Open Sans, #FFD200, #FF1736 eller asfaltslooken.

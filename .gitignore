@@ -7,3 +7,4 @@ dist-av/
 test-results/
 playwright-report/
 .claude/worktrees/
+.impeccable/live/config.json

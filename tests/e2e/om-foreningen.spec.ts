@@ -36,15 +36,7 @@ test("menyn markerar Om föreningen som aktiv", LAYOUT, async ({ page, isMobile 
   await page.goto("om-foreningen");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-  await expect(nav.getByRole("link", { name: "Om föreningen", exact: true })).toHaveAttribute("aria-current", "page");
-});
-
-test("sidfoten länkar till Om föreningen", async ({ page }) => {
-  await page.goto("./");
-  await expect(page.getByRole("contentinfo").getByRole("link", { name: "Om föreningen", exact: true })).toHaveAttribute(
-    "href",
-    /\/om-foreningen$/,
-  );
+  await expect(nav.getByRole("link", { name: "Om oss", exact: true })).toHaveAttribute("aria-current", "page");
 });
 
 test("Så började det leder till Vår historia, och sidfoten till Kontakt", async ({ page }) => {

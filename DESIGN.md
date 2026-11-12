@@ -321,6 +321,6 @@ Märket är en gatlykta ritad med en enda linje på ett rutnät om 80 × 80, med
 - **Don't** använd romben som logotyp eller fristående ikon. Den finns bara i vävningen.
 - **Don't** betona med kursiv.
 - **Don't** bygg sidor av rutnät med likadana kort. Använd Ledger, Steps eller guldtråden.
-- **Don't** använd emoji eller en ikonuppsättning. De få ikonerna ritas som SVG med samma linjetjocklek.
+- **Don't** använd emoji eller en ikonuppsättning. De få ikonerna ritas som SVG med samma linjetjocklek. Undantaget är de tre ikonerna på Engagera dig, ur Phosphor Icons i vikten Regular (MIT): en tårta, ett hjärta och en pokal. De står för samma saker som ikonerna i Repejos egen dialog för att starta en insamling, står som markör i en lista med tillfällena under Starta en egen insamling, bredvid en enda Repejo-knapp, och ligger i `Kategoriikon.astro`. Nya ikoner ur uppsättningen läggs bara till för något som saknar bra ord.
 - **Don't** ladda typsnitt från tredje part i vår egen kod, men en extern tjänst får anropas, som Repejo för julkampanjens betalning. Repejos skript kan själv hämta typsnitt och andra tjänster (ADR 0003).
 - **Don't** återinför varumärkesguidens Open Sans, #FFD200, #FF1736 eller asfaltslooken.

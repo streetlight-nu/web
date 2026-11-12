@@ -1,0 +1,39 @@
+---
+/**
+ * The icons for the fundraiser categories on Engagera dig: Phosphor Icons, weight Regular (MIT licence,
+ * Copyright (c) 2020 Phosphor Icons, https://phosphoricons.com). They stand for the same things as the icons in
+ * Repejo's own dialog for starting a fundraiser: a cake for Födelsedag, a heart for Jubileum and a trophy for Sportevent.
+ * Unlike Ikon.astro these are outlined shapes on a 256 grid, not strokes, so they have their own component.
+ * Decorative: the heading next to them carries the name, and they take the text colour.
+ */
+interface Props {
+  namn: "tarta" | "hjarta" | "pokal";
+  class?: string;
+}
+
+const { namn, class: klass } = Astro.props;
+---
+
+<svg class:list={["shrink-0", klass]} viewBox="0 0 256 256" aria-hidden="true" fill="currentColor" data-ikon={namn}>
+  {
+    namn === "tarta" && (
+      <>
+        <path fill="currentColor" d="M232 112a24 24 0 0 0-24-24h-72v-9a32.06 32.06 0 0 0 24-31c0-28-26.44-45.91-27.56-46.66a8 8 0 0 0-8.88 0C122.44 2.09 96 20 96 48a32.06 32.06 0 0 0 24 31v9H48a24 24 0 0 0-24 24v23.33a40.84 40.84 0 0 0 8 24.24V200a24 24 0 0 0 24 24h144a24 24 0 0 0 24-24v-40.43a40.84 40.84 0 0 0 8-24.24ZM112 48c0-13.57 10-24.46 16-29.79c6 5.33 16 16.22 16 29.79a16 16 0 0 1-32 0m-72 64a8 8 0 0 1 8-8h160a8 8 0 0 1 8 8v23.33c0 13.25-10.46 24.31-23.32 24.66A24 24 0 0 1 168 136a8 8 0 0 0-16 0a24 24 0 0 1-48 0a8 8 0 0 0-16 0a24 24 0 0 1-24.68 24C50.46 159.64 40 148.58 40 135.33Zm160 96H56a8 8 0 0 1-8-8v-27.44A38.8 38.8 0 0 0 62.88 176a39.7 39.7 0 0 0 29-11.31A40.4 40.4 0 0 0 96 160a40 40 0 0 0 64 0a40.4 40.4 0 0 0 4.13 4.67A39.67 39.67 0 0 0 192 176h1.14a38.8 38.8 0 0 0 14.86-3.44V200a8 8 0 0 1-8 8"/>
+      </>
+    )
+  }
+  {
+    namn === "hjarta" && (
+      <>
+        <path fill="currentColor" d="M178 40c-20.65 0-38.73 8.88-50 23.89C116.73 48.88 98.65 40 78 40a62.07 62.07 0 0 0-62 62c0 70 103.79 126.66 108.21 129a8 8 0 0 0 7.58 0C136.21 228.66 240 172 240 102a62.07 62.07 0 0 0-62-62m-50 174.8c-18.26-10.64-96-59.11-96-112.8a46.06 46.06 0 0 1 46-46c19.45 0 35.78 10.36 42.6 27a8 8 0 0 0 14.8 0c6.82-16.67 23.15-27 42.6-27a46.06 46.06 0 0 1 46 46c0 53.61-77.76 102.15-96 112.8"/>
+      </>
+    )
+  }
+  {
+    namn === "pokal" && (
+      <>
+        <path fill="currentColor" d="M232 64h-24V48a8 8 0 0 0-8-8H56a8 8 0 0 0-8 8v16H24A16 16 0 0 0 8 80v16a40 40 0 0 0 40 40h3.65A80.13 80.13 0 0 0 120 191.61V216H96a8 8 0 0 0 0 16h64a8 8 0 0 0 0-16h-24v-24.42c31.94-3.23 58.44-25.64 68.08-55.58H208a40 40 0 0 0 40-40V80a16 16 0 0 0-16-16M48 120a24 24 0 0 1-24-24V80h24v32q0 4 .39 8Zm144-8.9c0 35.52-29 64.64-64 64.9a64 64 0 0 1-64-64V56h128ZM232 96a24 24 0 0 1-24 24h-.5a82 82 0 0 0 .5-8.9V80h24Z"/>
+      </>
+    )
+  }
+</svg>

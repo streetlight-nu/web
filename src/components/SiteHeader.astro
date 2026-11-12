@@ -17,7 +17,7 @@ const { julklapp } = hamtaFunktioner();
 
 const links: NavLink[] = [
   // Vår historia is reached from Om föreningen (Så började det).
-  { label: "Om oss", href: href("/om-foreningen"), current: current === "om" || current === "historia" },
+  { label: "Om föreningen", href: href("/om-foreningen"), current: current === "om" || current === "historia" },
   { label: "Nyheter", href: href("/nyheter"), current: current === "nyheter" },
   { label: "Frågor", href: href("/vanliga-fragor"), current: current === "fragor" },
   // Seasonal: the association turns the campaign on and off in Pages CMS (src/data/julkampanj.json). The flag

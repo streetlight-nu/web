@@ -10,12 +10,12 @@ test("startsidan har titeln Streetlight och rubriken Ett ljus på vägen till sk
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Ett ljus på vägen till skolan.");
 });
 
-test("huvudmenyn länkar till Om oss, Nyheter och Frågor", LAYOUT, async ({ page, isMobile }) => {
+test("huvudmenyn länkar till Om föreningen, Nyheter och Frågor", LAYOUT, async ({ page, isMobile }) => {
   await page.goto("./");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
   for (const [name, path] of [
-    ["Om oss", "om-foreningen"],
+    ["Om föreningen", "om-foreningen"],
     ["Nyheter", "nyheter"],
     ["Frågor", "vanliga-fragor"],
   ]) {
@@ -53,7 +53,7 @@ test.describe("mobilmenyn", LAYOUT, () => {
   test("öppnas och stängs med tangentbordet", async ({ page }) => {
     await page.goto("./");
     const toggle = page.getByRole("button", { name: "Meny" });
-    const firstLink = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Om oss", exact: true });
+    const firstLink = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Om föreningen", exact: true });
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
     await expect(firstLink).toBeHidden();
 

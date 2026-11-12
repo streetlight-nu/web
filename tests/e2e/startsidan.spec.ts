@@ -10,17 +10,18 @@ test("startsidan har titeln Streetlight och rubriken Ett ljus på vägen till sk
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Ett ljus på vägen till skolan.");
 });
 
-test("huvudmenyn länkar till Om oss, Nyheter och Frågor", LAYOUT, async ({ page, isMobile }) => {
+test("huvudmenyn länkar till Om oss och Nyheter", LAYOUT, async ({ page, isMobile }) => {
   await page.goto("./");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
   for (const [name, path] of [
     ["Om oss", "om-foreningen"],
     ["Nyheter", "nyheter"],
-    ["Frågor", "vanliga-fragor"],
   ]) {
     await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", new RegExp(`${path}$`));
   }
+  // Vanliga frågor is reached from the footer, not the header.
+  await expect(nav.getByRole("link", { name: "Frågor", exact: true })).toHaveCount(0);
   await expect(nav.getByRole("link", { name: "Bli fadder" })).toHaveAttribute("href", /\/bli-fadder$/);
   // The Ett ljus rule: the hero's "Bli fadder" is the start page's gold button, so the header's is a line.
   expect(await nav.getByRole("link", { name: "Bli fadder" }).evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(

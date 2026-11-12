@@ -22,6 +22,7 @@ const SIDOR: [namn: string, sokvag: string][] = [
   ["Nyheter", "nyheter"],
   ["ett inlägg", `nyheter/${ettInlagg}`],
   ["Vanliga frågor", "vanliga-fragor"],
+  ...(funktionPa("engagera") ? ([["Engagera dig", "engagera-dig"]] as [string, string][]) : []),
   ...(funktionPa("historia") ? ([["Vår historia", "historia"]] as [string, string][]) : []),
   ...(funktionPa("julklapp") ? ([["Ge en julklapp", "julklapp"]] as [string, string][]) : []),
 ];

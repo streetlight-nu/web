@@ -1,97 +1,157 @@
 {
-  "ingress": "Streetlight började med en liten flicka som ville leka. Hon tog en svensk mans hand och ledde honom hem till sin familj. Sedan dess har faddrar i Sverige hjälpt barn i Addis Abeba att gå i skolan.",
+  "ingress": "Streetlight började som Deborahprojektet. Familjen Nandorf i Sverige hade adopterat en son från Etiopien, och 1995 reste Tryggve Nandorf dit för att träffa sonens mamma. Där tog en liten flicka hans hand och ledde honom hem till sin familj. Sedan dess har faddrar i Sverige hjälpt barn i Addis Abeba att gå i skolan, först i Deborahprojektet och sedan 2017 i Streetlight.",
   "perioder": [
     {
       "rubrik": "1995–1999",
       "namn": "Det började med en hand",
-      "sammanfattning": "En flicka i Addis Abeba och en man från Sverige blev vänner, och det blev början på Streetlight.",
+      "sammanfattning": "En resa till Addis Abeba, en flicka som ville leka och de första faddrarna.",
       "handelser": [
         {
           "ar": "1995",
           "rubrik": "Merry tar Tryggves hand",
-          "text": "Tryggve Nandorf bodde på ett vandrarhem i Addis Abeba. En flicka som hette Merry kom fram och ville leka. Hon tog hans hand och ledde honom hem till sina föräldrar. Där började de träffas och be tillsammans.",
-          "fraga": "Hur kan man bli vänner fast man inte talar samma språk?"
+          "text": "Till påsk kom Tryggve till Addis Abeba. Han bodde i en gammal skola på en missionsstation i Entoto. En flicka som hette Merry, ungefär tre år, kom fram och pratade med honom. Han förstod inte ett ord, men hon tog hans hand och ledde honom till sina föräldrar, Dawit och Alemtsehay. De blev vänner för livet.",
+          "citat": ""
         },
         {
-          "ar": "",
+          "ar": "1995",
+          "rubrik": "En stilla röst",
+          "text": "På gatorna fanns många som tiggde. Tryggve blev ledsen och sa till Dawit: ”Jag vill ju hjälpa dem, men de är alldeles för många!” Då hörde han en stilla röst inom sig: ”Jag har inte tänkt att du ska hjälpa alla.”",
+          "citat": "Det räcker med en."
+        },
+        {
+          "ar": "1995",
           "rubrik": "De första faddrarna",
-          "text": "Tryggve såg att Merry, hennes syster och ett barn till behövde hjälp för att gå i skolan. Hemma i Sverige letade han upp faddrar som ville stötta dem. Så började Streetlight.",
-          "fraga": "Vad behöver du för att kunna gå till skolan?"
+          "text": "En mamma på missionsstationen hade en dotter på nio månader. Hon hade inte råd att ta hand om henne och ville lämna bort sin dotter för adoption. Tryggve lovade att leta efter faddrar i Sverige, så att mamman kunde behålla sin dotter. Hemma frågade han släkt och vänner, och de ville hjälpa. Dottern hette Kalkidan och blev det första fadderbarnet.",
+          "citat": ""
+        },
+        {
+          "ar": "1996",
+          "rubrik": "Deborahprojektet får sitt namn",
+          "text": "Merrys familj flyttade och pappan Dawits lön räckte inte längre till skolavgiften för Merrys storasyster Betty. Då bad Betty om hjälp för sig och Merry. Tryggves son Joel ville bli fadder åt systrarna. Projektet fick namnet Deborahprojektet, efter skolan som flickorna gick i.",
+          "citat": ""
         }
       ]
     },
     {
       "rubrik": "2000–2009",
-      "namn": "Skolåren",
-      "sammanfattning": "Faddrarna stöttade barnens skolgång, och Merry kämpade för att få läsa till läkare.",
+      "namn": "Fler barn, större drömmar",
+      "sammanfattning": "Projektet växte till tio barn, och Betty och Merry började på universitetet.",
       "handelser": [
         {
-          "ar": "",
-          "rubrik": "Streetlight blir två föreningar",
-          "text": "Streetlight registreras som ideell förening i Sverige och i Etiopien, med var sin styrelse.",
-          "fraga": ""
+          "ar": "2001",
+          "rubrik": "Tio barn",
+          "text": "När Tryggve kom tillbaka fick han höra om fyra syskon som förlorat båda sina föräldrar. En flicka hade förlorat sin pappa i kriget. En pappa hade förlorat sin fru och behövde hjälp att ta hand om sina två små barn medan han arbetade. Nu stöttade faddrarna tio barn. Varje gång projektet växte fanns det nya människor som ville bli faddrar.",
+          "citat": ""
         },
         {
-          "ar": "",
+          "ar": "2007",
+          "rubrik": "Hela familjen räknas",
+          "text": "Tryggve och Maud reste till Addis Abeba med sina söner Emanuel och Joel. De träffade alla tio barnen i trädgården vid Kotobe-kyrkan, och barnen sjöng. Projektet fick ett nytt namn, Deborah familjeprogram, för nu skulle hela familjen få stöd. Målet var ”att främja en frisk och utbildad generation som kan bidra till Etiopiens utveckling”.",
+          "citat": ""
+        },
+        {
+          "ar": "2008",
+          "rubrik": "Betty tar examen",
+          "text": "Betty tog sin examen i ekonomi. På ceremonin lovade alla studenter att använda sina kunskaper för att tjäna sitt land. Samma år fick tre kvinnor låna 3 000 birr till en ugn, så att de kunde baka injera och sälja.",
+          "citat": ""
+        },
+        {
+          "ar": "2008",
           "rubrik": "Merry vill bli läkare",
-          "text": "Merry pluggade flitigt. När hon skulle börja universitetet blev hon placerad 60 mil hemifrån, på en utbildning i jordbruk. I Etiopien väljer staten ofta vad studenterna ska läsa. Men Merry drömde om att arbeta med människor.",
-          "fraga": "Vad skulle du vilja arbeta med när du blir stor?"
-        },
-        {
-          "ar": "",
-          "rubrik": "Faddrarna hjälper Merry vidare",
-          "text": "Merry hörde av sig och var förtvivlad. Familjen Nandorf och flera faddrar samlade ihop pengar. Då kunde hon läsa medicin på ett privat universitet i Addis Abeba.",
-          "fraga": "Har någon hjälpt dig att nå något du ville?"
+          "text": "I Etiopien bestämde staten vad studenterna skulle läsa. Merry ville läsa medicin men blev placerad på en utbildning i jordbruk, 100 mil hemifrån. Hon grät. Tryggve ringde till faddrarna i Sverige, och de ville hjälpa. Då kunde Merry läsa medicin på ett privat universitet i Addis Abeba. Hon har skrivit: ”Den dagen fick mitt liv en ny inriktning.”",
+          "citat": ""
         }
       ]
     },
     {
-      "rubrik": "2010–2019",
-      "namn": "Fröet som växte",
-      "sammanfattning": "Merry blev läkare, och faddrar reste till Addis Abeba för att träffa barnen och familjerna.",
+      "rubrik": "2010–2016",
+      "namn": "Från familj till förening",
+      "sammanfattning": "Deborahprojektet blev en förening med styrelse, Merry blev läkare och Streetlight kom in i bilden.",
       "handelser": [
+        {
+          "ar": "2010",
+          "rubrik": "En styrelse bildas",
+          "text": "Arbetet hade vuxit, och familjen Nandorf behövde hjälp. I december bildades en styrelse med sex personer. Nu blev Deborah familjeprogram en ideell förening med årsmöte och revisor.",
+          "citat": ""
+        },
+        {
+          "ar": "2011",
+          "rubrik": "Familjer hjälper sig själva",
+          "text": "Tio kvinnor hade fått hjälp att starta något eget, och fyra av dem lyckades. Föreningen fick inte låna ut pengar i Etiopien. Därför började den i stället hjälpa familjer att hjälpa sig själva, genom att starta något som ger inkomst.",
+          "citat": ""
+        },
+        {
+          "ar": "2012",
+          "rubrik": "Nya fadderbarn",
+          "text": "Fyra nya fadderbarn kom med i projektet, från familjer som hade det mycket svårt. En av dem var Ruth, som var åtta år.",
+          "citat": ""
+        },
+        {
+          "ar": "2013",
+          "rubrik": "Dawit och Alemtsehay besöker Sverige",
+          "text": "Merrys föräldrar kom till Sverige för första gången. De reste runt och träffade faddrar som hade stöttat barnen i många år. Merry skickade med sin berättelse till faddrarna. Hon skrev att hon har lärt sig att det finns en stor välsignelse i att dela med sig.",
+          "citat": ""
+        },
         {
           "ar": "2014",
           "rubrik": "Merry blir läkare",
-          "text": "Efter flera års studier var Merry klar läkare. I ett brev skrev hon: ”Tack vare er har jag fått lära mig sedan jag var barn vad det är att dela med sig.” Nu utbildar hon sig till barnläkare i USA. Hon drömmer om att starta ett sjukhus i Etiopien.",
-          "fraga": "Vad kan du dela med dig av till andra?"
+          "text": "Merry och 40 studiekamrater fick sina läkarlegitimationer. Hon hade ofta pluggat på nätterna. Tryggve var på plats och tänkte att projektets historia hade knutits ihop: det började med Merry, och nu stod hon där som läkare. I ett brev skrev hon: ”Tack vare er har jag fått lära mig sedan jag var barn vad det är att dela med sig.” Nu utbildar hon sig till barnläkare i USA och drömmer om att starta ett sjukhus i Etiopien.",
+          "citat": ""
+        },
+        {
+          "ar": "2015",
+          "rubrik": "Tjugo år och ett möte med Streetlight",
+          "text": "Deborahprojektet fyllde tjugo år. Kalkidan, det första fadderbarnet, tog examen i datavetenskap. Samma år träffade Joel Josefine Lindgren, som arbetade bland gatubarn i Addis Abeba. 2010 hade hon grundat den kristna ideella föreningen Streetlight. De märkte att föreningarna ville samma sak. I oktober bestämde Deborahprojektet att lämna över arbetet till Streetlight.",
+          "citat": ""
+        },
+        {
+          "ar": "2016",
+          "rubrik": "Ett lokalt arbete i Addis Abeba",
+          "text": "Föreningarna bestämde hur arbetet skulle fortsätta. En förening i Etiopien skulle leda arbetet på plats, och en förening i Sverige skulle samla in pengar via faddrar. Dawit kunde nu arbeta för Streetlight på heltid. På en resa runt Norsjö berättade Dawit och Joel om barnen, och 17 nya faddrar ville vara med.",
+          "citat": ""
+        }
+      ]
+    },
+    {
+      "rubrik": "2017–idag",
+      "namn": "Streetlight",
+      "sammanfattning": "Streetlight tog över fadderbarnen, och arbetet fortsätter med nya idéer från Streetlight Etiopien.",
+      "handelser": [
+        {
+          "ar": "2017",
+          "rubrik": "Streetlight tar över",
+          "text": "Den 1 januari tog Streetlight över arbetet med fadderbarnen. Deborahprojektet hade hjälpt ett tjugotal barn till en bra skolgång. Tre av dem har tagit examen från universitetet, som läkare, ekonom och IT-ingenjör. Joel blev ordförande i Streetlight, och flera av faddrarna fortsatte att stötta barnen.",
+          "citat": ""
         },
         {
           "ar": "2019",
           "rubrik": "Fadderresa till Addis Abeba",
           "text": "I november reste tre faddrar till Addis Abeba och stannade en vecka. De träffade barnen och familjerna och såg arbetet med egna ögon. De hade med sig 15 ryggsäckar med pennor och en anteckningsbok. I boken kunde barnen skriva ner sina drömmar.",
-          "fraga": "Vad skulle du skriva i en bok om dina drömmar?"
-        }
-      ]
-    },
-    {
-      "rubrik": "2020–idag",
-      "namn": "Nya krafter",
-      "sammanfattning": "Svåra år för ekonomin, och nya idéer från Streetlight Etiopien.",
-      "handelser": [
+          "citat": ""
+        },
         {
           "ar": "",
           "rubrik": "Ruth kan gå i skolan igen",
           "text": "Ruth hade haft ont i halsen sedan hon var liten. Till slut var det svårt för henne att äta, prata och klara skolan. Faddrarna samlade in pengar till en operation. Efteråt sa Ruth: ”Nu mår jag bra och har kunnat fortsätta skolan.”",
-          "fraga": "Hur känns det när man får hjälp av andra?"
+          "citat": ""
         },
         {
           "ar": "",
           "rubrik": "En pappa börjar tillverka skor",
           "text": "Aklilu, Ruths pappa, hade samlat skräp med skottkärra men blev utan arbete. Han ville börja tillverka skor. Med stöd från Streetlight köpte han en skomaskin och en symaskin för läder. Nu försörjer han familjen och har anställt kvinnor som hjälper till.",
-          "fraga": "Vad skulle du vilja tillverka om du hade en egen verkstad?"
+          "citat": ""
         },
         {
           "ar": "",
           "rubrik": "Volontärerna kommer",
           "text": "Priserna i Etiopien steg kraftigt och kronan blev svag. Då hittade Streetlight Etiopien volontärer, bland annat studenter i socialt arbete. De är med på söndagsträffarna, leker och pratar med barnen.",
-          "fraga": "Vad gör du för att en kompis ska må bra?"
+          "citat": ""
         },
         {
           "ar": "",
           "rubrik": "Sommarskola för barnen",
           "text": "Streetlight Etiopien ville ordna en sommarskola, och lokala organisationer i Addis Abeba hjälpte till. Barnen läste engelska och matte och tävlade på rasterna. Varje dag utsågs dagens stjärnelev. På slutet fick alla en ryggsäck och beröm inför sina föräldrar.",
-          "fraga": "Vad är roligast att lära sig på sommarlovet?"
+          "citat": ""
         }
       ]
     }

@@ -6,20 +6,22 @@ import { hamtaJulkampanj } from "@/lib/julkampanj";
 import { href } from "@/lib/utils";
 
 /** The page the visitor is on, when it has its own place in the main menu or is where "Bli fadder" leads. */
-export type AktuellSida = "start" | "nyheter" | "om" | "historia" | "julklapp" | "fragor" | "stod";
+export type AktuellSida = "start" | "nyheter" | "om" | "historia" | "julklapp" | "fragor" | "stod" | "engagera";
 
 interface Props {
   current?: AktuellSida;
 }
 const { current } = Astro.props;
 const { visasPaStartsidan } = hamtaJulkampanj();
-const { julklapp } = hamtaFunktioner();
+const { julklapp, engagera } = hamtaFunktioner();
 
 const links: NavLink[] = [
   // Vår historia is reached from Om föreningen (Så började det).
   { label: "Om föreningen", href: href("/om-foreningen"), current: current === "om" || current === "historia" },
   { label: "Nyheter", href: href("/nyheter"), current: current === "nyheter" },
   { label: "Frågor", href: href("/vanliga-fragor"), current: current === "fragor" },
+  // The flag `engagera` (src/data/funktioner.json) removes the page and every link to it.
+  ...(engagera ? [{ label: "Engagera dig", href: href("/engagera-dig"), current: current === "engagera" }] : []),
   // Seasonal: the association turns the campaign on and off in Pages CMS (src/data/julkampanj.json). The flag
   // `julklapp` (src/data/funktioner.json) removes the page and every link to it.
   ...(julklapp && (visasPaStartsidan || current === "julklapp")

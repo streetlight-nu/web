@@ -1,0 +1,387 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FyllsI from "@/components/FyllsI.astro";
+import Pil from "@/components/Pil.astro";
+import Repejo from "@/components/Repejo.astro";
+import Steps from "@/components/Steps.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { hamtaFunktioner } from "@/lib/funktioner";
+import { INSAMLINGSKATEGORI } from "@/lib/repejo";
+import { href } from "@/lib/utils";
+
+/** The page is built only when the flag `engagera` is on (src/data/funktioner.json); otherwise /engagera-dig is a 404. */
+export function getStaticPaths() {
+  return hamtaFunktioner().engagera ? [{ params: { engagera: "engagera-dig" } }] : [];
+}
+
+/**
+ * Engagera dig: what members and others can do for Streetlight with their time. A green top with the three ways as
+ * jump links, then one's own fundraiser through Repejo (ADR 0003): one row per category, each with Repejo's own
+ * button `<repejo-p2p-create-button>`; then Repejo's list of ongoing fundraisers (`<repejo-p2p-list>`); last, tips and material for
+ * finding new fadder. What the association has not given yet (a category's code, the printed material)
+ * shows the chip "fylls i".
+ */
+
+/** The three ways, in the order the sections come. */
+const vagar = [
+  { id: "insamling", rubrik: "Starta en egen insamling", text: "För en födelsedag, ett jubileum eller ett sportevent." },
+  { id: "pagaende", rubrik: "Ge till en pågående insamling", text: "Heja på någon som redan samlar in till barnen." },
+  { id: "faddrar", rubrik: "Hjälp oss hitta nya faddrar", text: "Tips och material för att berätta om Streetlight." },
+];
+
+/** One row per category of Repejo's own fundraisers. */
+const kategorier: { rubrik: string; text: string; kategori: string | null }[] = [
+  {
+    rubrik: "Födelsedag",
+    text: "Fyller du år? Be om en gåva till barnens skolgång i stället för en present.",
+    kategori: INSAMLINGSKATEGORI.fodelsedag,
+  },
+  {
+    rubrik: "Jubileum",
+    text: "En bröllopsdag, ett företags eller en förenings jubileum. Fira med något som varar.",
+    kategori: INSAMLINGSKATEGORI.jubileum,
+  },
+  {
+    rubrik: "Sportevent",
+    text: "Springer, cyklar eller simmar du? Be vänner och kollegor heja på dig med en gåva.",
+    kategori: INSAMLINGSKATEGORI.sportevent,
+  },
+];
+
+/** The printed and digital material; the association makes it, and until then each row shows "fylls i". */
+const material = [
+  { rubrik: "Affisch att sätta upp", text: "För anslagstavlan på jobbet, i kyrkan eller i tvättstugan.", saknas: "affisch fylls i" },
+  { rubrik: "Folder att dela ut", text: "Att lämna efter en pratstund, så att det finns något att läsa i lugn och ro.", saknas: "folder fylls i" },
+  { rubrik: "Bilder för sociala medier", text: "Bilder och omslagsbilder till egna insamlingar.", saknas: "bilder fylls i" },
+];
+
+/** What a member can say about Streetlight, all from PRODUCT.md. */
+const berattelse = [
+  "Vi är små med flit. Det är 20 barn, och föreningen känner varje familj.",
+  "En fadder stöttar alla 20 barnens skolgång tillsammans. Det går också att vara fadder för ett barn.",
+  "Barnen väljs ut tillsammans med de lokala myndigheterna i Addis Abeba.",
+  "Två föreningar med var sin styrelse. Streetlight Sverige samlar in, och Streetlight Etiopien bär arbetet på plats.",
+];
+
+const markorer = ["", "mark--cobalt", "mark--gron"];
+---
+
+<BaseLayout
+  title="Engagera dig"
+  current="engagera"
+  description="Stötta barnen i Addis Abeba på fler sätt än som fadder: starta en egen insamling eller hjälp oss att hitta nya faddrar."
+>
+  <Repejo slot="head" del="skript" />
+
+  <div slot="header" class="pt-[clamp(8px,2vw,20px)]">
+    <nav aria-label="Du är här" class="flex flex-wrap items-center gap-2.5 text-label font-semibold text-mint">
+      <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page" class="text-cotton">Engagera dig</span>
+    </nav>
+  </div>
+
+  <section
+    id="engagera"
+    aria-labelledby="engagera-rubrik"
+    class="on-green bg-green pt-[clamp(24px,4vw,56px)] pb-[clamp(64px,9vw,112px)] text-cotton"
+  >
+    <div class="split split--botten band-inner">
+      <div class="min-w-0">
+        <h1 id="engagera-rubrik" class="max-w-[14ch] text-headline">
+          Engagera dig och håll <span class="text-gold">ljusen</span> tända.
+        </h1>
+        <p class="mt-[22px] max-w-[46ch] text-lede text-mint">
+          Du kan stötta barnen i Addis Abeba på fler sätt än som fadder. Samla in pengar när du fyller år eller
+          springer ett lopp, eller hjälp oss att hitta nya faddrar.
+        </p>
+      </div>
+      <nav aria-label="Sätt att engagera dig" class="vagar min-w-0">
+        <ul>
+          {
+            vagar.map((vag) => (
+              <li>
+                <a href={`#${vag.id}`}>
+                  <span class="min-w-0">
+                    <span class="vag-rubrik block text-title tracking-[-0.015em] text-cotton">{vag.rubrik}</span>
+                    <span class="mt-1.5 block text-mint">{vag.text}</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true" class="size-6 flex-none">
+                    <path
+                      d="M12 5v14M6 13l6 6 6-6"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <TibebBand variant="thin" />
+
+  <section id="insamling" aria-labelledby="insamling-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="band-inner">
+      <h2 id="insamling-rubrik" class="text-headline">Starta en egen insamling.</h2>
+      <p class="mt-[22px] max-w-[58ch] text-lede text-ink-soft">
+        Önska dig gåvor till barnen i stället för presenter. Välj ett tillfälle, skriv några rader och sätt ett mål. Du
+        skapar insamlingen hos Repejo, föreningens insamlingstjänst, och gåvorna går till Streetlight.
+      </p>
+      <div class="split mt-[clamp(40px,5vw,56px)]">
+        <ul class="rader min-w-0" aria-label="Välj tillfälle">
+          {
+            kategorier.map((k, i) => (
+              <li data-kategori={k.rubrik}>
+                <span class:list={["mark", markorer[i % 3]]} aria-hidden="true" />
+                <div class="rad">
+                  <div class="min-w-0">
+                    <h3 class="text-title tracking-[-0.015em]">{k.rubrik}</h3>
+                    <p class="mt-1.5 max-w-[44ch] text-ink-soft">{k.text}</p>
+                  </div>
+                  <div class="handling">
+                    {k.kategori ? (
+                      <Repejo del="skapa-insamling" kategori={k.kategori} />
+                    ) : (
+                      <FyllsI>knapp fylls i</FyllsI>
+                    )}
+                  </div>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="min-w-0">
+          <h3 id="sa-gar-det-till" class="text-title tracking-[-0.015em]">Så går det till</h3>
+          <Steps aria-labelledby="sa-gar-det-till" class="mt-5">
+            <li>
+              Fyll i Repejos formulär: en titel, några rader, ett målbelopp och en omslagsbild. Det tar några minuter.
+            </li>
+            <li>Dela länken med vänner och familj, i sociala medier eller som en QR-kod.</li>
+            <li>Följ hur gåvorna kommer in och hur nära målet du är.</li>
+          </Steps>
+          <p class="mt-7 max-w-[46ch] border-t-[3px] border-ink pt-5 text-ink-soft">
+            Vill du använda ett foto från Addis Abeba? Ta bara bilder som föreningen ger dig. Bilder på barnen och
+            familjerna kräver familjens samtycke.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="pagaende"
+    aria-labelledby="pagaende-rubrik"
+    class="on-green bg-green-deep py-[clamp(64px,9vw,120px)] text-cotton"
+  >
+    <div class="band-inner">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div class="min-w-0">
+          <h2 id="pagaende-rubrik" class="text-headline">Pågående insamlingar.</h2>
+          <p class="mt-[22px] max-w-[46ch] text-lede text-mint">
+            De här samlar in till barnen just nu. Ge en gåva till någon av dem, eller hämta idéer till din egen.
+          </p>
+        </div>
+        <a class={buttonVariants({ variant: "line" })} href="#insamling">Starta din egen</a>
+      </div>
+      <div class="lista mt-[clamp(32px,4vw,40px)]">
+        <Repejo del="insamlingar" />
+      </div>
+    </div>
+  </section>
+
+  <section id="faddrar" aria-labelledby="faddrar-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="split band-inner">
+      <div class="min-w-0">
+        <h2 id="faddrar-rubrik" class="text-headline">Hjälp oss hitta nya faddrar.</h2>
+        <p class="mt-[22px] max-w-[46ch] text-lede text-ink-soft">
+          Ett tips från en vän väger tyngre än en annons. Här är det du behöver för att berätta om Streetlight, vid
+          köksbordet, på jobbet eller i föreningen.
+        </p>
+        <div class="on-green mt-[clamp(32px,4vw,48px)] rounded-md bg-green p-[clamp(24px,4vw,40px)] text-cotton">
+          <h3 id="beratta" class="text-title tracking-[-0.015em]">Så kan du berätta</h3>
+          <ul class="berattelse mt-5" aria-labelledby="beratta">
+            {berattelse.map((rad) => <li>{rad}</li>)}
+          </ul>
+          <p class="mt-6 border-t border-mint/35 pt-5 text-mint">
+            Får du en fråga du inte kan svara på? Tipsa om{" "}
+            <a
+              class="inline-block py-2.5 font-semibold text-cotton underline decoration-gold decoration-2 underline-offset-4"
+              href={href("/vanliga-fragor")}>Vanliga frågor</a
+            >.
+          </p>
+        </div>
+      </div>
+      <ul class="rader min-w-0" aria-label="Material">
+        <li>
+          <span class="mark" aria-hidden="true"></span>
+          <div class="rad">
+            <div class="min-w-0">
+              <h3 class="text-title tracking-[-0.015em]">Sidan Bli fadder</h3>
+              <p class="mt-1.5 max-w-[44ch] text-ink-soft">
+                Där står allt en blivande fadder behöver, och formuläret för att anmäla sig. Dela länken.
+              </p>
+            </div>
+            <div class="handling">
+              <a class={buttonVariants({ variant: "line-ink" })} href={href("/bli-fadder")}>Till Bli fadder <Pil /></a>
+            </div>
+          </div>
+        </li>
+        {
+          material.map((m, i) => (
+            <li>
+              <span class:list={["mark", markorer[(i + 1) % 3]]} aria-hidden="true" />
+              <div class="rad">
+                <div class="min-w-0">
+                  <h3 class="text-title tracking-[-0.015em]">{m.rubrik}</h3>
+                  <p class="mt-1.5 max-w-[44ch] text-ink-soft">{m.text}</p>
+                </div>
+                <div class="handling">
+                  <FyllsI>{m.saknas}</FyllsI>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* A section's heading in the left column, its content in the right one; stacked under 900 px. */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+    gap: clamp(32px, 6vw, 96px);
+  }
+  .split--botten {
+    align-items: end;
+  }
+  @media (max-width: 900px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* The three ways: a Ledger on green of jump links. */
+  .vagar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-block: 3px solid var(--color-cotton);
+  }
+  .vagar li + li {
+    border-top: 1.5px solid color-mix(in srgb, var(--color-mint) 35%, transparent);
+  }
+  .vagar a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 22px;
+    color: var(--color-cotton);
+    text-decoration: none;
+  }
+  .vagar a:hover .vag-rubrik {
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold-soft);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+
+  /* Rows as in Ledger: thick ink rules top and bottom, a woven marker, the text and an action. */
+  .rader {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 3px solid var(--color-ink);
+  }
+  .rader li {
+    --markorspalt: 44px;
+    --markorluft: 20px;
+    display: grid;
+    grid-template-columns: var(--markorspalt) minmax(0, 1fr);
+    gap: var(--markorluft);
+    padding-block: 26px;
+    border-bottom: 1.5px solid rgba(11, 46, 36, 0.18);
+  }
+  .rader li:last-child {
+    border-bottom: 3px solid var(--color-ink);
+  }
+  .rad {
+    display: grid;
+    gap: 16px;
+  }
+  .handling {
+    min-width: 0;
+  }
+
+  /* The woven rhombus marker, as in Ledger. */
+  .mark {
+    --storlek: 28px;
+    --karna: var(--color-thread-red);
+    width: var(--storlek);
+    height: var(--storlek);
+    margin: 6px 0 0 6px;
+    transform: rotate(45deg);
+    background: var(--color-gold);
+    box-shadow:
+      inset 0 0 0 calc(var(--storlek) / 4) var(--color-gold),
+      inset 0 0 0 calc(var(--storlek) / 2) var(--karna);
+  }
+  .mark--cobalt {
+    --karna: var(--color-thread-cobalt);
+  }
+  .mark--gron {
+    --karna: var(--color-green);
+  }
+  @media (max-width: 520px) {
+    .rader li {
+      --markorspalt: 30px;
+      --markorluft: 14px;
+    }
+    .mark {
+      --storlek: 20px;
+      margin: 6px 0 0 5px;
+    }
+  }
+
+  /* Repejo's list of fundraisers on a cotton panel, so it reads as it does on Repejo's own white page. */
+  .lista {
+    padding: clamp(16px, 3vw, 32px);
+    border-radius: var(--radius-lg);
+    background: var(--color-cotton);
+    color: var(--color-ink);
+  }
+
+  /* Så kan du berätta: gold rhombi on green, as the markers on the gold thread. */
+  .berattelse {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+  .berattelse li {
+    position: relative;
+    padding-left: 34px;
+    text-wrap: pretty;
+  }
+  .berattelse li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0.45em;
+    width: 13px;
+    height: 13px;
+    transform: rotate(45deg);
+    background: var(--color-gold);
+  }
+</style>

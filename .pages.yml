@@ -126,6 +126,16 @@ content:
             - { value: pa, label: På, visas överallt }
             - { value: av, label: Av, visas ingenstans }
             - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
+      - name: engagera
+        label: Engagera dig (sidan och länkarna till den)
+        type: select
+        required: true
+        default: pa
+        options:
+          values:
+            - { value: pa, label: På, visas överallt }
+            - { value: av, label: Av, visas ingenstans }
+            - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
 
   - name: vanligaFragor
     label: Vanliga frågor
@@ -234,10 +244,10 @@ content:
                 label: Text
                 type: text
                 description: Två till fyra korta meningar. Skriv så att ett barn förstår, med enkla ord och gärna något konkret, som en skola, en uniform eller en dag. Berätta om barn och familjer med värdighet och bara med deras samtycke.
-              - name: fraga
-                label: Att prata om tillsammans
+              - name: citat
+                label: Citat
                 type: string
-                description: En fråga som en förälder kan prata om med sitt barn efteråt, till exempel ”Vad behöver du för att kunna gå till skolan?”. Får lämnas tomt.
+                description: Några ord att minnas, som visas stort efter texten, till exempel Det räcker med en. Skriv utan citattecken. Bara ord som någon verkligen har sagt eller skrivit. Får lämnas tomt.
       - name: idagBild
         label: Foto till Idag
         type: object

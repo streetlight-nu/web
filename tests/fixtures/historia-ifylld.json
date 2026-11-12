@@ -6,8 +6,8 @@
       "namn": "TEST-PERIOD ett",
       "sammanfattning": "TEST-SAMMANFATTNING ett.",
       "handelser": [
-        { "ar": "1995", "rubrik": "TEST-HÄNDELSE med årtal", "text": "TEST-TEXT.", "fraga": "TEST-FRÅGA?" },
-        { "ar": "", "rubrik": "TEST-HÄNDELSE utan årtal", "text": "TEST-TEXT.", "fraga": "" }
+        { "ar": "1995", "rubrik": "TEST-HÄNDELSE med årtal", "text": "TEST-TEXT.", "citat": "TEST-CITAT." },
+        { "ar": "", "rubrik": "TEST-HÄNDELSE utan årtal", "text": "TEST-TEXT." }
       ]
     },
     { "rubrik": "2000–2009", "namn": "TEST-PERIOD två", "sammanfattning": "", "handelser": [] },

@@ -62,7 +62,7 @@ Sidan **Vår historia** är en tidslinje från 1995 till idag. Allt som inte är
 2. Skriv en **Ingress**: ett par meningar om hur allt började.
 3. Under **Perioder** finns en rad per period, äldst först. Varje period har ett årtal, till exempel 1995–1999, ett kort namn och en sammanfattning.
 4. Under varje period finns **Händelser**. Fyll i år, rubrik och text. Lägg till fler händelser med knappen för att lägga till (Add an entry).
-5. Fältet **Att prata om tillsammans** är frivilligt. Där kan du skriva en fråga som en förälder kan prata om med sitt barn efteråt, till exempel ”Vad behöver du för att kunna gå till skolan?”.
+5. Fältet **Citat** är frivilligt. Där kan du skriva några ord som någon verkligen har sagt eller skrivit, till exempel ”Det räcker med en.”. De visas stort efter texten. Skriv dem utan citattecken, så sätter sidan dit dem. Använd fältet sparsamt, högst någon gång per period, så att citatet sticker ut.
 
 Många läser sidan tillsammans med sina barn. Skriv därför med enkla ord och korta meningar, och gärna något konkret: en skola, en uniform, en vanlig dag. Berätta om barnen och familjerna med värdighet, och bara det de har gett sitt samtycke till.
 
@@ -124,3 +124,13 @@ Ett felstavat namn, till exempel `{swihs}`, stoppar sidan. Bankgirot skrivs `{ni
 **Startsidan** länkar till frågan ”Hur vet jag att pengarna når fram?” under Insyn. Tar du bort den frågan försvinner länken.
 
 **Bli fadder** visar fem av frågorna under ”Innan du bestämmer dig.”, med samma svar som här: ”Vad innebär det att vara fadder?”, ”Vad kostar det att vara fadder?”, ”Hur betalar jag?”, ”Kan jag sluta vara fadder?” och ”Får jag höra hur det går?”. Ändrar du ett svar ändras det på båda sidorna. Tar du bort en av frågorna försvinner den från sidan Bli fadder.
+
+## 9. Slå på och av sidor
+
+Under **Funktioner** i menyn väljer du om en sida visas. Det gäller **Ge en julklapp**, **Vår historia** och **Engagera dig**. Sidan och länkarna till den, i menyn, sidfoten och på andra sidor, följer samma val.
+
+1. Klicka på **Funktioner** i menyn till vänster.
+2. Välj **På** för att visa sidan överallt, **Av** för att dölja den helt, eller **Bara i testbyggen** för att visa den bara i testversionen och inte på den publicerade sajten.
+3. Spara. Ändringen syns när sajten har byggts och publicerats igen, vilket tar några minuter.
+
+En sida som är **Av** finns inte alls, så den som har en länk till den får ”sidan finns inte”.

@@ -31,6 +31,17 @@ test("Sidan Bli fadder hämtar Repejos skript från Repejo, en gång", async ({ 
   expect(skript).toEqual([`${REPEJO_HOST}/assets/checkout.js`]);
 });
 
+test("Engagera dig hämtar Repejos skript från Repejo, en gång", async ({ page }) => {
+  await stubRepejo(page);
+  const skript: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().startsWith(`${REPEJO_HOST}/`)) skript.push(request.url());
+  });
+  await page.goto("engagera-dig");
+  await page.waitForLoadState("networkidle");
+  expect(skript).toEqual([`${REPEJO_HOST}/assets/checkout.js`]);
+});
+
 test("startsidan hämtar ingenting från Repejo", async ({ page }) => {
   await stubRepejo(page);
   const skript: string[] = [];

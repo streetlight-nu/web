@@ -30,7 +30,7 @@ I `.astro`-filer används `buttonVariants()` direkt på `<a>`. React-komponenten
 
 En delad länk visar sajtens standardbild `public/delningsbild.png` (1200 × 630), eller inläggets egen bild. Standardbilden ritas av `node scripts/rita-delningsbild.mjs` från logotypen; kör skriptet igen om logotypen ändras.
 
-Typsnitten läggs på egen server via Fontsource, och sajtens egen kod hämtar dem aldrig från Google Fonts. En sida får anropa en extern tjänst ([ADR 0003](docs/adr/0003-externa-tjanster-som-repejo-far-anropas.md)). I dag gäller det bara julkampanjen, som använder Repejo. Repejos skript hämtar själv andra tjänster på `/julklapp`: typsnitt från Google, Stripe, Adyen, BankID och kanske Metas pixel. ADR 0003 listar dem.
+Typsnitten läggs på egen server via Fontsource, och sajtens egen kod hämtar dem aldrig från Google Fonts. En sida får anropa en extern tjänst ([ADR 0003](docs/adr/0003-externa-tjanster-som-repejo-far-anropas.md)). I dag använder julkampanjen, Bli fadder och Engagera dig Repejo. Repejos skript hämtar själv andra tjänster på `/julklapp`: typsnitt från Google, Stripe, Adyen, BankID och kanske Metas pixel. ADR 0003 listar dem.
 
 ## Föreningsuppgifter och Pages CMS
 
@@ -79,9 +79,13 @@ Kampanjen är säsongsbunden. Efter jul kan sidan tas bort, eller kortkoden byta
 
 Formuläret för att bli fadder ligger på Bli fadder (`src/pages/bli-fadder.astro`, `/bli-fadder`) och är Repejos checkout (`<repejo-checkout>`) med kortkoden `FADDER_KORTKOD` i `src/lib/repejo.ts`. Sidan laddar Repejos skript, och formuläret visas utan reservlänk under sig (`utanReserv`). Startsidan laddar inte Repejo: dess fält ”Bli fadder” länkar till sidan Bli fadder. Det besökaren fyller i går till Repejo.
 
+Sidan Engagera dig (`src/pages/[engagera].astro`, `/engagera-dig`, bakom flaggan `engagera`) låter besökaren starta en egen insamling hos Repejo. Varje tillfälle (Födelsedag, Jubileum, Sportevent) har Repejos knapp `<repejo-p2p-create-button>` med sin kategori, som står i `INSAMLINGSKATEGORI` i `src/lib/repejo.ts`. En kategori som är `null` visar chipet ”knapp fylls i” i stället för en knapp. Kategorierna är `birthday`, `anniversary` och `sport_event`. Under Pågående insamlingar visas Repejos lista `<repejo-p2p-list>` med föreningens egna insamlingar. Materialet för att hitta nya faddrar (affisch, folder, bilder) visas med ”fylls i” tills föreningen har gett det.
+
 ## Publicering
 
 GitHub Actions kör typkontroll, enhetstester, bygge och webbläsartester på varje push. När allt går igenom på `master` publiceras sajten på GitHub Pages på https://streetlight-nu.github.io/web/.
+
+Det föreningen sparar i Pages CMS (`src/data/`, `src/content/` och `src/assets/`) går en snabbare väg: `innehall.yml` kör bara enhetstester och bygge (bygget validerar all data mot sina scheman) och publicerar sedan. Typkontrollen och webbläsartesterna hoppas över, eftersom ingen kod har ändrats. `ci.yml` hoppar över pushar som bara rör de sökvägarna. Rör en commit något annat kör `ci.yml` allt, som vanligt. Båda publicerar via samma `concurrency`-grupp `pages`, så två publiceringar körs aldrig samtidigt.
 
 Redaktörer skriver Nyheter i [Pages CMS](https://app.pagescms.org), som läser `.pages.yml` och committar direkt till `master`. Instruktionen för redaktörer finns i [docs/redaktorer.md](docs/redaktorer.md). Bilder laddas upp till `src/assets/nyheter/` och optimeras vid bygget.
 

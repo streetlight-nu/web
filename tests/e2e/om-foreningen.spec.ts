@@ -48,6 +48,16 @@ test("Så började det leder till Vår historia, och sidfoten till Kontakt", asy
   await expect(page.getByRole("heading", { level: 2, name: "Kontakt." })).toBeInViewport();
 });
 
+test("länken till årsredovisningen leder till en PDF på webbplatsen", async ({ page, request }) => {
+  await page.goto("om-foreningen");
+  const lank = page.getByRole("region", { name: "Kontakt." }).getByRole("link", { name: "Läs årsredovisningen" });
+  const adress = await lank.getAttribute("href");
+  test.skip(!adress?.startsWith("/"), "årsredovisningen ligger inte på webbplatsen");
+  const svar = await request.get(new URL(adress!, page.url()).href);
+  expect(svar.status()).toBe(200);
+  expect(svar.headers()["content-type"]).toContain("application/pdf");
+});
+
 test.describe("Kontakt med tom testfil", () => {
   test.use({ baseURL: process.env.E2E_TOM_URL });
 

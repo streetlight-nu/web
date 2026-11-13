@@ -51,10 +51,10 @@ content:
       - name: arsredovisning
         label: Länk till senaste årsredovisningen
         type: string
-        description: En hel webbadress som börjar med https://. Visas under Kontakt på Om föreningen.
+        description: En hel webbadress som börjar med https://, eller sökvägen till en fil på webbplatsen, till exempel /dokument/streetlight-arsredovisning-2025.pdf. Visas under Kontakt på Om föreningen och i Vanliga frågor.
         pattern:
-          regex: "^$|^https?://\\S+$"
-          message: Skriv en hel webbadress som börjar med https://.
+          regex: "^$|^https?://\\S+$|^/[^/\\s]\\S*$"
+          message: Skriv en hel webbadress som börjar med https://, eller en sökväg som börjar med /dokument/.
       - name: facebook
         label: Facebook-sida
         type: string

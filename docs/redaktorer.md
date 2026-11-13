@@ -134,3 +134,9 @@ Under **Funktioner** i menyn väljer du om en sida visas. Det gäller **Ge en ju
 3. Spara. Ändringen syns när sajten har byggts och publicerats igen, vilket tar några minuter.
 
 En sida som är **Av** finns inte alls, så den som har en länk till den får ”sidan finns inte”.
+
+## 10. Byt årsredovisning
+
+Länken ”Läs årsredovisningen” finns under Kontakt på **Om föreningen** och i svaret på ”Hur vet jag att pengarna når fram?”. Den hämtas från fältet **Länk till senaste årsredovisningen** under **Föreningsuppgifter**.
+
+Årsredovisningen ligger som en PDF på webbplatsen, och fältet innehåller sökvägen till den, till exempel `/dokument/streetlight-arsredovisning-2025.pdf`. En PDF går inte att ladda upp i Pages CMS. Skicka därför den nya årsredovisningen till den som sköter webbplatsen, så lägger hen in filen och ändrar sökvägen. Ligger årsredovisningen redan någon annanstans på nätet kan du i stället skriva hela webbadressen, som börjar med `https://`, och spara.

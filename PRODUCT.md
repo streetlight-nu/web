@@ -32,7 +32,7 @@ Små med flit. Det är 20 barn och 20 ljus, inte tusentals. Föreningen känner 
 - En fadder stöttar normalt alla 20 fadderbarnen tillsammans. Varianten ”fadder för ett barn” finns också.
 - Man blir fadder genom Repejos formulär, och sedan hör föreningen av sig.
 - Redaktörer i föreningen skriver nyheter i Pages CMS utan att kunna programmera (se `docs/redaktorer.md`). Det de sparar committas direkt till `master`.
-- Föreningsuppgifterna (organisationsnummer, 90-konto, Swish, kontaktperson, e-post, årsredovisning) fylls i av föreningen i `src/data/foreningsuppgifter.json` och skrivs aldrig in av komponenter.
+- Föreningsuppgifterna (organisationsnummer, 90-konto, Swish, e-post, årsredovisning) fylls i av föreningen i `src/data/foreningsuppgifter.json` och skrivs aldrig in av komponenter.
 
 ## Capabilities and Constraints
 

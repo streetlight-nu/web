@@ -10,9 +10,9 @@ function uppgift(page: Page, label: string) {
     .filter({ has: page.locator(`xpath=preceding-sibling::dt[normalize-space()="${label}"]`) });
 }
 
-test("Om föreningen har en h1 och avsnitten i ordning, med Bli fadder sist", async ({ page }) => {
+test("Om Streetlight har en h1 och avsnitten i ordning, med Bli fadder sist", async ({ page }) => {
   await page.goto("om-foreningen");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Om föreningen.");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Om Streetlight.");
   await expect(page.getByRole("main").getByRole("heading", { level: 2 })).toHaveText([
     "Vår vision",
     "Det här tror vi på.",
@@ -31,11 +31,25 @@ test("Om föreningen har en h1 och avsnitten i ordning, med Bli fadder sist", as
   );
 });
 
-test("menyn markerar Om föreningen som aktiv", LAYOUT, async ({ page, isMobile }) => {
+test("Vilka vi är visar föreningens styrelse", async ({ page }) => {
+  await page.goto("om-foreningen");
+  const vilka = page.getByRole("region", { name: "Vilka vi är." });
+  await expect(vilka).toContainText("Föreningen leds av en styrelse som väljs på årsmötet.");
+  await expect(vilka).not.toContainText("Streetlight Etiopien har");
+});
+
+test("länkarna under Webbplatsen i sidfoten följer menyns ordning", async ({ page }) => {
+  await page.goto("om-foreningen");
+  const lankar = page.getByRole("contentinfo").getByRole("navigation", { name: "Webbplatsen" }).getByRole("link");
+  const namn = (await lankar.allTextContents()).map((n) => n.trim()).filter((n) => n !== "Engagera dig");
+  expect(namn).toEqual(["Nyheter", "Om Streetlight", "Kontakt", "Vanliga frågor"]);
+});
+
+test("menyn markerar Om Streetlight som aktiv", LAYOUT, async ({ page, isMobile }) => {
   await page.goto("om-foreningen");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-  await expect(nav.getByRole("link", { name: "Om oss", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(nav.getByRole("link", { name: "Om Streetlight", exact: true })).toHaveAttribute("aria-current", "page");
 });
 
 test("Så började det leder till Vår historia, och sidfoten till Kontakt", async ({ page }) => {
@@ -48,6 +62,16 @@ test("Så började det leder till Vår historia, och sidfoten till Kontakt", asy
   await expect(page.getByRole("heading", { level: 2, name: "Kontakt." })).toBeInViewport();
 });
 
+test("länken till årsredovisningen leder till en PDF på webbplatsen", async ({ page, request }) => {
+  await page.goto("om-foreningen");
+  const lank = page.getByRole("region", { name: "Kontakt." }).getByRole("link", { name: "Läs årsredovisningen" });
+  const adress = await lank.getAttribute("href");
+  test.skip(!adress?.startsWith("/"), "årsredovisningen ligger inte på webbplatsen");
+  const svar = await request.get(new URL(adress!, page.url()).href);
+  expect(svar.status()).toBe(200);
+  expect(svar.headers()["content-type"]).toContain("application/pdf");
+});
+
 test.describe("Kontakt med tom testfil", () => {
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
@@ -55,7 +79,7 @@ test.describe("Kontakt med tom testfil", () => {
     await page.goto("om-foreningen");
     const kontakt = page.getByRole("region", { name: "Kontakt." });
     await expect(kontakt.getByText("e-post fylls i")).toBeVisible();
-    await expect(kontakt.getByText("namn fylls i")).toBeVisible();
+    await expect(kontakt).not.toContainText("Kontaktperson");
     await expect(uppgift(page, "Swish för gåvor")).toHaveText("nummer fylls i");
     await expect(uppgift(page, "Senaste årsredovisning")).toHaveText("länk fylls i");
     await expect(uppgift(page, "Facebook")).toHaveText("länk fylls i");
@@ -74,7 +98,7 @@ test.describe("Kontakt med ifylld testfil", () => {
       "href",
       "mailto:test@example.org",
     );
-    await expect(kontakt).toContainText("Testperson");
+    await expect(kontakt).not.toContainText("Kontaktperson");
     await expect(uppgift(page, "Swish för gåvor")).toHaveText("TEST-SWISH");
     await expect(uppgift(page, "Bankgiro")).toHaveText("TEST-90-KONTO");
     await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");
@@ -90,5 +114,18 @@ test.describe("Kontakt med ifylld testfil", () => {
       "href",
       "https://www.instagram.com/test-streetlight",
     );
+  });
+});
+
+test.describe("Vilka vi är med ifylld testfil", () => {
+  test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
+  test("visar namn, roll och ort för varje person i styrelsen", async ({ page }) => {
+    await page.goto("om-foreningen");
+    const person = page.getByRole("region", { name: "Styrelsen i Streetlight Sverige" }).getByRole("listitem");
+    await expect(person).toHaveCount(1);
+    await expect(person).toContainText("TEST-NAMN");
+    await expect(person).toContainText("TEST-ROLL");
+    await expect(person).toContainText("TEST-ORT");
   });
 });

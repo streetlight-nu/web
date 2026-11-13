@@ -86,7 +86,7 @@ test.describe("med testfrågorna och tomma föreningsuppgifter", () => {
     await oppnaAlla(page);
     await expect(page.locator("#fraga-andra-fragan")).toContainText("fylls i av föreningen");
     await expect(page.locator("#fraga-forsta-fragan")).toContainText("Swish: nummer fylls i");
-    await expect(page.locator("#fraga-en-fraga-om-barnen")).toContainText("Kontakta namn fylls i på e-post fylls i.");
+    await expect(page.locator("#fraga-en-fraga-om-barnen")).toContainText("Mejla oss på e-post fylls i.");
     await expect(page.locator("#fraga-hur-vet-jag-att-pengarna-nar-fram")).toContainText("Senaste årsredovisning: länk fylls i");
     await expect(page.getByRole("main").locator(".sl-todo").first()).toBeVisible();
   });
@@ -112,7 +112,7 @@ test.describe("med testfrågorna och ifyllda föreningsuppgifter", () => {
     await oppnaAlla(page);
     await expect(page.locator("#fraga-forsta-fragan")).toContainText("Swish: TEST-SWISH");
     const barnen = page.locator("#fraga-en-fraga-om-barnen");
-    await expect(barnen).toContainText("Kontakta Testperson på test@example.org.");
+    await expect(barnen).toContainText("Mejla oss på test@example.org.");
     await expect(barnen.getByRole("link", { name: "test@example.org" })).toHaveAttribute("href", "mailto:test@example.org");
     const foreningen = page.locator("#fraga-hur-vet-jag-att-pengarna-nar-fram");
     await expect(foreningen).toContainText("TEST-ORGNR");

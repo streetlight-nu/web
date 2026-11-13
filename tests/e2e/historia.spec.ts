@@ -66,11 +66,11 @@ test("menyn för perioderna hoppar till varje period", async ({ page }) => {
   ).toBeInViewport();
 });
 
-test("historien ligger under Om föreningen i sökvägen", async ({ page }) => {
+test("historien ligger under Om Streetlight i sökvägen", async ({ page }) => {
   await page.goto("historia");
   const sokvag = page.getByRole("navigation", { name: "Du är här" });
   await expect(
-    sokvag.getByRole("link", { name: "Om föreningen" }),
+    sokvag.getByRole("link", { name: "Om Streetlight" }),
   ).toHaveAttribute("href", /\/om-foreningen$/);
   await expect(sokvag.getByText("Vår historia")).toHaveAttribute(
     "aria-current",

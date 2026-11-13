@@ -66,16 +66,20 @@ Sidan **Vår historia** är en tidslinje från 1995 till idag. Allt som inte är
 
 Många läser sidan tillsammans med sina barn. Skriv därför med enkla ord och korta meningar, och gärna något konkret: en skola, en uniform, en vanlig dag. Berätta om barnen och familjerna med värdighet, och bara det de har gett sitt samtycke till.
 
-### Foton på Vår historia och Om föreningen
+### Foton på Vår historia och Om Streetlight
 
-Där det ännu inte finns något foto visar sidan en mörkgrön ruta med ett förslag på vilket foto som passar, till exempel ”Foto: Merry som liten, eller Tryggve hos Merrys familj”. Varje period i **Vår historia** har ett eget foto, och **Idag** har ett. På **Om föreningen** finns foton till *Så började det*, *Två föreningar, ett arbete* och *Vilka vi är*.
+Där det ännu inte finns något foto visar sidan en mörkgrön ruta med ett förslag på vilket foto som passar, till exempel ”Foto: Merry som liten, eller Tryggve hos Merrys familj”. Varje period i **Vår historia** har ett eget foto, och **Idag** har ett. På **Om Streetlight** finns foton till *Så började det*, *Två föreningar, ett arbete* och *Vilka vi är*.
 
-1. Öppna **Vår historia** eller **Om föreningen** och leta upp fältet, till exempel **Foto från perioden** under en period eller **Foto till Så började det**.
+1. Öppna **Vår historia** eller **Om Streetlight** och leta upp fältet, till exempel **Foto från perioden** under en period eller **Foto till Så började det**.
 2. Ladda upp fotot under **Foto**, i full storlek. Webbplatsen gör själv mindre versioner.
 3. Skriv en **Alt-text** (se avsnitt 4).
 4. Spara. Fotot ersätter rutan inom några minuter.
 
 Samma regler gäller som för inläggen: ett foto utan alt-text publiceras inte (se avsnitt 5), och syns ett barn eller en familj ska familjen ha sagt ja till just det här fotot (se avsnitt 3). Vill du ta bort ett foto tömmer du fältet **Foto**, så visas förslaget igen.
+
+### Styrelsen på Om Streetlight
+
+Under **Om Streetlight** finns **Vilka vi är** med styrelsen. Varje person har **Namn**, **Roll** (till exempel Ordförande, Kassör eller Ledamot) och **Ort**, där personen bor. En tom ort visas som ”ort fylls i”. Efter ett årsmöte ändrar du personerna här och sparar.
 
 ## 7. Fyll i julkampanjen
 
@@ -112,7 +116,6 @@ Några svar saknas än och visas som ”fylls i av föreningen”: vad det kosta
 | --- | --- |
 | `{swish}` | Swish-numret |
 | `{epost}` | Kontakt-e-posten, som en länk |
-| `{kontaktperson}` | Kontaktpersonen |
 | `{organisationsnummer}` | Organisationsnumret |
 | `{nittiokonto}` | Bankgirot |
 | `{arsredovisning}` | Länken ”Läs årsredovisningen” |
@@ -120,8 +123,6 @@ Några svar saknas än och visas som ”fylls i av föreningen”: vad det kosta
 | `{instagram}` | Länken till Instagram-kontot |
 
 Ett felstavat namn, till exempel `{swihs}`, stoppar sidan. Bankgirot skrivs `{nittiokonto}`. Då fortsätter webbplatsen att visa det som fanns innan (se avsnitt 5). Rätta stavningen och spara igen.
-
-**Startsidan** länkar till frågan ”Hur vet jag att pengarna når fram?” under Insyn. Tar du bort den frågan försvinner länken.
 
 **Bli fadder** visar fem av frågorna under ”Innan du bestämmer dig.”, med samma svar som här: ”Vad innebär det att vara fadder?”, ”Vad kostar det att vara fadder?”, ”Hur betalar jag?”, ”Kan jag sluta vara fadder?” och ”Får jag höra hur det går?”. Ändrar du ett svar ändras det på båda sidorna. Tar du bort en av frågorna försvinner den från sidan Bli fadder.
 
@@ -134,3 +135,9 @@ Under **Funktioner** i menyn väljer du om en sida visas. Det gäller **Ge en ju
 3. Spara. Ändringen syns när sajten har byggts och publicerats igen, vilket tar några minuter.
 
 En sida som är **Av** finns inte alls, så den som har en länk till den får ”sidan finns inte”.
+
+## 10. Byt årsredovisning
+
+Länken ”Läs årsredovisningen” finns under Kontakt på **Om Streetlight** och i svaret på ”Hur vet jag att pengarna når fram?”. Den hämtas från fältet **Länk till senaste årsredovisningen** under **Föreningsuppgifter**.
+
+Årsredovisningen ligger som en PDF på webbplatsen, och fältet innehåller sökvägen till den, till exempel `/dokument/streetlight-arsredovisning-2025.pdf`. En PDF går inte att ladda upp i Pages CMS. Skicka därför den nya årsredovisningen till den som sköter webbplatsen, så lägger hen in filen och ändrar sökvägen. Ligger årsredovisningen redan någon annanstans på nätet kan du i stället skriva hela webbadressen, som börjar med `https://`, och spara.

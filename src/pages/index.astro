@@ -12,8 +12,8 @@ import { href } from "@/lib/utils";
 
 /**
  * The start page tells why and who; the proof (what the support pays for, how the money reaches the children)
- * has its one home on the page Bli fadder, and the whole story on Om föreningen. Så började det and the vision come from
- * src/data/om-foreningen.json, the same texts Om föreningen shows.
+ * has its one home on the page Bli fadder, and the whole story on Om Streetlight. Så började det and the vision come from
+ * src/data/om-foreningen.json, the same texts Om Streetlight shows.
  */
 const om = hamtaOmForeningen();
 const borjan = stycken(om.borjan)[0];
@@ -57,7 +57,7 @@ const lankGron = "inline-flex min-h-11 items-center font-semibold text-cotton un
           Bli fadder
           <Pil />
         </a>
-        <a class={buttonVariants({ variant: "line" })} href={href("/#stod")}>Vad stödet går till</a>
+        <a class={buttonVariants({ variant: "line" })} href={href("/bli-fadder#vart")}>Vad stödet går till</a>
       </div>
     </div>
     <div class="lamp-wrap">
@@ -104,7 +104,7 @@ const lankGron = "inline-flex min-h-11 items-center font-semibold text-cotton un
             <div class="min-w-0">
               <p class={lede}>{borjan}</p>
               <p class="mt-4">
-                <a class={lankInk} href={href("/om-foreningen#borjan")}>Läs hela berättelsen om föreningen</a>
+                <a class={lankInk} href={href("/om-foreningen#borjan")}>Läs hela berättelsen om Streetlight</a>
               </p>
             </div>
           </div>

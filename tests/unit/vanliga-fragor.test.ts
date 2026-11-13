@@ -63,16 +63,16 @@ describe("föreningsuppgifter i ett svar", () => {
   const ifyllda = {
     swish: "123 456 78 90",
     epost: "info@example.org",
-    kontaktperson: "Anna <Andersson>",
     organisationsnummer: "802000-0000",
     nittiokonto: "90 00 00-0",
     arsredovisning: "https://example.org/ar.pdf",
   };
 
   test("ersätts med föreningens uppgifter", () => {
-    expect(fyllIUppgifter("<p>Swish: {swish}. Fråga {kontaktperson} på {epost}.</p>", ifyllda)).toBe(
-      '<p>Swish: 123 456 78 90. Fråga Anna &lt;Andersson&gt; på <a href="mailto:info@example.org">info@example.org</a>.</p>',
+    expect(fyllIUppgifter("<p>Swish: {swish}. Mejla oss på {epost}.</p>", ifyllda)).toBe(
+      '<p>Swish: 123 456 78 90. Mejla oss på <a href="mailto:info@example.org">info@example.org</a>.</p>',
     );
+    expect(fyllIUppgifter("<p>{swish}</p>", { swish: "123 <456>" })).toBe("<p>123 &lt;456&gt;</p>");
     expect(fyllIUppgifter("<p>{arsredovisning}</p>", ifyllda)).toBe(
       '<p><a href="https://example.org/ar.pdf">Läs årsredovisningen</a></p>',
     );

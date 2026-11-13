@@ -2,4 +2,4 @@
 fraga: En fråga om barnen?
 grupp: barnen
 ---
-Kontakta {kontaktperson} på {epost}.
+Mejla oss på {epost}.

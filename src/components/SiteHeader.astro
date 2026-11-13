@@ -16,11 +16,11 @@ const { visasPaStartsidan } = hamtaJulkampanj();
 const { julklapp, engagera } = hamtaFunktioner();
 
 const links: NavLink[] = [
-  // Vår historia is reached from Om föreningen (Så började det).
-  { label: "Om oss", href: href("/om-foreningen"), current: current === "om" || current === "historia" },
   { label: "Nyheter", href: href("/nyheter"), current: current === "nyheter" },
   // The flag `engagera` (src/data/funktioner.json) removes the page and every link to it.
   ...(engagera ? [{ label: "Engagera dig", href: href("/engagera-dig"), current: current === "engagera" }] : []),
+  // Right before Ge en julklapp. Vår historia is reached from Om Streetlight (Så började det).
+  { label: "Om Streetlight", href: href("/om-foreningen"), current: current === "om" || current === "historia" },
   // Seasonal: the association turns the campaign on and off in Pages CMS (src/data/julkampanj.json). The flag
   // `julklapp` (src/data/funktioner.json) removes the page and every link to it.
   ...(julklapp && (visasPaStartsidan || current === "julklapp")

@@ -167,6 +167,15 @@ test("menyn markerar Julklapp som aktuell sida, även när kampanjen inte visas 
   await expect(nav.getByRole("link", { name: "Ge en julklapp", exact: true })).toHaveAttribute("aria-current", "page");
 });
 
+test("i menyn står Om Streetlight precis till vänster om Ge en julklapp", async ({ page }) => {
+  await page.goto(sida);
+  const lankar = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("listitem").getByRole("link");
+  const namn = await lankar.allTextContents();
+  const jul = namn.findIndex((n) => n.trim() === "Ge en julklapp");
+  expect(jul).toBeGreaterThan(0);
+  expect(namn[jul - 1].trim()).toBe("Om Streetlight");
+});
+
 test.describe("julkampanjen på startsidan", () => {
   test.describe("när föreningen har slagit på den", () => {
     test.use({ baseURL: process.env.E2E_IFYLLD_URL });

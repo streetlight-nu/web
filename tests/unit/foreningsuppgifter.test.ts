@@ -15,14 +15,12 @@ describe("föreningsuppgifterna", () => {
   test("ifyllda fält läses med blanksteg borttagna", () => {
     expect(
       tolkaForeningsuppgifter({
-        kontaktperson: " Testperson ",
-        epost: "test@example.org",
+        epost: " test@example.org ",
         arsredovisning: "https://example.org/arsredovisning.pdf",
         facebook: "https://www.facebook.com/streetlight",
         instagram: "https://instagram.com/streetlight",
       }),
     ).toEqual({
-      kontaktperson: "Testperson",
       epost: "test@example.org",
       arsredovisning: "https://example.org/arsredovisning.pdf",
       facebook: "https://www.facebook.com/streetlight",
@@ -34,6 +32,7 @@ describe("föreningsuppgifterna", () => {
     ["ett okänt fält", { bankgiro: "123" }],
     ["en e-post som inte är en e-postadress", { epost: "inte en adress" }],
     ["en årsredovisning som inte är en länk", { arsredovisning: "årsredovisning.pdf" }],
+    ["en årsredovisning som börjar med två snedstreck", { arsredovisning: "//example.org/ar.pdf" }],
     ["ett fält som inte är text", { swish: 1230000000 }],
     ["en Facebook-länk som inte är en länk", { facebook: "streetlight" }],
     ["en Facebook-länk till en annan webbplats", { facebook: "https://example.org/streetlight" }],
@@ -79,6 +78,8 @@ describe("hur en föreningsuppgift visas", () => {
       text: "Läs årsredovisningen",
       lank: "https://example.org/arsredovisning.pdf",
     });
+    expect(tolkaForeningsuppgifter({ arsredovisning: "/dokument/ar.pdf" }).arsredovisning).toBe("/dokument/ar.pdf");
+    expect(visaUppgift("arsredovisning", { arsredovisning: "/dokument/ar.pdf" }).lank).toBe("/dokument/ar.pdf");
     expect(visaUppgift("facebook", ifyllda)).toMatchObject({
       etikett: "Facebook",
       text: "Facebook",

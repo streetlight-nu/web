@@ -16,7 +16,7 @@ import { href } from "@/lib/utils";
  * (#fraga-<file name>), so another page can link straight to one answer and it opens.
  */
 const uppgifter = hamtaForeningsuppgifter();
-const { kontaktperson, epost } = uppgifter;
+const { epost } = uppgifter;
 const grupper = perGrupp(await getCollection("fragor"));
 const ingress = "Om hur det fungerar att vara fadder, hur barnen väljs ut och hur föreningen arbetar.";
 const lank = "font-semibold underline decoration-gold decoration-2 underline-offset-[0.22em]";
@@ -52,7 +52,7 @@ const lank = "font-semibold underline decoration-gold decoration-2 underline-off
       <section aria-labelledby="mer" class="mer">
         <h2 id="mer">Hittade du inte svaret?</h2>
         <p>
-          Kontakta {kontaktperson ?? <FyllsI>namn fylls i</FyllsI>} på{" "}
+          Mejla oss på{" "}
           {epost ? <a class={lank} href={`mailto:${epost}`}>{epost}</a> : <FyllsI>e-post fylls i</FyllsI>}.
         </p>
       </section>

@@ -2,6 +2,7 @@ import { z } from "astro/zod";
 
 import { datafil } from "./datafil";
 import { arEpostadress, valfri } from "./falt";
+import { href } from "./utils";
 
 /**
  * Föreningsuppgifter: the public facts that show who the association is and how to give.
@@ -19,9 +20,8 @@ export interface Foreningsuppgifter {
   /** The bankgiro for gifts (the field is still named after the 90-konto it once was). */
   nittiokonto?: string;
   swish?: string;
-  kontaktperson?: string;
   epost?: string;
-  /** Link to the latest annual report (årsredovisning). */
+  /** The latest annual report (årsredovisning): a link (https://…) or a path on the site (/dokument/….pdf). */
   arsredovisning?: string;
   /** The association's page on Facebook (https://www.facebook.com/…). */
   facebook?: string;
@@ -30,6 +30,11 @@ export interface Foreningsuppgifter {
 }
 
 const ifylldText = z.string().trim();
+
+/** An https link, or a path on the site such as /dokument/streetlight-arsredovisning-2025.pdf (a file in public/). */
+function arLankEllerSokvag(varde: string): boolean {
+  return /^\/(?!\/)\S+$/.test(varde) || z.url({ protocol: /^https?$/ }).safeParse(varde).success;
+}
 
 /** A link to the association's own page on one social network: https, on that network's domain. */
 function profillank(falt: string, doman: string) {
@@ -43,10 +48,11 @@ const foreningsuppgifterSchema = z.strictObject({
   organisationsnummer: valfri(ifylldText),
   nittiokonto: valfri(ifylldText),
   swish: valfri(ifylldText),
-  kontaktperson: valfri(ifylldText),
   epost: valfri(ifylldText.refine(arEpostadress, { message: "epost måste vara en e-postadress" })),
   arsredovisning: valfri(
-    ifylldText.pipe(z.url({ protocol: /^https?$/, message: "arsredovisning måste vara en länk (https://…)" })),
+    ifylldText.refine(arLankEllerSokvag, {
+      message: "arsredovisning måste vara en länk (https://…) eller en sökväg på webbplatsen (/dokument/…)",
+    }),
   ),
   facebook: valfri(profillank("facebook", "facebook.com")),
   instagram: valfri(profillank("instagram", "instagram.com")),
@@ -74,7 +80,6 @@ export const UPPGIFTER = [
   "organisationsnummer",
   "nittiokonto",
   "swish",
-  "kontaktperson",
   "epost",
   "arsredovisning",
   "facebook",
@@ -101,12 +106,11 @@ const VISNING: Record<Uppgift, { etikett: string; saknas: string; lank?: (varde:
   organisationsnummer: { etikett: "Organisationsnummer", saknas: "nummer fylls i" },
   nittiokonto: { etikett: "Bankgiro", saknas: "nummer fylls i" },
   swish: { etikett: "Swish för gåvor", saknas: "nummer fylls i" },
-  kontaktperson: { etikett: "Kontaktperson", saknas: "namn fylls i" },
   epost: { etikett: "E-post", saknas: "e-post fylls i", lank: (varde) => `mailto:${varde}` },
   arsredovisning: {
     etikett: "Senaste årsredovisning",
     saknas: "länk fylls i",
-    lank: (varde) => varde,
+    lank: (varde) => (varde.startsWith("/") ? href(varde) : varde),
     text: "Läs årsredovisningen",
   },
   facebook: { etikett: "Facebook", saknas: "länk fylls i", lank: (varde) => varde, text: "Facebook" },

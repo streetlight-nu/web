@@ -5,7 +5,7 @@ import { valfri } from "./falt";
 import { valfriSidbild } from "./sidbild";
 
 /**
- * Om föreningen: who we are, what we believe in, how it began, the boards and how to get in touch,
+ * Om Streetlight: who we are, what we believe in, how it began, the boards and how to get in touch,
  * on the page /om-foreningen.
  *
  * The texts live in one data file, `src/data/om-foreningen.json`, which the association edits through
@@ -27,10 +27,12 @@ export const personSchema = z.strictObject({
   namn: text,
   /** The person's role in the board, e.g. "Ordförande". */
   roll: text,
+  /** Where the person lives, e.g. "Umeå". */
+  ort: text,
 });
 
 export const styrelseSchema = z.strictObject({
-  forening: z.string().trim().min(1, "varje styrelse behöver föreningens namn, till exempel Streetlight Sverige"),
+  forening: z.string().trim().min(1, "varje styrelse behöver föreningens namn, till exempel Streetlight"),
   personer: z.array(personSchema),
 });
 
@@ -60,7 +62,7 @@ export const OM_FORENINGEN_DATAFIL = datafil({
   miljovariabel: "OM_FORENINGEN_FIL",
   cmsNamn: "omForeningen",
   schema: omForeningenSchema,
-  fel: "Om föreningen är felaktig",
+  fel: "Om Streetlight är felaktig",
 });
 
 /** Checks the contents of the data file. Unknown fields and a board without a name fail the build. */

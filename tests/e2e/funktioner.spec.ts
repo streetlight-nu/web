@@ -18,7 +18,7 @@ test.describe("med funktionerna avstängda", () => {
     });
   }
 
-  test("länkarna till sidorna finns inte i menyn, startsidan, Om föreningen eller sidfoten", async ({ page }) => {
+  test("länkarna till sidorna finns inte i menyn, startsidan, Om Streetlight eller sidfoten", async ({ page }) => {
     for (const sida of ["", "om-foreningen", "nyheter", "vanliga-fragor"]) {
       await page.goto(sida);
       await expect(page.locator('a[href$="/julklapp"], a[href$="/historia"], a[href$="/engagera-dig"]')).toHaveCount(0);

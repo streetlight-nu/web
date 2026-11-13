@@ -115,11 +115,11 @@ test("Så når det fram visar rubriken, 20 barn, 20 ljus och guldtråden med tre
   ]);
 });
 
-test("länken i Så når det fram leder till Om föreningen", async ({ page }) => {
+test("länken i Så når det fram leder till Om Streetlight", async ({ page }) => {
   await page.goto(sida);
-  await page.locator("#nar-fram").getByRole("link", { name: "Läs om föreningen" }).click();
+  await page.locator("#nar-fram").getByRole("link", { name: "Läs om Streetlight" }).click();
   await expect(page).toHaveURL(/\/om-foreningen\/?$/);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Om föreningen.");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Om Streetlight.");
 });
 
 /** The cotton field "Innan du bestämmer dig." (#fragor) with the questions future fadder tend to ask. */

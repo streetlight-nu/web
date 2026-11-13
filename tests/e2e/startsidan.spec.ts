@@ -150,3 +150,10 @@ test.describe("startsidans berättelse", () => {
     expect(text).toContain("fadderbarn");
   });
 });
+
+test("Vad stödet går till leder till Vart ditt bidrag går på Bli fadder", async ({ page }) => {
+  await page.goto("./");
+  await page.getByRole("link", { name: "Vad stödet går till" }).click();
+  await expect(page).toHaveURL(/\/bli-fadder#vart$/);
+  await expect(page.getByRole("heading", { level: 2, name: "Vart ditt bidrag går." })).toBeInViewport();
+});

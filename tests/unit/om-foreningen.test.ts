@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { stycken, tolkaOmForeningen, visaGrund } from "@/lib/om-foreningen";
+import { stycken, tolkaOmForeningen } from "@/lib/om-foreningen";
 
 describe("texterna i src/data/om-foreningen.json", () => {
   test("räknar tomma fält som saknade, så att sidan visar ”fylls i”", () => {
@@ -26,10 +26,5 @@ describe("texterna i src/data/om-foreningen.json", () => {
     expect(stycken(undefined)).toEqual([]);
   });
 
-  test("visar Vår grund bara när föreningen har skrivit något i den", () => {
-    expect(visaGrund(undefined)).toBe(false);
-    expect(visaGrund({ kalla: "1 Kor 12:26" })).toBe(false);
-    expect(visaGrund({ citat: "Citat" })).toBe(true);
-  });
 });
 

@@ -336,22 +336,6 @@ content:
             label: Alt-text
             type: string
             description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
-      - name: grund
-        label: Vår grund
-        type: object
-        description: Töm alla fälten för att ta bort avsnittet från sidan.
-        fields:
-          - name: text
-            label: Text
-            type: text
-          - name: citat
-            label: Citat
-            type: text
-            description: Skriv utan citattecken; sidan sätter dem.
-          - name: kalla
-            label: Källa
-            type: string
-            description: Till exempel 1 Kor 12:26.
       - name: styrelser
         label: Vilka vi är
         type: object

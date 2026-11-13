@@ -18,7 +18,6 @@ test("Om föreningen har en h1 och avsnitten i ordning, med Bli fadder sist", as
     "Det här tror vi på.",
     "Så började det.",
     "Två föreningar, ett arbete.",
-    "Vår grund.",
     "Vilka vi är.",
     "Kontakt.",
     "Var med och håll ljusen tända.",

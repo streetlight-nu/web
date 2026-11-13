@@ -11,12 +11,12 @@ import { buttonVariants } from "@/components/ui/button";
 import Uppgift from "@/components/Uppgift.astro";
 import { SOCIALA, visaUppgift } from "@/lib/foreningsuppgifter";
 import { hamtaFunktioner } from "@/lib/funktioner";
-import { hamtaOmForeningen, stycken, visaGrund } from "@/lib/om-foreningen";
+import { hamtaOmForeningen, stycken } from "@/lib/om-foreningen";
 import { href } from "@/lib/utils";
 
 /**
  * Om föreningen: who we are and why we do this. The vision, what we believe in, how it began, the two
- * associations, Vår grund, the boards and Kontakt (#kontakt). The texts come from src/data/om-foreningen.json
+ * associations, the boards and Kontakt (#kontakt). The texts come from src/data/om-foreningen.json
  * (Pages CMS) and the contact details from the föreningsuppgifter; every empty field shows the chip "fylls i".
  * The fields alternate cotton and green, and only the final field is gold (The Ett ljus rule).
  */
@@ -30,7 +30,6 @@ const kontaktuppgifter = (["swish", "nittiokonto", "organisationsnummer", "arsre
 const sociala = SOCIALA.map((namn) => ({ namn, ...visaUppgift(namn) }));
 const beskrivning =
   om.ingress ?? "Vilka vi är, vad vi tror på och hur Streetlight började. Och hur du når föreningen.";
-const grund = visaGrund(om.grund) ? om.grund : undefined;
 
 // The vision's key words are marked with the soft gold, as on the home page.
 const NYCKELORD = "ljus framtid";
@@ -176,36 +175,7 @@ const hopp = [
     </div>
   </section>
 
-  {
-    grund ? (
-      <>
-        <TibebBand />
-        <section aria-labelledby="grund-rubrik" class={`on-green bg-green-deep text-cotton ${section}`}>
-          <div class={split}>
-            <div class="min-w-0">
-              <h2 id="grund-rubrik" class="text-headline">
-                Vår grund.
-              </h2>
-            </div>
-            {grund.text && <p class="min-w-0 max-w-[56ch] text-lede text-mint">{grund.text}</p>}
-          </div>
-          {grund.citat && (
-            <div class="band-inner mt-[clamp(40px,6vw,72px)]">
-              <figure class="min-w-0">
-                <blockquote class="vers">
-                  <p>”{grund.citat}”</p>
-                </blockquote>
-                {grund.kalla && <figcaption class="mt-6 text-label font-semibold text-mint">{grund.kalla}</figcaption>}
-              </figure>
-            </div>
-          )}
-        </section>
-        <TibebBand />
-      </>
-    ) : (
-      <TibebBand variant="thin" />
-    )
-  }
+  <TibebBand variant="thin" />
 
   <section id="vilka" aria-labelledby="vilka-rubrik" class={`bg-cotton text-ink ${section} scroll-mt-0`}>
     <div class={split}>

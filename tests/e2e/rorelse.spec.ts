@@ -107,8 +107,9 @@ test.describe("med rörelse", () => {
     await page.goto("./bli-fadder");
     expect(await stepStates(page)).toEqual(Array(3).fill({ color: MINT, mark: GREEN }));
 
-    // With the thread at the top of the viewport, every step is above the reading line.
-    await page.locator("#nar-fram [data-thread]").evaluate((el) => el.scrollIntoView({ block: "start" }));
+    // With the thread at the top of the viewport, every step is above the reading line. Instant, because the site
+    // scrolls smoothly and a smooth scroll can be cut short by a layout shift on a slow runner.
+    await page.locator("#nar-fram [data-thread]").evaluate((el) => el.scrollIntoView({ block: "start", behavior: "instant" }));
     await expect.poll(() => stepStates(page)).toEqual(Array(3).fill({ color: COTTON, mark: GOLD }));
   });
 

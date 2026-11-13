@@ -2,39 +2,14 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { expectNoA11yViolations } from "./helpers";
 
-/** The Insyn row in Så når det fram on the page Bli fadder: a heading followed by a list of föreningsuppgifter. */
-function insyn(page: Page) {
-  return page.locator("#nar-fram").getByRole("region", { name: "Insyn" });
-}
-
-/** The value shown for one föreningsuppgift in the Insyn row, found by its label. */
-function uppgift(page: Page, label: string) {
-  return insyn(page).getByRole("definition").filter({
-    has: page.locator(`xpath=preceding-sibling::dt[normalize-space()="${label}"]`),
-  });
-}
-
 test.describe("föreningsuppgifter med tom testfil", () => {
   // A build of the site made from tests/fixtures/*-tom.json (see playwright.config.ts).
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
-  test("Insyn visar ”fylls i” för organisationsnummer och bankgiro", async ({ page }) => {
-    await page.goto("bli-fadder");
-    await expect(insyn(page).getByRole("heading", { name: "Insyn" })).toBeVisible();
-    for (const [label, chip] of [
-      ["Organisationsnummer", "nummer fylls i"],
-      ["Bankgiro", "nummer fylls i"],
-    ]) {
-      await expect(uppgift(page, label)).toHaveText(chip);
-      await expect(uppgift(page, label).getByText(chip, { exact: true })).toBeVisible();
-    }
-    await expect(insyn(page).getByRole("link")).toHaveCount(0);
-  });
-
   test("chipet ”fylls i” syns både på green och på cotton", async ({ page }) => {
     await page.goto("bli-fadder");
-    const chip = uppgift(page, "Organisationsnummer").getByText("nummer fylls i", { exact: true });
-    // Insyn sits on green. Place the same chip on the cotton section Vart ditt bidrag går as well.
+    const chip = page.getByRole("contentinfo").getByTestId("sidfot-orgnr").getByText("nummer fylls i", { exact: true });
+    // The footer sits on green. Place the same chip on the cotton section Vart ditt bidrag går as well.
     await chip.evaluate((el) => {
       const copy = el.cloneNode(true) as HTMLElement;
       copy.dataset.testid = "chip-pa-cotton";
@@ -50,21 +25,6 @@ test.describe("föreningsuppgifter med tom testfil", () => {
       expect(text, `texten på ${surface}`).toBeGreaterThanOrEqual(4.5);
       expect(border, `kanten på ${surface}`).toBeGreaterThanOrEqual(3);
     }
-  });
-});
-
-test.describe("föreningsuppgifter med ifylld testfil", () => {
-  // A second build of the site, made from tests/fixtures/foreningsuppgifter-ifylld.json (see playwright.config.ts).
-  test.use({ baseURL: process.env.E2E_IFYLLD_URL });
-
-  test("Insyn visar värdena från datafilen i stället för ”fylls i”", async ({ page }) => {
-    await page.goto("bli-fadder");
-    await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");
-    // The 90-konto from the data file is shown as Bankgiro; the annual report is not part of Insyn.
-    await expect(uppgift(page, "Bankgiro")).toHaveText("TEST-90-KONTO");
-    await expect(insyn(page).getByRole("link")).toHaveCount(0);
-    await expect(insyn(page).getByText(/fylls i/)).toHaveCount(0);
-    await expectNoA11yViolations(page);
   });
 });
 

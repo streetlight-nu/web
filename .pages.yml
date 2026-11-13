@@ -28,11 +28,11 @@ content:
       - name: organisationsnummer
         label: Organisationsnummer
         type: string
-        description: Visas under Insyn på Bli fadder, under Kontakt på Om Streetlight och i sidfoten. Lämna tomt tills det finns, så visas ”nummer fylls i”.
+        description: Visas under Kontakt på Om Streetlight och i sidfoten. Lämna tomt tills det finns, så visas ”nummer fylls i”.
       - name: nittiokonto
         label: Bankgiro
         type: string
-        description: Föreningens bankgiro för gåvor. Visas under Insyn på Bli fadder och under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ”nummer fylls i”.
+        description: Föreningens bankgiro för gåvor. Visas under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ”nummer fylls i”.
       - name: swish
         label: Swish-nummer
         type: string

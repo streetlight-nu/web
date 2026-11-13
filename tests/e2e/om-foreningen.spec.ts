@@ -65,7 +65,7 @@ test.describe("Kontakt med tom testfil", () => {
     await page.goto("om-foreningen");
     const kontakt = page.getByRole("region", { name: "Kontakt." });
     await expect(kontakt.getByText("e-post fylls i")).toBeVisible();
-    await expect(kontakt.getByText("namn fylls i")).toBeVisible();
+    await expect(kontakt).not.toContainText("Kontaktperson");
     await expect(uppgift(page, "Swish för gåvor")).toHaveText("nummer fylls i");
     await expect(uppgift(page, "Senaste årsredovisning")).toHaveText("länk fylls i");
     await expect(uppgift(page, "Facebook")).toHaveText("länk fylls i");
@@ -84,7 +84,7 @@ test.describe("Kontakt med ifylld testfil", () => {
       "href",
       "mailto:test@example.org",
     );
-    await expect(kontakt).toContainText("Testperson");
+    await expect(kontakt).not.toContainText("Kontaktperson");
     await expect(uppgift(page, "Swish för gåvor")).toHaveText("TEST-SWISH");
     await expect(uppgift(page, "Bankgiro")).toHaveText("TEST-90-KONTO");
     await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");

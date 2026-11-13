@@ -15,14 +15,12 @@ describe("föreningsuppgifterna", () => {
   test("ifyllda fält läses med blanksteg borttagna", () => {
     expect(
       tolkaForeningsuppgifter({
-        kontaktperson: " Testperson ",
-        epost: "test@example.org",
+        epost: " test@example.org ",
         arsredovisning: "https://example.org/arsredovisning.pdf",
         facebook: "https://www.facebook.com/streetlight",
         instagram: "https://instagram.com/streetlight",
       }),
     ).toEqual({
-      kontaktperson: "Testperson",
       epost: "test@example.org",
       arsredovisning: "https://example.org/arsredovisning.pdf",
       facebook: "https://www.facebook.com/streetlight",

@@ -20,7 +20,6 @@ export interface Foreningsuppgifter {
   /** The bankgiro for gifts (the field is still named after the 90-konto it once was). */
   nittiokonto?: string;
   swish?: string;
-  kontaktperson?: string;
   epost?: string;
   /** The latest annual report (årsredovisning): a link (https://…) or a path on the site (/dokument/….pdf). */
   arsredovisning?: string;
@@ -49,7 +48,6 @@ const foreningsuppgifterSchema = z.strictObject({
   organisationsnummer: valfri(ifylldText),
   nittiokonto: valfri(ifylldText),
   swish: valfri(ifylldText),
-  kontaktperson: valfri(ifylldText),
   epost: valfri(ifylldText.refine(arEpostadress, { message: "epost måste vara en e-postadress" })),
   arsredovisning: valfri(
     ifylldText.refine(arLankEllerSokvag, {
@@ -82,7 +80,6 @@ export const UPPGIFTER = [
   "organisationsnummer",
   "nittiokonto",
   "swish",
-  "kontaktperson",
   "epost",
   "arsredovisning",
   "facebook",
@@ -109,7 +106,6 @@ const VISNING: Record<Uppgift, { etikett: string; saknas: string; lank?: (varde:
   organisationsnummer: { etikett: "Organisationsnummer", saknas: "nummer fylls i" },
   nittiokonto: { etikett: "Bankgiro", saknas: "nummer fylls i" },
   swish: { etikett: "Swish för gåvor", saknas: "nummer fylls i" },
-  kontaktperson: { etikett: "Kontaktperson", saknas: "namn fylls i" },
   epost: { etikett: "E-post", saknas: "e-post fylls i", lank: (varde) => `mailto:${varde}` },
   arsredovisning: {
     etikett: "Senaste årsredovisning",

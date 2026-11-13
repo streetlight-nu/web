@@ -112,7 +112,6 @@ Några svar saknas än och visas som ”fylls i av föreningen”: vad det kosta
 | --- | --- |
 | `{swish}` | Swish-numret |
 | `{epost}` | Kontakt-e-posten, som en länk |
-| `{kontaktperson}` | Kontaktpersonen |
 | `{organisationsnummer}` | Organisationsnumret |
 | `{nittiokonto}` | Bankgirot |
 | `{arsredovisning}` | Länken ”Läs årsredovisningen” |

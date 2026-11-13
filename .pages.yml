@@ -37,10 +37,6 @@ content:
         label: Swish-nummer
         type: string
         description: För engångsgåvor. Lämna tomt tills det finns, så visas ”fylls i”.
-      - name: kontaktperson
-        label: Kontaktperson
-        type: string
-        description: Den som blivande faddrar kan kontakta med frågor.
       - name: epost
         label: Kontakt-e-post
         type: string
@@ -177,7 +173,7 @@ content:
       - name: body
         label: Svar
         type: rich-text
-        description: "Lämna tomt tills svaret finns, så visas ”fylls i av föreningen”. Skriv {swish}, {epost}, {kontaktperson}, {organisationsnummer}, {nittiokonto} (bankgirot), {arsredovisning}, {facebook} eller {instagram} för att visa uppgiften från Föreningsuppgifter."
+        description: "Lämna tomt tills svaret finns, så visas ”fylls i av föreningen”. Skriv {swish}, {epost}, {organisationsnummer}, {nittiokonto} (bankgirot), {arsredovisning}, {facebook} eller {instagram} för att visa uppgiften från Föreningsuppgifter."
         options:
           format: markdown
 

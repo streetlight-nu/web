@@ -11,8 +11,7 @@ import { valfriSidbild } from "./sidbild";
  * The texts live in one data file, `src/data/om-foreningen.json`, which the association edits through
  * Pages CMS (see `.pages.yml`). The headings are the page's own; only the texts under them are here.
  * Every text is optional: a field that is missing or empty is `undefined`, and the page shows the chip
- * "fylls i" in its place, so nothing is made up. The one exception is Vår grund: with all its fields
- * empty, the section is left out, so the association can turn it off.
+ * "fylls i" in its place, so nothing is made up.
  * The contact details are not here: they come from the föreningsuppgifter.
  */
 
@@ -35,13 +34,6 @@ export const styrelseSchema = z.strictObject({
   personer: z.array(personSchema),
 });
 
-export const grundSchema = z.strictObject({
-  text: text,
-  citat: text,
-  /** Where the quote comes from, e.g. "1 Kor 12:26". */
-  kalla: text,
-});
-
 export const omForeningenSchema = z.strictObject({
   ingress: text,
   vision: text,
@@ -53,7 +45,6 @@ export const omForeningenSchema = z.strictObject({
   /** Två föreningar, ett arbete. Paragraphs are separated by an empty line. */
   foreningar: text,
   foreningarBild: valfriSidbild,
-  grund: grundSchema.optional(),
   styrelser: z.array(styrelseSchema),
   /** A photo for Vilka vi är, under its heading. */
   vilkaBild: valfriSidbild,
@@ -89,7 +80,3 @@ export function stycken(text: string | undefined): string[] {
     .filter(Boolean);
 }
 
-/** Vår grund is shown only when the association has written something in it. */
-export function visaGrund(grund: OmForeningen["grund"]): grund is NonNullable<OmForeningen["grund"]> {
-  return Boolean(grund && (grund.text || grund.citat));
-}

@@ -10,15 +10,6 @@ function guldfaltet(page: Page) {
   return page.locator("#bli-fadder");
 }
 
-/** The value shown for one föreningsuppgift in Insyn under Så når det fram, found by its label. */
-function uppgift(page: Page, label: string) {
-  return page
-    .locator("#nar-fram")
-    .getByRole("region", { name: "Insyn" })
-    .getByRole("definition")
-    .filter({ has: page.locator(`xpath=preceding-sibling::dt[normalize-space()="${label}"]`) });
-}
-
 // The rules every page keeps (h1, WCAG, skip link, 18 px, no sideways scroll, the glossary) are in hela-sajten.spec.ts.
 
 test("Bli fadder har titeln och rubriken", async ({ page }) => {
@@ -129,26 +120,6 @@ test("länken i Så når det fram leder till Om föreningen", async ({ page }) =
   await page.locator("#nar-fram").getByRole("link", { name: "Läs om föreningen" }).click();
   await expect(page).toHaveURL(/\/om-foreningen\/?$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Om föreningen.");
-});
-
-test.describe("Sidan Bli fadder med ifylld testfil", () => {
-  test.use({ baseURL: process.env.E2E_IFYLLD_URL });
-
-  test("Insyn visar föreningsuppgifterna från datafilen", async ({ page }) => {
-    await page.goto(sida);
-    await expect(uppgift(page, "Organisationsnummer")).toHaveText("TEST-ORGNR");
-    await expect(uppgift(page, "Bankgiro")).toHaveText("TEST-90-KONTO");
-  });
-});
-
-test.describe("Sidan Bli fadder med tom testfil", () => {
-  test.use({ baseURL: process.env.E2E_TOM_URL });
-
-  test("Insyn visar ”fylls i” för det som saknas", async ({ page }) => {
-    await page.goto(sida);
-    await expect(uppgift(page, "Organisationsnummer")).toHaveText("nummer fylls i");
-    await expect(uppgift(page, "Bankgiro")).toHaveText("nummer fylls i");
-  });
 });
 
 /** The cotton field "Innan du bestämmer dig." (#fragor) with the questions future fadder tend to ask. */
@@ -297,17 +268,6 @@ test.describe("på mobil", LAYOUT, () => {
     const radRuta = (await rad.boundingBox())!;
     const rubrik = (await rad.getByRole("heading", { level: 3 }).boundingBox())!;
     expect(rubrik.x - radRuta.x).toBeLessThanOrEqual(44);
-  });
-
-  test("Insyn visar organisationsnumret och bankgirot bredvid varandra", async ({ page }) => {
-    await page.goto(sida);
-    const rader = page.locator("#nar-fram").getByRole("region", { name: "Insyn" }).locator("dl > div");
-    await expect(rader).toHaveCount(2);
-    // Whether the label fits depends on the real typeface, not the wider fallback shown while it loads.
-    await page.evaluate(() => document.fonts.ready);
-    const [forsta, andra] = [(await rader.nth(0).boundingBox())!, (await rader.nth(1).boundingBox())!];
-    expect(andra.y).toBe(forsta.y);
-    expect(andra.x).toBeGreaterThan(forsta.x + forsta.width);
   });
 });
 

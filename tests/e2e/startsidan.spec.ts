@@ -10,12 +10,12 @@ test("startsidan har titeln Streetlight och rubriken Ett ljus på vägen till sk
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Ett ljus på vägen till skolan.");
 });
 
-test("huvudmenyn länkar till Om oss och Nyheter", LAYOUT, async ({ page, isMobile }) => {
+test("huvudmenyn länkar till Om Streetlight och Nyheter", LAYOUT, async ({ page, isMobile }) => {
   await page.goto("./");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
   for (const [name, path] of [
-    ["Om oss", "om-foreningen"],
+    ["Om Streetlight", "om-foreningen"],
     ["Nyheter", "nyheter"],
   ]) {
     await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", new RegExp(`${path}$`));
@@ -54,7 +54,7 @@ test.describe("mobilmenyn", LAYOUT, () => {
   test("öppnas och stängs med tangentbordet", async ({ page }) => {
     await page.goto("./");
     const toggle = page.getByRole("button", { name: "Meny" });
-    const firstLink = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Om oss", exact: true });
+    const firstLink = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Nyheter", exact: true });
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
     await expect(firstLink).toBeHidden();
 
@@ -105,7 +105,7 @@ test.describe("startsidans berättelse", () => {
     await expect(borjan.getByRole("heading", { level: 2, name: "Så började det." })).toBeVisible();
     await expect(borjan).toContainText("TEST-BÖRJAN, första stycket.");
     await expect(borjan).not.toContainText("andra stycket");
-    await expect(borjan.getByRole("link", { name: "Läs hela berättelsen om föreningen" })).toHaveAttribute(
+    await expect(borjan.getByRole("link", { name: "Läs hela berättelsen om Streetlight" })).toHaveAttribute(
       "href",
       /\/om-foreningen#borjan$/,
     );

@@ -10,9 +10,9 @@ function uppgift(page: Page, label: string) {
     .filter({ has: page.locator(`xpath=preceding-sibling::dt[normalize-space()="${label}"]`) });
 }
 
-test("Om föreningen har en h1 och avsnitten i ordning, med Bli fadder sist", async ({ page }) => {
+test("Om Streetlight har en h1 och avsnitten i ordning, med Bli fadder sist", async ({ page }) => {
   await page.goto("om-foreningen");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Om föreningen.");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Om Streetlight.");
   await expect(page.getByRole("main").getByRole("heading", { level: 2 })).toHaveText([
     "Vår vision",
     "Det här tror vi på.",
@@ -38,11 +38,18 @@ test("Vilka vi är visar föreningens styrelse", async ({ page }) => {
   await expect(vilka).not.toContainText("Streetlight Etiopien har");
 });
 
-test("menyn markerar Om föreningen som aktiv", LAYOUT, async ({ page, isMobile }) => {
+test("länkarna under Webbplatsen i sidfoten följer menyns ordning", async ({ page }) => {
+  await page.goto("om-foreningen");
+  const lankar = page.getByRole("contentinfo").getByRole("navigation", { name: "Webbplatsen" }).getByRole("link");
+  const namn = (await lankar.allTextContents()).map((n) => n.trim()).filter((n) => n !== "Engagera dig");
+  expect(namn).toEqual(["Nyheter", "Om Streetlight", "Kontakt", "Vanliga frågor"]);
+});
+
+test("menyn markerar Om Streetlight som aktiv", LAYOUT, async ({ page, isMobile }) => {
   await page.goto("om-foreningen");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-  await expect(nav.getByRole("link", { name: "Om oss", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(nav.getByRole("link", { name: "Om Streetlight", exact: true })).toHaveAttribute("aria-current", "page");
 });
 
 test("Så började det leder till Vår historia, och sidfoten till Kontakt", async ({ page }) => {

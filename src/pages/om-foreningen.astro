@@ -15,7 +15,7 @@ import { hamtaOmForeningen, stycken } from "@/lib/om-foreningen";
 import { href } from "@/lib/utils";
 
 /**
- * Om föreningen: who we are and why we do this. The vision, what we believe in, how it began, the two
+ * Om Streetlight: who we are and why we do this. The vision, what we believe in, how it began, the two
  * associations, the boards and Kontakt (#kontakt). The texts come from src/data/om-foreningen.json
  * (Pages CMS) and the contact details from the föreningsuppgifter; every empty field shows the chip "fylls i".
  * The fields alternate cotton and green, and only the final field is gold (The Ett ljus rule).
@@ -47,15 +47,15 @@ const hopp = [
 ];
 ---
 
-<BaseLayout title="Om föreningen" description={beskrivning} current="om">
+<BaseLayout title="Om Streetlight" description={beskrivning} current="om">
   <div slot="header" class="pt-[clamp(28px,5vw,56px)] pb-[clamp(36px,5vw,60px)]">
     <nav aria-label="Du är här" class="mb-[18px] flex flex-wrap items-center gap-2.5 text-label font-semibold text-mint">
       <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
       <span aria-hidden="true">/</span>
-      <span aria-current="page" class="text-cotton">Om föreningen</span>
+      <span aria-current="page" class="text-cotton">Om Streetlight</span>
     </nav>
     <h1 class="text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[0.98] tracking-[-0.035em]">
-      Om <span class="text-gold">föreningen.</span>
+      Om <span class="text-gold">Streetlight.</span>
     </h1>
     <p class="mt-[18px] max-w-[58ch] text-lede text-mint">{om.ingress ?? <FyllsI>ingress fylls i</FyllsI>}</p>
     <HoppaTill etikett="Hoppa till ett avsnitt" lankar={hopp} class="mt-8" />

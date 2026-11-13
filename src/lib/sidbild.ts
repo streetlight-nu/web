@@ -3,7 +3,7 @@ import { z } from "astro/zod";
 import { valfri } from "./falt";
 
 /**
- * A photo on one of the site's own pages (Om föreningen, Vår historia), uploaded through Pages CMS.
+ * A photo on one of the site's own pages (Om Streetlight, Vår historia), uploaded through Pages CMS.
  *
  * Pages CMS uploads it to `src/assets/sidor` (the media folder `sidor` in `.pages.yml`) and writes
  * the path as `/src/assets/sidor/<file>`, which the component Foto finds and optimises at build

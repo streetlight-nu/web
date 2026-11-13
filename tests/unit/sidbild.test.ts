@@ -29,14 +29,14 @@ const falt = (lista: Falt[], namn: string) => lista.find((f) => f.name === namn)
 const fotofalt: [string, Falt][] = [
   ["Vår historia, period", falt(falt(del("historia").fields, "perioder").fields!, "bild")],
   ["Vår historia, Idag", falt(del("historia").fields, "idagBild")],
-  ["Om föreningen, Så började det", falt(del("omForeningen").fields, "borjanBild")],
-  ["Om föreningen, Två föreningar", falt(del("omForeningen").fields, "foreningarBild")],
-  ["Om föreningen, Vilka vi är", falt(del("omForeningen").fields, "vilkaBild")],
+  ["Om Streetlight, Så började det", falt(del("omForeningen").fields, "borjanBild")],
+  ["Om Streetlight, Två föreningar", falt(del("omForeningen").fields, "foreningarBild")],
+  ["Om Streetlight, Vilka vi är", falt(del("omForeningen").fields, "vilkaBild")],
 ];
 
 const foto = { src: `${SIDBILDER}merry.jpg`, alt: "Merry och hennes syster framför huset." };
 
-describe("ett foto på Om föreningen och Vår historia", () => {
+describe("ett foto på Om Streetlight och Vår historia", () => {
   test("får saknas, även som Pages CMS sparar ett tomt foto", () => {
     expect(valfriSidbild.parse(undefined)).toBeUndefined();
     expect(valfriSidbild.parse(null)).toBeUndefined();

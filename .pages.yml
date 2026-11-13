@@ -6,7 +6,7 @@
 # Images are uploaded under src/assets, where Astro finds and optimises them at build time.
 # nyheter (the default, first): `output` is the path written into an inlägg, relative to the inlägg's
 # folder (src/content/nyheter).
-# sidor: the photos on Om föreningen and Vår historia. The path is written from the site's root,
+# sidor: the photos on Om Streetlight and Vår historia. The path is written from the site's root,
 # `/src/assets/sidor/<file>`, which src/lib/sidbild.ts checks and the component Foto finds.
 media:
   - name: nyheter
@@ -14,7 +14,7 @@ media:
     input: src/assets/nyheter
     output: ../../assets/nyheter
   - name: sidor
-    label: Om föreningen och Vår historia
+    label: Om Streetlight och Vår historia
     input: src/assets/sidor
     output: /src/assets/sidor
 
@@ -28,11 +28,11 @@ content:
       - name: organisationsnummer
         label: Organisationsnummer
         type: string
-        description: Visas under Insyn på Bli fadder, under Kontakt på Om föreningen och i sidfoten. Lämna tomt tills det finns, så visas ”nummer fylls i”.
+        description: Visas under Insyn på Bli fadder, under Kontakt på Om Streetlight och i sidfoten. Lämna tomt tills det finns, så visas ”nummer fylls i”.
       - name: nittiokonto
         label: Bankgiro
         type: string
-        description: Föreningens bankgiro för gåvor. Visas under Insyn på Bli fadder och under Kontakt på Om föreningen. Lämna tomt tills det finns, så visas ”nummer fylls i”.
+        description: Föreningens bankgiro för gåvor. Visas under Insyn på Bli fadder och under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ”nummer fylls i”.
       - name: swish
         label: Swish-nummer
         type: string
@@ -47,21 +47,21 @@ content:
       - name: arsredovisning
         label: Länk till senaste årsredovisningen
         type: string
-        description: En hel webbadress som börjar med https://, eller sökvägen till en fil på webbplatsen, till exempel /dokument/streetlight-arsredovisning-2025.pdf. Visas under Kontakt på Om föreningen och i Vanliga frågor.
+        description: En hel webbadress som börjar med https://, eller sökvägen till en fil på webbplatsen, till exempel /dokument/streetlight-arsredovisning-2025.pdf. Visas under Kontakt på Om Streetlight och i Vanliga frågor.
         pattern:
           regex: "^$|^https?://\\S+$|^/[^/\\s]\\S*$"
           message: Skriv en hel webbadress som börjar med https://, eller en sökväg som börjar med /dokument/.
       - name: facebook
         label: Facebook-sida
         type: string
-        description: Hela adressen till föreningens sida, till exempel https://www.facebook.com/föreningens-namn. Visas i sidfoten och under Kontakt på Om föreningen. Lämna tomt tills det finns, så visas ”fylls i”.
+        description: Hela adressen till föreningens sida, till exempel https://www.facebook.com/föreningens-namn. Visas i sidfoten och under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ”fylls i”.
         pattern:
           regex: "^$|^https://(www\\.)?facebook\\.com/\\S+$"
           message: Skriv hela adressen till sidan, som börjar med https://www.facebook.com/.
       - name: instagram
         label: Instagram-konto
         type: string
-        description: Hela adressen till föreningens konto, till exempel https://www.instagram.com/föreningens-namn. Visas i sidfoten och under Kontakt på Om föreningen. Lämna tomt tills det finns, så visas ”fylls i”.
+        description: Hela adressen till föreningens konto, till exempel https://www.instagram.com/föreningens-namn. Visas i sidfoten och under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ”fylls i”.
         pattern:
           regex: "^$|^https://(www\\.)?instagram\\.com/\\S+$"
           message: Skriv hela adressen till kontot, som börjar med https://www.instagram.com/.
@@ -261,7 +261,7 @@ content:
             description: Krävs när det finns ett foto. Beskriv kort vad fotot visar.
 
   - name: omForeningen
-    label: Om föreningen
+    label: Om Streetlight
     type: file
     path: src/data/om-foreningen.json
     format: json

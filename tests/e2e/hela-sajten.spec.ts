@@ -18,7 +18,7 @@ const ettInlagg = readdirSync("src/content/nyheter")
 const SIDOR: [namn: string, sokvag: string][] = [
   ["startsidan", ""],
   ["Bli fadder", "bli-fadder"],
-  ["Om föreningen", "om-foreningen"],
+  ["Om Streetlight", "om-foreningen"],
   ["Nyheter", "nyheter"],
   ["ett inlägg", `nyheter/${ettInlagg}`],
   ["Vanliga frågor", "vanliga-fragor"],

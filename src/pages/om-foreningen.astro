@@ -182,12 +182,12 @@ const hopp = [
       <div class="min-w-0">
         <h2 id="vilka-rubrik" class="text-headline">Vilka vi är.</h2>
         <p class="mt-[22px] max-w-[40ch] text-lede text-ink-soft">
-          Streetlight Sverige och Streetlight Etiopien har var sin styrelse.
+          Föreningen leds av en styrelse som väljs på årsmötet.
         </p>
         <Foto
           class="mt-[clamp(28px,4vw,48px)] aspect-[4/3] max-w-[440px]"
           bild={om.vilkaBild}
-          forslag="Foto: styrelserna i Sverige och Etiopien, gärna tillsammans"
+          forslag="Foto: styrelsen i Streetlight"
         />
       </div>
       <div class="styrelser min-w-0">
@@ -199,11 +199,22 @@ const hopp = [
                 <ul>
                   {styrelse.personer.map((person) => (
                     <li>
-                      {person.namn ? (
-                        <span class="font-semibold">{person.namn}</span>
-                      ) : (
-                        <FyllsI>{person.roll ? "namn fylls i" : "namn och roll fylls i"}</FyllsI>
-                      )}
+                      <span class="min-w-0">
+                        {person.namn ? (
+                          <span class="font-semibold">{person.namn}</span>
+                        ) : (
+                          <FyllsI>{person.roll ? "namn fylls i" : "namn och roll fylls i"}</FyllsI>
+                        )}
+                        {person.ort ? (
+                          <span class="block text-ink-soft">{person.ort}</span>
+                        ) : (
+                          person.namn && (
+                            <span class="block">
+                              <FyllsI>ort fylls i</FyllsI>
+                            </span>
+                          )
+                        )}
+                      </span>
                       {person.roll && <span class="text-label font-semibold text-ink-soft">{person.roll}</span>}
                     </li>
                   ))}

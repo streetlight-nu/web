@@ -6,7 +6,7 @@
   "borjan": "TEST-BÖRJAN, första stycket.\n\nTEST-BÖRJAN, andra stycket.",
   "foreningar": "TEST-FÖRENINGAR.",
   "styrelser": [
-    { "forening": "Streetlight Sverige", "personer": [{ "namn": "TEST-NAMN", "roll": "TEST-ROLL" }] },
+    { "forening": "Streetlight Sverige", "personer": [{ "namn": "TEST-NAMN", "roll": "TEST-ROLL", "ort": "TEST-ORT" }] },
     { "forening": "Streetlight Etiopien", "personer": [] }
   ]
 }

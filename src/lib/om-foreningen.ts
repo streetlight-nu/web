@@ -27,10 +27,12 @@ export const personSchema = z.strictObject({
   namn: text,
   /** The person's role in the board, e.g. "Ordförande". */
   roll: text,
+  /** Where the person lives, e.g. "Umeå". */
+  ort: text,
 });
 
 export const styrelseSchema = z.strictObject({
-  forening: z.string().trim().min(1, "varje styrelse behöver föreningens namn, till exempel Streetlight Sverige"),
+  forening: z.string().trim().min(1, "varje styrelse behöver föreningens namn, till exempel Streetlight"),
   personer: z.array(personSchema),
 });
 

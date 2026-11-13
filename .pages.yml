@@ -336,13 +336,13 @@ content:
         label: Vilka vi är
         type: object
         list: true
-        description: Styrelserna i de två föreningarna.
+        description: Föreningens styrelse.
         fields:
           - name: forening
             label: Förening
             type: string
             required: true
-            description: Till exempel Streetlight Sverige.
+            description: Föreningens namn, Streetlight.
           - name: personer
             label: Personer i styrelsen
             type: object
@@ -356,10 +356,14 @@ content:
                 label: Roll
                 type: string
                 description: Till exempel Ordförande, Kassör eller Ledamot.
+              - name: ort
+                label: Ort
+                type: string
+                description: Där personen bor, till exempel Umeå. Lämna tomt tills det finns, så visas ”ort fylls i”.
       - name: vilkaBild
         label: Foto till Vilka vi är
         type: object
-        description: Visas under rubriken, till exempel ett foto av styrelserna.
+        description: Visas under rubriken, till exempel ett foto av styrelsen.
         fields:
           - name: src
             label: Foto

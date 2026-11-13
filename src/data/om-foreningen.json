@@ -28,15 +28,17 @@
   "foreningar": "Streetlight är två ideella föreningar med var sin styrelse. Streetlight Sverige samlar in pengar från faddrar och stöttar arbetet ekonomiskt. Streetlight Etiopien arbetar på plats i Addis Abeba och känner varje familj.\n\nBarnen väljs ut tillsammans med de lokala myndigheterna i Addis Abeba. De hjälper oss att hitta barn från utsatta familjer som behöver extra stöd. Så blir vi en del av det sociala skyddsnätet i Etiopien.\n\nEn söndag i månaden träffas barnen och föräldrarna. De leker, pratar och lär sig om saker som är viktiga just då. Volontärer hjälper till, bland annat studenter i socialt arbete från universitetet. För barnen och föräldrarna har Streetlight blivit som en andra familj.",
   "styrelser": [
     {
-      "forening": "Streetlight Sverige",
+      "forening": "Streetlight",
       "personer": [
-        { "namn": "Joel Nandorf", "roll": "Ordförande" },
-        { "namn": "", "roll": "" }
+        { "namn": "Maud Nandorf", "roll": "Ordförande", "ort": "Härnösand" },
+        { "namn": "Ahlam Kourya", "roll": "Ledamot", "ort": "Härnösand" },
+        { "namn": "Anders Wikström", "roll": "Ledamot", "ort": "Umeå" },
+        { "namn": "Anja Koivunen", "roll": "Ledamot", "ort": "Karlskoga" },
+        { "namn": "Anton Israelsson", "roll": "Kassör", "ort": "Rusksele" },
+        { "namn": "Joel Nandorf", "roll": "Ledamot", "ort": "Umeå" },
+        { "namn": "Kristina Olofsson", "roll": "Ledamot", "ort": "Själevad" },
+        { "namn": "Kristoffer Olsson", "roll": "Sekreterare", "ort": "Umeå" }
       ]
-    },
-    {
-      "forening": "Streetlight Etiopien",
-      "personer": [{ "namn": "", "roll": "" }]
     }
   ]
 }

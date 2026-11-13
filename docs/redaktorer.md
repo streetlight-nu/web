@@ -77,6 +77,10 @@ Där det ännu inte finns något foto visar sidan en mörkgrön ruta med ett fö
 
 Samma regler gäller som för inläggen: ett foto utan alt-text publiceras inte (se avsnitt 5), och syns ett barn eller en familj ska familjen ha sagt ja till just det här fotot (se avsnitt 3). Vill du ta bort ett foto tömmer du fältet **Foto**, så visas förslaget igen.
 
+### Styrelsen på Om föreningen
+
+Under **Om föreningen** finns **Vilka vi är** med styrelsen. Varje person har **Namn**, **Roll** (till exempel Ordförande, Kassör eller Ledamot) och **Ort**, där personen bor. En tom ort visas som ”ort fylls i”. Efter ett årsmöte ändrar du personerna här och sparar.
+
 ## 7. Fyll i julkampanjen
 
 Sidan **Ge en julklapp** (`/julklapp`) är föreningens julkampanj. Belopp, insamlingsmål och betalning sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas som ”fylls i” tills det finns.

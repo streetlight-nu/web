@@ -31,6 +31,13 @@ test("Om föreningen har en h1 och avsnitten i ordning, med Bli fadder sist", as
   );
 });
 
+test("Vilka vi är visar föreningens styrelse", async ({ page }) => {
+  await page.goto("om-foreningen");
+  const vilka = page.getByRole("region", { name: "Vilka vi är." });
+  await expect(vilka).toContainText("Föreningen leds av en styrelse som väljs på årsmötet.");
+  await expect(vilka).not.toContainText("Streetlight Etiopien har");
+});
+
 test("menyn markerar Om föreningen som aktiv", LAYOUT, async ({ page, isMobile }) => {
   await page.goto("om-foreningen");
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
@@ -100,5 +107,18 @@ test.describe("Kontakt med ifylld testfil", () => {
       "href",
       "https://www.instagram.com/test-streetlight",
     );
+  });
+});
+
+test.describe("Vilka vi är med ifylld testfil", () => {
+  test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
+  test("visar namn, roll och ort för varje person i styrelsen", async ({ page }) => {
+    await page.goto("om-foreningen");
+    const person = page.getByRole("region", { name: "Styrelsen i Streetlight Sverige" }).getByRole("listitem");
+    await expect(person).toHaveCount(1);
+    await expect(person).toContainText("TEST-NAMN");
+    await expect(person).toContainText("TEST-ROLL");
+    await expect(person).toContainText("TEST-ORT");
   });
 });

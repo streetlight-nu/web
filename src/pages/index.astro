@@ -3,6 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import BliFadder from "@/components/BliFadder.astro";
 import JulkampanjPaStartsidan from "@/components/JulkampanjPaStartsidan.astro";
 import LightBand from "@/components/LightBand.astro";
+import Ledger from "@/components/Ledger.astro";
 import Pil from "@/components/Pil.astro";
 import SenasteNytt from "@/components/SenasteNytt.astro";
 import TibebBand from "@/components/TibebBand.astro";
@@ -83,16 +84,21 @@ const lankGron = "inline-flex min-h-11 items-center font-semibold text-cotton un
 
   <JulkampanjPaStartsidan />
 
-  <!-- What the support is for, then Så började det: one cotton field. -->
+  <!-- What we believe in (the titles from Om Streetlight), then Så började det: one cotton field. -->
   <div class={`bg-cotton text-ink ${section}`}>
     <section id="stod" aria-labelledby="stod-rubrik" class:list={["band-inner", split]}>
       <h2 id="stod-rubrik" class={`min-w-0 ${h2}`}>Utbildning är vägen ut ur fattigdom.</h2>
       <div class="min-w-0">
-        <p class={lede}>
-          Därför står vi för det som annars stänger skolans dörr för ett barn i en fattig familj. Hela vägen, år för år.
-        </p>
+        <p class={lede}>Det är vad vi tror. Det styr hur vi arbetar med barnen och familjerna i Addis Abeba.</p>
+        {
+          om.tror.length > 0 && (
+            <div class="mt-[clamp(24px,3vw,36px)]">
+              <Ledger kompakt items={om.tror.map((tanke) => ({ title: tanke.rubrik }))} />
+            </div>
+          )
+        }
         <p class="mt-4">
-          <a class={lankInk} href={href("/bli-fadder#vart")}>Se vart ditt bidrag går</a>
+          <a class={lankInk} href={href("/om-foreningen#tror")}>Läs mer om det vi tror på</a>
         </p>
       </div>
     </section>

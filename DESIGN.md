@@ -257,7 +257,7 @@ Varma och stadiga, med stora tryckytor som är lätta att träffa.
 - **”Fylls i” (`sl-todo`):** en streckad bläckkant på 2 px, 3 px hörn och vit bomull på 45 %. På grönt är kanten mint och texten bomull. Chipet markerar ett faktum föreningen inte har gett än, i stället för att något hittas på. Skriv vad som saknas, till exempel ”nummer fylls i”.
 
 ### Cards / Containers
-- **Ledger (i stället för kort):** en 3 px bläcklinje upptill och nedtill och 1,5 px linjer mellan raderna, med 26 px luft per rad. Varje rad har en vävd rombmarkör: guld med röd, kobolt eller grön kärna. Markören är 28 px i en spalt på 44 px. På 520 px och smalare krymper den till 20 px i en spalt på 30 px, så att texten får bredden. Ledger på grönt (Fler sätt att stödja oss) följer samma mått, och ett formulär i en rad går under 900 px i radens hela bredd, ut under markören.
+- **Ledger (i stället för kort):** en 3 px bläcklinje upptill och nedtill och 1,5 px linjer mellan raderna, med 26 px luft per rad. Varje rad har en vävd rombmarkör: guld med röd, kobolt eller grön kärna. Markören är 28 px i en spalt på 44 px. På 520 px och smalare krymper den till 20 px i en spalt på 30 px, så att texten får bredden. Ledger kompakt (sammanfattningen av det vi tror på på startsidan) visar bara rubrikerna, med 16 px luft per rad och markören centrerad mot raden. Ledger på grönt (Fler sätt att stödja oss) följer samma mått, och ett formulär i en rad går under 900 px i radens hela bredd, ut under markören.
 - **Fotoplatshållare (`sl-photo`):** djupgrön yta i 16:9, 4 px hörn och en streckad guldkant (55 %) inskjuten 10 px. Lyktan visas i mint och guld med en text om vilket foto som ska in. Ett påhittat foto används aldrig i stället.
 
 ### Inputs / Fields

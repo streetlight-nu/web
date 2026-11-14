@@ -109,10 +109,15 @@ test.describe("startsidans berättelse", () => {
       "href",
       /\/om-foreningen#borjan$/,
     );
-    // What the support pays for, and the proof, have their one home on the page Bli fadder.
+    // The section sums up what we believe in with the titles from Om Streetlight, and links to the whole texts there.
     const stod = page.locator("#stod");
     await expect(stod.getByRole("heading", { level: 2, name: "Utbildning är vägen ut ur fattigdom." })).toBeVisible();
-    await expect(stod.getByRole("link", { name: "Se vart ditt bidrag går" })).toHaveAttribute("href", /\/bli-fadder#vart$/);
+    await expect(stod.getByRole("heading", { level: 3, name: "TEST-TRO." })).toBeVisible();
+    await expect(stod).not.toContainText("TEST-TRO-TEXT.");
+    await expect(stod.getByRole("link", { name: "Läs mer om det vi tror på" })).toHaveAttribute(
+      "href",
+      /\/om-foreningen#tror$/,
+    );
     // What the support is for comes before Så började det.
     const stodY = (await stod.boundingBox())!.y;
     const borjanY = (await borjan.boundingBox())!.y;

@@ -5,6 +5,7 @@ import FyllsI from "@/components/FyllsI.astro";
  * Ledger: a list between thick ink rules, for what something is made of. Used instead of cards.
  * Each row has a woven rhombus marker (gold with a red, cobalt or green core, in turn).
  * A title or text the association has not written yet shows the chip "fylls i".
+ * Compact (kompakt) shows only the titles, tighter: a summary that links to the full list elsewhere.
  */
 export interface LedgerItem {
   title?: string;
@@ -12,18 +13,19 @@ export interface LedgerItem {
 }
 interface Props {
   items: LedgerItem[];
+  kompakt?: boolean;
 }
-const { items } = Astro.props;
+const { items, kompakt = false } = Astro.props;
 ---
 
-<ul class="ledger">
+<ul class:list={["ledger", { kompakt }]}>
   {
     items.map((item) => (
       <li>
         <span class="mark" aria-hidden="true" />
         <div>
           <h3 class="mb-1.5 text-title tracking-[-0.015em]">{item.title ?? <FyllsI>rubrik fylls i</FyllsI>}</h3>
-          <p class="max-w-[52ch] text-ink-soft">{item.text ?? <FyllsI>text fylls i</FyllsI>}</p>
+          {!kompakt && <p class="max-w-[52ch] text-ink-soft">{item.text ?? <FyllsI>text fylls i</FyllsI>}</p>}
         </div>
       </li>
     ))
@@ -46,6 +48,17 @@ const { items } = Astro.props;
   }
   li:last-child {
     border-bottom: 3px solid var(--color-ink);
+  }
+  /* Compact: titles only, so the rows sit closer and the marker is centred on the one line. */
+  .kompakt li {
+    align-items: center;
+    padding-block: 16px;
+  }
+  .kompakt h3 {
+    margin-bottom: 0;
+  }
+  .kompakt .mark {
+    margin-top: 0;
   }
   /* The woven marker: a gold rhombus with a core of red, cobalt or green thread, in turn. */
   .mark {

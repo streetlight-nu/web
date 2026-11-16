@@ -6,11 +6,15 @@
  * Motion: once the band is in view the lights come on one by one, 90 ms apart, after the lamp has lit.
  * It is an addition: the markup is fully lit, and only the script dims it first (never with reduced motion or without JS).
  * A page with its own text under the lights (the Christmas campaign) puts it in the default slot instead of the line,
- * and can reuse the line with <TjugoLjus />.
+ * and can reuse the line with <TjugoLjus />. `utanText` shows the band alone, for a page that tells the line elsewhere.
  */
 import TjugoLjus from "@/components/TjugoLjus.astro";
 
 const CHILDREN = 20;
+interface Props {
+  utanText?: boolean;
+}
+const { utanText = false } = Astro.props;
 const ownText = Astro.slots.has("default");
 ---
 
@@ -23,7 +27,7 @@ const ownText = Astro.slots.has("default");
     </div>
   </div>
   {
-    ownText ? (
+    utanText ? null : ownText ? (
       <slot />
     ) : (
       <div class="band-inner py-[18px]">

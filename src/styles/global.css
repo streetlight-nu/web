@@ -208,7 +208,7 @@
     background: transparent;
     color: var(--color-cotton);
   }
-  /* "Ge en julklapp" in the main menu: a line pill that fills with cotton on hover and when it is the current page. */
+  /* "Ge ett julpaket" in the main menu: a line pill that fills with cotton on hover and when it is the current page. */
   .nav-gift {
     display: inline-flex;
     align-items: center;

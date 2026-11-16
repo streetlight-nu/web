@@ -35,12 +35,12 @@ _Undvik_: kontaktinfo, betalinfo
 
 ## Julkampanjen
 
-**Julklapp**:
-En gåva i julkampanjen ”Ge en julklapp” till barnen i Addis Abeba, där personen själv väljer belopp. Ges via Repejo.
-_Undvik_: donation, julgåva
+**Julpaket**:
+En gåva i julkampanjen ”Ge ett julpaket” till barnen i Addis Abeba, där personen själv väljer belopp. Ges via Repejo.
+_Undvik_: julklapp, donation, julgåva
 
 **Julkort**:
-Kortet som följer med en julklapp: personen skriver en hälsning, och föreningen skickar kortet i personens namn på julaftonsmorgonen till någon hen tycker om.
+Kortet som följer med ett julpaket: personen skriver en hälsning, och föreningen skickar kortet i personens namn på julaftonsmorgonen till någon hen tycker om.
 _Undvik_: gåvobevis, e-kort
 
 **Repejo**:

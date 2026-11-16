@@ -83,13 +83,13 @@ Under **Om Streetlight** finns **Vilka vi är** med styrelsen. Varje person har 
 
 ## 7. Fyll i julkampanjen
 
-Sidan **Ge en julklapp** (`/julklapp`) är föreningens julkampanj. Belopp, insamlingsmål och betalning sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas som ”fylls i” tills det finns.
+Sidan **Ge ett julpaket** (`/julklapp`) är föreningens julkampanj. Belopp, insamlingsmål och betalning sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas som ”fylls i” tills det finns.
 
 1. Klicka på **Julkampanjen** i menyn till vänster.
-2. Skriv **Sista dagen att ge en julklapp med kort**, som du vill att det ska stå, till exempel ”20 december”.
-3. Skriv **Det här gör julklappen**: en eller två meningar om vad pengarna går till.
+2. Skriv **Sista dagen att ge ett julpaket med kort**, som du vill att det ska stå, till exempel ”20 december”.
+3. Skriv **Det här gör julpaketet**: en eller två meningar om vad pengarna går till.
 4. Fältet **E-post för frågor om julkampanjen** är frivilligt. Lämnar du det tomt visas föreningens kontakt-e-post.
-5. Bocka i **Visa julkampanjen på startsidan och i menyn** när kampanjen pågår. Då syns ett kort avsnitt om julklappen direkt under de 20 ljusen på startsidan, och länken **Julklapp** i menyn. Bocka ur rutan efter jul, så försvinner båda. Sidan Ge en julklapp finns kvar för den som har en länk.
+5. Bocka i **Visa julkampanjen på startsidan och i menyn** när kampanjen pågår. Då syns ett kort avsnitt om julpaketet direkt under de 20 ljusen på startsidan, och länken **Julpaket** i menyn. Bocka ur rutan efter jul, så försvinner båda. Sidan Ge ett julpaket finns kvar för den som har en länk.
 
 ## 8. Skriv Vanliga frågor
 
@@ -128,7 +128,7 @@ Ett felstavat namn, till exempel `{swihs}`, stoppar sidan. Bankgirot skrivs `{ni
 
 ## 9. Slå på och av sidor
 
-Under **Funktioner** i menyn väljer du om en sida visas. Det gäller **Ge en julklapp**, **Vår historia** och **Engagera dig**. Sidan och länkarna till den, i menyn, sidfoten och på andra sidor, följer samma val.
+Under **Funktioner** i menyn väljer du om en sida visas. Det gäller **Ge ett julpaket**, **Vår historia** och **Engagera dig**. Sidan och länkarna till den, i menyn, sidfoten och på andra sidor, följer samma val.
 
 1. Klicka på **Funktioner** i menyn till vänster.
 2. Välj **På** för att visa sidan överallt, **Av** för att dölja den helt, eller **Bara i testbyggen** för att visa den bara i testversionen och inte på den publicerade sajten.

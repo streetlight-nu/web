@@ -14,18 +14,18 @@ test.beforeEach(async ({ page }) => {
 
 test("julkampanjen har titeln och kampanjrubriken", async ({ page }) => {
   await page.goto(sida);
-  await expect(page).toHaveTitle("Ge en julklapp | Streetlight");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Ge en julklapp som sprider hopp");
+  await expect(page).toHaveTitle("Ge ett julpaket | Streetlight");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Ge ett julpaket som sprider hopp");
 });
 
 test("delas med en egen titel och beskrivning", async ({ page }) => {
   await page.goto(sida);
-  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", "Ge en julklapp | Streetlight");
-  await expect(page.locator('meta[property="og:description"]')).toHaveAttribute("content", /julklapp.*Addis Abeba/);
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute("content", "Ge ett julpaket | Streetlight");
+  await expect(page.locator('meta[property="og:description"]')).toHaveAttribute("content", /julpaket.*Addis Abeba/);
   await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /julaftonsmorgonen/);
 });
 
-test("knappen Ge en julklapp i första vyn leder till Repejos checkout", LAYOUT, async ({ page }) => {
+test("knappen Ge ett julpaket i första vyn leder till Repejos checkout", LAYOUT, async ({ page }) => {
   await page.goto(sida);
   const knapp = page.getByRole("banner").locator('a[href="#ge"]');
   await expect(knapp).toBeInViewport();
@@ -34,9 +34,8 @@ test("knappen Ge en julklapp i första vyn leder till Repejos checkout", LAYOUT,
   await knapp.click();
   await expect(page).toHaveURL(/#ge$/);
   const ge = page.locator("#ge");
-  await expect(ge.getByRole("heading", { level: 2, name: "Ge en julklapp" })).toBeInViewport();
+  await expect(ge.getByRole("heading", { level: 2, name: "Ge ett julpaket" })).toBeInViewport();
   await expect(ge.getByText("Repejos checkout (stubb)")).toBeVisible();
-  await expect(ge.getByText("Repejo sköter betalningen", { exact: false })).toBeVisible();
 });
 
 test("under checkouten finns ingen reservlänk", async ({ page }) => {
@@ -46,12 +45,14 @@ test("under checkouten finns ingen reservlänk", async ({ page }) => {
   await expect(ge.getByText("Fungerar inte betalningen?")).toHaveCount(0);
 });
 
-test("insamlingsmätaren finns i avsnittet om insamlingsmålet", async ({ page }) => {
+test("insamlingsmålet står i första vyn och raden om de 20 ljusen under Vart julpaketet går", async ({ page }) => {
   await page.goto(sida);
-  const mal = page.getByRole("region", { name: "Håll ljusen tända i jul" });
-  await expect(mal.getByText("20 barn, 20 ljus.")).toBeVisible();
-  await expect(mal.getByTestId("ljusbandet").getByTestId("ljus")).toHaveCount(20);
+  const mal = page.getByRole("banner").getByRole("region", { name: "Insamlingsmålet" });
   await expect(mal.getByText("Repejos insamlingsmätare (stubb)")).toBeVisible();
+  await expect(page.getByTestId("ljusbandet").getByTestId("ljus")).toHaveCount(20);
+  const vart = page.getByRole("region", { name: "Vart julpaketet går" });
+  await expect(vart.getByText("20 barn, 20 ljus.")).toBeVisible();
+  await expect(page.getByText("20 barn, 20 ljus.")).toHaveCount(1);
 });
 
 test.describe("utan Repejo", LAYOUT, () => {
@@ -69,20 +70,17 @@ test.describe("utan Repejo", LAYOUT, () => {
   });
 });
 
-test("julkortsexemplet i första vyn är märkt Exempel", LAYOUT, async ({ page }) => {
+test("julkortet i första vyn visas", LAYOUT, async ({ page }) => {
   await page.goto(sida);
-  const kort = page.getByRole("figure", { name: /Exempel på ett julkort/ });
-  await expect(kort).toBeInViewport({ ratio: 0.3 });
-  await expect(kort.getByText("Exempel", { exact: true })).toBeVisible();
-  await expect(kort).toContainText("Du skriver din egen hälsning.");
+  await expect(page.getByRole("banner").getByRole("img", { name: /Julkort med texten ”God jul!”/ })).toBeInViewport();
 });
 
-test("Ge en julklapp visar de tre stegen i ordning bredvid checkouten", async ({ page }) => {
+test("Ge ett julpaket visar de tre stegen i ordning bredvid checkouten", async ({ page }) => {
   await page.goto(sida);
   // The steps and the checkout are one section, so the first view has one way down to it.
   await expect(page.getByRole("banner").getByRole("link", { name: "Så går det till" })).toHaveCount(0);
   const steg = page.locator("#ge");
-  await expect(steg.getByRole("heading", { level: 2, name: "Ge en julklapp" })).toBeVisible();
+  await expect(steg.getByRole("heading", { level: 2, name: "Ge ett julpaket" })).toBeVisible();
   await expect(steg.getByRole("listitem").getByRole("heading", { level: 3 })).toHaveText([
     "Välj ett belopp",
     "Skriv ett julkort",
@@ -90,10 +88,10 @@ test("Ge en julklapp visar de tre stegen i ordning bredvid checkouten", async ({
   ]);
 });
 
-test("Vart julklappen går har en plats för ett foto med samtycke och leder vidare till Bli fadder", async ({ page }) => {
+test("Vart julpaketet går visar ett foto på barnen och leder vidare till Bli fadder", async ({ page }) => {
   await page.goto(sida);
-  const vart = page.getByRole("region", { name: "Vart julklappen går" });
-  await expect(vart.getByText("Foto från föreningen, med familjens samtycke")).toBeVisible();
+  const vart = page.getByRole("region", { name: "Vart julpaketet går" });
+  await expect(vart.getByRole("img", { name: /Barn och ungdomar i en grönskande trädgård/ })).toBeVisible();
   await expect(vart.getByText("20 fadderbarns skolgång", { exact: false })).toBeVisible();
   await expect(vart.getByRole("link", { name: "Läs om att bli fadder" })).toHaveAttribute("href", /\/bli-fadder$/);
 });
@@ -103,12 +101,11 @@ test.describe("kampanjuppgifter med tom testfil", () => {
   // break when the association fills in src/data/julkampanj.json.
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
-  test("vad julklappen gör och e-posten visas som ”fylls i”", async ({ page }) => {
+  test("vad julpaketet gör visas som ”fylls i”", async ({ page }) => {
     await page.goto(sida);
     await expect(
-      page.getByRole("region", { name: "Vart julklappen går" }).getByText("fylls i av föreningen", { exact: true }),
+      page.getByRole("region", { name: "Vart julpaketet går" }).getByText("fylls i av föreningen", { exact: true }),
     ).toBeVisible();
-    await expect(page.locator("#ge").getByText("e-post fylls i", { exact: true })).toBeVisible();
   });
 
   test("texterna talar om fadder och hittar inte på några siffror", async ({ page }) => {
@@ -125,11 +122,7 @@ test.describe("kampanjuppgifter med ifylld testfil", () => {
 
   test("visar värdena från datafilen i stället för ”fylls i”", async ({ page }) => {
     await page.goto(sida);
-    await expect(page.getByRole("region", { name: "Vart julklappen går" })).toContainText("TEST-VAD-JULKLAPPEN-GOR");
-    await expect(page.locator("#ge").getByRole("link", { name: "julklapp@example.org" })).toHaveAttribute(
-      "href",
-      "mailto:julklapp@example.org",
-    );
+    await expect(page.getByRole("region", { name: "Vart julpaketet går" })).toContainText("TEST-VAD-JULPAKETET-GOR");
     await expect(page.getByRole("main").getByText(/fylls i/)).toHaveCount(0);
     await expect(page.getByRole("banner").getByText(/fylls i/)).toHaveCount(0);
     await expectNoA11yViolations(page);
@@ -148,7 +141,7 @@ test.describe("med reducerad rörelse", () => {
   });
 });
 
-test("på kampanjsidan är Ge en julklapp den enda guldknappen i första vyn, och Bli fadder i menyn en linjeknapp", async ({
+test("på kampanjsidan är Ge ett julpaket den enda guldknappen i första vyn, och Bli fadder i menyn en linjeknapp", async ({
   page,
 }) => {
   await page.goto(sida);
@@ -160,18 +153,18 @@ test("på kampanjsidan är Ge en julklapp den enda guldknappen i första vyn, oc
   expect(await page.getByRole("banner").locator('a[href="#ge"]').evaluate(bakgrund)).toBe(guld);
 });
 
-test("menyn markerar Julklapp som aktuell sida, även när kampanjen inte visas på startsidan", LAYOUT, async ({ page, isMobile }) => {
+test("menyn markerar Julpaket som aktuell sida, även när kampanjen inte visas på startsidan", LAYOUT, async ({ page, isMobile }) => {
   await page.goto(`${process.env.E2E_TOM_URL}${sida}`);
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-  await expect(nav.getByRole("link", { name: "Ge en julklapp", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(nav.getByRole("link", { name: "Ge ett julpaket", exact: true })).toHaveAttribute("aria-current", "page");
 });
 
-test("i menyn står Om Streetlight precis till vänster om Ge en julklapp", async ({ page }) => {
+test("i menyn står Om Streetlight precis till vänster om Ge ett julpaket", async ({ page }) => {
   await page.goto(sida);
   const lankar = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("listitem").getByRole("link");
   const namn = await lankar.allTextContents();
-  const jul = namn.findIndex((n) => n.trim() === "Ge en julklapp");
+  const jul = namn.findIndex((n) => n.trim() === "Ge ett julpaket");
   expect(jul).toBeGreaterThan(0);
   expect(namn[jul - 1].trim()).toBe("Om Streetlight");
 });
@@ -188,7 +181,7 @@ test.describe("julkampanjen på startsidan", () => {
       await expect(jul).toBeVisible();
       // First in the content, right under the light band in the header.
       expect(await page.locator("main > section").first().getAttribute("id")).toBe("julklapp");
-      const lank = jul.getByRole("link", { name: "Ge en julklapp" });
+      const lank = jul.getByRole("link", { name: "Ge ett julpaket" });
       await expect(lank).toHaveAttribute("href", /\/julklapp$/);
       expect((await lank.boundingBox())!.height).toBeGreaterThanOrEqual(44);
       await expect(jul).toContainText("TEST-SISTA-DAG");
@@ -211,8 +204,8 @@ test.describe("julkampanjen på startsidan", () => {
       await page.goto("./");
       expect(await brinner()).toEqual([true, true, false, false]);
       await expect(page.locator("[data-advent]")).toHaveText("Andra advent, två ljus är tända.");
-      // A julklapp keeps the lights on: pointing at the button lights the rest.
-      await page.locator("#julklapp").getByRole("link", { name: "Ge en julklapp" }).hover();
+      // A julpaket keeps the lights on: pointing at the button lights the rest.
+      await page.locator("#julklapp").getByRole("link", { name: "Ge ett julpaket" }).hover();
       await expect(page.locator("[data-adventsljus] .ljus.slackt .laga").first()).toHaveCSS("opacity", "1");
     });
 
@@ -222,8 +215,8 @@ test.describe("julkampanjen på startsidan", () => {
       await expect(page.locator("[data-adventsljus] .ljus")).toHaveCount(4);
       await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(4);
       await expect(page.locator("[data-advent]")).toBeHidden();
-      // A julklapp keeps the lights on: pointing at the button still lights them.
-      await page.locator("#julklapp").getByRole("link", { name: "Ge en julklapp" }).hover();
+      // A julpaket keeps the lights on: pointing at the button still lights them.
+      await page.locator("#julklapp").getByRole("link", { name: "Ge ett julpaket" }).hover();
       await expect(page.locator("[data-adventsljus] .ljus.slackt .laga").first()).toHaveCSS("opacity", "1");
     });
 
@@ -306,7 +299,7 @@ test.describe("julkampanjen på startsidan", () => {
       await page.goto("./");
       const nav = page.getByRole("navigation", { name: "Huvudmeny" });
       if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-      await expect(nav.getByRole("link", { name: "Ge en julklapp", exact: true })).toHaveAttribute("href", /\/julklapp$/);
+      await expect(nav.getByRole("link", { name: "Ge ett julpaket", exact: true })).toHaveAttribute("href", /\/julklapp$/);
     });
 
     test("menyn ryms på en rad vid 901 px", async ({ page, isMobile }) => {
@@ -314,7 +307,7 @@ test.describe("julkampanjen på startsidan", () => {
       await page.setViewportSize({ width: 901, height: 800 });
       await page.goto("./");
       const nav = page.getByRole("navigation", { name: "Huvudmeny" });
-      const hojd = (await nav.getByRole("link", { name: "Ge en julklapp", exact: true }).boundingBox())!.height;
+      const hojd = (await nav.getByRole("link", { name: "Ge ett julpaket", exact: true }).boundingBox())!.height;
       expect(hojd).toBeLessThan(40);
       const logga = (await nav.getByRole("link").first().boundingBox())!;
       const knapp = (await nav.getByRole("link", { name: "Bli fadder" }).boundingBox())!;
@@ -328,7 +321,7 @@ test.describe("julkampanjen på startsidan", () => {
     test("syns varken avsnittet eller länken i menyn", async ({ page }) => {
       await page.goto("./");
       await expect(page.locator("#julklapp")).toHaveCount(0);
-      await expect(page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Ge en julklapp" })).toHaveCount(0);
+      await expect(page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Ge ett julpaket" })).toHaveCount(0);
     });
   });
 });

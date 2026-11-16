@@ -9,7 +9,7 @@ export const REPEJO_HOST = "https://app.repejo.se";
 /** The association's organisation id at Repejo. */
 export const REPEJO_ORGANISATION = "org_2ipufW9fncbNaQ5aFFYTLH";
 
-/** The short code of the Christmas campaign "Ge en julklapp som sprider hopp". */
+/** The short code of the Christmas campaign "Ge ett julpaket som sprider hopp". */
 export const JULKAMPANJ_KORTKOD = "TSpuB";
 
 /** The short code of the checkout for becoming a fadder (the gold field "Bli fadder" on the page Bli fadder). */

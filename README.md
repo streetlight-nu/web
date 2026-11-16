@@ -71,7 +71,7 @@ Webbläsartesterna bygger sajten en tredje gång till `dist-av/`, som produktion
 
 ## Julkampanjen och Repejo
 
-Sidan ”Ge en julklapp” (`src/pages/[julklapp].astro`, `/julklapp`) bäddar in Repejos checkout och insamlingsmätare via `src/components/Repejo.astro`. Värd, organisations-id och kampanjens kortkod finns i `src/lib/repejo.ts`. Under checkouten och mätaren finns en länk till Repejos kampanjsida, så att besökaren kan ge även om Repejo inte fungerar. Bara på sidan Bli fadder saknas länken under checkouten (`utanReserv`), som i sidans design. Kampanjens egna uppgifter (sista dagen, vad julklappen gör och en e-post för frågor) finns i `src/data/julkampanj.json` och fylls i i Pages CMS under Julkampanjen. Webbläsartesterna stubbar Repejo och läser kampanjens uppgifter från `tests/fixtures/julkampanj-ifylld.json` och `julkampanj-tom.json` (via `JULKAMPANJ_FIL`).
+Sidan ”Ge ett julpaket” (`src/pages/[julklapp].astro`, `/julklapp`) bäddar in Repejos checkout och insamlingsmätare via `src/components/Repejo.astro`. Värd, organisations-id och kampanjens kortkod finns i `src/lib/repejo.ts`. Under checkouten och mätaren finns en länk till Repejos kampanjsida, så att besökaren kan ge även om Repejo inte fungerar. Bara på sidan Bli fadder saknas länken under checkouten (`utanReserv`), som i sidans design. Kampanjens egna uppgifter (sista dagen, vad julpaketet gör och en e-post för frågor) finns i `src/data/julkampanj.json` och fylls i i Pages CMS under Julkampanjen. Webbläsartesterna stubbar Repejo och läser kampanjens uppgifter från `tests/fixtures/julkampanj-ifylld.json` och `julkampanj-tom.json` (via `JULKAMPANJ_FIL`).
 
 Kampanjen är säsongsbunden. Efter jul kan sidan tas bort, eller kortkoden bytas, utan att något annat ändras.
 

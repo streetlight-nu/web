@@ -12,9 +12,9 @@ import { arEpostadress, valfri } from "./falt";
  * Amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
  */
 export interface Julkampanj {
-  /** The last day to give a julklapp with a card, as the association writes it, e.g. "20 december". */
+  /** The last day to give a julpaket with a card, as the association writes it, e.g. "20 december". */
   sistaDag?: string;
-  /** What a julklapp does for the children and the families. */
+  /** What a julpaket does for the children and the families. */
   vadJulklappenGor?: string;
   /** The campaign's own e-mail for questions. Without one, the föreningsuppgifter's e-mail is used. */
   epost?: string;

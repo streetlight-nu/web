@@ -77,12 +77,12 @@ test("julkortsexemplet i första vyn är märkt Exempel", LAYOUT, async ({ page 
   await expect(kort).toContainText("Du skriver din egen hälsning.");
 });
 
-test("Så går det till visar de tre stegen i ordning", async ({ page }) => {
+test("Ge en julklapp visar de tre stegen i ordning bredvid checkouten", async ({ page }) => {
   await page.goto(sida);
-  await page.getByRole("banner").getByRole("link", { name: "Så går det till" }).click();
-  await expect(page).toHaveURL(/#sa-gar-det-till$/);
-  const steg = page.locator("#sa-gar-det-till");
-  await expect(steg.getByRole("heading", { level: 2 })).toBeInViewport();
+  // The steps and the checkout are one section, so the first view has one way down to it.
+  await expect(page.getByRole("banner").getByRole("link", { name: "Så går det till" })).toHaveCount(0);
+  const steg = page.locator("#ge");
+  await expect(steg.getByRole("heading", { level: 2, name: "Ge en julklapp" })).toBeVisible();
   await expect(steg.getByRole("listitem").getByRole("heading", { level: 3 })).toHaveText([
     "Välj ett belopp",
     "Skriv ett julkort",

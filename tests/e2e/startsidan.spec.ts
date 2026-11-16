@@ -105,13 +105,14 @@ test.describe("startsidans berättelse", () => {
     await expect(borjan.getByRole("heading", { level: 2, name: "Så började det." })).toBeVisible();
     await expect(borjan).toContainText("TEST-BÖRJAN, första stycket.");
     await expect(borjan).not.toContainText("andra stycket");
-    await expect(borjan.getByRole("link", { name: "Läs hela berättelsen om Streetlight" })).toHaveAttribute(
+    await expect(borjan.getByRole("link", { name: "Läs hela berättelsen om föreningen" })).toHaveAttribute(
       "href",
       /\/om-foreningen#borjan$/,
     );
-    // What the support pays for, and the proof, have their one home on the page Bli fadder.
+    // Why school: the fact from Om Streetlight, what the support pays for, and the proof on the page Bli fadder.
     const stod = page.locator("#stod");
     await expect(stod.getByRole("heading", { level: 2, name: "Utbildning är vägen ut ur fattigdom." })).toBeVisible();
+    await expect(stod).toContainText("bara ungefär sex av tio går klart årskurs åtta");
     await expect(stod.getByRole("link", { name: "Se vart ditt bidrag går" })).toHaveAttribute("href", /\/bli-fadder#vart$/);
     // What the support is for comes before Så började det.
     const stodY = (await stod.boundingBox())!.y;
@@ -151,9 +152,9 @@ test.describe("startsidans berättelse", () => {
   });
 });
 
-test("Vad stödet går till leder till Vart ditt bidrag går på Bli fadder", async ({ page }) => {
+test("Vad stödet går till leder ner till Utbildning är vägen ut ur fattigdom", async ({ page }) => {
   await page.goto("./");
   await page.getByRole("link", { name: "Vad stödet går till" }).click();
-  await expect(page).toHaveURL(/\/bli-fadder#vart$/);
-  await expect(page.getByRole("heading", { level: 2, name: "Vart ditt bidrag går." })).toBeInViewport();
+  await expect(page).toHaveURL(/\/#stod$/);
+  await expect(page.getByRole("heading", { level: 2, name: "Utbildning är vägen ut ur fattigdom." })).toBeInViewport();
 });

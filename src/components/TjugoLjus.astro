@@ -1,9 +1,14 @@
 ---
 /**
  * The line under the light band: "20 barn, 20 ljus." and why the association is small. Shared by LightBand
- * and the Christmas campaign's own text under the lights, so the line is written once. Put it in a <p> on green.
+ * and the Christmas campaign's own text, so the line is written once. Put it in a <p>.
+ * `tone="ink"` is for a light background, where the bold part is ink instead of cotton.
  */
+interface Props {
+  tone?: "cotton" | "ink";
+}
+const { tone = "cotton" } = Astro.props;
 ---
 
-<strong class="font-semibold text-cotton">20 barn, 20 ljus.</strong> Vi är små med flit, så att stödet når fram och
+<strong class:list={["font-semibold", tone === "ink" ? "text-ink" : "text-cotton"]}>20 barn, 20 ljus.</strong> Vi är små med flit, så att stödet når fram och
 vi känner varje familj.

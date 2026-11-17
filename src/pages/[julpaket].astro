@@ -18,7 +18,7 @@ import barnITradgarden from "@/assets/julklapp/barn-i-tradgarden.jpg";
  * and the association sends a julkort in their name on Christmas morning. Repejo handles the
  * checkout, the amounts and the progress bar (ADR 0003); the page only tells what they do. The campaign's own facts
  * come from src/data/julkampanj.json (Pages CMS); every empty field shows the chip "fylls i" (matching is left out
- * until it is filled in). The thank-you page is julklapp/[tack].astro.
+ * until it is filled in). The thank-you page is julpaket/[tack].astro.
  * Seasonal: after Christmas the page can be removed, or the short code changed (src/lib/repejo.ts),
  * without touching anything else.
  */
@@ -27,9 +27,9 @@ const kontaktEpost = epost ?? hamtaForeningsuppgifter().epost;
 /** Matching is shown only when the association has filled in all three of its fields. */
 const matchning = matchningGivare && matchningSistaDag && matchningBelopp;
 
-/** The page is built only when the flag `julklapp` is on (src/data/funktioner.json); otherwise /julklapp is a 404. */
+/** The page is built only when the flag `julklapp` is on (src/data/funktioner.json); otherwise /julpaket is a 404. */
 export function getStaticPaths() {
-  return hamtaFunktioner().julklapp ? [{ params: { julklapp: "julklapp" } }] : [];
+  return hamtaFunktioner().julklapp ? [{ params: { julpaket: "julpaket" } }] : [];
 }
 
 const section = "py-[clamp(64px,9vw,120px)]";

@@ -26,8 +26,8 @@ const SIDOR: [namn: string, sokvag: string][] = [
   ...(funktionPa("historia") ? ([["Vår historia", "historia"]] as [string, string][]) : []),
   ...(funktionPa("julklapp")
     ? ([
-        ["Ge ett julpaket", "julklapp"],
-        ["Tack för ett julpaket", "julklapp/tack"],
+        ["Ge ett julpaket", "julpaket"],
+        ["Tack för ett julpaket", "julpaket/tack"],
       ] as [string, string][])
     : []),
 ];

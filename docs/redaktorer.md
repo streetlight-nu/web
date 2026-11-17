@@ -83,7 +83,7 @@ Under **Om Streetlight** finns **Vilka vi är** med styrelsen. Varje person har 
 
 ## 7. Fyll i julkampanjen
 
-Sidan **Ge ett julpaket** (`/julklapp`) är föreningens julkampanj. Beloppen, insamlingsmålet, mätaren och betalningen sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas som ”fylls i” tills det finns.
+Sidan **Ge ett julpaket** (`/julpaket`) är föreningens julkampanj. Beloppen, insamlingsmålet, mätaren och betalningen sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas som ”fylls i” tills det finns.
 
 1. Klicka på **Julkampanjen** i menyn till vänster.
 2. Skriv **Sista dagen att ge ett julpaket med kort**, som du vill att det ska stå, till exempel ”20 december”.

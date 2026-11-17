@@ -1,6 +1,9 @@
 {
   "sistaDag": "",
-  "vadJulklappenGor": "",
+  "efterJulpaketen": "",
+  "matchningGivare": "",
+  "matchningSistaDag": "",
+  "matchningBelopp": "",
   "epost": "",
   "visasPaStartsidan": true
 }

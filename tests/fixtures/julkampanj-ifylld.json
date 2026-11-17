@@ -1,6 +1,9 @@
 {
   "sistaDag": "TEST-SISTA-DAG, fredag den 19 december före klockan tolv på natten, så hinner vi skicka kortet",
-  "vadJulklappenGor": "TEST-VAD-JULPAKETET-GOR",
+  "efterJulpaketen": "TEST-EFTER-JULPAKETEN",
+  "matchningGivare": "TEST-GIVARE",
+  "matchningSistaDag": "TEST-MATCHNING-TILL",
+  "matchningBelopp": "TEST-BELOPP",
   "epost": "julklapp@example.org",
   "visasPaStartsidan": true
 }

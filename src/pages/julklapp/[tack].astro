@@ -1,0 +1,37 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Pil from "@/components/Pil.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { hamtaFunktioner } from "@/lib/funktioner";
+import { href } from "@/lib/utils";
+
+/**
+ * Tack: where a visitor lands after giving a julpaket (Repejo's return address is set at Repejo, to /julklapp/tack).
+ * It thanks them, repeats when the julkort arrives and offers the regular support, Bli fadder, as the one gold button.
+ * Built only when the flag `julklapp` is on, like the campaign page; kept out of search results.
+ */
+export function getStaticPaths() {
+  return hamtaFunktioner().julklapp ? [{ params: { tack: "tack" } }] : [];
+}
+
+const ingress = "Ditt julkort skickas på julaftonsmorgonen, och i jul får ett barn i Addis Abeba ett julpaket.";
+---
+
+<BaseLayout title="Tack för att du ger ett julpaket" description={ingress} current="julklapp" noindex>
+  <div slot="header" class="pt-[clamp(28px,5vw,56px)] pb-[clamp(56px,8vw,104px)]">
+    <h1 class="max-w-[16ch] text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[0.98] tracking-[-0.035em]">
+      Tack för att du ger ett <span class="text-gold">julpaket!</span>
+    </h1>
+    <p class="mt-[22px] max-w-[44ch] text-lede text-mint">{ingress}</p>
+  </div>
+
+  <section aria-labelledby="fadder-rubrik" class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="band-inner">
+      <h2 id="fadder-rubrik" class="text-headline">Vill du stötta barnen hela året?</h2>
+      <p class="mt-[22px] max-w-[52ch]">Som fadder stöttar du alla 20 barnen varje månad.</p>
+      <div class="mt-[30px]">
+        <a class={buttonVariants()} href={href("/bli-fadder")}>Bli fadder <Pil /></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

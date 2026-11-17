@@ -72,16 +72,28 @@ content:
     path: src/data/julkampanj.json
     format: json
     # The fields must match the schema in src/lib/julkampanj.ts; tests/unit/julkampanj.test.ts checks it.
-    # Amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
+    # The amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
     fields:
       - name: sistaDag
         label: Sista dagen att ge ett julpaket med kort
         type: string
-        description: Skriv som du vill att det ska stå, till exempel ”20 december”. Visas överst på sidan Ge ett julpaket. Lämna tomt tills det finns, så visas ”fylls i”.
-      - name: vadJulklappenGor
-        label: Det här gör julpaketet
-        type: text
-        description: En eller två meningar om vad pengarna från julpaketen går till. Visas under ”Vart julpaketet går”. Lämna tomt tills det finns, så visas ”fylls i”.
+        description: Skriv som du vill att det ska stå, till exempel ”20 december”. Visas i formuläret på sidan Ge ett julpaket. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: efterJulpaketen
+        label: Vad pengarna går till när alla 20 julpaket är klara
+        type: string
+        description: Skriv så att det passar efter ”går resten till”, till exempel ”barnens skolgång under året”. Visas under ”Vart julpaketet går”. Lämna tomt tills det finns, så visas ”fylls i”.
+      - name: matchningGivare
+        label: Matchning, vem som dubblar gåvorna
+        type: string
+        description: Namnet på den som dubblar varje gåva. Matchningen visas bara när alla tre fälten om matchning är ifyllda. Har ni ingen givare lämnar du alla tre tomma.
+      - name: matchningSistaDag
+        label: Matchning, till och med
+        type: string
+        description: Skriv som du vill att det ska stå, till exempel ”15 december”.
+      - name: matchningBelopp
+        label: Matchning, högsta belopp i kronor
+        type: string
+        description: Skriv beloppet utan ”kr”, till exempel ”8 000”.
       - name: epost
         label: E-post för frågor om julkampanjen
         type: string

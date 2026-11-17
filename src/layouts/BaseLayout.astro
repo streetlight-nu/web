@@ -19,8 +19,10 @@ interface Props {
   /** Open Graph's type: an inlägg is an "article", every other page a "website". */
   ogType?: "website" | "article";
   delningsbild?: Delningsbild;
+  /** Keeps the page out of search results, e.g. a thank-you page. */
+  noindex?: boolean;
 }
-const { title, description, current, ogType = "website", delningsbild } = Astro.props;
+const { title, description, current, ogType = "website", delningsbild, noindex = false } = Astro.props;
 const pageTitle = title === "Streetlight" ? title : `${title} | Streetlight`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 // The standard image, drawn by scripts/rita-delningsbild.mjs from the logo on green.
@@ -39,6 +41,7 @@ const bild: Delningsbild = delningsbild ?? {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={href("/favicon.svg")} />
     <meta name="theme-color" content="#0E4A38" />

@@ -9,13 +9,17 @@ import { arEpostadress, valfri } from "./falt";
  * They live in one data file, `src/data/julkampanj.json`, which the association fills in through
  * Pages CMS (see `.pages.yml`). The page gets them only from here and never writes a value itself.
  * A field that is missing or empty is `undefined`, and is shown as the chip "fylls i".
- * Amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
+ * The amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
  */
 export interface Julkampanj {
   /** The last day to give a julpaket with a card, as the association writes it, e.g. "20 december". */
   sistaDag?: string;
-  /** What a julpaket does for the children and the families. */
-  vadJulklappenGor?: string;
+  /** What the money goes to once all 20 julpaket are done, e.g. "barnens skolgång under året". */
+  efterJulpaketen?: string;
+  /** Who matches every gift (a donor), until when and up to which amount. All three, or no matching is shown. */
+  matchningGivare?: string;
+  matchningSistaDag?: string;
+  matchningBelopp?: string;
   /** The campaign's own e-mail for questions. Without one, the föreningsuppgifter's e-mail is used. */
   epost?: string;
   /** Whether the campaign is shown on the home page and in the menu. Off (missing) by default, so it ends without code after Christmas. */
@@ -26,7 +30,10 @@ const ifylldText = z.string().trim();
 
 export const julkampanjSchema = z.strictObject({
   sistaDag: valfri(ifylldText),
-  vadJulklappenGor: valfri(ifylldText),
+  efterJulpaketen: valfri(ifylldText),
+  matchningGivare: valfri(ifylldText),
+  matchningSistaDag: valfri(ifylldText),
+  matchningBelopp: valfri(ifylldText),
   epost: valfri(ifylldText.refine(arEpostadress, { message: "epost måste vara en e-postadress" })),
   visasPaStartsidan: valfri(z.boolean({ error: "visasPaStartsidan måste vara ibockad eller inte (true eller false)" })),
 });

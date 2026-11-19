@@ -36,8 +36,8 @@ _Undvik_: kontaktinfo, betalinfo
 ## Julkampanjen
 
 **Julpaket**:
-En gåva i julkampanjen ”Ge ett julpaket” till barnen i Addis Abeba, där personen själv väljer belopp. Ges via Repejo.
-_Undvik_: julklapp, donation, julgåva
+En gåva i julkampanjen ”Ge ett julpaket” till barnen i Addis Abeba, där personen själv väljer belopp. Ett helt julpaket kostar 400 kr och innehåller en julklapp till barnet och en kontantgåva till familjen. Ges via Repejo.
+_Undvik_: julklapp (som namn på gåvan eller kampanjen; julklappen är bara en del av paketet), donation, julgåva
 
 **Julkort**:
 Kortet som följer med ett julpaket: personen skriver en hälsning, och föreningen skickar kortet i personens namn på julaftonsmorgonen till någon hen tycker om.

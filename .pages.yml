@@ -133,6 +133,17 @@ content:
             - { value: av, label: Av, visas ingenstans }
             - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
 
+      - name: prenumeration
+        label: Få nyheterna med e-post (formuläret på Nyheter och raden Följ och berätta på Bli fadder)
+        type: select
+        required: true
+        default: ejProduktion
+        options:
+          values:
+            - { value: pa, label: På, visas överallt }
+            - { value: av, label: Av, visas ingenstans }
+            - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
+
   - name: vanligaFragor
     label: Vanliga frågor
     type: collection

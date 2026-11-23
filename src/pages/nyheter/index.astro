@@ -4,10 +4,12 @@ import ExampleChip from "@/components/ExampleChip.astro";
 import NewsItem from "@/components/NewsItem.astro";
 import NyheterMedEpost from "@/components/NyheterMedEpost.astro";
 import TibebBand from "@/components/TibebBand.astro";
+import { hamtaFunktioner } from "@/lib/funktioner";
 import { harExempel, perAr } from "@/lib/nyheter";
 import { allaNyheter } from "@/lib/nyheter-samling";
 import { href } from "@/lib/utils";
 
+const { prenumeration } = hamtaFunktioner();
 const inlagg = await allaNyheter();
 const ingress =
   "Rapporter från besöken, nyheter från föreningen, berättelser från familjerna och tack till er som är faddrar.";
@@ -57,7 +59,7 @@ const ingress =
     </div>
   </section>
 
-  <NyheterMedEpost />
+  {prenumeration && <NyheterMedEpost />}
 </BaseLayout>
 
 <style>

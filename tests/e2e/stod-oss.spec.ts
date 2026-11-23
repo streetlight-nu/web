@@ -271,13 +271,18 @@ test.describe("på mobil", LAYOUT, () => {
   });
 });
 
-test("Få nyheterna med e-post leder till formuläret på Nyheter", async ({ page }) => {
-  await page.goto(sida);
-  const knapp = fler(page).getByRole("link", { name: "Få nyheterna med e-post" });
-  await expect(knapp).toHaveAttribute("href", /\/nyheter#nyheter-med-epost$/);
-  await knapp.click();
-  await expect(page).toHaveURL(/\/nyheter#nyheter-med-epost$/);
-  await expect(page.locator("#nyheter-med-epost")).toBeInViewport();
+test.describe("Få nyheterna med e-post", () => {
+  // The form is `ejProduktion`, so it is on only in a build that is not production: the filled-in one.
+  test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
+  test("leder till formuläret på Nyheter", async ({ page }) => {
+    await page.goto(sida);
+    const knapp = fler(page).getByRole("link", { name: "Få nyheterna med e-post" });
+    await expect(knapp).toHaveAttribute("href", /\/nyheter#nyheter-med-epost$/);
+    await knapp.click();
+    await expect(page).toHaveURL(/\/nyheter#nyheter-med-epost$/);
+    await expect(page.locator("#nyheter-med-epost")).toBeInViewport();
+  });
 });
 
 test("Fler sätt att stödja är sista avsnittet på sidan", async ({ page }) => {

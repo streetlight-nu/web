@@ -3,6 +3,9 @@ import { expect, test, type Page } from "@playwright/test";
 import { AMNEN as AMNESMODULEN } from "../../src/lib/amnen";
 import { expectNoA11yViolations, farg, LAYOUT } from "./helpers";
 
+// The form is `ejProduktion`, so it is on only in a build that is not production: the filled-in one.
+test.use({ baseURL: process.env.E2E_IFYLLD_URL });
+
 /** The section "Följ arbetet i Addis Abeba." at the end of the Nyheter page. */
 function sektion(page: Page) {
   return page.locator("#nyheter-med-epost");

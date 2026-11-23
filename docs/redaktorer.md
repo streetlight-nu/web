@@ -128,13 +128,13 @@ Ett felstavat namn, till exempel `{swihs}`, stoppar sidan. Bankgirot skrivs `{ni
 
 ## 9. Slå på och av sidor
 
-Under **Funktioner** i menyn väljer du om en sida visas. Det gäller **Ge ett julpaket**, **Vår historia** och **Engagera dig**. Sidan och länkarna till den, i menyn, sidfoten och på andra sidor, följer samma val.
+Under **Funktioner** i menyn väljer du om en sida visas. Det gäller **Ge ett julpaket**, **Vår historia** och **Engagera dig**, och formuläret **Få nyheterna med e-post** (på Nyheter, med raden Följ och berätta på Bli fadder). Sidan och länkarna till den, i menyn, sidfoten och på andra sidor, följer samma val.
 
 1. Klicka på **Funktioner** i menyn till vänster.
 2. Välj **På** för att visa sidan överallt, **Av** för att dölja den helt, eller **Bara i testbyggen** för att visa den bara i testversionen och inte på den publicerade sajten.
 3. Spara. Ändringen syns när sajten har byggts och publicerats igen, vilket tar några minuter.
 
-En sida som är **Av** finns inte alls, så den som har en länk till den får ”sidan finns inte”.
+En sida som är **Av** finns inte alls, så den som har en länk till den får ”sidan finns inte”. Ett formulär som är **Av** visas inte alls.
 
 ## 10. Byt årsredovisning
 

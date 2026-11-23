@@ -4,7 +4,7 @@ import { datafil } from "./datafil";
 import { arEpostadress, valfri } from "./falt";
 
 /**
- * Julkampanjen: the campaign's own facts on the page /julklapp, beside the föreningsuppgifter.
+ * Julkampanjen: the campaign's own facts on the page /julpaket, beside the föreningsuppgifter.
  *
  * They live in one data file, `src/data/julkampanj.json`, which the association fills in through
  * Pages CMS (see `.pages.yml`). The page gets them only from here and never writes a value itself.

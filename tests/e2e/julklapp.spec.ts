@@ -4,7 +4,7 @@ import { blockRepejo, expectNoA11yViolations, farg, funktionPa, LAYOUT, stubRepe
 
 test.skip(!funktionPa("julklapp"), "julklapp är avstängd i funktioner.json");
 
-const sida = "julklapp";
+const sida = "julpaket";
 
 test.beforeEach(async ({ page }) => {
   await stubRepejo(page);
@@ -182,7 +182,7 @@ test.describe("julkampanjen på startsidan", () => {
       // First in the content, right under the light band in the header.
       expect(await page.locator("main > section").first().getAttribute("id")).toBe("julklapp");
       const lank = jul.getByRole("link", { name: "Ge ett julpaket" });
-      await expect(lank).toHaveAttribute("href", /\/julklapp$/);
+      await expect(lank).toHaveAttribute("href", /\/julpaket$/);
       expect((await lank.boundingBox())!.height).toBeGreaterThanOrEqual(44);
       await expect(jul).toContainText("TEST-SISTA-DAG");
       // The Ett ljus rule: "Bli fadder" stays the only gold button, the campaign gets a line button.
@@ -299,7 +299,7 @@ test.describe("julkampanjen på startsidan", () => {
       await page.goto("./");
       const nav = page.getByRole("navigation", { name: "Huvudmeny" });
       if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
-      await expect(nav.getByRole("link", { name: "Ge ett julpaket", exact: true })).toHaveAttribute("href", /\/julklapp$/);
+      await expect(nav.getByRole("link", { name: "Ge ett julpaket", exact: true })).toHaveAttribute("href", /\/julpaket$/);
     });
 
     test("menyn ryms på en rad vid 901 px", async ({ page, isMobile }) => {

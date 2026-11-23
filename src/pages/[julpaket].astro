@@ -24,9 +24,9 @@ import barnITradgarden from "@/assets/julklapp/barn-i-tradgarden.jpg";
  */
 const { vadJulklappenGor } = hamtaJulkampanj();
 
-/** The page is built only when the flag `julklapp` is on (src/data/funktioner.json); otherwise /julklapp is a 404. */
+/** The page is built only when the flag `julklapp` is on (src/data/funktioner.json); otherwise /julpaket is a 404. */
 export function getStaticPaths() {
-  return hamtaFunktioner().julklapp ? [{ params: { julklapp: "julklapp" } }] : [];
+  return hamtaFunktioner().julklapp ? [{ params: { julpaket: "julpaket" } }] : [];
 }
 
 const section = "py-[clamp(64px,9vw,120px)]";

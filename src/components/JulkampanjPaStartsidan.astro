@@ -13,7 +13,7 @@
  *
  * Seasonal: shown only while `visasPaStartsidan` is ticked in Pages CMS (src/data/julkampanj.json) and the flag
  * `julklapp` is on (src/data/funktioner.json).
- * It only links to /julklapp and never loads Repejo (ADR 0003).
+ * It only links to /julpaket and never loads Repejo (ADR 0003).
  */
 import Pil from "@/components/Pil.astro";
 import { buttonVariants } from "@/components/ui/button";
@@ -72,7 +72,7 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
             ditt namn på julaftonsmorgonen.
           </p>
           <div class="handling">
-            <a class={cn(buttonVariants({ variant: "line" }), "whitespace-nowrap")} href={href("/julklapp")}>
+            <a class={cn(buttonVariants({ variant: "line" }), "whitespace-nowrap")} href={href("/julpaket")}>
               Ge ett julpaket
               <Pil />
             </a>

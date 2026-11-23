@@ -83,10 +83,10 @@ Sidan Engagera dig (`src/pages/[engagera].astro`, `/engagera-dig`, bakom flaggan
 
 ## Publicering
 
-GitHub Actions kör typkontroll, enhetstester, bygge och webbläsartester på varje push. När allt går igenom på `master` publiceras sajten på GitHub Pages på https://streetlight-nu.github.io/web/.
+GitHub Actions kör typkontroll, enhetstester, bygge och webbläsartester på varje push. När allt går igenom på `master` publiceras sajten på GitHub Pages på https://streetlight.nu (`www.streetlight.nu` skickas vidare dit).
 
 Det föreningen sparar i Pages CMS (`src/data/`, `src/content/` och `src/assets/`) går en snabbare väg: `innehall.yml` kör bara enhetstester och bygge (bygget validerar all data mot sina scheman) och publicerar sedan. Typkontrollen och webbläsartesterna hoppas över, eftersom ingen kod har ändrats. `ci.yml` hoppar över pushar som bara rör de sökvägarna. Rör en commit något annat kör `ci.yml` allt, som vanligt. Båda publicerar via samma `concurrency`-grupp `pages`, så två publiceringar körs aldrig samtidigt.
 
 Redaktörer skriver Nyheter i [Pages CMS](https://app.pagescms.org), som läser `.pages.yml` och committar direkt till `master`. Instruktionen för redaktörer finns i [docs/redaktorer.md](docs/redaktorer.md). Bilder laddas upp till `src/assets/nyheter/` och optimeras vid bygget.
 
-Vid egen domän: lägg till domänen under Settings › Pages och sätt repovariablerna `SITE_URL` (till exempel `https://streetlight.nu`) och `BASE_PATH` (`/`). Ingen kod behöver ändras.
+Domänen `streetlight.nu` är satt under Settings › Pages, och repovariablerna `SITE_URL` (`https://streetlight.nu`) och `BASE_PATH` (`/`) är satta. DNS hos domänleverantören har fyra A-poster mot GitHub Pages (185.199.108.153 till 185.199.111.153) och en CNAME för `www` mot `streetlight-nu.github.io`. Utan variablerna bygger CI för `https://streetlight-nu.github.io/web/`.

@@ -29,7 +29,7 @@ test.describe("med funktionerna avstängda", () => {
   test("formuläret Få nyheterna med e-post och raden Följ och berätta finns inte", async ({ page }) => {
     await page.goto("nyheter");
     await expect(page.locator("#nyheter-med-epost")).toHaveCount(0);
-    await expect(page.getByRole("form", { name: "Få nyheterna med e-post" })).toHaveCount(0);
+    await expect(page.locator("#prenumeration-formular")).toHaveCount(0);
     await page.goto("bli-fadder");
     await expect(page.getByRole("heading", { name: "Följ och berätta" })).toHaveCount(0);
     await expect(page.locator('a[href$="#nyheter-med-epost"]')).toHaveCount(0);
@@ -54,7 +54,7 @@ test.describe("med ejProduktion utanför produktion", () => {
 
   test("formuläret Få nyheterna med e-post visas på Nyheter och på Bli fadder", async ({ page }) => {
     await page.goto("nyheter");
-    await expect(page.getByRole("form", { name: "Få nyheterna med e-post" })).toBeVisible();
+    await expect(page.locator("#prenumeration-formular")).toBeAttached();
     await page.goto("bli-fadder");
     await expect(page.getByRole("heading", { name: "Följ och berätta" })).toBeVisible();
   });

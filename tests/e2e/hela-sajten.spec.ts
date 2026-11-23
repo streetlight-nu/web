@@ -2,7 +2,7 @@ import { readdirSync } from "node:fs";
 
 import { expect, test } from "@playwright/test";
 
-import { expectNoA11yViolations, funktionPa, LAYOUT, stubRepejo, textstorlek } from "./helpers";
+import { expectNoA11yViolations, funktionPa, LAYOUT, stubRepejo, stubWix, textstorlek } from "./helpers";
 
 /**
  * The rules every page keeps: Swedish, one h1, WCAG 2.1 AA, a skip link, body text of at least 18 px, no sideways
@@ -34,6 +34,7 @@ for (const [namn, sokvag] of SIDOR) {
   test.describe(namn, () => {
     test.beforeEach(async ({ page }) => {
       await stubRepejo(page);
+      await stubWix(page);
       await page.goto(sokvag);
     });
 

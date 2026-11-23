@@ -2,14 +2,11 @@
 /**
  * The section "Få nyheterna med e-post" (#nyheter-med-epost), on green after a thin tibeb band: the heading
  * and lede on the left, the white form panel on the right, stacked on narrow screens.
- * The association's e-mail comes from the föreningsuppgifter; the island shows "fylls i" when it is missing.
+ * The form is the association's Wix form in an iframe (src/lib/prenumeration.ts), with a link to open it on its own.
  */
-import Prenumerationsformular from "@/components/Prenumerationsformular";
 import TibebBand from "@/components/TibebBand.astro";
-import { hamtaForeningsuppgifter } from "@/lib/foreningsuppgifter";
+import { PRENUMERATION_URL } from "@/lib/prenumeration";
 import { href } from "@/lib/utils";
-
-const { epost } = hamtaForeningsuppgifter();
 ---
 
 <TibebBand variant="thin" />
@@ -37,7 +34,22 @@ const { epost } = hamtaForeningsuppgifter();
     </div>
 
     <div class="min-w-0 max-w-[540px] flex-[1_1_440px]">
-      <Prenumerationsformular client:load epost={epost} />
+      <div class="rounded-lg bg-white p-2">
+        <iframe
+          id="prenumeration-formular"
+          src={PRENUMERATION_URL}
+          title="Få nyheterna med e-post"
+          loading="lazy"
+          class="block h-[640px] w-full border-0"></iframe>
+      </div>
+      <p class="mt-4 text-mint">
+        Syns inte formuläret? <a
+          class="inline-flex min-h-11 items-center font-semibold text-cotton underline decoration-2 hover:decoration-gold-soft"
+          href={PRENUMERATION_URL}
+          target="_blank"
+          rel="noopener">Öppna det i ett eget fönster</a
+        >.
+      </p>
     </div>
   </div>
 </section>

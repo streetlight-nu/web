@@ -8,6 +8,8 @@ Välj tjänster som tar GDPR på allvar. Det som besökaren fyller i Repejos for
 
 Sidan `/engagera-dig` (Engagera dig, tillagd i november 2026) laddar samma skript och bäddar in `<repejo-p2p-create-button>`, Repejos knapp för att starta en egen insamling (p2p), och `<repejo-p2p-list>`, Repejos lista med insamlingar. Enligt genomgången nedan kan just insamlingslistan hämta typsnittet Outfit från `fonts.googleapis.com`.
 
+Sidan `/nyheter` (Nyheter) bäddar in föreningens formulär hos Wix (`streetlightnu.wixforms.com`) i en iframe, bakom flaggan `prenumeration`. Det besökaren fyller i går till Wix och aldrig till sajten. Formuläret hämtas först när besökaren scrollar dit (`loading="lazy"`), och under det finns en länk som öppnar formuläret i ett eget fönster. Vi har inte gått igenom vad Wix själv laddar.
+
 ## Vad Repejos skript själv hämtar
 
 Vi kan inte ändra Repejos skript. Den 3 november 2026 hämtade vi `https://app.repejo.se/assets/checkout.js` (cirka 1,5 MB) och sökte efter värdar. Utöver `app.repejo.se` kan skriptet hämta eller leda till:

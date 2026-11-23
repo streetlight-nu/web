@@ -38,11 +38,12 @@ import { href } from "@/lib/utils";
         Wix draws the card on a page of its own, 16 px in from the sides and 48 px down. The iframe is cut to the card:
         pulled up and left by those margins, and clipped by the box around it. The card's height steps with the
         width, as its text wraps (measured 2026-11-23 on Wix's own page: 402 px from 410 px wide, 426 px from 358,
-        492 px from 314, 516 px under that), so the box follows its own width, with 8 px to spare. If the form is
-        changed at Wix, measure again.
+        492 px from 314, 516 px under that), so the box follows its own width. The box is 120 px taller than the card and white like it, so the
+        feedback under a field (errors, thanks) grows into room that is already there instead of being cut off or
+        moving the page. If the form is changed at Wix, measure again.
       */}
       <div class="@container">
-        <div class="h-[410px] overflow-hidden rounded-[8px] @max-[409px]:h-[434px] @max-[357px]:h-[500px] @max-[313px]:h-[524px]">
+        <div class="h-[530px] overflow-hidden rounded-[8px] bg-white @max-[409px]:h-[554px] @max-[357px]:h-[620px] @max-[313px]:h-[644px]">
           <iframe
             id="prenumeration-formular"
             src={PRENUMERATION_URL}

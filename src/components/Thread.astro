@@ -122,6 +122,14 @@ const { steps } = Astro.props;
       // Listen all the time (once per frame at most): a jump past the thread, e.g. via an anchor, must light it too.
       window.addEventListener("scroll", onScroll, { passive: true });
       window.addEventListener("resize", onScroll, { passive: true });
+      // A layout shift (a late image or font, the form's iframe) moves the thread without a scroll event, so
+      // recount when the page has loaded and when anything above or in the thread changes size.
+      window.addEventListener("load", onScroll);
+      if (typeof ResizeObserver !== "undefined") {
+        const observer = new ResizeObserver(onScroll);
+        observer.observe(document.body);
+        observer.observe(thread);
+      }
       update();
     }
   }

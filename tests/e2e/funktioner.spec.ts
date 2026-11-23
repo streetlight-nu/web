@@ -11,7 +11,7 @@ const av = process.env.E2E_AV_URL!;
 test.describe("med funktionerna avstängda", () => {
   test.use({ baseURL: av });
 
-  for (const sida of ["julklapp", "historia", "engagera-dig"]) {
+  for (const sida of ["julpaket", "historia", "engagera-dig"]) {
     test(`sidan /${sida} finns inte`, async ({ request }) => {
       const svar = await request.get(`${sida}`);
       expect(svar.status()).toBe(404);
@@ -21,7 +21,7 @@ test.describe("med funktionerna avstängda", () => {
   test("länkarna till sidorna finns inte i menyn, startsidan, Om Streetlight eller sidfoten", async ({ page }) => {
     for (const sida of ["", "om-foreningen", "nyheter", "vanliga-fragor"]) {
       await page.goto(sida);
-      await expect(page.locator('a[href$="/julklapp"], a[href$="/historia"], a[href$="/engagera-dig"]')).toHaveCount(0);
+      await expect(page.locator('a[href$="/julpaket"], a[href$="/historia"], a[href$="/engagera-dig"]')).toHaveCount(0);
       await expect(page.locator("#julklapp")).toHaveCount(0);
     }
   });

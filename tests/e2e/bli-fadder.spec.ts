@@ -109,7 +109,7 @@ test.describe("Bli fadder på hela sajten", () => {
   test("ingen länk pekar längre till startsidans guldfält", async ({ page }) => {
     const sidor = ["./", "bli-fadder", "om-foreningen", "vanliga-fragor", "nyheter", ETT_INLAGG];
     if (funktionPa("historia")) sidor.push("historia");
-    if (funktionPa("julklapp")) sidor.push("julklapp");
+    if (funktionPa("julklapp")) sidor.push("julpaket");
     for (const sida of sidor) {
       await page.goto(sida);
       await expect(page.locator('a[href*="#bli-fadder"]'), sida).toHaveCount(0);
@@ -128,7 +128,7 @@ test.describe("Bli fadder på hela sajten", () => {
   test("sidfoten har länken Swisha en gåva till Fler sätt att stödja oss på alla sidor", async ({ page }) => {
     const sidor = ["./", "bli-fadder", "om-foreningen", "vanliga-fragor", "nyheter", ETT_INLAGG];
     if (funktionPa("historia")) sidor.push("historia");
-    if (funktionPa("julklapp")) sidor.push("julklapp");
+    if (funktionPa("julklapp")) sidor.push("julpaket");
     for (const sida of sidor) {
       await page.goto(sida);
       await expect(

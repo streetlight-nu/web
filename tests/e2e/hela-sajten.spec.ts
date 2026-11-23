@@ -24,7 +24,7 @@ const SIDOR: [namn: string, sokvag: string][] = [
   ["Vanliga frågor", "vanliga-fragor"],
   ...(funktionPa("engagera") ? ([["Engagera dig", "engagera-dig"]] as [string, string][]) : []),
   ...(funktionPa("historia") ? ([["Vår historia", "historia"]] as [string, string][]) : []),
-  ...(funktionPa("julklapp") ? ([["Ge ett julpaket", "julklapp"]] as [string, string][]) : []),
+  ...(funktionPa("julklapp") ? ([["Ge ett julpaket", "julpaket"]] as [string, string][]) : []),
 ];
 
 /** Words GLOSSARY.md tells us to avoid, which have slipped into texts before. */

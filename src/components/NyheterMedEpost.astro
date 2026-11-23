@@ -2,7 +2,7 @@
 /**
  * The section "Få nyheterna med e-post" (#nyheter-med-epost), on green after a thin tibeb band: the heading
  * and lede on the left, the white form panel on the right, stacked on narrow screens.
- * The form is the association's Wix form in an iframe (src/lib/prenumeration.ts), with a link to open it on its own.
+ * The form is the association's Wix form in an iframe (src/lib/prenumeration.ts), .
  */
 import TibebBand from "@/components/TibebBand.astro";
 import { PRENUMERATION_URL } from "@/lib/prenumeration";
@@ -36,11 +36,13 @@ import { href } from "@/lib/utils";
     <div class="min-w-0 max-w-[540px] flex-[1_1_440px]">
       {/*
         Wix draws the card on a page of its own, 16 px in from the sides and 48 px down. The iframe is cut to the card:
-        pulled up and left by those margins, and clipped by the box around it. The card is 380 px high when the
-        heading fits on one line and about 440 to 470 px when it wraps (under 520 px), so the box follows its own width.
+        pulled up and left by those margins, and clipped by the box around it. The card's height steps with the
+        width, as its text wraps (measured 2026-11-23 on Wix's own page: 402 px from 410 px wide, 426 px from 358,
+        492 px from 314, 516 px under that), so the box follows its own width, with 8 px to spare. If the form is
+        changed at Wix, measure again.
       */}
       <div class="@container">
-        <div class="h-[380px] overflow-hidden rounded-[8px] @max-[520px]:h-[480px]">
+        <div class="h-[410px] overflow-hidden rounded-[8px] @max-[409px]:h-[434px] @max-[357px]:h-[500px] @max-[313px]:h-[524px]">
           <iframe
             id="prenumeration-formular"
             src={PRENUMERATION_URL}
@@ -49,14 +51,6 @@ import { href } from "@/lib/utils";
             class="-mt-12 -ml-4 block h-[700px] w-[calc(100%+2rem)] border-0"></iframe>
         </div>
       </div>
-      <p class="mt-4 text-mint">
-        Syns inte formuläret? <a
-          class="inline-flex min-h-11 items-center font-semibold text-cotton underline decoration-2 hover:decoration-gold-soft"
-          href={PRENUMERATION_URL}
-          target="_blank"
-          rel="noopener">Öppna det i ett eget fönster</a
-        >.
-      </p>
     </div>
   </div>
 </section>

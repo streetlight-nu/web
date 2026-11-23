@@ -29,7 +29,7 @@ test.describe("sektionen Få nyheterna med e-post", () => {
     await expect(page).toHaveURL(/\/nyheter\/?#alla-nyheter$/);
   });
 
-  test("bäddar in föreningens Wix-formulär och har en länk till det", async ({ page }) => {
+  test("bäddar in föreningens Wix-formulär", async ({ page }) => {
     await page.goto("nyheter");
     const s = sektion(page);
     const ram = s.locator("iframe");
@@ -37,9 +37,6 @@ test.describe("sektionen Få nyheterna med e-post", () => {
     await expect(ram).toHaveAttribute("title", "Få nyheterna med e-post");
     await ram.scrollIntoViewIfNeeded();
     await expect(page.frameLocator("#prenumeration-formular").getByText("Wix-formuläret (stubb)")).toBeVisible();
-    const lank = s.getByRole("link", { name: "Öppna det i ett eget fönster" });
-    await expect(lank).toHaveAttribute("href", PRENUMERATION_URL);
-    await expect(lank).toHaveAttribute("target", "_blank");
   });
 
   test("hämtar bara från Wix, och bara formuläret", async ({ page }) => {
@@ -74,13 +71,8 @@ test.describe("sektionen Få nyheterna med e-post", () => {
     else expect(ram.x).toBeGreaterThanOrEqual(rubrik.x + rubrik.width);
   });
 
-  test("länkarna är minst 44 px höga", LAYOUT, async ({ page }) => {
+  test("länken är minst 44 px hög", LAYOUT, async ({ page }) => {
     await page.goto("nyheter");
-    for (const lank of [
-      sektion(page).getByRole("link", { name: "Nyheter" }),
-      sektion(page).getByRole("link", { name: "Öppna det i ett eget fönster" }),
-    ]) {
-      expect((await lank.boundingBox())!.height).toBeGreaterThanOrEqual(44);
-    }
+    expect((await sektion(page).getByRole("link", { name: "Nyheter" }).boundingBox())!.height).toBeGreaterThanOrEqual(44);
   });
 });

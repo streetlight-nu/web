@@ -137,7 +137,7 @@ content:
         label: Få nyheterna med e-post (formuläret på Nyheter och raden Följ och berätta på Bli fadder)
         type: select
         required: true
-        default: ejProduktion
+        default: pa
         options:
           values:
             - { value: pa, label: På, visas överallt }

@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page } from "@playwright/test";
 
+import { WIX_HOST } from "../../src/lib/prenumeration";
 import { REPEJO_HOST } from "../../src/lib/repejo";
 
 /**
@@ -63,6 +64,13 @@ export async function stubRepejo(page: Page) {
         }
       `,
     }),
+  );
+}
+
+/** Stubs the association's Wix form with a page that loads nothing, so the tests never call Wix. */
+export async function stubWix(page: Page) {
+  await page.route(`${WIX_HOST}/**`, (route) =>
+    route.fulfill({ contentType: "text/html; charset=utf-8", body: "<!doctype html><title>Wix (stubb)</title><p>Wix-formuläret (stubb)</p>" }),
   );
 }
 

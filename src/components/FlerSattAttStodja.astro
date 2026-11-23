@@ -9,8 +9,11 @@ import Pil from "@/components/Pil.astro";
 import Repejo from "@/components/Repejo.astro";
 import TibebBand from "@/components/TibebBand.astro";
 import { buttonVariants } from "@/components/ui/button";
+import { hamtaFunktioner } from "@/lib/funktioner";
 import { SWISH_KORTKOD } from "@/lib/repejo";
 import { href } from "@/lib/utils";
+
+const { prenumeration } = hamtaFunktioner();
 ---
 
 <TibebBand variant="thin" />
@@ -39,24 +42,28 @@ import { href } from "@/lib/utils";
           </div>
         </div>
       </li>
-      <li>
-        <span class="mark mark--cobalt" aria-hidden="true"></span>
-        <div class="rad">
-          <div class="min-w-0">
-            <h3 class="text-title tracking-[-0.015em]">Följ och berätta</h3>
-            <p class="mt-2 max-w-[44ch] text-mint">
-              Få föreningens nyheter med e-post: rapporter från skolan, berättelser från familjerna och vad som händer i
-              föreningen. Berätta om Streetlight för någon du känner.
-            </p>
+      {
+        prenumeration && (
+        <li>
+          <span class="mark mark--cobalt" aria-hidden="true"></span>
+          <div class="rad">
+            <div class="min-w-0">
+              <h3 class="text-title tracking-[-0.015em]">Följ och berätta</h3>
+              <p class="mt-2 max-w-[44ch] text-mint">
+                Få föreningens nyheter med e-post: rapporter från skolan, berättelser från familjerna och vad som händer i
+                föreningen. Berätta om Streetlight för någon du känner.
+              </p>
+            </div>
+            <div class="min-w-0">
+              <a class={buttonVariants({ variant: "line" })} href={href("/nyheter#nyheter-med-epost")}>
+                Få nyheterna med e-post
+                <Pil />
+              </a>
+            </div>
           </div>
-          <div class="min-w-0">
-            <a class={buttonVariants({ variant: "line" })} href={href("/nyheter#nyheter-med-epost")}>
-              Få nyheterna med e-post
-              <Pil />
-            </a>
-          </div>
-        </div>
-      </li>
+        </li>
+        )
+      }
     </ul>
   </div>
 </section>

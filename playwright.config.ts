@@ -61,6 +61,8 @@ export default defineConfig({
         " JULKAMPANJ_FIL=tests/fixtures/julkampanj-tom.json" +
         " OM_FORENINGEN_FIL=tests/fixtures/om-foreningen-tom.json" +
         " HISTORIA_FIL=tests/fixtures/historia-tom.json" +
+        // Not production, so that the form Få nyheterna med e-post (`ejProduktion`) is on.
+        " MILJO= FUNKTIONER_FIL=tests/fixtures/funktioner-ejproduktion.json" +
         " FRAGOR_MAPP=tests/fixtures/fragor NYHETER_MAPP=tests/fixtures/nyheter" +
         ` npm run build -- --outDir ${emptyOutDir}` +
         ` && npm run preview -- --outDir ${emptyOutDir} --port ${emptyPort} --ignore-lock`,

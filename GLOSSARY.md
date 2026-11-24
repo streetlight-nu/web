@@ -23,7 +23,11 @@ _Undvik_: sponsorbarn, mottagare, elev
 
 **Fadder**:
 En person som ger regelbundet och därmed stöttar alla 20 fadderbarnen tillsammans. Det är den vanliga formen av fadderskap.
-_Undvik_: sponsor, givare, donator
+_Undvik_: sponsor, donator. Den som ger en gång är en **Givare**, inte en fadder.
+
+**Givare**:
+En person som ger en gång, till exempel ett julpaket eller en gåva med Swish, och som inte är fadder.
+_Undvik_: donator, sponsor
 
 **Fadder för ett barn**:
 En variant av fadderskap där faddern följer ett av fadderbarnen. En fadder för ett barn är fortfarande en fadder.

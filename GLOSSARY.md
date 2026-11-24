@@ -76,6 +76,14 @@ _Undvik_: registrering, signup
 Ett påhittat inlägg som visar hur ett inlägg ser ut och som är tydligt märkt "Exempel". Det tas bort när föreningens egna inlägg finns.
 _Undvik_: testinlägg, dummy
 
+**Kakval**:
+Besökarens val att tillåta eller avvisa mätning (Acceptera eller Avvisa). Besökaren gör valet i Kakrutan första gången hen kommer och kan ändra det med länken Kakval i sidfoten. Utan Acceptera mäts ingenting. Inte samma sak som Samtycke.
+_Undvik_: kaksamtycke, cookie-samtycke
+
+**Kakrutan**:
+Rutan längst ned på sidan där besökaren gör sitt Kakval.
+_Undvik_: cookiebanner, cookie-popup
+
 **Samtycke**:
 Familjens tillåtelse att ett foto eller en berättelse om dem publiceras. Utan samtycke publiceras ingenting som visar ett fadderbarn eller en familj.
 _Undvik_: godkännande, tillstånd

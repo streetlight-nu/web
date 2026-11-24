@@ -28,7 +28,7 @@ const SIDOR: [namn: string, sokvag: string][] = [
 ];
 
 /** Words GLOSSARY.md tells us to avoid, which have slipped into texts before. */
-const UNDVIKS = /blogg|nyhetsbrev|sponsor|donator|givare|mottagare/i;
+const UNDVIKS = /blogg|nyhetsbrev|sponsor|donator|mottagare/i;
 
 for (const [namn, sokvag] of SIDOR) {
   test.describe(namn, () => {

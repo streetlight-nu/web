@@ -23,7 +23,11 @@ _Undvik_: sponsorbarn, mottagare, elev
 
 **Fadder**:
 En person som ger regelbundet och därmed stöttar alla 20 fadderbarnen tillsammans. Det är den vanliga formen av fadderskap.
-_Undvik_: sponsor, givare, donator
+_Undvik_: sponsor, donator. Den som ger en gång är en **Givare**, inte en fadder.
+
+**Givare**:
+En person som ger en gång, till exempel ett julpaket eller en gåva med Swish, och som inte är fadder.
+_Undvik_: donator, sponsor
 
 **Fadder för ett barn**:
 En variant av fadderskap där faddern följer ett av fadderbarnen. En fadder för ett barn är fortfarande en fadder.
@@ -71,6 +75,14 @@ _Undvik_: registrering, signup
 **Exempelinlägg**:
 Ett påhittat inlägg som visar hur ett inlägg ser ut och som är tydligt märkt "Exempel". Det tas bort när föreningens egna inlägg finns.
 _Undvik_: testinlägg, dummy
+
+**Kakval**:
+Besökarens val att tillåta eller avvisa mätning (Acceptera eller Avvisa). Besökaren gör valet i Kakrutan första gången hen kommer och kan ändra det med länken Kakval i sidfoten. Utan Acceptera mäts ingenting. Inte samma sak som Samtycke.
+_Undvik_: kaksamtycke, cookie-samtycke
+
+**Kakrutan**:
+Rutan längst ned på sidan där besökaren gör sitt Kakval.
+_Undvik_: cookiebanner, cookie-popup
 
 **Samtycke**:
 Familjens tillåtelse att ett foto eller en berättelse om dem publiceras. Utan samtycke publiceras ingenting som visar ett fadderbarn eller en familj.

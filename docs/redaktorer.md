@@ -136,7 +136,19 @@ Under **Funktioner** i menyn väljer du om en sida visas. Det gäller **Ge ett j
 
 En sida som är **Av** finns inte alls, så den som har en länk till den får ”sidan finns inte”. Ett formulär som är **Av** visas inte alls.
 
-## 10. Byt årsredovisning
+## 10. Mätning
+
+Under **Mätning** i menyn skriver du in id:t för föreningens Google Tag Manager-container, till exempel `GTM-ABC1234`. Containern mäter hur många som besöker sajten och hur många som blir faddrar eller ger en gåva, tillsammans med de händelser som Repejo skickar.
+
+1. Klicka på **Mätning** i menyn till vänster.
+2. Skriv **Id för Google Tag Manager** som det står i Google Tag Manager, och spara.
+3. Ändringen syns när sajten har byggts och publicerats igen, vilket tar några minuter.
+
+Med ett id visas en ruta längst ned på varje sida där besökaren väljer **Acceptera** eller **Avvisa**. Besökaren kan ändra sitt val med länken **Kakval** i sidfoten. Mätningen laddas först när besökaren har accepterat. Lämnar du fältet tomt visas ingen ruta och ingenting mäts. Sidan klarar inte ett felskrivet id: det måste börja med `GTM-`.
+
+Vad som räknas som en fadder eller en gåva ställer du in i Google Tag Manager och Google Analytics, inte här.
+
+## 11. Byt årsredovisning
 
 Länken ”Läs årsredovisningen” finns under Kontakt på **Om Streetlight** och i svaret på ”Hur vet jag att pengarna når fram?”. Den hämtas från fältet **Länk till senaste årsredovisningen** under **Föreningsuppgifter**.
 

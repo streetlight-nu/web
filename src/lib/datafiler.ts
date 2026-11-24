@@ -3,6 +3,7 @@ import { FORENINGSUPPGIFTER_DATAFIL } from "./foreningsuppgifter";
 import { FUNKTIONER_DATAFIL } from "./funktioner";
 import { HISTORIA_DATAFIL } from "./historia";
 import { JULKAMPANJ_DATAFIL } from "./julkampanj";
+import { MATNING_DATAFIL } from "./matning";
 import { OM_FORENINGEN_DATAFIL } from "./om-foreningen";
 
 /**
@@ -16,4 +17,5 @@ export const DATAFILER: Datafil<unknown>[] = [
   FUNKTIONER_DATAFIL,
   OM_FORENINGEN_DATAFIL,
   HISTORIA_DATAFIL,
+  MATNING_DATAFIL,
 ];

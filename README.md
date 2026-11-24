@@ -90,3 +90,7 @@ Det föreningen sparar i Pages CMS (`src/data/`, `src/content/` och `src/assets/
 Redaktörer skriver Nyheter i [Pages CMS](https://app.pagescms.org), som läser `.pages.yml` och committar direkt till `master`. Instruktionen för redaktörer finns i [docs/redaktorer.md](docs/redaktorer.md). Bilder laddas upp till `src/assets/nyheter/` och optimeras vid bygget.
 
 Domänen `www.streetlight.nu` är satt under Settings › Pages (GitHub skickar `streetlight.nu` vidare dit), och repovariablerna `SITE_URL` (`https://www.streetlight.nu`) och `BASE_PATH` (`/`) är satta. DNS hos domänleverantören har fyra A-poster mot GitHub Pages (185.199.108.153 till 185.199.111.153) och en CNAME för `www` mot `streetlight-nu.github.io`. Utan variablerna bygger CI för `https://streetlight-nu.github.io/web/`.
+
+## Mätning
+
+Sajten mäter besök och gåvor med föreningens Google Tag Manager-container ([ADR 0004](docs/adr/0004-sajten-laddar-google-tag-manager-efter-kakval.md)). Containerns id står i `src/data/matning.json` (`gtmId`, fylls i i Pages CMS under Mätning). Utan id laddas ingenting och ingen Kakruta visas. Med id visar `src/components/Kakruta.astro` en ruta längst ned, och containern laddas först efter Acceptera, då Repejos element också får attributet `user-has-consented-to-marketing-cookies`. Valet sparas i `localStorage` (nyckeln `kakval`). Webbläsartesterna börjar som en besökare som har avvisat, utom `tests/e2e/matning.spec.ts`, och stubbar Google. De bygger med `tests/fixtures/matning-ifylld.json` och `matning-tom.json` (via `MATNING_FIL`).

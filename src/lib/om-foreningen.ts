@@ -10,8 +10,8 @@ import { valfriSidbild } from "./sidbild";
  *
  * The texts live in one data file, `src/data/om-foreningen.json`, which the association edits through
  * Pages CMS (see `.pages.yml`). The headings are the page's own; only the texts under them are here.
- * Every text is optional: a field that is missing or empty is `undefined`, and the page shows the chip
- * "fylls i" in its place, so nothing is made up.
+ * Every text is optional: a field that is missing or empty is `undefined`, and the page leaves
+ * it out, so nothing is made up.
  * The contact details are not here: they come from the föreningsuppgifter.
  */
 

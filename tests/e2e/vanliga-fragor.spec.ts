@@ -58,13 +58,10 @@ test.describe("med testfrågorna och tomma föreningsuppgifter", () => {
       "Att vara fadder",
       "Barnen och familjerna",
       "Föreningen",
-      "Hittade du inte svaret?",
       "Hjälp oss hålla ljusen tända.",
     ]);
     await expect(page.locator("summary")).toHaveText([
       "Första frågan?",
-      "Andra frågan?",
-      "Hur betalar jag?",
       "Vad innebär det att vara fadder?",
       "En fråga om barnen?",
       "Hur vet jag att pengarna når fram?",
@@ -73,22 +70,21 @@ test.describe("med testfrågorna och tomma föreningsuppgifter", () => {
   });
 
   test("en länk till en fråga öppnar den, även inifrån sidan", async ({ page }) => {
-    await page.goto(`${sida}#fraga-andra-fragan`);
-    await expect(page.locator("#fraga-andra-fragan")).toHaveAttribute("open", "");
-    await expect(page.locator("#fraga-andra-fragan summary")).toBeInViewport();
+    await page.goto(`${sida}#fraga-forsta-fragan`);
+    await expect(page.locator("#fraga-forsta-fragan")).toHaveAttribute("open", "");
+    await expect(page.locator("#fraga-forsta-fragan summary")).toBeInViewport();
     await page.evaluate(() => (location.hash = "fraga-hur-vet-jag-att-pengarna-nar-fram"));
     await expect(page.locator("#fraga-hur-vet-jag-att-pengarna-nar-fram")).toHaveAttribute("open", "");
     await expect(page.locator("#fraga-hur-vet-jag-att-pengarna-nar-fram summary")).toBeFocused();
   });
 
-  test("ett tomt svar och saknade uppgifter visas som ”fylls i”", async ({ page }) => {
+  test("en fråga utan svar och uppgifter som saknas visas inte", async ({ page }) => {
     await page.goto(sida);
     await oppnaAlla(page);
-    await expect(page.locator("#fraga-andra-fragan")).toContainText("fylls i av föreningen");
-    await expect(page.locator("#fraga-forsta-fragan")).toContainText("Swish: nummer fylls i");
-    await expect(page.locator("#fraga-en-fraga-om-barnen")).toContainText("Mejla oss på e-post fylls i.");
-    await expect(page.locator("#fraga-hur-vet-jag-att-pengarna-nar-fram")).toContainText("Senaste årsredovisning: länk fylls i");
-    await expect(page.getByRole("main").locator(".sl-todo").first()).toBeVisible();
+    await expect(page.locator("#fraga-andra-fragan")).toHaveCount(0);
+    await expect(page.locator("#fraga-forsta-fragan")).toContainText("Swish:");
+    await expect(page.getByRole("main").getByText(/fylls i/)).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Hittade du inte svaret?" })).toHaveCount(0);
   });
 
   test("en länk direkt till en fråga öppnar den", async ({ page }) => {
@@ -121,8 +117,7 @@ test.describe("med testfrågorna och ifyllda föreningsuppgifter", () => {
       "href",
       "https://example.org/test-arsredovisning.pdf",
     );
-    // Only the empty answers are left to fill in.
-    await expect(page.getByRole("main").locator(".sl-todo")).toHaveText(["fylls i av föreningen", "fylls i av föreningen"]);
+    await expect(page.getByRole("main").getByText(/fylls i/)).toHaveCount(0);
     await expectNoA11yViolations(page);
   });
 });

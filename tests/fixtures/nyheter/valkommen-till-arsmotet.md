@@ -9,9 +9,6 @@ example: true
 
 Den svenska föreningen håller årsmöte. Alla medlemmar är välkomna.
 
-**Tid:** <span class="sl-todo">fylls i</span><br>
-**Plats:** <span class="sl-todo">fylls i</span>
-
 ## Dagordning
 
 Lägg in dagordningen här, eller länka till den.

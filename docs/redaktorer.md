@@ -56,7 +56,7 @@ Om ett inlägg bryter mot reglerna ovan, till exempel saknar alt-text, publicera
 
 ## 6. Fyll i Vår historia
 
-Sidan **Vår historia** är en tidslinje från 1995 till idag. Allt som inte är ifyllt visas som ”fylls i”, så sidan går att publicera innan texterna är klara.
+Sidan **Vår historia** är en tidslinje från 1995 till idag. Allt som inte är ifyllt visas inte, så sidan går att publicera innan texterna är klara.
 
 1. Klicka på **Vår historia** i menyn till vänster.
 2. Skriv en **Ingress**: ett par meningar om hur allt började.
@@ -79,11 +79,11 @@ Samma regler gäller som för inläggen: ett foto utan alt-text publiceras inte 
 
 ### Styrelsen på Om Streetlight
 
-Under **Om Streetlight** finns **Vilka vi är** med styrelsen. Varje person har **Namn**, **Roll** (till exempel Ordförande, Kassör eller Ledamot) och **Ort**, där personen bor. En tom ort visas som ”ort fylls i”. Efter ett årsmöte ändrar du personerna här och sparar.
+Under **Om Streetlight** finns **Vilka vi är** med styrelsen. Varje person har **Namn**, **Roll** (till exempel Ordförande, Kassör eller Ledamot) och **Ort**, där personen bor. En tom ort visas inte, och en person utan namn visas inte alls. Efter ett årsmöte ändrar du personerna här och sparar.
 
 ## 7. Fyll i julkampanjen
 
-Sidan **Ge ett julpaket** (`/julpaket`) är föreningens julkampanj. Belopp, insamlingsmål och betalning sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas som ”fylls i” tills det finns.
+Sidan **Ge ett julpaket** (`/julpaket`) är föreningens julkampanj. Belopp, insamlingsmål och betalning sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas först när det finns.
 
 1. Klicka på **Julkampanjen** i menyn till vänster.
 2. Skriv **Sista dagen att ge ett julpaket med kort**, som du vill att det ska stå, till exempel ”20 december”.
@@ -104,13 +104,13 @@ Sidan **Vanliga frågor** (`/vanliga-fragor`) svarar på det som blivande faddra
 | **Fråga** | Som en besökare skulle fråga, till exempel ”Hur väljs barnen ut?”. Måste fyllas i. Frågan blir också dess adress, till exempel `/vanliga-fragor#fraga-hur-valjs-barnen-ut`. Adressen ändras inte om du formulerar om frågan senare. |
 | **Grupp** | Att vara fadder, Barnen och familjerna eller Föreningen. |
 | **Ordning** | Lägre tal visas först i gruppen: 1, 2, 3 … Lämnar du det tomt hamnar frågan sist. |
-| **Svar** | Själva svaret. Du kan göra listor och länkar med knapparna ovanför textrutan, men inte lägga in bilder. Lämna det tomt tills svaret finns, så visas ”fylls i av föreningen”. |
+| **Svar** | Själva svaret. Du kan göra listor och länkar med knapparna ovanför textrutan, men inte lägga in bilder. En fråga utan svar visas inte på sidan. |
 
 4. Klicka på spara (Save).
 
-Några svar saknas än och visas som ”fylls i av föreningen”: vad det kostar, hur man betalar, hur man slutar och om man kan bli medlem.
+Frågor som ännu saknar svar (till exempel vad det kostar, hur man betalar, hur man slutar och om man kan bli medlem) visas inte förrän de har ett svar.
 
-**Föreningsuppgifter i ett svar.** Skriv inte Swish-numret eller e-posten direkt i ett svar. Skriv i stället namnet inom klammerparenteser, så hämtas uppgiften från **Föreningsuppgifter**. Då räcker det att ändra den på ett ställe. Saknas uppgiften visas ”fylls i”.
+**Föreningsuppgifter i ett svar.** Skriv inte Swish-numret eller e-posten direkt i ett svar. Skriv i stället namnet inom klammerparenteser, så hämtas uppgiften från **Föreningsuppgifter**. Då räcker det att ändra den på ett ställe. Saknas uppgiften står ingenting där, så läs igenom svaret om en uppgift är tom.
 
 | Skriv | Så visas |
 | --- | --- |

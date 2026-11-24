@@ -214,7 +214,7 @@ Innehållet ligger i en centrerad spalt som är högst 1180 px bred (`band-inner
 
 Ett avsnitt har `clamp(64px, 9vw, 120px)` luft upptill och nedtill. Inom ett avsnitt används en 4-baserad skala: 4, 8, 12, 16, 24, 32 och 56 px. Det är tätt inom en grupp (8–16 px mellan etikett och fält eller rubrik och ingress) och generöst mellan grupper (32–56 px).
 
-Den viktigaste brytpunkten är 901 px. Över den lägger sig avsnitt i två spalter (`minmax(0,0.9fr) minmax(0,1.1fr)`) och menyn ligger i en rad. Under 900 px staplas spalterna och menyn fälls ihop bakom knappen ”Meny”. Mindre justeringar sker vid 520, 400 och 359 px, där logotypen krymper och mellanrummen stramas åt, så att loggan, ”Bli fadder” och ”Meny” ryms på en rad ner till 320 px. Sidfoten har en spalt på mobil, två från 521 px och tre från 901 px. Under spalterna ligger en rad med ”Streetlight” och årtalet (utan ©) och organisationsnumret till vänster och ”Följ oss” med Facebook och Instagram till höger. Länkarna har ritade linjeikoner i textens färg, aldrig i guld eftersom ብርሃን är sidfotens ljus. Samma länkar står som ”Följ oss på Facebook” och ”Följ oss på Instagram” sist i uppgifterna under Kontakt på Om Streetlight. Adresserna fylls i bland föreningsuppgifterna, och saknas en visas ”länk fylls i”.
+Den viktigaste brytpunkten är 901 px. Över den lägger sig avsnitt i två spalter (`minmax(0,0.9fr) minmax(0,1.1fr)`) och menyn ligger i en rad. Under 900 px staplas spalterna och menyn fälls ihop bakom knappen ”Meny”. Mindre justeringar sker vid 520, 400 och 359 px, där logotypen krymper och mellanrummen stramas åt, så att loggan, ”Bli fadder” och ”Meny” ryms på en rad ner till 320 px. Sidfoten har en spalt på mobil, två från 521 px och tre från 901 px. Under spalterna ligger en rad med ”Streetlight” och årtalet (utan ©) och organisationsnumret till vänster och ”Följ oss” med Facebook och Instagram till höger. Länkarna har ritade linjeikoner i textens färg, aldrig i guld eftersom ብርሃን är sidfotens ljus. Samma länkar står som ”Följ oss på Facebook” och ”Följ oss på Instagram” sist i uppgifterna under Kontakt på Om Streetlight. Adresserna fylls i bland föreningsuppgifterna, och saknas en visas den inte.
 
 ### Named Rules
 **The Listor, inte kort Rule.** Det som något består av visas som en lista mellan tjocka bläcklinjer (Ledger), inte som ett rutnät av likadana kort.
@@ -254,7 +254,6 @@ Varma och stadiga, med stora tryckytor som är lätta att träffa.
 - **Pil:** en knapp som leder vidare kan ha en ritad pil efter texten (18 px, linje 2 px med runda ändar, i textens färg). Den är dekorativ och döljs för skärmläsare.
 
 ### Chips
-- **”Fylls i” (`sl-todo`):** en streckad bläckkant på 2 px, 3 px hörn och vit bomull på 45 %. På grönt är kanten mint och texten bomull. Chipet markerar ett faktum föreningen inte har gett än, i stället för att något hittas på. Skriv vad som saknas, till exempel ”nummer fylls i”.
 
 ### Cards / Containers
 - **Ledger (i stället för kort):** en 3 px bläcklinje upptill och nedtill och 1,5 px linjer mellan raderna, med 26 px luft per rad. Varje rad har en vävd rombmarkör: guld med röd, kobolt eller grön kärna. Markören är 28 px i en spalt på 44 px. På 520 px och smalare krymper den till 20 px i en spalt på 30 px, så att texten får bredden. Ledger kompakt (sammanfattningen av det vi tror på på startsidan) visar bara rubrikerna, med 16 px luft per rad och markören centrerad mot raden. Ledger på grönt (Fler sätt att stödja oss) följer samma mått, och ett formulär i en rad går under 900 px i radens hela bredd, ut under markören.
@@ -278,7 +277,7 @@ Sidfoten ligger på djupgrönt under det fulla tibeb-bandet, med brödtext i 18 
 - **Länkar:** `mint` i vila. Vid hovring blir texten bomull och får en understrykning i `gold-soft`.
 - **Rubriker:** bomull, 1,1rem Bricolage ExtraBold, 12 px ovanför sitt innehåll.
 - **Luft:** 56 px under bandet och 48 px mellan grupperna. ብርሃን står 24 px under beskrivningen.
-- **Nederkant:** en tunn mintlinje (20 %) och en rad i etikettstorlek. Till vänster står ”Streetlight 2026” (namnet och innevarande år, utan ©-tecken) och organisationsnumret, till höger ”Följ oss” med Facebook och Instagram (se Layout). Numret kommer från föreningsuppgifterna, och saknas det står chipet ”nummer fylls i”.
+- **Nederkant:** en tunn mintlinje (20 %) och en rad i etikettstorlek. Till vänster står ”Streetlight 2026” (namnet och innevarande år, utan ©-tecken) och organisationsnumret, till höger ”Följ oss” med Facebook och Instagram (se Layout). Numret kommer från föreningsuppgifterna, och saknas det visas det inte.
 
 ### Bli fadder-dockan
 På 900 px och smalare ligger en guldknapp ”Bli fadder” i full bredd fast längst ner på startsidan, inom räckhåll för tummen. Dockan är grön med en 3 px guldlinje upptill och följer telefonens säkra zon. Den glider upp (350 ms, `cubic-bezier(0.16, 1, 0.3, 1)`) bara när toppens huvudknapp har rullat ur bild och det gula fadderfältet ännu inte syns, så att det aldrig finns två guldknappar i samma vy. När den är dold ligger den utanför tabbordningen, och utan JavaScript syns den inte alls.
@@ -314,7 +313,7 @@ Märket är en gatlykta ritad med en enda linje på ett rutnät om 80 × 80, med
 - **Do** håll brödtexten på minst 18 px, kontrasten på minst 4,5:1 och tryckytorna på minst 44 px.
 - **Do** använd fokusringen bläck på bomull och guld, och guld på grönt.
 - **Do** tema webbläsarens egna ytor: markerad text är guld med bläck, rullningslisten grön på bomull och markören i textfält röd tråd.
-- **Do** markera det som saknas med chipet ”fylls i” eller fotoplatshållaren.
+- **Do** visa inte det som saknas. Fotoplatshållaren markerar en bild som ännu inte laddats upp.
 - **Do** visa allt i färdigt läge med reducerad rörelse. Rörelse förklarar och dekorerar inte.
 
 ### Don't:

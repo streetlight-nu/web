@@ -8,7 +8,7 @@ import { arEpostadress, valfri } from "./falt";
  *
  * They live in one data file, `src/data/julkampanj.json`, which the association fills in through
  * Pages CMS (see `.pages.yml`). The page gets them only from here and never writes a value itself.
- * A field that is missing or empty is `undefined`, and is shown as the chip "fylls i".
+ * A field that is missing or empty is `undefined`, and is not shown.
  * Amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
  */
 export interface Julkampanj {

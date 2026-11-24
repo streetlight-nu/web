@@ -12,7 +12,7 @@ import { href } from "./utils";
  * themselves. A field that is missing or empty is `undefined`.
  *
  * How each uppgift is shown is decided here too, with `visaUppgift()`: its label (as in GLOSSARY.md), the text
- * and link when it is filled in, and the chip that says what is missing when it is not. The component Uppgift and
+ * and link when it is filled in, and nothing more when it is not: a missing uppgift is not shown. The component Uppgift and
  * the answers in Vanliga frågor show the uppgifter through it, so every page names and links them the same way.
  */
 export interface Foreningsuppgifter {
@@ -98,29 +98,26 @@ export interface VisadUppgift {
   text?: string;
   /** Where the text links, when the uppgift is a link (mailto: or https:), and it is filled in. */
   lank?: string;
-  /** The chip's text while the uppgift is missing: what is missing, e.g. "nummer fylls i". */
-  saknas: string;
 }
 
-const VISNING: Record<Uppgift, { etikett: string; saknas: string; lank?: (varde: string) => string; text?: string }> = {
-  organisationsnummer: { etikett: "Organisationsnummer", saknas: "nummer fylls i" },
-  nittiokonto: { etikett: "Bankgiro", saknas: "nummer fylls i" },
-  swish: { etikett: "Swish för gåvor", saknas: "nummer fylls i" },
-  epost: { etikett: "E-post", saknas: "e-post fylls i", lank: (varde) => `mailto:${varde}` },
+const VISNING: Record<Uppgift, { etikett: string; lank?: (varde: string) => string; text?: string }> = {
+  organisationsnummer: { etikett: "Organisationsnummer" },
+  nittiokonto: { etikett: "Bankgiro" },
+  swish: { etikett: "Swish för gåvor" },
+  epost: { etikett: "E-post", lank: (varde) => `mailto:${varde}` },
   arsredovisning: {
     etikett: "Senaste årsredovisning",
-    saknas: "länk fylls i",
     lank: (varde) => (varde.startsWith("/") ? href(varde) : varde),
     text: "Läs årsredovisningen",
   },
-  facebook: { etikett: "Facebook", saknas: "länk fylls i", lank: (varde) => varde, text: "Facebook" },
-  instagram: { etikett: "Instagram", saknas: "länk fylls i", lank: (varde) => varde, text: "Instagram" },
+  facebook: { etikett: "Facebook", lank: (varde) => varde, text: "Facebook" },
+  instagram: { etikett: "Instagram", lank: (varde) => varde, text: "Instagram" },
 };
 
 /** How one uppgift is shown: from the data file, or from `uppgifter` when given (the tests, Vanliga frågor). */
 export function visaUppgift(namn: Uppgift, uppgifter: Foreningsuppgifter = hamtaForeningsuppgifter()): VisadUppgift {
-  const { etikett, saknas, lank, text } = VISNING[namn];
+  const { etikett, lank, text } = VISNING[namn];
   const varde = uppgifter[namn];
-  if (varde === undefined) return { etikett, saknas };
-  return { etikett, saknas, text: text ?? varde, lank: lank?.(varde) };
+  if (varde === undefined) return { etikett };
+  return { etikett, text: text ?? varde, lank: lank?.(varde) };
 }

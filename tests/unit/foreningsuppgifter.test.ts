@@ -52,11 +52,10 @@ describe("hur en föreningsuppgift visas", () => {
     facebook: "https://www.facebook.com/streetlight",
   };
 
-  test("varje uppgift har en etikett och säger vad som saknas", () => {
+  test("varje uppgift har en etikett, och en som saknas har ingen text", () => {
     for (const namn of UPPGIFTER) {
-      const { etikett, saknas, text, lank } = visaUppgift(namn, {});
+      const { etikett, text, lank } = visaUppgift(namn, {});
       expect(etikett, namn).not.toBe(namn);
-      expect(saknas, namn).toMatch(/^(nummer|namn|e-post|länk) fylls i$/);
       expect(text).toBeUndefined();
       expect(lank).toBeUndefined();
     }
@@ -65,7 +64,6 @@ describe("hur en föreningsuppgift visas", () => {
   test("bankgirot heter Bankgiro, och nummer visas som de står", () => {
     expect(visaUppgift("nittiokonto", ifyllda)).toEqual({
       etikett: "Bankgiro",
-      saknas: "nummer fylls i",
       text: "123-4567",
       lank: undefined,
     });

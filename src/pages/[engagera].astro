@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import FyllsI from "@/components/FyllsI.astro";
 import Kategoriikon from "@/components/Kategoriikon.astro";
 import Pil from "@/components/Pil.astro";
 import Repejo from "@/components/Repejo.astro";
@@ -18,7 +17,7 @@ export function getStaticPaths() {
  * Engagera dig: what members and others can do for Streetlight with their time. A green top with the two ways as
  * jump links, then one's own fundraiser through Repejo (ADR 0003): the occasions with their icons and one Repejo button
  * `<repejo-p2p-create-button>` without a category, so Repejo's own dialog asks which; last, tips and material for
- * finding new fadder. The printed material the association has not given yet shows the chip "fylls i".
+ * finding new fadder. The printed material (poster, folder, images) is added when the association has made it.
  */
 
 /** The two ways, in the order the sections come. */
@@ -44,13 +43,6 @@ const tillfallen: { rubrik: string; text: string; ikon: "tarta" | "hjarta" | "po
     text: "Springer, cyklar eller simmar du? Låt vännerna heja med en gåva.",
     ikon: "pokal",
   },
-];
-
-/** The printed and digital material; the association makes it, and until then each row shows "fylls i". */
-const material = [
-  { rubrik: "Affisch att sätta upp", text: "För anslagstavlan på jobbet, i kyrkan eller i tvättstugan.", saknas: "affisch fylls i" },
-  { rubrik: "Folder att dela ut", text: "Att lämna efter en pratstund, så att det finns något att läsa i lugn och ro.", saknas: "folder fylls i" },
-  { rubrik: "Bilder för sociala medier", text: "Bilder och omslagsbilder till egna insamlingar.", saknas: "bilder fylls i" },
 ];
 
 /** What a member can say about Streetlight, all from PRODUCT.md. */
@@ -190,22 +182,6 @@ const markorer = ["", "mark--cobalt", "mark--gron"];
             </div>
           </div>
         </li>
-        {
-          material.map((m, i) => (
-            <li>
-              <span class:list={["mark", markorer[(i + 1) % 3]]} aria-hidden="true" />
-              <div class="rad">
-                <div class="min-w-0">
-                  <h3 class="text-title tracking-[-0.015em]">{m.rubrik}</h3>
-                  <p class="mt-1.5 max-w-[44ch] text-ink-soft">{m.text}</p>
-                </div>
-                <div class="handling">
-                  <FyllsI>{m.saknas}</FyllsI>
-                </div>
-              </div>
-            </li>
-          ))
-        }
       </ul>
     </div>
   </section>

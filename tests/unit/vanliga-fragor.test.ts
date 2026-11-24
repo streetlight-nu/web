@@ -78,16 +78,10 @@ describe("föreningsuppgifter i ett svar", () => {
     );
   });
 
-  test("visas som ”fylls i” när uppgiften saknas", () => {
-    expect(fyllIUppgifter("<p>{swish}, {epost}, {organisationsnummer}, {arsredovisning}</p>", {})).toBe(
-      '<p><span class="sl-todo">nummer fylls i</span>, <span class="sl-todo">e-post fylls i</span>, ' +
-        '<span class="sl-todo">nummer fylls i</span>, <span class="sl-todo">länk fylls i</span></p>',
+  test("en uppgift som saknas visas inte", () => {
+    expect(fyllIUppgifter("<p>Swish: {swish}{epost}{organisationsnummer}{arsredovisning}</p>", {})).toBe(
+      "<p>Swish: </p>",
     );
-  });
-
-  test("ett tomt svar visas som ”fylls i av föreningen”", () => {
-    expect(fyllIUppgifter("", ifyllda)).toBe('<p><span class="sl-todo">fylls i av föreningen</span></p>');
-    expect(fyllIUppgifter("  \n", ifyllda)).toBe('<p><span class="sl-todo">fylls i av föreningen</span></p>');
   });
 
   test("stoppar bygget vid en okänd uppgift, så att ett stavfel inte syns på sidan", () => {

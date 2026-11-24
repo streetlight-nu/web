@@ -449,7 +449,7 @@
       "**Do** håll brödtexten på minst 18 px, kontrasten på minst 4,5:1 och tryckytorna på minst 44 px.",
       "**Do** använd fokusringen bläck på bomull och guld, och guld på grönt.",
       "**Do** tema webbläsarens egna ytor: markerad text är guld med bläck, rullningslisten grön på bomull och markören i textfält röd tråd.",
-      "**Do** markera det som saknas med chipet ”fylls i” eller fotoplatshållaren.",
+      "**Do** visa inte det som saknas. Fotoplatshållaren markerar en bild som ännu inte laddats upp.",
       "**Do** visa allt i färdigt läge med reducerad rörelse. Rörelse förklarar och dekorerar inte."
     ],
     "donts": [

@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import FyllsI from "@/components/FyllsI.astro";
 import LightBand from "@/components/LightBand.astro";
 import Pil from "@/components/Pil.astro";
 import Repejo from "@/components/Repejo.astro";
@@ -18,7 +17,7 @@ import barnITradgarden from "@/assets/julklapp/barn-i-tradgarden.jpg";
  * Ge ett julpaket: the Christmas campaign. A visitor gives a julpaket to the children in Addis Abeba
  * and the association sends a julkort in their name on Christmas morning. Repejo handles the
  * checkout and the progress bar (ADR 0003). The campaign's own facts come from
- * src/data/julkampanj.json (Pages CMS); every empty field shows the chip "fylls i".
+ * src/data/julkampanj.json (Pages CMS); an empty field is not shown.
  * Seasonal: after Christmas the page can be removed, or the short code changed (src/lib/repejo.ts),
  * without touching anything else.
  */
@@ -111,9 +110,7 @@ const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols
           Streetlight stöttar 20 fadderbarns skolgång och deras familjer i Addis Abeba. Barnen väljs ut tillsammans med
           de lokala myndigheterna, och Streetlight Etiopien bär arbetet med barnen och familjerna på plats.
         </p>
-        <p class="mt-4 max-w-[52ch]">
-          Det här gör ditt julpaket: {vadJulklappenGor ?? <FyllsI>fylls i av föreningen</FyllsI>}
-        </p>
+        {vadJulklappenGor && <p class="mt-4 max-w-[52ch]">Det här gör ditt julpaket: {vadJulklappenGor}</p>}
         <p class="mt-4 max-w-[52ch] text-ink-soft">
           Vill du göra mer än en gång?{" "}
           <a class="font-semibold text-ink underline" href={href("/bli-fadder")}>Läs om att bli fadder</a>.

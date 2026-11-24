@@ -161,8 +161,7 @@
 
 /*
  * Placeholders (design system Placeholder). Plain classes rather than utilities, so that
- * the Markdown of an inlägg can use them too: `sl-photo` for a photo that is still missing,
- * `sl-todo` for a detail that is still missing ("fylls i").
+ * the Markdown of an inlägg can use them too: `sl-photo` for a photo that is still missing.
  */
 @layer components {
   .sl-photo {
@@ -194,19 +193,6 @@
     font-size: var(--text-label);
     font-weight: 500;
     line-height: 1.35;
-  }
-  .sl-todo {
-    display: inline-block;
-    padding: 2px 10px;
-    border: 2px dashed var(--color-ink);
-    border-radius: var(--radius-sm);
-    background: rgba(251, 251, 248, 0.45);
-    font-weight: 600;
-  }
-  .on-green .sl-todo {
-    border-color: var(--color-mint);
-    background: transparent;
-    color: var(--color-cotton);
   }
   /* "Ge ett julpaket" in the main menu: a line pill that fills with cotton on hover and when it is the current page. */
   .nav-gift {

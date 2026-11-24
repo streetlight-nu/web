@@ -28,15 +28,15 @@ content:
       - name: organisationsnummer
         label: Organisationsnummer
         type: string
-        description: Visas under Kontakt på Om Streetlight och i sidfoten. Lämna tomt tills det finns, så visas ”nummer fylls i”.
+        description: Visas under Kontakt på Om Streetlight och i sidfoten. Lämna tomt tills det finns, så visas ingenting.
       - name: nittiokonto
         label: Bankgiro
         type: string
-        description: Föreningens bankgiro för gåvor. Visas under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ”nummer fylls i”.
+        description: Föreningens bankgiro för gåvor. Visas under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ingenting.
       - name: swish
         label: Swish-nummer
         type: string
-        description: För engångsgåvor. Lämna tomt tills det finns, så visas ”fylls i”.
+        description: För engångsgåvor. Lämna tomt tills det finns, så visas ingenting.
       - name: epost
         label: Kontakt-e-post
         type: string
@@ -54,14 +54,14 @@ content:
       - name: facebook
         label: Facebook-sida
         type: string
-        description: Hela adressen till föreningens sida, till exempel https://www.facebook.com/föreningens-namn. Visas i sidfoten och under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ”fylls i”.
+        description: Hela adressen till föreningens sida, till exempel https://www.facebook.com/föreningens-namn. Visas i sidfoten och under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ingenting.
         pattern:
           regex: "^$|^https://(www\\.)?facebook\\.com/\\S+$"
           message: Skriv hela adressen till sidan, som börjar med https://www.facebook.com/.
       - name: instagram
         label: Instagram-konto
         type: string
-        description: Hela adressen till föreningens konto, till exempel https://www.instagram.com/föreningens-namn. Visas i sidfoten och under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ”fylls i”.
+        description: Hela adressen till föreningens konto, till exempel https://www.instagram.com/föreningens-namn. Visas i sidfoten och under Kontakt på Om Streetlight. Lämna tomt tills det finns, så visas ingenting.
         pattern:
           regex: "^$|^https://(www\\.)?instagram\\.com/\\S+$"
           message: Skriv hela adressen till kontot, som börjar med https://www.instagram.com/.
@@ -77,11 +77,11 @@ content:
       - name: sistaDag
         label: Sista dagen att ge ett julpaket med kort
         type: string
-        description: Skriv som du vill att det ska stå, till exempel ”20 december”. Visas överst på sidan Ge ett julpaket. Lämna tomt tills det finns, så visas ”fylls i”.
+        description: Skriv som du vill att det ska stå, till exempel ”20 december”. Visas överst på sidan Ge ett julpaket. Lämna tomt tills det finns, så visas ingenting.
       - name: vadJulklappenGor
         label: Det här gör julpaketet
         type: text
-        description: En eller två meningar om vad pengarna från julpaketen går till. Visas under ”Vart julpaketet går”. Lämna tomt tills det finns, så visas ”fylls i”.
+        description: En eller två meningar om vad pengarna från julpaketen går till. Visas under ”Vart julpaketet går”. Lämna tomt tills det finns, så visas ingenting.
       - name: epost
         label: E-post för frågor om julkampanjen
         type: string
@@ -184,7 +184,7 @@ content:
       - name: body
         label: Svar
         type: rich-text
-        description: "Lämna tomt tills svaret finns, så visas ”fylls i av föreningen”. Skriv {swish}, {epost}, {organisationsnummer}, {nittiokonto} (bankgirot), {arsredovisning}, {facebook} eller {instagram} för att visa uppgiften från Föreningsuppgifter."
+        description: "En fråga utan svar visas inte. Skriv {swish}, {epost}, {organisationsnummer}, {nittiokonto} (bankgirot), {arsredovisning}, {facebook} eller {instagram} för att visa uppgiften från Föreningsuppgifter."
         options:
           format: markdown
 
@@ -198,7 +198,7 @@ content:
       - name: ingress
         label: Ingress
         type: text
-        description: Ett par meningar överst på sidan om hur allt började. Skriv så att ett barn som läser med en vuxen förstår. Lämna tomt tills det finns, så visas ”fylls i”.
+        description: Ett par meningar överst på sidan om hur allt började. Skriv så att ett barn som läser med en vuxen förstår. Lämna tomt tills det finns, så visas ingenting.
       - name: perioder
         label: Perioder
         type: object
@@ -282,7 +282,7 @@ content:
       - name: ingress
         label: Ingress
         type: text
-        description: Ett par meningar överst på sidan om vilka vi är. Lämna tomt tills det finns, så visas ”fylls i”.
+        description: Ett par meningar överst på sidan om vilka vi är. Lämna tomt tills det finns, så visas ingenting.
       - name: vision
         label: Vår vision
         type: text
@@ -358,7 +358,7 @@ content:
             label: Personer i styrelsen
             type: object
             list: true
-            description: Ett tomt namn visas som ”fylls i”.
+            description: En person utan namn visas inte.
             fields:
               - name: namn
                 label: Namn
@@ -370,7 +370,7 @@ content:
               - name: ort
                 label: Ort
                 type: string
-                description: Där personen bor, till exempel Umeå. Lämna tomt tills det finns, så visas ”ort fylls i”.
+                description: Där personen bor, till exempel Umeå. Lämna tomt tills det finns, så visas ingenting.
       - name: vilkaBild
         label: Foto till Vilka vi är
         type: object

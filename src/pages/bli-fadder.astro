@@ -36,7 +36,7 @@ const fragor = (
       "far-jag-hora-hur-det-gar",
     ].map((id) => getEntry("fragor", id)),
   )
-).filter((fraga) => fraga?.rendered?.html?.trim()); // a question without an answer is not shown
+).flatMap((fraga) => (fraga?.rendered?.html?.trim() ? [fraga] : [])); // a question without an answer is not shown
 
 /** Vart ditt bidrag går: the start page's four rows, plus the family's own income from Vanliga frågor. */
 const bidrag: LedgerItem[] = [

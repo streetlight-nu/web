@@ -1,12 +1,12 @@
 ---
 /**
  * One föreningsuppgift's value, as foreningsuppgifter.ts decides it should be shown: the text, a link when the
- * uppgift is one (e-mail, the annual report, the social networks), or the chip that says what is missing.
+ * uppgift is one (e-mail, the annual report, the social networks). An uppgift the association has not filled in
+ * shows nothing; the caller checks `visaUppgift(namn).text` when its label or row should go with it.
  * The label is the caller's to place, from `visaUppgift(namn).etikett`, since a list and a sentence put it
  * differently. `lankklass` styles the link for the surface, and `lanktext` replaces the link's text where the
  * context needs it (e.g. "Följ oss på Facebook"). The social networks get their drawn icon before the text.
  */
-import FyllsI from "@/components/FyllsI.astro";
 import Ikon from "@/components/Ikon.astro";
 import { type Foreningsuppgifter, type Uppgift, visaUppgift } from "@/lib/foreningsuppgifter";
 
@@ -19,14 +19,12 @@ interface Props {
 }
 
 const { namn, uppgifter, lankklass, lanktext } = Astro.props;
-const { text, lank, saknas } = visaUppgift(namn, uppgifter);
+const { text, lank } = visaUppgift(namn, uppgifter);
 const ikon = namn === "facebook" || namn === "instagram" ? namn : undefined;
 ---
 
 {
-  text === undefined ? (
-    <FyllsI>{saknas}</FyllsI>
-  ) : lank ? (
+  text === undefined ? null : lank ? (
     <a class={lankklass} href={lank}>
       {ikon && <Ikon namn={ikon} />}
       {lanktext ?? text}

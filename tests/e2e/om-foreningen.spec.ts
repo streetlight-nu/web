@@ -75,16 +75,11 @@ test("länken till årsredovisningen leder till en PDF på webbplatsen", async (
 test.describe("Kontakt med tom testfil", () => {
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
-  test("visar ”fylls i” för det föreningen inte har gett", async ({ page }) => {
+  test("visar inget för det föreningen inte har gett, inte ens avsnittet Kontakt", async ({ page }) => {
     await page.goto("om-foreningen");
-    const kontakt = page.getByRole("region", { name: "Kontakt." });
-    await expect(kontakt.getByText("e-post fylls i")).toBeVisible();
-    await expect(kontakt).not.toContainText("Kontaktperson");
-    await expect(uppgift(page, "Swish för gåvor")).toHaveText("nummer fylls i");
-    await expect(uppgift(page, "Senaste årsredovisning")).toHaveText("länk fylls i");
-    await expect(uppgift(page, "Facebook")).toHaveText("länk fylls i");
-    await expect(uppgift(page, "Instagram")).toHaveText("länk fylls i");
-    await expect(kontakt.getByRole("link")).toHaveCount(0);
+    await expect(page.getByRole("region", { name: "Kontakt." })).toHaveCount(0);
+    await expect(page.getByRole("main").getByText(/fylls i/)).toHaveCount(0);
+    await expect(page.getByRole("contentinfo").getByRole("link", { name: "Kontakt" })).toHaveCount(0);
   });
 });
 

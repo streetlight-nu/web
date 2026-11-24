@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import { periodId, tolkaHistoria } from "@/lib/historia";
 
 describe("historien i src/data/historia.json", () => {
-  test("räknar tomma fält som saknade, så att sidan visar ”fylls i”", () => {
+  test("räknar tomma fält som saknade, så att sidan utelämnar dem", () => {
     const tolkad = tolkaHistoria({
       ingress: "",
       perioder: [{ rubrik: "1995–1999", namn: null, handelser: [{ ar: " ", rubrik: "Starten" }] }],

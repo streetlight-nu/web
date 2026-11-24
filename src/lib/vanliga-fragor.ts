@@ -57,12 +57,11 @@ export function perGrupp<T extends FragaPost>(fragor: T[]) {
 
 const escapa = (text: string) =>
   text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-const fyllsI = (text: string) => `<span class="sl-todo">${text}</span>`;
 
-/** One föreningsuppgift written into an answer as foreningsuppgifter.ts shows it, or its chip while it is missing. */
+/** One föreningsuppgift written into an answer as foreningsuppgifter.ts shows it, or nothing while it is missing. */
 function skrivUppgift(namn: Uppgift, uppgifter: Foreningsuppgifter): string {
-  const { text, lank, saknas } = visaUppgift(namn, uppgifter);
-  if (text === undefined) return fyllsI(saknas);
+  const { text, lank } = visaUppgift(namn, uppgifter);
+  if (text === undefined) return "";
   return lank ? `<a href="${escapa(lank)}">${escapa(text)}</a>` : escapa(text);
 }
 
@@ -70,13 +69,11 @@ function skrivUppgift(namn: Uppgift, uppgifter: Foreningsuppgifter): string {
 export const UPPGIFTSNAMN: readonly string[] = UPPGIFTER;
 
 /**
- * Fills the föreningsuppgifter into an answer's rendered HTML: `{swish}` becomes the Swish number, or the
- * chip "fylls i" while it is missing. Only text is touched, never a tag's attributes or code. An empty
- * answer becomes "fylls i av föreningen". An unknown name, or an image the page cannot show, stops the
+ * Fills the föreningsuppgifter into an answer's rendered HTML: `{swish}` becomes the Swish number, or
+ * nothing while it is missing. Only text is touched, never a tag's attributes or code. An unknown name, or an image the page cannot show, stops the
  * build, so a mistake never reaches the page.
  */
 export function fyllIUppgifter(html: string, uppgifter: Foreningsuppgifter): string {
-  if (!html.trim()) return `<p>${fyllsI("fylls i av föreningen")}</p>`;
   if (/<img\b/i.test(html)) {
     throw new Error("Ett svar i Vanliga frågor har en bild. Svaren kan bara ha text, listor och länkar.");
   }

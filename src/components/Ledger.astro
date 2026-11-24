@@ -1,10 +1,8 @@
 ---
-import FyllsI from "@/components/FyllsI.astro";
-
 /**
  * Ledger: a list between thick ink rules, for what something is made of. Used instead of cards.
  * Each row has a woven rhombus marker (gold with a red, cobalt or green core, in turn).
- * A title or text the association has not written yet shows the chip "fylls i".
+ * A title or text the association has not written is left out, and a row with neither is not shown.
  * Compact (kompakt) shows only the titles, tighter: a summary that links to the full list elsewhere.
  */
 export interface LedgerItem {
@@ -15,7 +13,8 @@ interface Props {
   items: LedgerItem[];
   kompakt?: boolean;
 }
-const { items, kompakt = false } = Astro.props;
+const { items: alla, kompakt = false } = Astro.props;
+const items = alla.filter((item) => item.title || (!kompakt && item.text));
 ---
 
 <ul class:list={["ledger", { kompakt }]}>
@@ -24,8 +23,8 @@ const { items, kompakt = false } = Astro.props;
       <li>
         <span class="mark" aria-hidden="true" />
         <div>
-          <h3 class="mb-1.5 text-title tracking-[-0.015em]">{item.title ?? <FyllsI>rubrik fylls i</FyllsI>}</h3>
-          {!kompakt && <p class="max-w-[52ch] text-ink-soft">{item.text ?? <FyllsI>text fylls i</FyllsI>}</p>}
+          {item.title && <h3 class="mb-1.5 text-title tracking-[-0.015em]">{item.title}</h3>}
+          {!kompakt && item.text && <p class="max-w-[52ch] text-ink-soft">{item.text}</p>}
         </div>
       </li>
     ))

@@ -85,14 +85,13 @@ test.describe("Engagera dig", () => {
     await expect(page.getByRole("link", { name: /pågående insamling/i })).toHaveCount(0);
   });
 
-  test("materialet för att hitta faddrar leder till Bli fadder och visar fylls i för det som saknas", async ({
+  test("materialet för att hitta faddrar leder till Bli fadder och visar inga rader för material som inte finns", async ({
     page,
   }) => {
     const faddrar = page.locator("#faddrar");
     await expect(faddrar.getByRole("link", { name: "Till Bli fadder" })).toHaveAttribute("href", /\/bli-fadder$/);
-    for (const saknas of ["affisch fylls i", "folder fylls i", "bilder fylls i"]) {
-      await expect(faddrar.getByText(saknas)).toBeVisible();
-    }
+    await expect(faddrar.getByText(/fylls i/)).toHaveCount(0);
+    await expect(faddrar.getByRole("heading", { name: /^(Affisch|Folder|Bilder)/ })).toHaveCount(0);
     await expect(faddrar.getByRole("heading", { name: "Så kan du berätta" })).toBeVisible();
   });
 });

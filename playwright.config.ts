@@ -8,7 +8,7 @@ const port = Number(process.env.E2E_PORT ?? 4321);
 // test files instead of the files the association fills in through Pages CMS, so the tests never depend on what the
 // association has written:
 // - filled in (E2E_IFYLLD_URL, port E2E_PORT_IFYLLD, by default the one after E2E_PORT): real values.
-// - empty (E2E_TOM_URL, port E2E_PORT_TOM, by default two after E2E_PORT): the "fylls i" chips.
+// - empty (E2E_TOM_URL, port E2E_PORT_TOM, by default two after E2E_PORT): nothing is shown for a missing field.
 const filledPort = Number(process.env.E2E_PORT_IFYLLD ?? port + 1);
 process.env.E2E_IFYLLD_URL = `http://localhost:${filledPort}${base}`;
 const filledOutDir = "dist-ifylld";

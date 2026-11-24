@@ -20,15 +20,14 @@ test("historien har en h1 och visar perioderna i tidsordning, följt av idag", a
   ).toHaveText([...perioder, "Idag", "Var med och skriv nästa kapitel."]);
 });
 
-test("ett årtal som saknas visas som ”fylls i” och hittas inte på", async ({
+test("ett årtal som saknas utelämnas och hittas inte på", async ({
   page,
 }) => {
   await page.goto("historia");
   const forsta = page.getByRole("region", { name: "1995–1999" });
   await expect(forsta.getByRole("listitem").first()).toContainText("1995");
-  await expect(
-    forsta.getByRole("listitem").nth(1).getByText("år fylls i"),
-  ).toBeVisible();
+  await expect(forsta.getByText(/fylls i/)).toHaveCount(0);
+  await expect(forsta.getByRole("listitem").nth(1).locator("p").first()).not.toHaveText("");
 });
 
 test("ett citat visas stort efter händelsens text, med citattecken", async ({

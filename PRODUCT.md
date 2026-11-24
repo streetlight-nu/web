@@ -54,7 +54,7 @@ Små med flit. Det är 20 barn och 20 ljus, inte tusentals. Föreningen känner 
 
 - Föreningen har foton med samtycke från familjerna. De är ännu inte inlagda på sajten.
 - Föreningen har fakta om historien sedan 1995: årtal och händelser. De är ännu inte inskrivna, och tidslinjesidan använder platshållare tills de finns.
-- Belopp och siffror saknas, till exempel vad ett fadderskap kostar och hur pengarna fördelas. De får inte hittas på och markeras med chipet ”fylls i”.
+- Belopp och siffror saknas, till exempel vad ett fadderskap kostar och hur pengarna fördelas. De får inte hittas på, och det som saknas visas inte.
 - Exempelinlägg i Nyheter är påhittade och tydligt märkta ”Exempel”. De tas bort när föreningens egna inlägg finns.
 
 ## Product Principles

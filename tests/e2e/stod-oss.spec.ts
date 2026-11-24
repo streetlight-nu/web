@@ -128,7 +128,7 @@ function fragorna(page: Page) {
 }
 
 // The two fixture builds use the test questions in tests/fixtures/fragor: of the five chosen questions, three are
-// there (one of them without an answer) and two are missing.
+// there (one of them without an answer, so it is not shown) and two are missing.
 test.describe("frågorna med testfrågorna och tom testfil", () => {
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
@@ -139,7 +139,6 @@ test.describe("frågorna med testfrågorna och tom testfil", () => {
     await expect(s.getByText("Det här brukar de som funderar på att bli fadder fråga om.")).toBeVisible();
     await expect(s.locator("summary")).toHaveText([
       "Vad innebär det att vara fadder?",
-      "Hur betalar jag?",
       "Får jag höra hur det går?",
     ]);
   });
@@ -156,14 +155,13 @@ test.describe("frågorna med testfrågorna och tom testfil", () => {
     await expect(svar).toBeHidden();
   });
 
-  test("ett tomt svar och en saknad föreningsuppgift visas som ”fylls i”", async ({ page }) => {
+  test("en fråga utan svar visas inte, och en saknad föreningsuppgift lämnar ingen text", async ({ page }) => {
     await page.goto(sida);
     const s = fragorna(page);
     await s.locator("summary").first().click();
-    await expect(s.locator("details").first()).toContainText("Swish: nummer fylls i");
-    const tomt = s.locator("details").filter({ hasText: "Hur betalar jag?" });
-    await tomt.locator("summary").click();
-    await expect(tomt.getByText("fylls i av föreningen")).toBeVisible();
+    await expect(s.locator("details").first()).toContainText("Swish:");
+    await expect(s.locator("details").filter({ hasText: "Hur betalar jag?" })).toHaveCount(0);
+    await expect(s.getByText(/fylls i/)).toHaveCount(0);
   });
 
   test("frågorna har inga id:n som krockar med Vanliga frågor", async ({ page }) => {
@@ -197,7 +195,7 @@ test.describe("frågorna med testfrågorna och ifylld testfil", () => {
     const har = await s.locator("details").allInnerTexts();
     await page.goto("vanliga-fragor");
     const pa = [];
-    for (const id of ["vad-innebar-det-att-vara-fadder", "hur-betalar-jag", "far-jag-hora-hur-det-gar"]) {
+    for (const id of ["vad-innebar-det-att-vara-fadder", "far-jag-hora-hur-det-gar"]) {
       const fraga = page.locator(`#fraga-${id}`);
       await fraga.evaluate((el) => ((el as HTMLDetailsElement).open = true));
       pa.push(await fraga.innerText());

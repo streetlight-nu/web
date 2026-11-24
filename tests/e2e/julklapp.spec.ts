@@ -101,11 +101,11 @@ test.describe("kampanjuppgifter med tom testfil", () => {
   // break when the association fills in src/data/julkampanj.json.
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
-  test("vad julpaketet gör visas som ”fylls i”", async ({ page }) => {
+  test("vad julpaketet gör visas inte när det saknas", async ({ page }) => {
     await page.goto(sida);
-    await expect(
-      page.getByRole("region", { name: "Vart julpaketet går" }).getByText("fylls i av föreningen", { exact: true }),
-    ).toBeVisible();
+    const region = page.getByRole("region", { name: "Vart julpaketet går" });
+    await expect(region).not.toContainText("Det här gör ditt julpaket");
+    await expect(page.getByRole("main").getByText(/fylls i/)).toHaveCount(0);
   });
 
   test("texterna talar om fadder och hittar inte på några siffror", async ({ page }) => {

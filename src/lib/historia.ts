@@ -9,7 +9,7 @@ import { valfriSidbild } from "./sidbild";
  *
  * It lives in one data file, `src/data/historia.json`, which the association fills in through
  * Pages CMS (see `.pages.yml`). Every text is optional: a field that is missing or empty is
- * `undefined`, and the page shows the chip "fylls i" in its place, so nothing is made up.
+ * `undefined`, and the page leaves it out, so nothing is made up.
  * The texts are written so that a parent and a child can read them together.
  */
 

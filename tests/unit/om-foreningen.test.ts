@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import { stycken, tolkaOmForeningen } from "@/lib/om-foreningen";
 
 describe("texterna i src/data/om-foreningen.json", () => {
-  test("räknar tomma fält som saknade, så att sidan visar ”fylls i”", () => {
+  test("räknar tomma fält som saknade, så att sidan utelämnar dem", () => {
     const tolkad = tolkaOmForeningen({
       ingress: "",
       vision: null,

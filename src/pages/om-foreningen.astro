@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import FyllsI from "@/components/FyllsI.astro";
 import HoppaTill from "@/components/HoppaTill.astro";
 import Ikon from "@/components/Ikon.astro";
 import Ledger from "@/components/Ledger.astro";
@@ -17,17 +16,22 @@ import { href } from "@/lib/utils";
 /**
  * Om Streetlight: who we are and why we do this. The vision, what we believe in, how it began, the two
  * associations, the boards and Kontakt (#kontakt). The texts come from src/data/om-foreningen.json
- * (Pages CMS) and the contact details from the föreningsuppgifter; every empty field shows the chip "fylls i".
+ * (Pages CMS) and the contact details from the föreningsuppgifter; an empty field, and a section with nothing in it, is not shown.
  * The fields alternate cotton and green, and only the final field is gold (The Ett ljus rule).
  */
 const om = hamtaOmForeningen();
 const { historia } = hamtaFunktioner();
 /** Kontakt's list: the uppgifter with their labels (see foreningsuppgifter.ts), then where to follow us. */
-const kontaktuppgifter = (["swish", "nittiokonto", "organisationsnummer", "arsredovisning"] as const).map((namn) => ({
-  namn,
-  ...visaUppgift(namn),
-}));
-const sociala = SOCIALA.map((namn) => ({ namn, ...visaUppgift(namn) }));
+const kontaktuppgifter = (["swish", "nittiokonto", "organisationsnummer", "arsredovisning"] as const)
+  .map((namn) => ({ namn, ...visaUppgift(namn) }))
+  .filter((u) => u.text !== undefined);
+const harEpost = visaUppgift("epost").text !== undefined;
+const stylrade = om.styrelser.filter((styrelse) => styrelse.personer.some((person) => person.namn));
+const borjan = stycken(om.borjan);
+const foreningar = stycken(om.foreningar);
+const harTror = om.tror.some((tanke) => tanke.rubrik || tanke.text);
+const sociala = SOCIALA.map((namn) => ({ namn, ...visaUppgift(namn) })).filter((u) => u.text !== undefined);
+const harKontakt = harEpost || kontaktuppgifter.length > 0 || sociala.length > 0;
 const beskrivning =
   om.ingress ?? "Vilka vi är, vad vi tror på och hur Streetlight började. Och hur du når föreningen.";
 
@@ -40,11 +44,11 @@ const split =
   "band-inner grid grid-cols-1 items-start gap-[clamp(28px,6vw,96px)] min-[901px]:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]";
 const lank = "font-semibold underline decoration-gold decoration-2 underline-offset-[0.22em]";
 const hopp = [
-  { namn: "Det här tror vi på", id: "tror" },
-  { namn: "Så började det", id: "borjan" },
-  { namn: "Vilka vi är", id: "vilka" },
-  { namn: "Kontakt", id: "kontakt" },
-];
+  harTror && { namn: "Det här tror vi på", id: "tror" },
+  borjan.length > 0 && { namn: "Så började det", id: "borjan" },
+  stylrade.length > 0 && { namn: "Vilka vi är", id: "vilka" },
+  harKontakt && { namn: "Kontakt", id: "kontakt" },
+].filter((lank) => lank !== false);
 ---
 
 <BaseLayout title="Om Streetlight" description={beskrivning} current="om">
@@ -57,13 +61,16 @@ const hopp = [
     <h1 class="text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[0.98] tracking-[-0.035em]">
       Om <span class="text-gold">Streetlight.</span>
     </h1>
-    <p class="mt-[18px] max-w-[58ch] text-lede text-mint">{om.ingress ?? <FyllsI>ingress fylls i</FyllsI>}</p>
-    <HoppaTill etikett="Hoppa till ett avsnitt" lankar={hopp} class="mt-8" />
+    {om.ingress && <p class="mt-[18px] max-w-[58ch] text-lede text-mint">{om.ingress}</p>}
+    {hopp.length > 0 && <HoppaTill etikett="Hoppa till ett avsnitt" lankar={hopp} class="mt-8" />}
   </div>
   <TibebBand slot="header-after" variant="thin" />
 
   <!-- Vår vision, then what we believe in: one cotton field. -->
+  {
+    (om.vision || harTror) && (
   <div class={`bg-cotton text-ink ${section}`}>
+    {om.vision && (
     <section aria-labelledby="vision-rubrik" class="band-inner">
       <h2 id="vision-rubrik" class="sr-only">Vår vision</h2>
       <figure>
@@ -71,18 +78,14 @@ const hopp = [
           class="max-w-[19ch] font-display text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[1.02] font-extrabold tracking-[-0.03em] text-balance"
         >
           {
-            om.vision ? (
-              efter !== undefined ? (
-                <>
-                  {fore}
-                  <span class="highlight">{NYCKELORD}</span>
-                  {efter}
-                </>
-              ) : (
-                fore
-              )
+            efter !== undefined ? (
+              <>
+                {fore}
+                <span class="highlight">{NYCKELORD}</span>
+                {efter}
+              </>
             ) : (
-              <FyllsI>visionen fylls i</FyllsI>
+              fore
             )
           }
         </blockquote>
@@ -94,8 +97,10 @@ const hopp = [
         )
       }
     </section>
+    )}
 
-    <section id="tror" aria-labelledby="tror-rubrik" class={`${split} mt-[clamp(72px,10vw,128px)] scroll-mt-4`}>
+    {harTror && (
+    <section id="tror" aria-labelledby="tror-rubrik" class:list={[split, om.vision && "mt-[clamp(72px,10vw,128px)]", "scroll-mt-4"]}>
       <div class="min-w-0 min-[901px]:sticky min-[901px]:top-8">
         <h2 id="tror-rubrik" class="text-headline">Det här tror vi på.</h2>
         <p class="mt-[22px] max-w-[40ch] text-lede text-ink-soft">
@@ -103,17 +108,16 @@ const hopp = [
         </p>
       </div>
       <div class="min-w-0">
-        {
-          om.tror.length > 0 ? (
-            <Ledger items={om.tror.map((tanke) => ({ title: tanke.rubrik, text: tanke.text }))} />
-          ) : (
-            <FyllsI>det vi tror på fylls i</FyllsI>
-          )
-        }
+        <Ledger items={om.tror.map((tanke) => ({ title: tanke.rubrik, text: tanke.text }))} />
       </div>
     </section>
+    )}
   </div>
+    )
+  }
 
+  {
+    borjan.length > 0 && (
   <section id="borjan" aria-labelledby="borjan-rubrik" class={`on-green bg-green text-cotton ${section} scroll-mt-0`}>
     <div class={split}>
       <div class="min-w-0">
@@ -126,17 +130,11 @@ const hopp = [
         />
       </div>
       <div class="min-w-0">
-        {
-          stycken(om.borjan).length > 0 ? (
-            <div class="stycken max-w-[60ch]">
-              {stycken(om.borjan).map((stycke, i) => (
-                <p class:list={[i === 0 ? "text-lede text-cotton" : "text-mint"]}>{stycke}</p>
-              ))}
-            </div>
-          ) : (
-            <FyllsI>berättelsen fylls i</FyllsI>
-          )
-        }
+        <div class="stycken max-w-[60ch]">
+          {borjan.map((stycke, i) => (
+            <p class:list={[i === 0 ? "text-lede text-cotton" : "text-mint"]}>{stycke}</p>
+          ))}
+        </div>
         {
           historia && (
             <a class:list={[buttonVariants({ variant: "line" }), "mt-9"]} href={href("/historia")}>
@@ -148,7 +146,11 @@ const hopp = [
       </div>
     </div>
   </section>
+    )
+  }
 
+  {
+    foreningar.length > 0 && (
   <section aria-labelledby="foreningar-rubrik" class={`bg-cotton text-ink ${section}`}>
     <div class={split}>
       <div class="min-w-0">
@@ -160,23 +162,21 @@ const hopp = [
         />
       </div>
       <div class="min-w-0">
-        {
-          stycken(om.foreningar).length > 0 ? (
-            <div class="stycken max-w-[60ch]">
-              {stycken(om.foreningar).map((stycke, i) => (
-                <p class:list={[i === 0 && "text-lede"]}>{stycke}</p>
-              ))}
-            </div>
-          ) : (
-            <FyllsI>texten fylls i</FyllsI>
-          )
-        }
+        <div class="stycken max-w-[60ch]">
+          {foreningar.map((stycke, i) => (
+            <p class:list={[i === 0 && "text-lede"]}>{stycke}</p>
+          ))}
+        </div>
       </div>
     </div>
   </section>
+    )
+  }
 
   <TibebBand variant="thin" />
 
+  {
+    stylrade.length > 0 && (
   <section id="vilka" aria-labelledby="vilka-rubrik" class={`bg-cotton text-ink ${section} scroll-mt-0`}>
     <div class={split}>
       <div class="min-w-0">
@@ -192,45 +192,33 @@ const hopp = [
       </div>
       <div class="styrelser min-w-0">
         {
-          om.styrelser.map((styrelse) => (
+          stylrade.map((styrelse) => (
             <section aria-label={`Styrelsen i ${styrelse.forening}`}>
               <h3 class="text-title tracking-[-0.015em]">{styrelse.forening}</h3>
-              {styrelse.personer.length > 0 ? (
-                <ul>
-                  {styrelse.personer.map((person) => (
+              <ul>
+                {styrelse.personer
+                  .filter((person) => person.namn)
+                  .map((person) => (
                     <li>
                       <span class="min-w-0">
-                        {person.namn ? (
-                          <span class="font-semibold">{person.namn}</span>
-                        ) : (
-                          <FyllsI>{person.roll ? "namn fylls i" : "namn och roll fylls i"}</FyllsI>
-                        )}
-                        {person.ort ? (
-                          <span class="block text-ink-soft">{person.ort}</span>
-                        ) : (
-                          person.namn && (
-                            <span class="block">
-                              <FyllsI>ort fylls i</FyllsI>
-                            </span>
-                          )
-                        )}
+                        <span class="font-semibold">{person.namn}</span>
+                        {person.ort && <span class="block text-ink-soft">{person.ort}</span>}
                       </span>
                       {person.roll && <span class="text-label font-semibold text-ink-soft">{person.roll}</span>}
                     </li>
                   ))}
-                </ul>
-              ) : (
-                <p class="mt-4">
-                  <FyllsI>styrelsen fylls i</FyllsI>
-                </p>
-              )}
+              </ul>
             </section>
           ))
         }
       </div>
     </div>
   </section>
+    )
+  }
 
+  {
+    harKontakt && (
   <section id="kontakt" aria-labelledby="kontakt-rubrik" class={`on-green bg-green text-cotton ${section} scroll-mt-0`}>
     <div class={split}>
       <div class="min-w-0">
@@ -240,12 +228,16 @@ const hopp = [
         </p>
       </div>
       <div class="min-w-0">
-        <div class="epost">
-          <p class="text-label font-semibold text-mint">{visaUppgift("epost").etikett}</p>
-          <p class="mt-2">
-            <Uppgift namn="epost" lankklass="epost-lank" />
-          </p>
-        </div>
+        {
+          harEpost && (
+            <div class="epost">
+              <p class="text-label font-semibold text-mint">{visaUppgift("epost").etikett}</p>
+              <p class="mt-2">
+                <Uppgift namn="epost" lankklass="epost-lank" />
+              </p>
+            </div>
+          )
+        }
         <dl class="uppgifter">
           {
             kontaktuppgifter.map(({ namn, etikett }) => (
@@ -278,6 +270,8 @@ const hopp = [
       </div>
     </div>
   </section>
+    )
+  }
 
   <TibebBand variant="thin" />
 

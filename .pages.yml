@@ -94,6 +94,22 @@ content:
         type: boolean
         description: Bocka i när kampanjen pågår. Bocka ur efter jul, så försvinner den från startsidan och menyn. Sidan Ge ett julpaket finns kvar.
 
+  - name: matning
+    label: Mätning
+    type: file
+    path: src/data/matning.json
+    format: json
+    # The field must match the schema in src/lib/matning.ts; tests/unit/datafiler.test.ts checks it.
+    # A change takes effect when the site is built and published again, which takes a few minutes.
+    fields:
+      - name: gtmId
+        label: Id för Google Tag Manager
+        type: string
+        description: Containerns id i Google Tag Manager, till exempel GTM-ABC1234. Med ett id visas en ruta längst ned där besökaren väljer om mätning får ske, och mätningen laddas först när besökaren har accepterat. Lämna tomt för att inte mäta alls, så visas ingen ruta.
+        pattern:
+          regex: "^$|^GTM-[A-Z0-9]+$"
+          message: Skriv id:t som det står i Google Tag Manager, till exempel GTM-ABC1234.
+
   - name: funktioner
     label: Funktioner
     type: file

@@ -1,0 +1,95 @@
+---
+/**
+ * Kakrutan (ADR 0004): the bar at the bottom of the page where the visitor makes the Kakval, Acceptera or Avvisa.
+ * Nothing is loaded before the visitor has accepted. Then the site loads the association's Google Tag Manager
+ * container and tells Repejo's elements that the visitor has consented to marketing cookies, so that Repejo pushes
+ * its events (begin_checkout, purchase and so on) to the container. Without a gtmId in `src/data/matning.json`
+ * nothing is rendered at all.
+ *
+ * The script is inline and sits at the end of the body so that it runs before Repejo's deferred checkout.js, which
+ * reads the attribute when it starts. A change of the Kakval reloads the page, so that the checkout and the container
+ * always start from the same Kakval.
+ */
+import { buttonVariants } from "@/components/ui/button";
+import { hamtaMatning } from "@/lib/matning";
+
+const { gtmId } = hamtaMatning();
+const knapp = buttonVariants({ variant: "line", size: "small" });
+---
+
+{
+  gtmId && (
+    <>
+      <section
+        id="kakruta"
+        aria-label="Kakval"
+        data-gtm-id={gtmId}
+        hidden
+        class="on-green fixed inset-x-0 bottom-0 z-40 bg-green-deep text-body text-cotton shadow-[0_-4px_24px_rgb(0_0_0/0.25)]"
+      >
+        <div class="band-inner flex flex-wrap items-center justify-between gap-x-10 gap-y-4 py-5">
+          <p class="m-0 max-w-[62ch]">
+            Vi mäter hur många som besöker sajten och hur många som blir faddrar eller ger en gåva. Det görs med
+            Google, som sätter en kaka och tar emot uppgifterna. Mätningen innehåller inga namn eller e-postadresser.
+            Om du accepterar skickar också Repejo, som sköter betalningen, sina mätuppgifter. Avvisar du mäts ingenting.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <button type="button" class={knapp} data-kakval="accepterat">Acceptera</button>
+            <button type="button" class={knapp} data-kakval="avvisat">Avvisa</button>
+          </div>
+        </div>
+      </section>
+      <script is:inline>
+        (() => {
+          const ruta = document.getElementById("kakruta");
+          if (!ruta) return;
+          const NYCKEL = "kakval";
+          const REPEJO = "repejo-checkout, repejo-progress-bar, repejo-p2p-create-button, repejo-p2p-list";
+          const las = () => {
+            try {
+              return localStorage.getItem(NYCKEL);
+            } catch {
+              return null;
+            }
+          };
+          const spara = (val) => {
+            try {
+              localStorage.setItem(NYCKEL, val);
+            } catch {}
+          };
+          const accepterat = () => {
+            for (const el of document.querySelectorAll(REPEJO)) {
+              el.setAttribute("user-has-consented-to-marketing-cookies", "true");
+            }
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+            const skript = document.createElement("script");
+            skript.async = true;
+            skript.src = "https://www.googletagmanager.com/gtm.js?id=" + encodeURIComponent(ruta.dataset.gtmId);
+            document.head.appendChild(skript);
+          };
+          const val = las();
+          if (val === "accepterat") accepterat();
+          else if (val !== "avvisat") ruta.hidden = false;
+
+          for (const knapp of ruta.querySelectorAll("[data-kakval]")) {
+            knapp.addEventListener("click", () => {
+              const nytt = knapp.dataset.kakval;
+              const andrat = nytt !== las();
+              spara(nytt);
+              ruta.hidden = true;
+              // Start over with the new Kakval, so that Repejo and the container never disagree.
+              if (andrat) location.reload();
+            });
+          }
+          for (const oppna of document.querySelectorAll("[data-kakval-oppna]")) {
+            oppna.addEventListener("click", () => {
+              ruta.hidden = false;
+              ruta.querySelector("[data-kakval]")?.focus();
+            });
+          }
+        })();
+      </script>
+    </>
+  )
+}

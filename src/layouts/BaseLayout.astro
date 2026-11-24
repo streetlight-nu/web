@@ -2,6 +2,7 @@
 import "@/styles/global.css";
 import SiteHeader, { type AktuellSida } from "@/components/SiteHeader.astro";
 import SiteFooter from "@/components/SiteFooter.astro";
+import Kakruta from "@/components/Kakruta.astro";
 import { href } from "@/lib/utils";
 
 /** The image a shared link shows (og:image). Without one, the site's standard image is used. */
@@ -68,6 +69,7 @@ const bild: Delningsbild = delningsbild ?? {
       <slot />
     </main>
     <SiteFooter />
+    <Kakruta />
   </body>
 </html>
 

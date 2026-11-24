@@ -21,12 +21,26 @@ const offPort = Number(process.env.E2E_PORT_AV ?? port + 3);
 process.env.E2E_AV_URL = `http://localhost:${offPort}${base}`;
 const offOutDir = "dist-av";
 
+// Every test starts as a visitor who has already declined in the Kakrutan (ADR 0004), so that the bar at the bottom does
+// not cover what the tests click. tests/e2e/matning.spec.ts starts from nothing instead.
+const harAvvisat = {
+  cookies: [],
+  origins: [port, filledPort, emptyPort, offPort].map((p) => ({
+    origin: `http://localhost:${p}`,
+    localStorage: [{ name: "kakval", value: "avvisat" }],
+  })),
+};
+
 export default defineConfig({
   testDir: "tests/e2e",
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["github"], ["list"]] : "list",
-  use: { baseURL: `http://localhost:${port}${base}`, trace: "retain-on-failure" },
+  use: {
+    baseURL: `http://localhost:${port}${base}`,
+    trace: "retain-on-failure",
+    storageState: harAvvisat,
+  },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     // Most tests check content and behaviour that are the same at every width, so they run once, on desktop. A test
@@ -46,6 +60,7 @@ export default defineConfig({
         " JULKAMPANJ_FIL=tests/fixtures/julkampanj-ifylld.json" +
         " OM_FORENINGEN_FIL=tests/fixtures/om-foreningen-ifylld.json" +
         " HISTORIA_FIL=tests/fixtures/historia-ifylld.json" +
+        " MATNING_FIL=tests/fixtures/matning-ifylld.json" +
         // Not production, even when CI sets MILJO on master, so that `ejProduktion` is on (tests/e2e/funktioner.spec.ts).
         " MILJO= FUNKTIONER_FIL=tests/fixtures/funktioner-ejproduktion.json" +
         " FRAGOR_MAPP=tests/fixtures/fragor NYHETER_MAPP=tests/fixtures/nyheter" +
@@ -61,6 +76,7 @@ export default defineConfig({
         " JULKAMPANJ_FIL=tests/fixtures/julkampanj-tom.json" +
         " OM_FORENINGEN_FIL=tests/fixtures/om-foreningen-tom.json" +
         " HISTORIA_FIL=tests/fixtures/historia-tom.json" +
+        " MATNING_FIL=tests/fixtures/matning-tom.json" +
         // Not production, so that the form Få nyheterna med e-post (`ejProduktion`) is on.
         " MILJO= FUNKTIONER_FIL=tests/fixtures/funktioner-ejproduktion.json" +
         " FRAGOR_MAPP=tests/fixtures/fragor NYHETER_MAPP=tests/fixtures/nyheter" +

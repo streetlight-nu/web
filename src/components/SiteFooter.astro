@@ -5,10 +5,12 @@ import Uppgift from "@/components/Uppgift.astro";
 import { buttonVariants } from "@/components/ui/button";
 import { SOCIALA, visaUppgift } from "@/lib/foreningsuppgifter";
 import { hamtaFunktioner } from "@/lib/funktioner";
+import { hamtaMatning } from "@/lib/matning";
 import { href } from "@/lib/utils";
 
 const year = new Date().getFullYear();
 const { engagera } = hamtaFunktioner();
+const { gtmId } = hamtaMatning();
 
 // Footer links: a full 44 px row each, underline in soft gold on hover (the design system's link hover).
 const link =
@@ -64,6 +66,13 @@ const harKontakt = (["epost", "swish", "nittiokonto", "organisationsnummer", "ar
     <div class="flex flex-wrap items-center justify-between gap-x-10 gap-y-2 border-t border-mint/20 pt-3 pb-5 text-label">
       <div class="flex flex-wrap gap-x-6">
         <p class="py-2.5">Streetlight {year}</p>
+        {
+          gtmId && (
+            <button type="button" class={`${link} cursor-pointer`} data-kakval-oppna>
+              Kakval
+            </button>
+          )
+        }
         {
           harOrgnr && (
             <p class="py-2.5" data-testid="sidfot-orgnr">

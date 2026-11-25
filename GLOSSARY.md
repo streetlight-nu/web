@@ -37,10 +37,14 @@ _Undvik_: personlig fadder, barnfadder
 De offentliga uppgifter som visar vem föreningen är och hur man ger: organisationsnummer, bankgiro, Swish-nummer, e-post, årsredovisning och sidorna på Facebook och Instagram. Hur varje uppgift heter och visas på sajten bestäms på ett ställe, i `src/lib/foreningsuppgifter.ts`.
 _Undvik_: kontaktinfo, betalinfo
 
-## Julkampanjen
+## Ge ett julpaket
+
+**Ge ett julpaket**:
+Namnet på insamlingen i jul, på sidan, i menyn och på startsidan. Kortformen är ”julpaket”, där hela namnet inte får plats.
+_Undvik_: julkampanj, julinsamling
 
 **Julpaket**:
-En gåva i julkampanjen ”Ge ett julpaket” till barnen i Addis Abeba, där personen själv väljer belopp. Ges via Repejo.
+En gåva i insamlingen Ge ett julpaket till barnen i Addis Abeba, där personen själv väljer belopp. Ges via Repejo.
 _Undvik_: julklapp, donation, julgåva
 
 **Julkort**:
@@ -48,7 +52,7 @@ Kortet som följer med ett julpaket: personen skriver en hälsning, och förenin
 _Undvik_: gåvobevis, e-kort
 
 **Repejo**:
-Föreningens insamlingstjänst, som sköter betalningen, julkampanjens checkout och insamlingsmätaren. Den externa tjänst som julkampanjens sida och sidan Bli fadder anropar. Repejos skript hämtar i sin tur andra tjänster (ADR 0003).
+Föreningens insamlingstjänst, som sköter betalningen, checkouten i Ge ett julpaket och insamlingsmätaren. Den externa tjänst som sidan Ge ett julpaket och sidan Bli fadder anropar. Repejos skript hämtar i sin tur andra tjänster (ADR 0003).
 
 ## Nyheter
 

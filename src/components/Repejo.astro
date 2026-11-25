@@ -5,7 +5,7 @@
  *
  * - `del="skript"`: Repejo's `checkout.js`, loaded with `defer`. Put it once per page, in the head.
  * - `del="checkout"`: `<repejo-checkout>`, with a reserved minimum height so the page does not jump.
- *   `vantar` says what the reserved space says (default: the julklapp's).
+ *   `vantar` says what the reserved space says (default: Ge ett julpaket's).
  * - `del="matare"`: `<repejo-progress-bar>`, the progress bar towards the goal, also with a reserved height.
  * - `del="skapa-insamling"`: `<repejo-p2p-create-button>`, Repejo's button for starting one's own fundraiser (p2p) in
  *   the `kategori` given (see `INSAMLINGSKATEGORI`).
@@ -15,7 +15,7 @@
  * Until Repejo has defined an element (without JS, or when Repejo cannot be reached), the reserved space shows a
  * dashed frame saying what goes there. Repejo draws everything inside the elements: amounts, card fields and payment.
  */
-import { JULKAMPANJ_KORTKOD, REPEJO_HOST, REPEJO_ORGANISATION } from "@/lib/repejo";
+import { JULPAKET_KORTKOD, REPEJO_HOST, REPEJO_ORGANISATION } from "@/lib/repejo";
 
 interface Props {
   del: "skript" | "checkout" | "matare" | "skapa-insamling" | "insamlingar";
@@ -28,7 +28,7 @@ interface Props {
 }
 const {
   del,
-  kortkod = JULKAMPANJ_KORTKOD,
+  kortkod = JULPAKET_KORTKOD,
   vantar = "Här visas Repejos formulär för julpaketet.",
   kategori,
 } = Astro.props;

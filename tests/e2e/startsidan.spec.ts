@@ -137,9 +137,10 @@ test.describe("startsidans berättelse", () => {
     await page.goto(process.env.E2E_TOM_URL!);
     const text = (await page.getByRole("banner").innerText()) + (await page.locator("main").innerText());
     // "Senaste nytt" shows the newest inlägg's date, which comes from the inlägg, not from the page, and Så började
-    // det tells the year from the association's own text (src/data/om-foreningen.json).
+    // det tells the year from the association's own text (src/data/om-foreningen.json). Ge ett julpaket's section
+    // counts the days to julafton, a figure from the calendar (tests/e2e/julpaket.spec.ts).
     const utanNyheter = await page.locator("main").evaluate((main) => {
-      const dolda = ["#senaste", "#borjan"].flatMap((id) => main.querySelector<HTMLElement>(id) ?? []);
+      const dolda = ["#senaste", "#borjan", "#julpaket"].flatMap((id) => main.querySelector<HTMLElement>(id) ?? []);
       for (const el of dolda) el.style.display = "none";
       const synligText = (main as HTMLElement).innerText;
       for (const el of dolda) el.style.display = "";

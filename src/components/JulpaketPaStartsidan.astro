@@ -1,6 +1,6 @@
 ---
 /**
- * The Christmas campaign on the home page (#julklapp), right under the light band: a compact row on
+ * The Christmas campaign on the home page (#julpaket), right under the light band: a compact row on
  * green-deep that continues the band's line "20 barn, 20 ljus." into "Håll ljusen tända i jul".
  *
  * It must not compete with "Bli fadder": that stays the one gold button on the page (the Ett ljus rule),
@@ -11,27 +11,25 @@
  * "Ljus" is both light and candle: as many candles burn as there have been Advent Sundays (none before the first),
  * and pointing at "Ge ett julpaket" lights the rest. The flames are drawn in the lamp's three hard gold steps.
  *
- * Seasonal: shown only while `visasPaStartsidan` is ticked in Pages CMS (src/data/julkampanj.json) and the flag
- * `julklapp` is on (src/data/funktioner.json).
+ * Seasonal: shown only while Ge ett julpaket runs, from `startdatum` to `slutdatum` (src/lib/julpaketperiod.ts). The
+ * browser decides by its date (`Julvaxel.astro`), so the section starts and ends without a new build.
  * It only links to /julpaket and never loads Repejo (ADR 0003).
  */
 import Pil from "@/components/Pil.astro";
 import { buttonVariants } from "@/components/ui/button";
-import { hamtaFunktioner } from "@/lib/funktioner";
-import { hamtaJulkampanj } from "@/lib/julkampanj";
+import Julvaxel from "@/components/Julvaxel.astro";
+import { hamtaJulpaketperiod } from "@/lib/julpaketperiod";
 import { cn, href } from "@/lib/utils";
 
-const { visasPaStartsidan, sistaDag } = hamtaJulkampanj();
-const { julklapp } = hamtaFunktioner();
+const { slutText } = hamtaJulpaketperiod();
 
 /** The four candles' centres, and the gold diamonds woven into the candlestick's tibeb foot. */
 const LJUS = [30, 70, 110, 150];
 const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4-4z`).join("");
 ---
 
-{
-  julklapp && visasPaStartsidan && (
-    <section id="julklapp" aria-labelledby="julklapp-rubrik" class="on-green bg-green-deep text-cotton">
+<Julvaxel>
+    <section slot="pagar" id="julpaket" aria-labelledby="julpaket-rubrik" class="on-green bg-green-deep text-cotton">
       <div class="band-inner">
         <div class="rad">
           {/* Adventsljusstaken: four candles on a woven tibeb foot. Lit by default (no JS, reduced motion);
@@ -66,7 +64,7 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
               <span class="advent text-label text-mint" data-advent hidden></span>
             </div>
           </div>
-          <h2 id="julklapp-rubrik" class="rubrik text-title tracking-[-0.015em]">Håll ljusen tända i jul</h2>
+          <h2 id="julpaket-rubrik" class="rubrik text-title tracking-[-0.015em]">Håll ljusen tända i jul</h2>
           <p class="ingress max-w-[60ch] text-mint">
             Ge ett julpaket till barnen i Addis Abeba och gläd samtidigt någon du tycker om. Vi skickar ett julkort i
             ditt namn via sms på julaftonsmorgonen.
@@ -76,17 +74,16 @@ const ROMBER = Array.from({ length: 9 }, (_, i) => `M${16 + i * 20} 92l4 4-4 4-4
               Ge ett julpaket
               <Pil />
             </a>
-            {sistaDag && (
+            {slutText && (
               <p class="text-mint">
-                Sista dagen med kort: <strong class="font-semibold text-cotton">{sistaDag}</strong>
+                Sista dagen med kort: <strong class="font-semibold text-cotton">{slutText}</strong>
               </p>
             )}
           </div>
         </div>
       </div>
     </section>
-  )
-}
+</Julvaxel>
 
 <script>
   // Advent: as many candles burn as there have been Advent Sundays, as in a Swedish home. Before the first Advent none burn;

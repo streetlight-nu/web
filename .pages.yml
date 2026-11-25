@@ -66,29 +66,37 @@ content:
           regex: "^$|^https://(www\\.)?instagram\\.com/\\S+$"
           message: Skriv hela adressen till kontot, som börjar med https://www.instagram.com/.
 
-  - name: julkampanj
-    label: Julkampanjen
+  - name: julpaket
+    label: Ge ett julpaket
     type: file
-    path: src/data/julkampanj.json
+    path: src/data/julpaket.json
     format: json
-    # The fields must match the schema in src/lib/julkampanj.ts; tests/unit/julkampanj.test.ts checks it.
+    # The fields must match the schema in src/lib/julpaket.ts; tests/unit/julpaket.test.ts checks it.
     # Amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
     fields:
-      - name: sistaDag
-        label: Sista dagen att ge ett julpaket med kort
-        type: string
-        description: Skriv som du vill att det ska stå, till exempel ”23 december”. Visas under rubriken Ge ett julpaket och på startsidan. Lämna tomt tills det finns, så visas ingenting.
+      - name: startdatum
+        label: Ge ett julpaket startar
+        type: date
+        options:
+          format: yyyy-MM-dd
+        description: Första dagen med länk i menyn, ruta på startsidan och julpaketets formulär. Före den dagen och efter slutdatumet visar sidan Ge ett julpaket ett Swish-formulär. Lämnar du startdatum eller slutdatum tomt finns ingen insamling.
+      - name: slutdatum
+        label: Ge ett julpaket slutar (sista dagen att ge ett julpaket med kort)
+        type: date
+        options:
+          format: yyyy-MM-dd
+        description: Sista dagen. Dagen efter går sidan över till Swish. Visas som sista insamlingsdag på sidan Ge ett julpaket och på startsidan.
+      - name: vadJulpaketGor
+        label: Det här finns i julpaketet
+        type: text
+        description: Några meningar om vad julpaketet innehåller och vad det betyder för familjerna. Visas i en ruta under ”Vart julpaketet går”. Lämna tomt tills det finns, så visas ingen ruta.
       - name: epost
-        label: E-post för frågor om julkampanjen
+        label: E-post för frågor om Ge ett julpaket
         type: string
         description: Lämna tomt för att använda föreningens kontakt-e-post.
         pattern:
           regex: "^$|^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
           message: Skriv en e-postadress, till exempel namn@exempel.se.
-      - name: visasPaStartsidan
-        label: Visa julkampanjen på startsidan och i menyn
-        type: boolean
-        description: Bocka i när kampanjen pågår. Bocka ur efter jul, så försvinner den från startsidan och menyn. Sidan Ge ett julpaket finns kvar.
 
   - name: matning
     label: Mätning
@@ -114,16 +122,6 @@ content:
     # The fields must match the flags in src/lib/funktioner.ts; tests/unit/funktioner.test.ts checks it.
     # A change takes effect when the site is built and published again, which takes a few minutes.
     fields:
-      - name: julklapp
-        label: Ge ett julpaket (sidan, länken i menyn och rutan på startsidan)
-        type: select
-        required: true
-        default: pa
-        options:
-          values:
-            - { value: pa, label: På, visas överallt }
-            - { value: av, label: Av, visas ingenstans }
-            - { value: ejProduktion, label: Bara i testbyggen, inte på den publicerade sajten }
       - name: historia
         label: Vår historia (sidan och länkarna till den)
         type: select

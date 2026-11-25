@@ -2,6 +2,7 @@
 import "@/styles/global.css";
 import SiteHeader, { type AktuellSida } from "@/components/SiteHeader.astro";
 import SiteFooter from "@/components/SiteFooter.astro";
+import JulpaketSkript from "@/components/JulpaketSkript.astro";
 import Kakruta from "@/components/Kakruta.astro";
 import { href } from "@/lib/utils";
 
@@ -70,6 +71,7 @@ const bild: Delningsbild = delningsbild ?? {
     </main>
     <SiteFooter />
     <Kakruta />
+    <JulpaketSkript />
   </body>
 </html>
 

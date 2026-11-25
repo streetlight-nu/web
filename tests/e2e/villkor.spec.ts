@@ -54,7 +54,7 @@ test.describe("med ifyllda uppgifter", () => {
   test("visar kontaktuppgifterna, Swish-numret och sista insamlingsdag", async ({ page }) => {
     await page.goto(`${process.env.E2E_IFYLLD_URL}${sida}`);
     const kontakt = page.locator("#kontakt");
-    await expect(kontakt).toContainText("Streetlight Sverige");
+    await expect(kontakt).toContainText("Det är Streetlight, en ideell förening");
     await expect(kontakt.getByText("TEST-ORGNR")).toBeVisible();
     await expect(kontakt.getByText("TEST-POSTADRESS")).toBeVisible();
     await expect(kontakt.getByRole("link", { name: "TEST-TELEFON" })).toHaveAttribute("href", /^tel:/);

@@ -266,7 +266,7 @@ Varma och stadiga, med stora tryckytor som är lätta att träffa.
 
 ### Navigation
 - **Style:** ligger på grönt sidhuvud, med logotypen till vänster och länkarna ”Om Streetlight” och ”Nyheter” i etikettstorlek i bomull. ”Bli fadder” är en liten guldknapp. På en sida vars eget huvudsteg är guld blir den en linjeknapp (The Ett ljus Rule): på startsidan, där heron har sin guldknapp ”Bli fadder”, och på sidan Ge ett julpaket med knappen ”Ge ett julpaket”. På sidan Bli fadder (`/bli-fadder`), dit knappen leder, är den också en linjeknapp och markeras som aktuell sida.
-- **Säsong:** medan Ge ett julpaket pågår finns länken ”Ge ett julpaket” sist i menyn, som en smal pill med 2 px bomullskant och en liten pil. Vid hovring, fokus och på kampanjsidan fylls pillen med bomull från vänster under 450 ms och texten blir bläck, och pilen flyttar sig 3 px åt höger. Med reducerad rörelse byter bara färgen. Länken syns från kampanjens startdatum till och med slutdatumet, och försvinner av sig själv.
+- **Säsong:** från en vecka före startdatumet till en vecka efter slutdatumet finns länken ”Ge ett julpaket” sist i menyn, som en smal pill med 2 px bomullskant och en liten pil. Vid hovring, fokus och på kampanjsidan fylls pillen med bomull från vänster under 450 ms och texten blir bläck, och pilen flyttar sig 3 px åt höger. Med reducerad rörelse byter bara färgen. Länken syns från kampanjens startdatum till och med slutdatumet, och försvinner av sig själv.
 - **States:** hovring ger understrykning. Aktuell sida markeras med `aria-current`.
 - **Mobile:** under 900 px fälls länkarna ihop bakom knappen ”Meny”. Escape stänger och lämnar fokus tillbaka på knappen.
 

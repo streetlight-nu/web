@@ -66,12 +66,12 @@ content:
           regex: "^$|^https://(www\\.)?instagram\\.com/\\S+$"
           message: Skriv hela adressen till kontot, som börjar med https://www.instagram.com/.
 
-  - name: julkampanj
+  - name: julpaket
     label: Ge ett julpaket
     type: file
-    path: src/data/julkampanj.json
+    path: src/data/julpaket.json
     format: json
-    # The fields must match the schema in src/lib/julkampanj.ts; tests/unit/julkampanj.test.ts checks it.
+    # The fields must match the schema in src/lib/julpaket.ts; tests/unit/julpaket.test.ts checks it.
     # Amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
     fields:
       - name: startdatum
@@ -86,7 +86,7 @@ content:
         options:
           format: yyyy-MM-dd
         description: Sista dagen. Dagen efter går sidan över till Swish. Visas som sista insamlingsdag på sidan Ge ett julpaket och på startsidan.
-      - name: vadJulklappenGor
+      - name: vadJulpaketGor
         label: Det här finns i julpaketet
         type: text
         description: Några meningar om vad julpaketet innehåller och vad det betyder för familjerna. Visas i en ruta under ”Vart julpaketet går”. Lämna tomt tills det finns, så visas ingen ruta.

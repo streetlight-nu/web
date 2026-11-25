@@ -57,7 +57,7 @@ export default defineConfig({
     {
       command:
         "FORENINGSUPPGIFTER_FIL=tests/fixtures/foreningsuppgifter-ifylld.json" +
-        " JULKAMPANJ_FIL=tests/fixtures/julkampanj-ifylld.json" +
+        " JULPAKET_FIL=tests/fixtures/julpaket-ifylld.json" +
         " OM_FORENINGEN_FIL=tests/fixtures/om-foreningen-ifylld.json" +
         " HISTORIA_FIL=tests/fixtures/historia-ifylld.json" +
         " MATNING_FIL=tests/fixtures/matning-ifylld.json" +
@@ -73,7 +73,7 @@ export default defineConfig({
     {
       command:
         "FORENINGSUPPGIFTER_FIL=tests/fixtures/foreningsuppgifter-tom.json" +
-        " JULKAMPANJ_FIL=tests/fixtures/julkampanj-tom.json" +
+        " JULPAKET_FIL=tests/fixtures/julpaket-tom.json" +
         " OM_FORENINGEN_FIL=tests/fixtures/om-foreningen-tom.json" +
         " HISTORIA_FIL=tests/fixtures/historia-tom.json" +
         " MATNING_FIL=tests/fixtures/matning-tom.json" +

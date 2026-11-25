@@ -8,32 +8,32 @@ import Steps from "@/components/Steps.astro";
 import TjugoLjus from "@/components/TjugoLjus.astro";
 import { buttonVariants } from "@/components/ui/button";
 import Julvaxel from "@/components/Julvaxel.astro";
-import { hamtaJulinsamling } from "@/lib/julinsamling";
-import { hamtaJulkampanj } from "@/lib/julkampanj";
+import { hamtaJulpaketperiod } from "@/lib/julpaketperiod";
+import { hamtaJulpaket } from "@/lib/julpaket";
 import { SWISH_KORTKOD } from "@/lib/repejo";
 import { href } from "@/lib/utils";
-import julpaketKort from "@/assets/julklapp/julpaket-kort.png";
-import barnITradgarden from "@/assets/julklapp/barn-i-tradgarden.jpg";
+import julpaketKort from "@/assets/julpaket/julpaket-kort.png";
+import barnITradgarden from "@/assets/julpaket/barn-i-tradgarden.jpg";
 
 /**
  * Ge ett julpaket: the Christmas campaign. A visitor gives a julpaket to the children in Addis Abeba
  * and the association sends a julkort in their name on Christmas morning. Repejo handles the
  * checkout and the progress bar (ADR 0003). The campaign's own facts come from
- * src/data/julkampanj.json (Pages CMS); an empty field is not shown.
- * Seasonal (src/lib/julinsamling.ts): the page is always there, but the julpaket checkout, the progress bar and the
- * three steps are shown only while the Julinsamling runs. Before and after it, the page says so and holds
+ * src/data/julpaket.json (Pages CMS); an empty field is not shown.
+ * Seasonal (src/lib/julpaketperiod.ts): the page is always there, but the julpaket checkout, the progress bar and the
+ * three steps are shown only while Ge ett julpaket runs. Before and after it, the page says so and holds
  * Repejo's Swish checkout for a one-off gift.
  */
-const { vadJulklappenGor } = hamtaJulkampanj();
-const { startText, slutText } = hamtaJulinsamling();
+const { vadJulpaketGor } = hamtaJulpaket();
+const { startText, slutText } = hamtaJulpaketperiod();
 
-/** What the page says outside the Julinsamling, per state. */
+/** What the page says outside Ge ett julpaket, per state. */
 const status = {
   innan: `Insamlingen Ge ett julpaket startar ${startText}. Tills dess kan du ge en engångsgåva via Swish.`,
   avslutad: "Insamlingen Ge ett julpaket är avslutad. Du kan fortfarande ge en engångsgåva via Swish.",
   ingen: "Du kan ge en engångsgåva via Swish.",
 };
-/** The same all year, because the page is built once and the Julinsamling starts and ends in the browser. */
+/** The same all year, because the page is built once and Ge ett julpaket starts and ends in the browser. */
 const beskrivning =
   "Ge ett julpaket till barnen i Addis Abeba och gläd samtidigt någon du tycker om. Under insamlingen Ge ett julpaket skickar vi ett julkort via sms i ditt namn på julaftonsmorgonen. Du kan också ge en gåva via Swish.";
 
@@ -44,7 +44,7 @@ const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols
 
 <BaseLayout
   title="Ge ett julpaket"
-  current="julklapp"
+  current="julpaket"
   description={beskrivning}
 >
   <Repejo slot="head" del="skript" />
@@ -111,7 +111,7 @@ const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols
 
   <LightBand utanText />
 
-  <!-- While the Julinsamling runs: the three steps and the julpaket checkout in one section, the steps tell what
+  <!-- While Ge ett julpaket runs: the three steps and the julpaket checkout in one section, the steps tell what
        happens, Repejo does it. Before and after: Repejo's Swish checkout for a one-off gift. -->
   <section id="ge" aria-labelledby="ge-rubrik" class={`scroll-mt-4 border-b border-rule bg-white text-ink ${section}`}>
     <div class={`band-inner ${split} items-start min-[901px]:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]`}>
@@ -188,11 +188,11 @@ const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols
           </p>
         </div>
         {
-          vadJulklappenGor && (
+          vadJulpaketGor && (
             <Julvaxel>
               <div slot="pagar" class="mt-6 max-w-[52ch] rounded-md border border-rule bg-white p-6">
                 <h3 class="stegrubrik">Det här finns i julpaketet</h3>
-                <p class="mt-2">{vadJulklappenGor}</p>
+                <p class="mt-2">{vadJulpaketGor}</p>
               </div>
             </Julvaxel>
           )

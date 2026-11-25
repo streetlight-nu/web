@@ -1,22 +1,22 @@
 ---
 /**
- * A piece of the page that depends on where the Julinsamling stands (src/lib/julinsamling.ts). The build writes the
+ * A piece of the page that depends on where Ge ett julpaket stands (src/lib/julpaketperiod.ts). The build writes the
  * variant for the build day into the page, and keeps the others in `<template>`s. The script in
- * `JulinsamlingSkript.astro` looks at the browser's date and, if it differs, puts the right variant in its place, so
+ * `JulpaketSkript.astro` looks at the browser's date and, if it differs, puts the right variant in its place, so
  * the campaign starts and ends on its dates without a new build. Content in a template is not part of the page, so
  * for example only one Repejo checkout exists at a time.
  *
  * Name the variants with slots: `pagar`, `innan`, `avslutad` and `ingen`. `annars` is used for every state other
  * than `pagar` that has no slot of its own. A state with no slot at all shows nothing.
  */
-import { hamtaJulinsamling } from "@/lib/julinsamling";
-import type { Julinsamlingslage } from "@/lib/julperiod";
+import { hamtaJulpaketperiod } from "@/lib/julpaketperiod";
+import type { Julpaketlage } from "@/lib/julpaketdatum";
 
-const LAGEN: Julinsamlingslage[] = ["pagar", "innan", "avslutad", "ingen"];
-const { lage: byggt } = hamtaJulinsamling();
+const LAGEN: Julpaketlage[] = ["pagar", "innan", "avslutad", "ingen"];
+const { lage: byggt } = hamtaJulpaketperiod();
 
 /** The slot that fills a state, if any. */
-function platsFor(lage: Julinsamlingslage): string | undefined {
+function platsFor(lage: Julpaketlage): string | undefined {
   if (Astro.slots.has(lage)) return lage;
   return lage !== "pagar" && Astro.slots.has("annars") ? "annars" : undefined;
 }

@@ -8,7 +8,7 @@ import { stubRepejo } from "./helpers";
  * these tests check only our own code, not what Repejo's real checkout.js loads on /julpaket (fonts, Stripe,
  * Adyen and possibly a Meta pixel): see ADR 0003.
  */
-test("julklapp hämtar Repejos skript från Repejo, en gång", async ({ page }) => {
+test("Ge ett julpaket hämtar Repejos skript från Repejo, en gång", async ({ page }) => {
   await stubRepejo(page);
   const skript: string[] = [];
   page.on("request", (request) => {

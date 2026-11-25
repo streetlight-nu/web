@@ -6,8 +6,8 @@ export interface NavLink {
   label: string;
   href: string;
   current?: boolean;
-  /** A link that belongs to the Julinsamling: shown only while it runs, also on its own page. */
-  julinsamling?: boolean;
+  /** A link that belongs to Ge ett julpaket: shown from a week before it starts to a week after it ends, also on its own page. */
+  julpaket?: boolean;
 }
 
 interface Props {
@@ -18,21 +18,21 @@ interface Props {
    * "current" on the page it leads to (the page Bli fadder), a line marked as the current page.
    */
   sponsor?: "gold" | "line" | "current";
-  /** Whether the Julinsamling runs on the build day. The browser looks at its own date once the menu is hydrated. */
-  julinsamlingPagar?: boolean;
+  /** Whether the link to Ge ett julpaket is shown on the build day. The browser looks at its own date once the menu is hydrated. */
+  julpaketLank?: boolean;
 }
 
 /**
  * The main menu. On wide screens the links sit in a row; under 900 px they fold
  * into a disclosure opened by the "Meny" button. Escape closes it and returns focus.
  */
-export default function MainNav({ links, sponsorHref, sponsor = "gold", julinsamlingPagar = false }: Props) {
+export default function MainNav({ links, sponsorHref, sponsor = "gold", julpaketLank = false }: Props) {
   const [open, setOpen] = useState(false);
-  const [pagar, setPagar] = useState(julinsamlingPagar);
-  // JulinsamlingSkript.astro has put the state for the browser's date on <html> before the menu is hydrated.
+  const [visaJulpaket, setVisaJulpaket] = useState(julpaketLank);
+  // JulpaketSkript.astro has put the state for the browser's date on <html> before the menu is hydrated.
   useEffect(() => {
-    const lage = document.documentElement.dataset.julinsamling;
-    if (lage) setPagar(lage === "pagar");
+    const lank = document.documentElement.dataset.julpaketLank;
+    if (lank) setVisaJulpaket(lank === "ja");
   }, []);
   const listId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -55,7 +55,7 @@ export default function MainNav({ links, sponsorHref, sponsor = "gold", julinsam
         id={listId}
         className={`order-3 m-0 w-full list-none flex-col p-0 font-medium min-[901px]:order-none min-[901px]:flex min-[901px]:w-auto min-[901px]:min-w-0 min-[901px]:flex-row min-[901px]:flex-wrap min-[901px]:justify-center min-[901px]:gap-x-[clamp(14px,1.6vw,28px)] min-[901px]:gap-y-1 min-[901px]:whitespace-nowrap ${open ? "flex" : "hidden"}`}
       >
-        {links.filter((link) => !link.julinsamling || pagar).map((link) => (
+        {links.filter((link) => !link.julpaket || visaJulpaket).map((link) => (
           <li key={link.href}>
             <a
               href={link.href}

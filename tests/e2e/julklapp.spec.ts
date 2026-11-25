@@ -83,7 +83,7 @@ test("Ge ett julpaket visar de tre stegen i ordning bredvid checkouten", async (
   await expect(steg.getByRole("heading", { level: 2, name: "Ge ett julpaket" })).toBeVisible();
   await expect(steg.getByRole("listitem").getByRole("heading", { level: 3 })).toHaveText([
     "Välj ett belopp",
-    "Skriv ett julkort",
+    "Skriv ett digitalt julkort",
     "Vi skickar det på julaftonsmorgonen",
   ]);
 });
@@ -92,7 +92,7 @@ test("Vart julpaketet går visar ett foto på barnen och leder vidare till Bli f
   await page.goto(sida);
   const vart = page.getByRole("region", { name: "Vart julpaketet går" });
   await expect(vart.getByRole("img", { name: /Barn och ungdomar i en grönskande trädgård/ })).toBeVisible();
-  await expect(vart.getByText("20 fadderbarns skolgång", { exact: false })).toBeVisible();
+  await expect(vart.getByText("20 fadderbarn med skolgång", { exact: false })).toBeVisible();
   await expect(vart.getByRole("link", { name: "Läs om att bli fadder" })).toHaveAttribute("href", /\/bli-fadder$/);
 });
 
@@ -101,10 +101,19 @@ test.describe("kampanjuppgifter med tom testfil", () => {
   // break when the association fills in src/data/julkampanj.json.
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
-  test("vad julpaketet gör visas inte när det saknas", async ({ page }) => {
+  test("vad julpaketet innehåller och vad som händer med överskottet står på sidan", async ({ page }) => {
     await page.goto(sida);
-    const region = page.getByRole("region", { name: "Vart julpaketet går" });
-    await expect(region).not.toContainText("Det här gör ditt julpaket");
+    const vart = page.getByRole("region", { name: "Vart julpaketet går" });
+    await expect(vart).toContainText("I jul får alla 20 fadderbarn ett julpaket.");
+    await expect(vart).toContainText("I paketet finns en julklapp till barnet och en kontantgåva till familjen.");
+    await expect(vart).toContainText("Familjen bestämmer själv vad gåvan används till, till exempel julmat, kläder eller något som behövs hemma.");
+    await expect(vart).toContainText("Streetlight Etiopien känner varje familj och lämnar paketen personligen.");
+    await expect(vart).toContainText("När alla 20 julpaket är klara fördelas överskottet till familjerna där det bäst behövs.");
+  });
+
+  test("sista insamlingsdag visas inte när den saknas", async ({ page }) => {
+    await page.goto(sida);
+    await expect(page.locator("#ge")).not.toContainText("Sista insamlingsdag");
     await expect(page.getByRole("main").getByText(/fylls i/)).toHaveCount(0);
   });
 
@@ -122,7 +131,7 @@ test.describe("kampanjuppgifter med ifylld testfil", () => {
 
   test("visar värdena från datafilen i stället för ”fylls i”", async ({ page }) => {
     await page.goto(sida);
-    await expect(page.getByRole("region", { name: "Vart julpaketet går" })).toContainText("TEST-VAD-JULPAKETET-GOR");
+    await expect(page.locator("#ge")).toContainText("Sista insamlingsdag är TEST-SISTA-DAG");
     await expect(page.getByRole("main").getByText(/fylls i/)).toHaveCount(0);
     await expect(page.getByRole("banner").getByText(/fylls i/)).toHaveCount(0);
     await expectNoA11yViolations(page);

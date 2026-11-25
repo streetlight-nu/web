@@ -21,12 +21,12 @@ import barnITradgarden from "@/assets/julklapp/barn-i-tradgarden.jpg";
  * Seasonal: after Christmas the page can be removed, or the short code changed (src/lib/repejo.ts),
  * without touching anything else.
  */
-const { vadJulklappenGor } = hamtaJulkampanj();
-
 /** The page is built only when the flag `julklapp` is on (src/data/funktioner.json); otherwise /julpaket is a 404. */
 export function getStaticPaths() {
   return hamtaFunktioner().julklapp ? [{ params: { julpaket: "julpaket" } }] : [];
 }
+
+const { sistaDag } = hamtaJulkampanj();
 
 const section = "py-[clamp(64px,9vw,120px)]";
 const h2 = "text-headline";
@@ -36,7 +36,7 @@ const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols
 <BaseLayout
   title="Ge ett julpaket"
   current="julklapp"
-  description="Ge ett julpaket till barnen i Addis Abeba och glädj samtidigt någon du tycker om. Vi skickar ditt julkort i ditt namn på julaftonsmorgonen."
+  description="Ge ett julpaket till barnen i Addis Abeba och gläd samtidigt någon du tycker om. Vi skickar ett julkort via sms i ditt namn på julaftonsmorgonen."
 >
   <Repejo slot="head" del="skript" />
 
@@ -52,7 +52,7 @@ const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols
         Den här julen kan du ge ett julpaket till barnen i Addis Abeba och samtidigt glädja någon du tycker om.
       </p>
       <p class="mt-3.5 max-w-[42ch]">
-        Du väljer ett belopp, skriver ett julkort och vi skickar det i ditt namn på julaftonsmorgonen.
+        Du väljer ett belopp, skriver ett digitalt julkort och vi skickar det via sms i ditt namn på julaftonsmorgonen.
       </p>
       <div class="mt-[30px] flex flex-wrap gap-3.5">
         <a class={buttonVariants()} href="#ge">Ge ett julpaket <Pil /></a>
@@ -82,18 +82,19 @@ const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols
     <div class={`band-inner ${split} items-start min-[901px]:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]`}>
       <div class="min-w-0">
         <h2 id="ge-rubrik" class={h2}>Ge ett julpaket</h2>
+        {sistaDag && <p class="mt-[22px] max-w-[40ch] font-semibold">Sista insamlingsdag är {sistaDag}.</p>}
         <Steps class="steg mt-[clamp(28px,4vw,40px)]" aria-labelledby="ge-rubrik">
           <li>
             <h3 class="stegrubrik">Välj ett belopp</h3>
-            <p>Du bestämmer själv hur stort julpaketet blir. Det går till barnen och familjerna i Addis Abeba.</p>
+            <p>Du bestämmer själv hur mycket du vill ge. Allt går till barnen och familjerna i Addis Abeba.</p>
           </li>
           <li>
-            <h3 class="stegrubrik">Skriv ett julkort</h3>
+            <h3 class="stegrubrik">Skriv ett digitalt julkort</h3>
             <p>Skriv en hälsning till den du vill glädja: en vän, en granne, mormor eller en kollega.</p>
           </li>
           <li>
             <h3 class="stegrubrik">Vi skickar det på julaftonsmorgonen</h3>
-            <p>Julkortet kommer som ett sms i ditt namn. Du behöver inte göra något mer.</p>
+            <p>Julkortet kommer digitalt via ett sms i ditt namn. Du behöver inte göra något mer.</p>
           </li>
         </Steps>
       </div>
@@ -102,22 +103,34 @@ const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols
   </section>
 
   <section aria-labelledby="vart-rubrik" class={`bg-cotton text-ink ${section}`}>
-    <div class={`band-inner ${split} items-center`}>
+    <div class={`band-inner ${split} items-start`}>
       <div class="min-w-0">
         <h2 id="vart-rubrik" class={h2}>Vart julpaketet går</h2>
-        <p class="mt-[22px] max-w-[52ch]"><TjugoLjus tone="ink" /></p>
+        <div class="mt-8 max-w-[52ch] space-y-3 text-ink-soft">
+          <p><TjugoLjus tone="ink" /></p>
+          <p>
+            Streetlight stöttar 20 fadderbarn med skolgång samt deras familjer i Addis Abeba. Barnen väljs ut tillsammans
+            med de lokala myndigheterna och Streetlight Etiopien bär arbetet med barnen och familjerna på plats.
+          </p>
+        </div>
+        <div class="mt-6 max-w-[52ch] rounded-md border border-rule bg-white p-6">
+          <h3 class="stegrubrik">Det här finns i julpaketet</h3>
+          <p class="mt-2">
+            I jul får alla 20 fadderbarn ett julpaket. I paketet finns en julklapp till barnet och en kontantgåva till
+            familjen. Familjen bestämmer själv vad gåvan används till, till exempel julmat, kläder eller något som behövs
+            hemma. Streetlight Etiopien känner varje familj och lämnar paketen personligen.
+          </p>
+        </div>
         <p class="mt-4 max-w-[52ch]">
-          Streetlight stöttar 20 fadderbarns skolgång och deras familjer i Addis Abeba. Barnen väljs ut tillsammans med
-          de lokala myndigheterna, och Streetlight Etiopien bär arbetet med barnen och familjerna på plats.
-        </p>
-        {vadJulklappenGor && <p class="mt-4 max-w-[52ch]">Det här gör ditt julpaket: {vadJulklappenGor}</p>}
-        <p class="mt-4 max-w-[52ch] text-ink-soft">
-          Vill du göra mer än en gång?{" "}
+          När alla 20 julpaket är klara fördelas överskottet till familjerna där det bäst behövs.
+        </p>       
+        <p class="mt-3 max-w-[52ch] text-ink-soft">
+          Vill du göra mer? {" "}
           <a class="font-semibold text-ink underline" href={href("/bli-fadder")}>Läs om att bli fadder</a>.
         </p>
       </div>
       <Image
-        class="block aspect-[4/3] w-full rounded-md object-cover"
+        class="block aspect-[4/3] w-full rounded-md object-cover min-[901px]:sticky min-[901px]:top-8"
         src={barnITradgarden}
         alt="Barn och ungdomar i en grönskande trädgård i Addis Abeba. Några i förgrunden tar en selfie och ler mot kameran, och en av dem visar tummen upp."
         widths={[440, 880, 1320]}

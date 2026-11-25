@@ -77,11 +77,7 @@ content:
       - name: sistaDag
         label: Sista dagen att ge ett julpaket med kort
         type: string
-        description: Skriv som du vill att det ska stå, till exempel ”20 december”. Visas överst på sidan Ge ett julpaket. Lämna tomt tills det finns, så visas ingenting.
-      - name: vadJulklappenGor
-        label: Det här gör julpaketet
-        type: text
-        description: En eller två meningar om vad pengarna från julpaketen går till. Visas under ”Vart julpaketet går”. Lämna tomt tills det finns, så visas ingenting.
+        description: Skriv som du vill att det ska stå, till exempel ”23 december”. Visas under rubriken Ge ett julpaket och på startsidan. Lämna tomt tills det finns, så visas ingenting.
       - name: epost
         label: E-post för frågor om julkampanjen
         type: string

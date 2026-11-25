@@ -87,9 +87,8 @@ Sidan **Ge ett julpaket** (`/julpaket`) är föreningens julkampanj. Belopp, ins
 
 1. Klicka på **Julkampanjen** i menyn till vänster.
 2. Skriv **Sista dagen att ge ett julpaket med kort**, som du vill att det ska stå, till exempel ”20 december”.
-3. Skriv **Det här gör julpaketet**: en eller två meningar om vad pengarna går till.
-4. Fältet **E-post för frågor om julkampanjen** är frivilligt. Lämnar du det tomt visas föreningens kontakt-e-post.
-5. Bocka i **Visa julkampanjen på startsidan och i menyn** när kampanjen pågår. Då syns ett kort avsnitt om julpaketet direkt under de 20 ljusen på startsidan, och länken **Julpaket** i menyn. Bocka ur rutan efter jul, så försvinner båda. Sidan Ge ett julpaket finns kvar för den som har en länk.
+3. Fältet **E-post för frågor om julkampanjen** är frivilligt. Lämnar du det tomt visas föreningens kontakt-e-post.
+4. Bocka i **Visa julkampanjen på startsidan och i menyn** när kampanjen pågår. Då syns ett kort avsnitt om julpaketet direkt under de 20 ljusen på startsidan, och länken **Julpaket** i menyn. Bocka ur rutan efter jul, så försvinner båda. Sidan Ge ett julpaket finns kvar för den som har en länk.
 
 ## 8. Skriv Vanliga frågor
 

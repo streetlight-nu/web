@@ -330,12 +330,14 @@ test.describe("Ge ett julpaket på startsidan", () => {
 });
 
 // The build is made on one day, but the browser decides by its own date, so every test below sets the day with the
-// clock and gets the same result whenever the site was built.
+// clock and gets the same result whenever the site was built. The times are written with Stockholm's winter offset
+// (+01:00), because the site counts days in Swedish time and the test process may run in another time zone (CI is in UTC,
+// where new Date(2026, 11, 24, 23, 55) is already the 25th in Stockholm).
 const DAGAR = {
-  innan: { dag: new Date(2026, 10, 28, 12), lage: "innan" },
-  startdagen: { dag: new Date(2026, 10, 29, 0, 5), lage: "pagar" },
-  slutdagen: { dag: new Date(2026, 11, 24, 23, 55), lage: "pagar" },
-  efter: { dag: new Date(2026, 11, 25, 0, 5), lage: "avslutad" },
+  innan: { dag: new Date("2026-11-28T12:00:00+01:00"), lage: "innan" },
+  startdagen: { dag: new Date("2026-11-29T00:05:00+01:00"), lage: "pagar" },
+  slutdagen: { dag: new Date("2026-12-24T23:55:00+01:00"), lage: "pagar" },
+  efter: { dag: new Date("2026-12-25T00:05:00+01:00"), lage: "avslutad" },
 } as const;
 
 test.describe("Ge ett julpaket följer datumen i webbläsaren", () => {

@@ -1,5 +1,7 @@
 {
   "organisationsnummer": "TEST-ORGNR",
+  "postadress": "TEST-POSTADRESS",
+  "telefon": "TEST-TELEFON",
   "nittiokonto": "TEST-90-KONTO",
   "swish": "TEST-SWISH",
   "epost": "test@example.org",

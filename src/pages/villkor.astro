@@ -1,0 +1,219 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import TibebBand from "@/components/TibebBand.astro";
+import Uppgift from "@/components/Uppgift.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { type Uppgift as UppgiftNamn, visaUppgift } from "@/lib/foreningsuppgifter";
+import { hamtaJulpaketperiod } from "@/lib/julpaketperiod";
+import { href } from "@/lib/utils";
+
+/**
+ * Villkor och kontakt: what a giver is told before paying (the bank behind Swish Handel asks for it on the page
+ * where the gift is made): who the association is, how payment and delivery work, and what applies to withdrawal,
+ * returns, refunds, complaints and guarantees. The texts are written here, since they are the association's terms
+ * and not facts that change; every fact that does (contact details, the last day of Ge ett julpaket) comes from the
+ * data files and is left out when it is missing.
+ * The page is linked from the footer and from under Repejo's checkout (`Repejo.astro`).
+ */
+const { slutText } = hamtaJulpaketperiod();
+const ingress = "Vilka vi är, hur du betalar och vad som gäller om du ångrar dig eller om något blir fel.";
+
+/** The contact details, in the order shown. One that is not filled in is left out. */
+const kontakt = (["organisationsnummer", "postadress", "telefon", "epost", "nittiokonto", "swish"] as const satisfies readonly UppgiftNamn[])
+  .map((namn) => ({ namn, ...visaUppgift(namn) }))
+  .filter((uppgift) => uppgift.text !== undefined);
+const harEpost = visaUppgift("epost").text !== undefined;
+const harSwish = visaUppgift("swish").text !== undefined;
+const lank = "font-semibold underline decoration-gold decoration-2 underline-offset-[0.22em]";
+---
+
+<BaseLayout title="Villkor och kontakt" description={ingress}>
+  <div slot="header" class="pt-[clamp(28px,5vw,56px)] pb-[clamp(36px,5vw,60px)]">
+    <nav aria-label="Du är här" class="mb-[18px] flex flex-wrap items-center gap-2.5 text-label font-semibold text-mint">
+      <a class="inline-flex min-h-11 items-center text-mint hover:text-cotton" href={href("/")}>Startsidan</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page" class="text-cotton">Villkor och kontakt</span>
+    </nav>
+    <h1 class="text-[clamp(2.2rem,5.4vw,4.6rem)] leading-[0.98] tracking-[-0.035em]">
+      Villkor och <span class="text-gold">kontakt.</span>
+    </h1>
+    <p class="mt-[18px] max-w-[56ch] text-lede text-mint">{ingress}</p>
+  </div>
+  <TibebBand slot="header-after" variant="thin" />
+
+  <div class="bg-cotton py-[clamp(64px,9vw,120px)] text-ink">
+    <div class="band-inner villkor">
+      <nav aria-label="På den här sidan">
+        <ul class="m-0 list-none p-0">
+          <li><a class={lank} href="#kontakt">Kontaktuppgifter</a></li>
+          <li><a class={lank} href="#betalning-och-leverans">Betalning och leverans</a></li>
+          <li><a class={lank} href="#angerratt-retur-och-reklamation">Ångerrätt, retur, reklamation och garanti</a></li>
+        </ul>
+      </nav>
+
+      <section id="kontakt" aria-labelledby="kontakt-rubrik">
+        <h2 id="kontakt-rubrik">Kontaktuppgifter</h2>
+        <p>
+          Det är Streetlight Sverige, en ideell förening, som tar emot din gåva. Streetlight Etiopien är en fristående
+          förening som bär arbetet med barnen och familjerna på plats i Addis Abeba.
+        </p>
+        <dl class="uppgifter">
+          {
+            kontakt.map(({ namn, etikett }) => (
+              <div>
+                <dt>{etikett}</dt>
+                <dd>
+                  <Uppgift namn={namn} lankklass={lank} />
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section id="betalning-och-leverans" aria-labelledby="betalning-rubrik">
+        <h2 id="betalning-rubrik">Betalning och leverans</h2>
+
+        <h3>Det du ger är en gåva</h3>
+        <p>
+          Ett julpaket, ett fadderskap och en gåva med Swish är gåvor. Du köper ingen vara eller tjänst, och du väljer själv
+          beloppet. Beloppet och betalsättet ser du innan du betalar. Alla belopp är i svenska kronor.
+        </p>
+
+        <h3>Så betalar du</h3>
+        <p>
+          Du betalar i Repejos formulär på sidorna <a class={lank} href={href("/julpaket")}>Ge ett julpaket</a> och
+          <a class={lank} href={href("/bli-fadder")}>Bli fadder</a>, med de betalsätt som formuläret visar. Repejo är
+          föreningens insamlingstjänst och sköter betalningen. Det du fyller i formuläret går till Repejo och aldrig till
+          Streetlights webbplats.
+        </p>
+        {
+          harSwish && (
+            <p>
+              Du kan också ge en gåva med Swish till <strong>{visaUppgift("swish").text}</strong>.
+            </p>
+          )
+        }
+
+        <h3>Fadderskap</h3>
+        <p>
+          Som fadder ger du regelbundet. Beloppet och hur ofta du ger ser du i formuläret innan du betalar. Vill du sluta vara
+          fadder, kontakta oss, så avslutar vi ditt fadderskap.
+        </p>
+
+        <h3>Leverans</h3>
+        <p>
+          Vi skickar ingen vara till dig, så det finns ingen frakt och inga fraktkostnader. Din gåva går till barnen och
+          familjerna i Addis Abeba.
+        </p>
+        <p>
+          Under insamlingen <a class={lank} href={href("/julpaket")}>Ge ett julpaket</a> skickar vi ett digitalt julkort via
+          sms i ditt namn, på julaftonsmorgonen, till det mobilnummer du anger.{slutText && ` Sista insamlingsdag är ${slutText}.`}
+          Kontrollera numret innan du betalar.
+        </p>
+      </section>
+
+      <section id="angerratt-retur-och-reklamation" aria-labelledby="angerratt-rubrik">
+        <h2 id="angerratt-rubrik">Ångerrätt, retur, reklamation och garanti</h2>
+
+        <h3>Ångerrätt</h3>
+        <p>
+          Ångerrätten vid distansköp gäller när du köper en vara eller tjänst. En gåva är inget köp, så den lagstadgade
+          ångerrätten gäller inte gåvor till Streetlight. Har du ändå ångrat dig eller gett fel belopp, kontakta oss så snart du
+          kan. Ju tidigare du hör av dig, desto lättare är det för oss att betala tillbaka.
+        </p>
+
+        <h3>Återbetalning</h3>
+        <p>
+          När vi betalar tillbaka en gåva går pengarna till det kort eller konto du betalade från. Hur lång tid det tar beror på
+          din bank eller ditt kortföretag.
+        </p>
+
+        <h3>Retur</h3>
+        <p>Du får ingen vara, så det finns inget att returnera.</p>
+
+        <h3>Reklamation</h3>
+        <p>
+          Om något blir fel, till exempel att du debiteras flera gånger, att fel belopp dras eller att julkortet inte kommer
+          fram, kontakta oss och berätta vad som hänt. Skriv vilken dag du gav och hur mycket, så hittar vi din gåva. Vi
+          rättar felet eller betalar tillbaka.
+        </p>
+
+        <h3>Garanti</h3>
+        <p>
+          En gåva är inte en vara eller tjänst, så ingen garanti ingår. Du behåller de rättigheter som lagen ger dig.
+        </p>
+
+        {
+          (harEpost || kontakt.length > 0) && (
+            <p class="mt-6">
+              {harEpost ? (
+                <>
+                  Kontakta oss på <Uppgift namn="epost" lankklass={lank} />.
+                </>
+              ) : (
+                <>Kontaktuppgifterna finns överst på sidan.</>
+              )}
+            </p>
+          )
+        }
+      </section>
+    </div>
+  </div>
+
+  <TibebBand variant="thin" />
+
+  <section aria-labelledby="fadder-rubrik" class="bg-gold py-[clamp(48px,7vw,80px)] text-ink">
+    <div class="band-inner flex flex-wrap items-end justify-between gap-x-14 gap-y-8">
+      <div class="min-w-0 flex-[999_1_480px]">
+        <h2 id="fadder-rubrik" class="text-headline">Hjälp oss hålla ljusen tända.</h2>
+        <p class="mt-[18px] max-w-[52ch] text-lede">Som fadder stöttar du barnens skolgång i Addis Abeba.</p>
+      </div>
+      <a class={buttonVariants({ variant: "ink" })} href={href("/bli-fadder")}>Bli fadder</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .villkor {
+    max-width: calc(46rem + 32px);
+    display: grid;
+    gap: clamp(40px, 6vw, 64px);
+  }
+  .villkor li {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .villkor h2 {
+    margin-bottom: 14px;
+    font-size: var(--text-title);
+    letter-spacing: -0.015em;
+  }
+  .villkor section {
+    border-top: 3px solid var(--color-ink);
+    padding-top: 22px;
+  }
+  .villkor h3 {
+    margin-top: 28px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lede);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .villkor p {
+    margin-top: 8px;
+    max-width: 62ch;
+  }
+  .uppgifter {
+    margin-top: 22px;
+    display: grid;
+    gap: 14px;
+  }
+  .uppgifter dt {
+    font-size: var(--text-label);
+    font-weight: 600;
+    color: var(--color-ink-soft);
+  }
+</style>

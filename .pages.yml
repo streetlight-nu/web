@@ -29,6 +29,14 @@ content:
         label: Organisationsnummer
         type: string
         description: Visas under Kontakt på Om Streetlight och i sidfoten. Lämna tomt tills det finns, så visas ingenting.
+      - name: postadress
+        label: Postadress
+        type: string
+        description: Föreningens postadress på en rad, till exempel Gatan 1, 123 45 Staden. Visas på sidan Villkor och kontakt. Lämna tomt tills den finns, så visas ingenting.
+      - name: telefon
+        label: Telefonnummer
+        type: string
+        description: Ett nummer där en givare når föreningen. Visas på sidan Villkor och kontakt. Lämna tomt tills det finns, så visas ingenting.
       - name: nittiokonto
         label: Bankgiro
         type: string
@@ -194,7 +202,7 @@ content:
       - name: body
         label: Svar
         type: rich-text
-        description: "En fråga utan svar visas inte. Skriv {swish}, {epost}, {organisationsnummer}, {nittiokonto} (bankgirot), {arsredovisning}, {facebook} eller {instagram} för att visa uppgiften från Föreningsuppgifter."
+        description: "En fråga utan svar visas inte. Skriv {swish}, {epost}, {organisationsnummer}, {postadress}, {telefon}, {nittiokonto} (bankgirot), {arsredovisning}, {facebook} eller {instagram} för att visa uppgiften från Föreningsuppgifter."
         options:
           format: markdown
 

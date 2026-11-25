@@ -6,6 +6,7 @@
  * - `del="skript"`: Repejo's `checkout.js`, loaded with `defer`. Put it once per page, in the head.
  * - `del="checkout"`: `<repejo-checkout>`, with a reserved minimum height so the page does not jump.
  *   `vantar` says what the reserved space says (default: Ge ett julpaket's).
+ *   Under it is a link to Villkor och kontakt (/villkor), which the bank behind Swish Handel asks for where a gift is made.
  * - `del="matare"`: `<repejo-progress-bar>`, the progress bar towards the goal, also with a reserved height.
  * - `del="skapa-insamling"`: `<repejo-p2p-create-button>`, Repejo's button for starting one's own fundraiser (p2p) in
  *   the `kategori` given (see `INSAMLINGSKATEGORI`).
@@ -16,6 +17,7 @@
  * dashed frame saying what goes there. Repejo draws everything inside the elements: amounts, card fields and payment.
  */
 import { JULPAKET_KORTKOD, REPEJO_HOST, REPEJO_ORGANISATION } from "@/lib/repejo";
+import { href } from "@/lib/utils";
 
 interface Props {
   del: "skript" | "checkout" | "matare" | "skapa-insamling" | "insamlingar";
@@ -50,6 +52,11 @@ const {
   del === "checkout" && (
     <div class="repejo">
       <repejo-checkout short_code={kortkod} host={REPEJO_HOST} data-vantar={vantar} />
+      <p class="mt-4">
+        <a class="font-semibold underline underline-offset-[0.22em]" href={href("/villkor")}>
+          Villkor för betalning, leverans och ångerrätt
+        </a>
+      </p>
     </div>
   )
 }

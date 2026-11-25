@@ -118,6 +118,8 @@ Frågor som ännu saknar svar (till exempel vad det kostar, hur man betalar, hur
 | `{swish}` | Swish-numret |
 | `{epost}` | Kontakt-e-posten, som en länk |
 | `{organisationsnummer}` | Organisationsnumret |
+| `{postadress}` | Postadressen |
+| `{telefon}` | Telefonnumret, som en ringlänk |
 | `{nittiokonto}` | Bankgirot |
 | `{arsredovisning}` | Länken ”Läs årsredovisningen” |
 | `{facebook}` | Länken till Facebook-sidan |
@@ -154,3 +156,11 @@ Vad som räknas som en fadder eller en gåva ställer du in i Google Tag Manager
 Länken ”Läs årsredovisningen” finns under Kontakt på **Om Streetlight** och i svaret på ”Hur vet jag att pengarna når fram?”. Den hämtas från fältet **Länk till senaste årsredovisningen** under **Föreningsuppgifter**.
 
 Årsredovisningen ligger som en PDF på webbplatsen, och fältet innehåller sökvägen till den, till exempel `/dokument/streetlight-arsredovisning-2025.pdf`. En PDF går inte att ladda upp i Pages CMS. Skicka därför den nya årsredovisningen till den som sköter webbplatsen, så lägger hen in filen och ändrar sökvägen. Ligger årsredovisningen redan någon annanstans på nätet kan du i stället skriva hela webbadressen, som börjar med `https://`, och spara.
+
+## 12. Villkor och kontakt
+
+Sidan **Villkor och kontakt** (`/villkor`) visar vem föreningen är, hur betalning och leverans går till och vad som gäller om en givare ångrar sig eller något blir fel. Banken bakom Swish Handel kräver sidan, och den länkas från sidfoten och under betalformuläret på **Ge ett julpaket** och **Bli fadder**.
+
+Kontaktuppgifterna hämtas från **Föreningsuppgifter**: **Organisationsnummer**, **Postadress**, **Telefonnummer**, **Kontakt-e-post**, **Bankgiro** och **Swish-nummer**. Fyll i dem alla innan du skickar in sidan till banken. En uppgift som är tom visas inte. Sista insamlingsdag kommer från **Ge ett julpaket slutar** under **Ge ett julpaket**.
+
+Texterna om betalning, ångerrätt och reklamation går inte att ändra i Pages CMS. Vill föreningen ändra något i dem, till exempel hur man avslutar ett fadderskap eller hur länge en gåva kan betalas tillbaka, hör av dig till den som sköter webbplatsen.

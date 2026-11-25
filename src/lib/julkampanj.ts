@@ -2,6 +2,7 @@ import { z } from "astro/zod";
 
 import { datafil } from "./datafil";
 import { arEpostadress, valfri } from "./falt";
+import { arDatum } from "./julperiod";
 
 /**
  * Julkampanjen: the campaign's own facts on the page /julpaket, beside the föreningsuppgifter.
@@ -12,24 +13,32 @@ import { arEpostadress, valfri } from "./falt";
  * Amounts and the goal are not here: Repejo shows them in its checkout and progress bar.
  */
 export interface Julkampanj {
-  /** The last day to give a julpaket with a card, as the association writes it, e.g. "20 december". */
-  sistaDag?: string;
+  /** The first day of the Julinsamling, "YYYY-MM-DD" (src/lib/julinsamling.ts). Without both dates there is no campaign. */
+  startdatum?: string;
+  /** The last day of the Julinsamling, "YYYY-MM-DD", which is also the last day to give a julpaket with a card. */
+  slutdatum?: string;
   /** What a julpaket contains and what it means for the families. */
   vadJulklappenGor?: string;
   /** The campaign's own e-mail for questions. Without one, the föreningsuppgifter's e-mail is used. */
   epost?: string;
-  /** Whether the campaign is shown on the home page and in the menu. Off (missing) by default, so it ends without code after Christmas. */
-  visasPaStartsidan?: boolean;
 }
 
 const ifylldText = z.string().trim();
 
-export const julkampanjSchema = z.strictObject({
-  sistaDag: valfri(ifylldText),
-  vadJulklappenGor: valfri(ifylldText),
-  epost: valfri(ifylldText.refine(arEpostadress, { message: "epost måste vara en e-postadress" })),
-  visasPaStartsidan: valfri(z.boolean({ error: "visasPaStartsidan måste vara ibockad eller inte (true eller false)" })),
-});
+const datum = (namn: string) =>
+  ifylldText.refine(arDatum, { message: `${namn} måste vara ett datum skrivet som ÅÅÅÅ-MM-DD, till exempel 2026-12-23` });
+
+export const julkampanjSchema = z
+  .strictObject({
+    startdatum: valfri(datum("startdatum")),
+    slutdatum: valfri(datum("slutdatum")),
+    vadJulklappenGor: valfri(ifylldText),
+    epost: valfri(ifylldText.refine(arEpostadress, { message: "epost måste vara en e-postadress" })),
+  })
+  .refine((d) => !d.startdatum || !d.slutdatum || d.startdatum <= d.slutdatum, {
+    message: "slutdatum får inte vara före startdatum",
+    path: ["slutdatum"],
+  });
 
 /** The data file. JULKAMPANJ_FIL points elsewhere, so the browser tests can build with a test file. */
 export const JULKAMPANJ_DATAFIL = datafil({

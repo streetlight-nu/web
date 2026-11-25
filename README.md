@@ -30,7 +30,7 @@ I `.astro`-filer används `buttonVariants()` direkt på `<a>`. React-komponenten
 
 En delad länk visar sajtens standardbild `public/delningsbild.png` (1200 × 630), eller inläggets egen bild. Standardbilden ritas av `node scripts/rita-delningsbild.mjs` från logotypen; kör skriptet igen om logotypen ändras.
 
-Typsnitten läggs på egen server via Fontsource, och sajtens egen kod hämtar dem aldrig från Google Fonts. En sida får anropa en extern tjänst ([ADR 0003](docs/adr/0003-externa-tjanster-som-repejo-far-anropas.md)). I dag använder julkampanjen, Bli fadder och Engagera dig Repejo. Repejos skript hämtar själv andra tjänster på `/julpaket`: typsnitt från Google, Stripe, Adyen, BankID och kanske Metas pixel. ADR 0003 listar dem.
+Typsnitten läggs på egen server via Fontsource, och sajtens egen kod hämtar dem aldrig från Google Fonts. En sida får anropa en extern tjänst ([ADR 0003](docs/adr/0003-externa-tjanster-som-repejo-far-anropas.md)). I dag använder Ge ett julpaket, Bli fadder och Engagera dig Repejo. Repejos skript hämtar själv andra tjänster på `/julpaket`: typsnitt från Google, Stripe, Adyen, BankID och kanske Metas pixel. ADR 0003 listar dem.
 
 ## Föreningsuppgifter och Pages CMS
 
@@ -55,13 +55,13 @@ I `.astro`-filer läser du flaggorna med `hamtaFunktioner()` från `src/lib/funk
 ```astro
 ---
 import { hamtaFunktioner } from "@/lib/funktioner";
-const { julklapp } = hamtaFunktioner();
+const { engagera } = hamtaFunktioner();
 ---
-{julklapp && <JulkampanjPaStartsidan />}
+{engagera && <a href="/engagera-dig">Engagera dig</a>}
 ```
 
 - **Ett element** som är avstängt renderas inte alls. Dölj det aldrig med CSS, för då ligger innehållet kvar i HTML:en.
-- **En sida** bygger man med en dynamisk rutt (`src/pages/[julpaket].astro`) vars `getStaticPaths()` returnerar en tom lista när flaggan är av. Då skapas inte sidan, och adressen ger 404. En vanlig sidfil kan inte utebli ur bygget.
+- **En sida** bygger man med en dynamisk rutt (till exempel `src/pages/[historia].astro`) vars `getStaticPaths()` returnerar en tom lista när flaggan är av. Då skapas inte sidan, och adressen ger 404. En vanlig sidfil kan inte utebli ur bygget.
 - **Läs aldrig flaggorna i en React-ö** (`.tsx`), för modulen läser en fil med `node:fs`. Läs dem i `.astro`-filen och skicka värdet som prop.
 - **Namnge flaggan efter funktionen**, inte efter platsen, så att sidan, menyraden och rutan på startsidan läser samma flagga.
 
@@ -69,9 +69,11 @@ En ny flagga läggs till på fyra ställen: listan `FUNKTIONER` i `src/lib/funkt
 
 Webbläsartesterna bygger sajten en tredje gång till `dist-av/`, som produktion med flaggorna från `tests/fixtures/funktioner-av.json` (via `FUNKTIONER_FIL` och `MILJO`), på porten `E2E_PORT_AV` (standard `E2E_PORT` + 3, alltså 4324). `tests/e2e/funktioner.spec.ts` kontrollerar att sidorna ger 404 och att länkarna saknas.
 
-## Julkampanjen och Repejo
+## Ge ett julpaket och Repejo
 
-Sidan ”Ge ett julpaket” (`src/pages/[julpaket].astro`, `/julpaket`) bäddar in Repejos checkout och insamlingsmätare via `src/components/Repejo.astro`. Värd, organisations-id och kampanjens kortkod finns i `src/lib/repejo.ts`. Under checkouten och mätaren finns en länk till Repejos kampanjsida, så att besökaren kan ge även om Repejo inte fungerar. Bara på sidan Bli fadder saknas länken under checkouten (`utanReserv`), som i sidans design. Kampanjens egna uppgifter (sista dagen, vad julpaketet gör och en e-post för frågor) finns i `src/data/julkampanj.json` och fylls i i Pages CMS under Julkampanjen. Webbläsartesterna stubbar Repejo och läser kampanjens uppgifter från `tests/fixtures/julkampanj-ifylld.json` och `julkampanj-tom.json` (via `JULKAMPANJ_FIL`).
+Sidan ”Ge ett julpaket” (`src/pages/julpaket.astro`, `/julpaket`) bäddar in Repejos checkout och insamlingsmätare via `src/components/Repejo.astro`. Värd, organisations-id och insamlingens kortkod finns i `src/lib/repejo.ts`. Under checkouten och mätaren finns en länk till Repejos kampanjsida, så att besökaren kan ge även om Repejo inte fungerar. Bara på sidan Bli fadder saknas länken under checkouten (`utanReserv`), som i sidans design. Ge ett julpaket har ingen funktionsflagga. Den går efter `startdatum` och `slutdatum` i `src/data/julkampanj.json` (formatet ÅÅÅÅ-MM-DD, båda ifyllda, annars finns ingen julinsamling). Medan den pågår syns länken i menyn, rutan på startsidan och julpaketets checkout på `/julpaket`. Före och efter den visar `/julpaket` Repejos Swish-checkout (`SWISH_KORTKOD`) och en text om att insamlingen startar eller är avslutad, och menylänken och rutan på startsidan saknas. Beräkningen finns i `src/lib/julinsamling.ts` och `src/lib/julperiod.ts`.
+
+Sajten är statisk men behöver inget nattligt bygge. Bygget skriver sidan som den ser ut på byggdagen och sparar de andra varianterna i `<template>` (`src/components/Julvaxel.astro`). Ett litet skript sist på varje sida (`JulinsamlingSkript.astro`) jämför webbläsarens datum, i svensk tid, med datumen och byter ut det som skiljer, och menyn (`MainNav.tsx`) läser resultatet från `<html data-julinsamling>`. Den som har JavaScript avstängt ser sidan som den var vid senaste bygget. Under `astro dev` pågår Ge ett julpaket alltid, men med `?dag=2026-12-28` i adressen prövar du en annan dag (`?dag=` utan datum tar bort valet). Valet gäller resten av fliken och påverkar bara menyn, rutan på startsidan och sidan Ge ett julpaket, inte nedräkningen i rutan. Webbläsartesterna sätter dagen med `page.clock` (till exempel `page.clock.setFixedTime`) och behöver inget särskilt bygge. Webbläsartesterna stubbar Repejo och läser kampanjens uppgifter från `tests/fixtures/julkampanj-ifylld.json` och `julkampanj-tom.json` (via `JULKAMPANJ_FIL`).
 
 Kampanjen är säsongsbunden. Efter jul kan sidan tas bort, eller kortkoden bytas, utan att något annat ändras.
 

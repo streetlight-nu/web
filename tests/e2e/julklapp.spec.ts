@@ -1,13 +1,21 @@
 import { expect, test } from "@playwright/test";
 
-import { blockRepejo, expectNoA11yViolations, farg, funktionPa, LAYOUT, stubRepejo } from "./helpers";
+import { JULKAMPANJ_KORTKOD, SWISH_KORTKOD } from "../../src/lib/repejo";
+import { blockRepejo, expectNoA11yViolations, farg, LAYOUT, stubRepejo } from "./helpers";
 
-test.skip(!funktionPa("julklapp"), "julklapp är avstängd i funktioner.json");
+// The Julinsamling follows the dates in the data file, in the browser (src/components/Julvaxel.astro). The tests use the
+// build made from tests/fixtures/julkampanj-ifylld.json (start 2026-11-29, end 2026-12-24) and set the day with the
+// clock, so they do not depend on the day they run. Unless a test says otherwise, it is a day in the middle of it.
+test.use({ baseURL: process.env.E2E_IFYLLD_URL });
 
 const sida = "julpaket";
 
+/** A day in the middle of the Julinsamling, the second Advent Sunday's week. */
+const MITT_I = new Date(2026, 11, 10, 12);
+
 test.beforeEach(async ({ page }) => {
   await stubRepejo(page);
+  await page.clock.setFixedTime(MITT_I);
 });
 
 // The rules every page keeps (h1, WCAG, skip link, 18 px, no sideways scroll, the glossary) are in hela-sajten.spec.ts.
@@ -98,17 +106,10 @@ test("Vart julpaketet går visar ett foto på barnen och leder vidare till Bli f
 
 test.describe("kampanjuppgifter med tom testfil", () => {
   // A build of the site made from tests/fixtures/*-tom.json (see playwright.config.ts), so these tests do not
-  // break when the association fills in src/data/julkampanj.json.
+  // break when the association fills in src/data/julkampanj.json. Without dates there is no Julinsamling.
   test.use({ baseURL: process.env.E2E_TOM_URL });
 
-  test("rutan om julpaketets innehåll visas inte när texten saknas, men överskottet står kvar", async ({ page }) => {
-    await page.goto(sida);
-    const vart = page.getByRole("region", { name: "Vart julpaketet går" });
-    await expect(vart).not.toContainText("Det här finns i julpaketet");
-    await expect(vart).toContainText("När alla 20 julpaket är klara fördelas överskottet till familjerna där det bäst behövs.");
-  });
-
-  test("sista insamlingsdag visas inte när den saknas", async ({ page }) => {
+  test("sista insamlingsdag visas inte när datumen saknas", async ({ page }) => {
     await page.goto(sida);
     await expect(page.locator("#ge")).not.toContainText("Sista insamlingsdag");
     await expect(page.getByRole("main").getByText(/fylls i/)).toHaveCount(0);
@@ -128,7 +129,7 @@ test.describe("kampanjuppgifter med ifylld testfil", () => {
 
   test("visar värdena från datafilen i stället för ”fylls i”", async ({ page }) => {
     await page.goto(sida);
-    await expect(page.locator("#ge")).toContainText("Sista insamlingsdag är TEST-SISTA-DAG");
+    await expect(page.locator("#ge")).toContainText("Sista insamlingsdag är 24 december");
     await expect(page.getByRole("region", { name: "Vart julpaketet går" })).toContainText("TEST-VAD-JULPAKETET-GOR");
     await expect(page.getByRole("main").getByText(/fylls i/)).toHaveCount(0);
     await expect(page.getByRole("banner").getByText(/fylls i/)).toHaveCount(0);
@@ -187,11 +188,11 @@ test.describe("julkampanjen på startsidan", () => {
       const jul = page.getByRole("region", { name: "Håll ljusen tända i jul" });
       await expect(jul).toBeVisible();
       // First in the content, right under the light band in the header.
-      expect(await page.locator("main > section").first().getAttribute("id")).toBe("julklapp");
+      expect(await page.locator("main section").first().getAttribute("id")).toBe("julklapp");
       const lank = jul.getByRole("link", { name: "Ge ett julpaket" });
       await expect(lank).toHaveAttribute("href", /\/julpaket$/);
       expect((await lank.boundingBox())!.height).toBeGreaterThanOrEqual(44);
-      await expect(jul).toContainText("TEST-SISTA-DAG");
+      await expect(jul).toContainText("Sista dagen med kort: 24 december");
       // The Ett ljus rule: "Bli fadder" stays the only gold button, the campaign gets a line button.
       expect(await lank.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgba(0, 0, 0, 0)");
       await expect(page.getByRole("banner").getByRole("link", { name: "Bli fadder" }).last()).toHaveCSS(
@@ -216,17 +217,6 @@ test.describe("julkampanjen på startsidan", () => {
       await expect(page.locator("[data-adventsljus] .ljus.slackt .laga").first()).toHaveCSS("opacity", "1");
     });
 
-    test("före första advent brinner inget ljus och ingen etikett visas", async ({ page }) => {
-      await page.clock.install({ time: new Date(2026, 10, 4, 12) });
-      await page.goto("./");
-      await expect(page.locator("[data-adventsljus] .ljus")).toHaveCount(4);
-      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(4);
-      await expect(page.locator("[data-advent]")).toBeHidden();
-      // A julpaket keeps the lights on: pointing at the button still lights them.
-      await page.locator("#julklapp").getByRole("link", { name: "Ge ett julpaket" }).hover();
-      await expect(page.locator("[data-adventsljus] .ljus.slackt .laga").first()).toHaveCSS("opacity", "1");
-    });
-
     test("på julafton brinner alla fyra ljusen", async ({ page }) => {
       await page.clock.install({ time: new Date(2026, 11, 24, 9) });
       await page.goto("./");
@@ -237,7 +227,7 @@ test.describe("julkampanjen på startsidan", () => {
       await page.emulateMedia({ reducedMotion: "reduce" });
       const nedrakning = page.locator("[data-nedrakning]");
       for (const [dag, siffra, text] of [
-        [new Date(2026, 10, 4, 12), "50", "50 dagar kvar till julafton."],
+        [new Date(2026, 10, 29, 12), "25", "25 dagar kvar till julafton."],
         [new Date(2026, 11, 23, 12), "1", "1 dag kvar till julafton."],
       ] as const) {
         await page.clock.install({ time: dag });
@@ -260,37 +250,31 @@ test.describe("julkampanjen på startsidan", () => {
           await expect(page.locator("[data-siffra]")).toHaveText("God jul!");
           await expect(page.locator("[data-advent]")).toBeHidden();
         } else {
-          await expect(page.locator("[data-nedrakning]")).toBeHidden();
+          // The Julinsamling ended on 24 december, so the section is gone altogether.
+          await expect(page.locator("#julklapp")).toHaveCount(0);
         }
         await page.close();
       }
     });
 
     test("en sida som står öppen går vidare till nästa dag vid midnatt", async ({ page }) => {
-      await page.clock.install({ time: new Date(2026, 10, 28, 23, 59) });
+      await page.clock.install({ time: new Date(2026, 11, 12, 23, 59) });
       await page.goto("./");
       await page.locator("#julklapp").scrollIntoViewIfNeeded();
       await page.clock.runFor(8000);
-      await expect(page.locator("[data-nedrakning-text]")).toHaveText("26 dagar kvar till julafton.");
-      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(4);
-      // Midnight: första advent, so the first candle is lit and three stay dark.
+      await expect(page.locator("[data-nedrakning-text]")).toHaveText("12 dagar kvar till julafton.");
+      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(2);
+      // Midnight: tredje advent, so the third candle is lit and one stays dark.
       await page.clock.runFor(70_000);
-      await expect(page.locator("[data-nedrakning-text]")).toHaveText("25 dagar kvar till julafton.");
-      await expect(page.locator("[data-advent]")).toHaveText("Första advent, ett ljus är tänt.");
-      await expect(page.locator("[data-adventsljus] .slackt .laga")).toHaveCount(3);
+      await expect(page.locator("[data-nedrakning-text]")).toHaveText("11 dagar kvar till julafton.");
+      await expect(page.locator("[data-advent]")).toHaveText("Tredje advent, tre ljus är tända.");
+      await expect(page.locator("[data-adventsljus] .slackt .laga")).toHaveCount(1);
       for (const laga of await page.locator("[data-adventsljus] .slackt .laga").all()) {
         await expect(laga).toHaveCSS("opacity", "0");
       }
     });
 
-    test("utanför november och december syns ingen nedräkning", async ({ page }) => {
-      await page.clock.install({ time: new Date(2027, 0, 10, 12) });
-      await page.goto("./");
-      await expect(page.locator("[data-nedrakning]")).toBeHidden();
-      await expect(page.locator("[data-adventsljus] .slackt")).toHaveCount(4);
-    });
-
-    test("ett långt ”sista dag” bryts under knappen och trycker inte ihop texten", LAYOUT, async ({ page, isMobile }) => {
+    test("en lång text om sista dagen bryts under knappen och trycker inte ihop texten", LAYOUT, async ({ page, isMobile }) => {
       await page.goto("./");
       const jul = page.locator("#julklapp");
       const ingress = (await jul.locator(".ingress").boundingBox())!;
@@ -321,14 +305,84 @@ test.describe("julkampanjen på startsidan", () => {
       expect(Math.abs(logga.y + logga.height / 2 - (knapp.y + knapp.height / 2))).toBeLessThan(8);
     });
   });
+});
 
-  test.describe("när föreningen har slagit av den", () => {
-    test.use({ baseURL: process.env.E2E_TOM_URL });
+// The build is made on one day, but the browser decides by its own date, so every test below sets the day with the
+// clock and gets the same result whenever the site was built.
+const DAGAR = {
+  innan: { dag: new Date(2026, 10, 28, 12), lage: "innan" },
+  startdagen: { dag: new Date(2026, 10, 29, 0, 5), lage: "pagar" },
+  slutdagen: { dag: new Date(2026, 11, 24, 23, 55), lage: "pagar" },
+  efter: { dag: new Date(2026, 11, 25, 0, 5), lage: "avslutad" },
+} as const;
 
-    test("syns varken avsnittet eller länken i menyn", async ({ page }) => {
-      await page.goto("./");
-      await expect(page.locator("#julklapp")).toHaveCount(0);
-      await expect(page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Ge ett julpaket" })).toHaveCount(0);
+test.describe("julinsamlingen följer datumen i webbläsaren", () => {
+  for (const [namn, { dag, lage }] of Object.entries(DAGAR)) {
+    test(`${namn}: sidan, menyn och startsidan visar ${lage === "pagar" ? "julinsamlingen" : "Swish"}`, async ({ page }) => {
+      await page.clock.setFixedTime(dag);
+      await page.goto("");
+      const meny = page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Ge ett julpaket", exact: true });
+      await expect(meny).toHaveCount(lage === "pagar" ? 1 : 0);
+      await expect(page.locator("#julklapp")).toHaveCount(lage === "pagar" ? 1 : 0);
+      await page.goto(sida);
+      await expect(page.locator("#ge repejo-checkout")).toHaveCount(1);
+      await expect(page.locator("repejo-checkout")).toHaveCount(1);
+      await expect(page.locator("#ge repejo-checkout")).toHaveAttribute(
+        "short_code",
+        lage === "pagar" ? JULKAMPANJ_KORTKOD : SWISH_KORTKOD,
+      );
+      await expect(page.locator("repejo-progress-bar")).toHaveCount(lage === "pagar" ? 1 : 0);
     });
+  }
+
+  test("före startdatumet säger sidan när insamlingen startar och att man kan ge via Swish", async ({ page }) => {
+    await page.clock.setFixedTime(DAGAR.innan.dag);
+    await page.goto(sida);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Ge ett julpaket startar snart");
+    await expect(page.getByRole("banner")).toContainText("Insamlingen Ge ett julpaket startar 29 november. Tills dess kan du ge en engångsgåva via Swish.");
+    await expect(page.locator("#ge").getByRole("heading", { level: 2 })).toHaveText("Ge en gåva via Swish");
+    await expectNoA11yViolations(page);
+  });
+
+  test("efter slutdatumet säger sidan att insamlingen är avslutad och att man kan ge via Swish", async ({ page }) => {
+    await page.clock.setFixedTime(DAGAR.efter.dag);
+    await page.goto(sida);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Ge ett julpaket är avslutat");
+    await expect(page.getByRole("banner")).toContainText("Insamlingen Ge ett julpaket är avslutad. Du kan fortfarande ge en engångsgåva via Swish.");
+    const ge = page.locator("#ge");
+    await expect(ge.getByRole("heading", { level: 2, name: "Ge en gåva via Swish" })).toBeVisible();
+    await expect(ge.getByRole("listitem")).toHaveCount(0);
+    await expect(page.getByText("julaftonsmorgonen")).toHaveCount(0);
+    await expect(page.getByRole("region", { name: "Vart pengarna går" })).toBeVisible();
+    await expect(page.getByText("Det här finns i julpaketet")).toHaveCount(0);
+    await expectNoA11yViolations(page);
+  });
+
+  test("medan insamlingen pågår står sista dagen på sidan", async ({ page }) => {
+    await page.goto(sida);
+    await expect(page.locator("#ge")).toContainText("Sista insamlingsdag är 24 december.");
+  });
+
+  test("sidan har rätt sorts innehåll även utan Repejo", LAYOUT, async ({ page }) => {
+    await page.unrouteAll();
+    await blockRepejo(page);
+    await page.clock.setFixedTime(DAGAR.efter.dag);
+    await page.goto(sida);
+    expect((await page.locator("repejo-checkout").boundingBox())!.height).toBeGreaterThanOrEqual(360);
+  });
+});
+
+test.describe("utan datum finns ingen julinsamling", () => {
+  test.use({ baseURL: process.env.E2E_TOM_URL });
+
+  test("sidan visar Swish, och menylänken och rutan på startsidan saknas hela året", async ({ page }) => {
+    await page.clock.setFixedTime(MITT_I);
+    await page.goto("");
+    await expect(page.locator("#julklapp")).toHaveCount(0);
+    await expect(page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Ge ett julpaket" })).toHaveCount(0);
+    await stubRepejo(page);
+    await page.goto(sida);
+    await expect(page.locator("#ge repejo-checkout")).toHaveAttribute("short_code", SWISH_KORTKOD);
+    await expect(page.getByRole("banner")).toContainText("Du kan ge en engångsgåva via Swish.");
   });
 });

@@ -81,15 +81,16 @@ Samma regler gäller som för inläggen: ett foto utan alt-text publiceras inte 
 
 Under **Om Streetlight** finns **Vilka vi är** med styrelsen. Varje person har **Namn**, **Roll** (till exempel Ordförande, Kassör eller Ledamot) och **Ort**, där personen bor. En tom ort visas inte, och en person utan namn visas inte alls. Efter ett årsmöte ändrar du personerna här och sparar.
 
-## 7. Fyll i julkampanjen
+## 7. Fyll i Ge ett julpaket
 
-Sidan **Ge ett julpaket** (`/julpaket`) är föreningens julkampanj. Belopp, insamlingsmål och betalning sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas först när det finns.
+Sidan **Ge ett julpaket** (`/julpaket`) är föreningens insamling i jul. Belopp, insamlingsmål och betalning sköts av Repejo och syns direkt på sidan. Det som föreningen själv fyller i visas först när det finns.
 
-1. Klicka på **Julkampanjen** i menyn till vänster.
-2. Skriv **Sista dagen att ge ett julpaket med kort**, som du vill att det ska stå, till exempel ”20 december”.
+**Ge ett julpaket** startar och slutar på de datum du skriver. Medan den pågår syns länken **Ge ett julpaket** i menyn och ett avsnitt om julpaketet på startsidan, och sidan visar julpaketets formulär. Före och efter har sidan ett Swish-formulär i stället, med texten att insamlingen startar ett visst datum eller är avslutad, och att man kan ge en engångsgåva via Swish. Länken i menyn och avsnittet på startsidan försvinner då. När du har sparat datumen tar det några minuter att publicera dem. Sedan startar och slutar insamlingen på datumen av sig själv, utan att du behöver göra något mer.
+
+1. Klicka på **Ge ett julpaket** i menyn till vänster.
+2. Välj **Ge ett julpaket startar** och **Ge ett julpaket slutar (sista dagen att ge ett julpaket med kort)**. Båda måste vara ifyllda, annars finns ingen insamling och sidan visar bara Swish. Slutdatum får inte vara före startdatum. Slutdatumet är sista dagen: dagen efter går sidan över till Swish.
 3. Skriv **Det här finns i julpaketet**: några meningar om vad julpaketet innehåller. Texten visas i en ruta under ”Vart julpaketet går”. Lämnar du fältet tomt visas ingen ruta.
-4. Fältet **E-post för frågor om julkampanjen** är frivilligt. Lämnar du det tomt visas föreningens kontakt-e-post.
-5. Bocka i **Visa julkampanjen på startsidan och i menyn** när kampanjen pågår. Då syns ett kort avsnitt om julpaketet direkt under de 20 ljusen på startsidan, och länken **Julpaket** i menyn. Bocka ur rutan efter jul, så försvinner båda. Sidan Ge ett julpaket finns kvar för den som har en länk.
+4. Fältet **E-post för frågor om Ge ett julpaket** är frivilligt. Lämnar du det tomt visas föreningens kontakt-e-post.
 
 ## 8. Skriv Vanliga frågor
 
@@ -128,7 +129,7 @@ Ett felstavat namn, till exempel `{swihs}`, stoppar sidan. Bankgirot skrivs `{ni
 
 ## 9. Slå på och av sidor
 
-Under **Funktioner** i menyn väljer du om en sida visas. Det gäller **Ge ett julpaket**, **Vår historia** och **Engagera dig**, och formuläret **Få nyheterna med e-post** (på Nyheter, med raden Följ och berätta på Bli fadder). Sidan och länkarna till den, i menyn, sidfoten och på andra sidor, följer samma val.
+Under **Funktioner** i menyn väljer du om en sida visas. Det gäller **Vår historia** och **Engagera dig**, och formuläret **Få nyheterna med e-post** (på Nyheter, med raden Följ och berätta på Bli fadder). Sidan och länkarna till den, i menyn, sidfoten och på andra sidor, följer samma val.
 
 1. Klicka på **Funktioner** i menyn till vänster.
 2. Välj **På** för att visa sidan överallt, **Av** för att dölja den helt, eller **Bara i testbyggen** för att visa den bara i testversionen och inte på den publicerade sajten.

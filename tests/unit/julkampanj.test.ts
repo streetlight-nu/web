@@ -4,14 +4,26 @@ import { tolkaJulkampanj } from "@/lib/julkampanj";
 
 describe("julkampanjens uppgifter i src/data/julkampanj.json", () => {
   test("tomma fält räknas som inte ifyllda", () => {
-    expect(tolkaJulkampanj({ sistaDag: "   ", vadJulklappenGor: "   ", epost: "" })).toEqual({});
+    expect(tolkaJulkampanj({ startdatum: "", slutdatum: "  ", vadJulklappenGor: "   ", epost: "" })).toEqual({});
   });
 
-  test("julkampanjen visas på startsidan bara när rutan är ibockad", () => {
-    expect(tolkaJulkampanj({ visasPaStartsidan: true })).toEqual({ visasPaStartsidan: true });
-    expect(tolkaJulkampanj({ visasPaStartsidan: false })).toEqual({ visasPaStartsidan: false });
-    expect(tolkaJulkampanj({ visasPaStartsidan: null }).visasPaStartsidan).toBeUndefined();
-    expect(() => tolkaJulkampanj({ visasPaStartsidan: "ja" })).toThrow(/visasPaStartsidan måste vara ibockad eller inte/);
+  test("datumen skrivs ÅÅÅÅ-MM-DD och måste finnas", () => {
+    expect(tolkaJulkampanj({ startdatum: "2026-11-29", slutdatum: "2026-12-23" })).toEqual({
+      startdatum: "2026-11-29",
+      slutdatum: "2026-12-23",
+    });
+    expect(() => tolkaJulkampanj({ startdatum: "29 november" })).toThrow(/startdatum måste vara ett datum/);
+    expect(() => tolkaJulkampanj({ slutdatum: "2026-02-30" })).toThrow(/slutdatum måste vara ett datum/);
+  });
+
+  test("slutdatumet får inte vara före startdatumet", () => {
+    expect(() => tolkaJulkampanj({ startdatum: "2026-12-23", slutdatum: "2026-11-29" })).toThrow(/slutdatum får inte vara före startdatum/);
+    expect(tolkaJulkampanj({ startdatum: "2026-12-23", slutdatum: "2026-12-23" }).slutdatum).toBe("2026-12-23");
+  });
+
+  test("datumen styr, så sistaDag och visasPaStartsidan finns inte längre", () => {
+    expect(() => tolkaJulkampanj({ sistaDag: "23 december" })).toThrow();
+    expect(() => tolkaJulkampanj({ visasPaStartsidan: true })).toThrow();
   });
 
   test("stoppar bygget när e-posten inte är en e-postadress eller ett okänt fält finns", () => {
@@ -19,4 +31,3 @@ describe("julkampanjens uppgifter i src/data/julkampanj.json", () => {
     expect(() => tolkaJulkampanj({ belopp: "100 kr" })).toThrow();
   });
 });
-

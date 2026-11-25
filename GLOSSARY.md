@@ -5,7 +5,7 @@ Streetlight är en ideell förening i Sverige och Etiopien som stöttar 20 fadde
 ## Föreningen
 
 **Streetlight Sverige**:
-Den svenska ideella föreningen som samlar in pengar och stöttar arbetet i Etiopien ekonomiskt.
+Den svenska ideella föreningen som samlar in pengar och stöttar arbetet i Etiopien ekonomiskt. Föreningens eget namn är bara ”Streetlight”, och så skrivs det i juridiska texter, till exempel på Villkor och kontakt. ”Streetlight Sverige” används när den ska skiljas från Streetlight Etiopien.
 _Undvik_: Streetlight AB, organisationen
 
 **Streetlight Etiopien**:

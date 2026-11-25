@@ -85,6 +85,12 @@ describe("hur en föreningsuppgift visas", () => {
     });
   });
 
+  test("postadressen visas som den står och telefonnumret blir en ringlänk", () => {
+    const uppgifter = { postadress: "Gatan 1, 123 45 Staden", telefon: "070-123 45 67" };
+    expect(visaUppgift("postadress", uppgifter)).toEqual({ etikett: "Postadress", text: "Gatan 1, 123 45 Staden", lank: undefined });
+    expect(visaUppgift("telefon", uppgifter)).toMatchObject({ etikett: "Telefon", text: "070-123 45 67", lank: "tel:0701234567" });
+  });
+
   test("de sociala medierna är Facebook och Instagram, i den ordningen", () => {
     expect(SOCIALA).toEqual(["facebook", "instagram"]);
   });

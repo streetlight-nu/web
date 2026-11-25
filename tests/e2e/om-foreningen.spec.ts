@@ -42,7 +42,7 @@ test("länkarna under Webbplatsen i sidfoten följer menyns ordning", async ({ p
   await page.goto("om-foreningen");
   const lankar = page.getByRole("contentinfo").getByRole("navigation", { name: "Webbplatsen" }).getByRole("link");
   const namn = (await lankar.allTextContents()).map((n) => n.trim()).filter((n) => n !== "Engagera dig");
-  expect(namn).toEqual(["Nyheter", "Om Streetlight", "Kontakt", "Vanliga frågor"]);
+  expect(namn).toEqual(["Nyheter", "Om Streetlight", "Kontakt", "Vanliga frågor", "Villkor och kontakt"]);
 });
 
 test("menyn markerar Om Streetlight som aktiv", LAYOUT, async ({ page, isMobile }) => {
@@ -57,7 +57,7 @@ test("Så började det leder till Vår historia, och sidfoten till Kontakt", asy
   await page.goto("om-foreningen");
   await page.getByRole("link", { name: "Läs hela vår historia" }).click();
   await expect(page).toHaveURL(/\/historia$/);
-  await page.getByRole("contentinfo").getByRole("link", { name: "Kontakt" }).click();
+  await page.getByRole("contentinfo").getByRole("link", { name: "Kontakt", exact: true }).click();
   await expect(page).toHaveURL(/\/om-foreningen#kontakt$/);
   await expect(page.getByRole("heading", { level: 2, name: "Kontakt." })).toBeInViewport();
 });
@@ -79,7 +79,7 @@ test.describe("Kontakt med tom testfil", () => {
     await page.goto("om-foreningen");
     await expect(page.getByRole("region", { name: "Kontakt." })).toHaveCount(0);
     await expect(page.getByRole("main").getByText(/fylls i/)).toHaveCount(0);
-    await expect(page.getByRole("contentinfo").getByRole("link", { name: "Kontakt" })).toHaveCount(0);
+    await expect(page.getByRole("contentinfo").getByRole("link", { name: "Kontakt", exact: true })).toHaveCount(0);
   });
 });
 

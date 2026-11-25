@@ -17,6 +17,10 @@ import { href } from "./utils";
  */
 export interface Foreningsuppgifter {
   organisationsnummer?: string;
+  /** The postal address, on one line: "Gatan 1, 123 45 Staden". Shown on Villkor och kontakt. */
+  postadress?: string;
+  /** The phone number for questions about a gift. Shown on Villkor och kontakt. */
+  telefon?: string;
   /** The bankgiro for gifts (the field is still named after the 90-konto it once was). */
   nittiokonto?: string;
   swish?: string;
@@ -46,6 +50,8 @@ function profillank(falt: string, doman: string) {
 
 const foreningsuppgifterSchema = z.strictObject({
   organisationsnummer: valfri(ifylldText),
+  postadress: valfri(ifylldText),
+  telefon: valfri(ifylldText),
   nittiokonto: valfri(ifylldText),
   swish: valfri(ifylldText),
   epost: valfri(ifylldText.refine(arEpostadress, { message: "epost måste vara en e-postadress" })),
@@ -78,6 +84,8 @@ export function hamtaForeningsuppgifter(): Foreningsuppgifter {
 /** Every uppgift, in the order the pages list them. */
 export const UPPGIFTER = [
   "organisationsnummer",
+  "postadress",
+  "telefon",
   "nittiokonto",
   "swish",
   "epost",
@@ -102,6 +110,8 @@ export interface VisadUppgift {
 
 const VISNING: Record<Uppgift, { etikett: string; lank?: (varde: string) => string; text?: string }> = {
   organisationsnummer: { etikett: "Organisationsnummer" },
+  postadress: { etikett: "Postadress" },
+  telefon: { etikett: "Telefon", lank: (varde) => `tel:${varde.replace(/[^\d+]/g, "")}` },
   nittiokonto: { etikett: "Bankgiro" },
   swish: { etikett: "Swish för gåvor" },
   epost: { etikett: "E-post", lank: (varde) => `mailto:${varde}` },

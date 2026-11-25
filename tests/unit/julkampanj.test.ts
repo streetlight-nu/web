@@ -4,7 +4,7 @@ import { tolkaJulkampanj } from "@/lib/julkampanj";
 
 describe("julkampanjens uppgifter i src/data/julkampanj.json", () => {
   test("tomma fält räknas som inte ifyllda", () => {
-    expect(tolkaJulkampanj({ sistaDag: "   ", epost: "" })).toEqual({});
+    expect(tolkaJulkampanj({ sistaDag: "   ", vadJulklappenGor: "   ", epost: "" })).toEqual({});
   });
 
   test("julkampanjen visas på startsidan bara när rutan är ibockad", () => {

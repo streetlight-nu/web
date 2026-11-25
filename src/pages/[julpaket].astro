@@ -26,7 +26,7 @@ export function getStaticPaths() {
   return hamtaFunktioner().julklapp ? [{ params: { julpaket: "julpaket" } }] : [];
 }
 
-const { sistaDag } = hamtaJulkampanj();
+const { sistaDag, vadJulklappenGor } = hamtaJulkampanj();
 
 const section = "py-[clamp(64px,9vw,120px)]";
 const h2 = "text-headline";
@@ -113,14 +113,14 @@ const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols
             med de lokala myndigheterna och Streetlight Etiopien bär arbetet med barnen och familjerna på plats.
           </p>
         </div>
-        <div class="mt-6 max-w-[52ch] rounded-md border border-rule bg-white p-6">
-          <h3 class="stegrubrik">Det här finns i julpaketet</h3>
-          <p class="mt-2">
-            I jul får alla 20 fadderbarn ett julpaket. I paketet finns en julklapp till barnet och en kontantgåva till
-            familjen. Familjen bestämmer själv vad gåvan används till, till exempel julmat, kläder eller något som behövs
-            hemma. Streetlight Etiopien känner varje familj och lämnar paketen personligen.
-          </p>
-        </div>
+        {
+          vadJulklappenGor && (
+            <div class="mt-6 max-w-[52ch] rounded-md border border-rule bg-white p-6">
+              <h3 class="stegrubrik">Det här finns i julpaketet</h3>
+              <p class="mt-2">{vadJulklappenGor}</p>
+            </div>
+          )
+        }
         <p class="mt-4 max-w-[52ch]">
           När alla 20 julpaket är klara fördelas överskottet till familjerna där det bäst behövs.
         </p>       

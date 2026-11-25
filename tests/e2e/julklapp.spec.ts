@@ -161,11 +161,21 @@ test("på kampanjsidan är Ge ett julpaket den enda guldknappen i första vyn, o
   expect(await page.getByRole("banner").locator('a[href="#ge"]').evaluate(bakgrund)).toBe(guld);
 });
 
-test("menyn markerar Julpaket som aktuell sida, även när kampanjen inte visas på startsidan", LAYOUT, async ({ page, isMobile }) => {
-  await page.goto(`${process.env.E2E_TOM_URL}${sida}`);
+test("menyn markerar Julpaket som aktuell sida medan Ge ett julpaket pågår", LAYOUT, async ({ page, isMobile }) => {
+  await page.goto(sida);
   const nav = page.getByRole("navigation", { name: "Huvudmeny" });
   if (isMobile) await nav.getByRole("button", { name: "Meny" }).click();
   await expect(nav.getByRole("link", { name: "Ge ett julpaket", exact: true })).toHaveAttribute("aria-current", "page");
+});
+
+test("länken i menyn finns inte före startdatumet eller efter slutdatumet, inte ens på sidan själv", async ({ page }) => {
+  for (const dag of [new Date(2026, 10, 28, 12), new Date(2026, 11, 25, 12)]) {
+    await page.clock.setFixedTime(dag);
+    for (const adress of ["", sida]) {
+      await page.goto(adress);
+      await expect(page.getByRole("navigation", { name: "Huvudmeny" }).getByRole("link", { name: "Ge ett julpaket" })).toHaveCount(0);
+    }
+  }
 });
 
 test("i menyn står Om Streetlight precis till vänster om Ge ett julpaket", async ({ page }) => {

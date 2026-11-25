@@ -22,7 +22,7 @@ const links: NavLink[] = [
   // Right before Ge ett julpaket. Vår historia is reached from Om Streetlight (Så började det).
   { label: "Om Streetlight", href: href("/om-foreningen"), current: current === "om" || current === "historia" },
   // Seasonal: the link is there while the Julinsamling runs, from `startdatum` to `slutdatum` (src/lib/julinsamling.ts).
-  // It is always in the list; the menu shows it by the browser's date (`julinsamling` in MainNav), and on its own page.
+  // It is always in the list; the menu shows it only by the browser's date (`julinsamling` in MainNav), also on its own page.
   { label: "Ge ett julpaket", href: href("/julpaket"), current: current === "julklapp", julinsamling: true },
 ];
 // The Ett ljus rule: on the campaign page "Ge ett julpaket" is the gold button, and on the start page the hero's own

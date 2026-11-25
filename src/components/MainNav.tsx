@@ -6,7 +6,7 @@ export interface NavLink {
   label: string;
   href: string;
   current?: boolean;
-  /** A link that belongs to the Julinsamling: shown while it runs, and on its own page. */
+  /** A link that belongs to the Julinsamling: shown only while it runs, also on its own page. */
   julinsamling?: boolean;
 }
 
@@ -55,7 +55,7 @@ export default function MainNav({ links, sponsorHref, sponsor = "gold", julinsam
         id={listId}
         className={`order-3 m-0 w-full list-none flex-col p-0 font-medium min-[901px]:order-none min-[901px]:flex min-[901px]:w-auto min-[901px]:min-w-0 min-[901px]:flex-row min-[901px]:flex-wrap min-[901px]:justify-center min-[901px]:gap-x-[clamp(14px,1.6vw,28px)] min-[901px]:gap-y-1 min-[901px]:whitespace-nowrap ${open ? "flex" : "hidden"}`}
       >
-        {links.filter((link) => !link.julinsamling || pagar || link.current).map((link) => (
+        {links.filter((link) => !link.julinsamling || pagar).map((link) => (
           <li key={link.href}>
             <a
               href={link.href}

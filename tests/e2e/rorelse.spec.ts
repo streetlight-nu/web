@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { farg } from "./helpers";
+import { farg, stubRepejo } from "./helpers";
 
 const GOLD = farg("gold");
 const COTTON = farg("cotton");
@@ -104,6 +104,9 @@ test.describe("med rörelse", () => {
   });
 
   test("lyser guldtrådens steg upp medan man läser på Bli fadder", async ({ page }) => {
+    // Repejo's real checkout redraws itself and moves the page while the test waits, which put the thread back
+    // below the reading line on CI. The test is about the thread, so it runs without Repejo.
+    await stubRepejo(page);
     await page.goto("./bli-fadder");
     expect(await stepStates(page)).toEqual(Array(3).fill({ color: MINT, mark: GREEN }));
 

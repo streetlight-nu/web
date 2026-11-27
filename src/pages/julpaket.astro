@@ -35,7 +35,15 @@ const status = {
 };
 /** The same all year, because the page is built once and Ge ett julpaket starts and ends in the browser. */
 const beskrivning =
-  "Ge ett julpaket till barnen i Addis Abeba och gläd samtidigt någon du tycker om. Under insamlingen Ge ett julpaket skickar vi ett julkort via sms i ditt namn på julaftonsmorgonen. Du kan också ge en gåva via Swish.";
+  "Ge ett julpaket till barnen i Addis Abeba och gläd samtidigt någon du tycker om. Under insamlingen Ge ett julpaket skickar vi ett julkort via sms i ditt namn på julaftonsmorgonen.";
+
+// A shared link shows the julkort, drawn at 1200 × 630 by scripts/rita-julpaket-delningsbild.mjs.
+const delningsbild = {
+  src: href("/julpaket-delningsbild.png"),
+  alt: "Julkort med texten ”God jul!” och ett brunt paket med lapp där det står Addis Abeba. Nederst ”Ett julpaket i ditt namn” och Streetlights logotyp.",
+  width: 1200,
+  height: 630,
+};
 
 const section = "py-[clamp(64px,9vw,120px)]";
 const h2 = "text-headline";
@@ -46,6 +54,7 @@ const split = "grid grid-cols-1 gap-[clamp(32px,6vw,72px)] min-[901px]:grid-cols
   title="Ge ett julpaket"
   current="julpaket"
   description={beskrivning}
+  delningsbild={delningsbild}
 >
   <Repejo slot="head" del="skript" />
 

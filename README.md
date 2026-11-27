@@ -28,7 +28,7 @@ Färger, typsnitt och avstånd kommer från designsystemets `tokens.json`, som f
 
 I `.astro`-filer används `buttonVariants()` direkt på `<a>`. React-komponenten `Button` med `asChild` fungerar bara inne i React-öar.
 
-En delad länk visar sajtens standardbild `public/delningsbild.png` (1200 × 630), eller inläggets egen bild. Standardbilden ritas av `node scripts/rita-delningsbild.mjs` från logotypen; kör skriptet igen om logotypen ändras.
+En delad länk visar sajtens standardbild `public/delningsbild.png` (1200 × 630), inläggets egen bild eller, på Ge ett julpaket, julkortet i `public/julpaket-delningsbild.png`. Standardbilden ritas av `node scripts/rita-delningsbild.mjs` från logotypen; kör skriptet igen om logotypen ändras. Julkortsbilden ritas av `node scripts/rita-julpaket-delningsbild.mjs` från `src/assets/julpaket/julpaket-kort.png`; kör det igen om kortet ändras.
 
 Typsnitten läggs på egen server via Fontsource, och sajtens egen kod hämtar dem aldrig från Google Fonts. En sida får anropa en extern tjänst ([ADR 0003](docs/adr/0003-externa-tjanster-som-repejo-far-anropas.md)). I dag använder Ge ett julpaket, Bli fadder och Engagera dig Repejo. Repejos skript hämtar själv andra tjänster på `/julpaket`: typsnitt från Google, Stripe, Adyen, BankID och kanske Metas pixel. ADR 0003 listar dem.
 

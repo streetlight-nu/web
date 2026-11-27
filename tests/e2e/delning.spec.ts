@@ -47,3 +47,17 @@ test("ett inlägg delas som en artikel, startsidan och nyhetslistan som en webbp
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "website");
   }
 });
+
+test("Ge ett julpaket delas med julkortet, en PNG i 1200 × 630", async ({ page, request }) => {
+  await page.goto("julpaket");
+  const adress = new URL((await page.locator('meta[property="og:image"]').getAttribute("content"))!);
+  expect(adress.pathname).toMatch(/\/julpaket-delningsbild\.png$/);
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute("content", "1200");
+  await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute("content", "630");
+  await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute("content", /Julkort med texten ”God jul!”/);
+
+  const svar = await request.get(adress.pathname);
+  expect(svar.ok()).toBe(true);
+  expect(svar.headers()["content-type"]).toBe("image/png");
+  expect(pngStorlek(await svar.body())).toEqual({ bredd: 1200, hojd: 630 });
+});

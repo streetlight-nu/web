@@ -101,3 +101,12 @@ test("exempelinläggen har platshållare i stället för foton, och varje bild h
   }
 });
 
+
+test("en länk med klassen knapp i ett inlägg är en gul knapp", async ({ page }) => {
+  await page.goto(arsmote);
+  const knapp = page.locator("a.knapp");
+  await expect(knapp).toHaveAttribute("href", "https://streetlight.nu/julpaket");
+  await expect(knapp).toHaveCSS("background-color", farg("gold"));
+  await expect(knapp).toHaveCSS("color", farg("ink"));
+  expect((await knapp.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+});

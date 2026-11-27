@@ -17,3 +17,5 @@ Lägg in dagordningen här, eller länka till den.
   <div class="sl-photo"><span>Foto från förra årsmötet</span></div>
   <figcaption>Bildtext skrivs av föreningen.</figcaption>
 </figure>
+
+<p><a class="knapp" href="https://streetlight.nu/julpaket">Ge ett julpaket</a></p>

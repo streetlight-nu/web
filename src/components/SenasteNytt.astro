@@ -38,7 +38,7 @@ const inlagg = senaste(await allaNyheter());
                   src={inlagg.data.image}
                   alt={inlagg.data.imageAlt!}
                   widths={[640, 960, 1280]}
-                  sizes="(min-width: 1180px) 1148px, 100vw"
+                  sizes="(min-width: 900px) 568px, 100vw"
                 />
               ) : (
                 <Placeholder class="senaste-foto" text="Foto till inlägget" />
@@ -54,8 +54,8 @@ const inlagg = senaste(await allaNyheter());
               <h3 id="senaste-inlagg-rubrik">
                 <a href={href(`/nyheter/${inlagg.id}`)}>{inlagg.data.title}</a>
               </h3>
+              <p class="mt-5 max-w-[44ch] text-ink-soft">{inlagg.data.lede}</p>
             </div>
-            <p class="max-w-[44ch] text-ink-soft">{inlagg.data.lede}</p>
           </article>
         </div>
       </section>
@@ -64,19 +64,24 @@ const inlagg = senaste(await allaNyheter());
 }
 
 <style>
+  /* Text to the left, photo to the right. The photo keeps its 3:2 shape, so a Julkort with text is not cropped. */
   .senaste-inlagg {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "text bild";
     gap: 24px clamp(24px, 4vw, 56px);
-    align-items: end;
+    align-items: center;
     margin-top: 36px;
   }
   .senaste-inlagg > :global(*) {
     min-width: 0;
   }
+  .senaste-inlagg > div {
+    grid-area: text;
+  }
   .senaste-bildlank {
     display: block;
-    grid-column: 1 / -1;
+    grid-area: bild;
     border-radius: var(--radius-md);
   }
   /* Håller rubrikens guldmarkering i takt när pekaren är över bilden. */
@@ -86,8 +91,7 @@ const inlagg = senaste(await allaNyheter());
   .senaste-inlagg :global(.senaste-foto) {
     display: block;
     width: 100%;
-    max-height: 440px;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 3 / 2;
     object-fit: cover;
     border-radius: var(--radius-md);
   }
@@ -117,7 +121,8 @@ const inlagg = senaste(await allaNyheter());
   @media (max-width: 900px) {
     .senaste-inlagg {
       grid-template-columns: 1fr;
-      gap: 16px;
+      grid-template-areas: "text" "bild";
+      gap: 24px;
     }
   }
 </style>
